@@ -57,11 +57,11 @@ CENTER
 }
 
 /*==============================================================================
-BUTTON or DISPLAY
+DISPLAY or BUTTON
 */
-.dsp{      background-color:var(--c03); color:var(--c09)}
-.btn{      background-color:var(--c09); color:var(--c05)}
-.btn:hover{background-color:var(--c10); color:var(--c06)}
+.dsp{      background-color:var(--c04); color:var(--c10)}
+.btn{      background-color:var(--c09); color:var(--c14)}
+.btn:hover{background-color:var(--c10); color:var(--c15)}
 
 /*==============================================================================
 MASK
@@ -92,13 +92,19 @@ COLORS
 .dbl{background-color:var(--c21)}
 .lbl{background-color:var(--c22)}
 
+.bnc{background-color:var(--c14)}
+
 /*==============================================================================
 BORDERS
 */
-.brd{border:1px solid var(--c16); box-sizing:border-box}
+.brd
+{
+  border:1px solid var(--c15);
+  box-sizing:border-box;
+}
 
 /*..............................................................................
-A, B, K and L
+A, B, K and L (n=none; s=solid; d=dashed)
 */
 .ssns{border-bottom-width:0}
 .sdns{border-bottom-width:0; border-right-style:dashed}
@@ -142,11 +148,42 @@ J
 .ndsn{border-width:0 1px 1px 0; border-right-style:dashed}
 .nnsd{border-width:0 0 1px 1px; border-left-style:dashed}
 
+/*==============================================================================
+GOAL
+*/
+.gol
+{
+  width:32px;
+  height:32px;
+  border:2px solid rgb(239,239,239);
+  background-color: rgba(255,255,255,0.25)
+}
+
+/*==============================================================================
+ABSOLUTE
+*/
+.abs{position:absolute}
+
+/*==============================================================================
+ROUND
+*/
+.rnd{border-radius:100%}
+
+/*==============================================================================
+SPACE
+*/
+.spc{height:1%}
+
+/*==============================================================================
+BOX
+*/
+.box{height:70px}
+
 /*////////////////////////////////////////////////////////////////////////////// SPECIFICS
 */
 body
 {
-  background-color:var(--c02);
+  background-color:var(--c04);
   color:rgba(255,255,255,0.25);
   font-family:sans-serif;
   font-size:12px;
@@ -158,9 +195,17 @@ body
   -ms-user-select:none;/* Internet Explorer/Edge */
 }
 
+/*==============================================================================
+*/
 #arena
 {
   width:962px;
-  height:700px;
-  background-color:var(--c04);
+  min-width: 962px;
+  height:710px;
+  min-height:710px;
+  background-color:var(--c15);
 }
+
+/*==============================================================================
+*/
+#center{transform:translate(462px,270px)}

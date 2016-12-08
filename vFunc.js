@@ -3,7 +3,7 @@
 
 //////////////////////////////////////////////////////////////////////////////// GLOBALS
 //
-// GAME EXTRA LISTEN TEXT PAGE ATOZ INFO TEXT EVENT CHANGE STATE ENGINE
+// GAME EXTRA LISTEN TEXT PAGE INFO TEXT EVENT CHANGE STATE ENGINE
 
 //////////////////////////////////////////////////////////////////////////////// GAME
 //
@@ -13,12 +13,19 @@ const game =
   //
   create: () =>
   {
+    //==========================================================================
+    // Checking if there is a save or not
+    //
     if( change.turn === 0 )
     {
+      //========================================================================
+      // Setting athletes' initial positions
+      //
       for( let $ = 0; $ < 20; $ ++ )
       {
         change.athlete[ $ ][ 0 ] = info.gps[ 12 ][ $ ][ 0 ] + 1
         change.athlete[ $ ][ 1 ] = info.gps[ 12 ][ $ ][ 1 ] + 1
+        change.athlete[ $ ][ 2 ] = info.gps[ 12 ][ $ ][ 2 ]
       }
     }
   },
@@ -47,23 +54,23 @@ const extra =
   ////////////////////////////////////////////////////////////////////////////// E.hasCls
   // Check for a class in any HTML element
   //
-  hasCls: function( object, klass )
+  hasCls: function( element, klass )
   {
-    return !!object.className.match( klass ) // TRUE or FALSE
+    return !!element.className.match( klass ) // TRUE or FALSE
   },
 
   ////////////////////////////////////////////////////////////////////////////// E.chgCls
   // Adds or removes a class in any HTML element
   //
-  chgCls: function( object, klass, action )
+  chgCls: function( element, klass, action )
   {
-    if( !extra.hasCls( object, klass ) && action === "add" )
+    if( !extra.hasCls( element, klass ) && action === "add" )
     {
-      object.classList.add( klass );
+      element.classList.add( klass );
     }
-    else if( extra.hasCls( object, klass ) && action === "rmv" )
+    else if( extra.hasCls( element, klass ) && action === "rmv" )
     {
-      object.classList.remove( klass )
+      element.classList.remove( klass )
     }
     else
     {
@@ -90,9 +97,9 @@ const listen =
     {
       page.reset.innerHTML = 'REALLY ?'
       page.reset.style.width = '12.5%'
+
       extra.chgCls( page.reset, 'btn', 'rmv' )
       extra.chgCls( page.reset, 'dsp', 'add' )
-
       page.yes.style.display = 'flex'
       page.no.style.display = 'flex'
     }

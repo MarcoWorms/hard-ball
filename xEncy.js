@@ -3,7 +3,7 @@
 
 //////////////////////////////////////////////////////////////////////////////// GLOBALS
 //
-// GAME EXTRA LISTEN TEXT PAGE INFO TEXT EVENT CHANGE STATE ENGINE
+// GAME EXTRA LISTEN TEXT PAGE LTOA INFO TEXT EVENT CHANGE STATE ENGINE
 
 //////////////////////////////////////////////////////////////////////////////// PAGE
 //
@@ -48,19 +48,15 @@ const page =
   ],
 }
 
+//////////////////////////////////////////////////////////////////////////////// LTOA
+// Adapted alphabet
+//
+const lToA = [ 'L','A','B','C','D','E','F','G','H','I','J','K','L','A' ]
+
 //////////////////////////////////////////////////////////////////////////////// INFO
 //
 const info =
 {
-  ////////////////////////////////////////////////////////////////////////////// I.lToA
-  // Adapted alphabet
-  //
-  lToA:
-  [
-    'L', 'A', 'B', 'C', 'D', 'E', 'F',
-    'G', 'H', 'I', 'J', 'K', 'L', 'A',
-  ],
-
   ////////////////////////////////////////////////////////////////////////////// I.possible
   // Matrix of how each athlete moves
   //
@@ -110,7 +106,7 @@ const info =
           //--------------------------------------------------------------------
           // Corrects number appearance if necessary then writes name
           //
-          let name = info.lToA[ $1 + 1 ]
+          let name = lToA[ $1 + 1 ]
           if( $2 < 10 ) name += '0'
           name += $2
 
@@ -154,15 +150,15 @@ const info =
           // rel4 name rel5
           // rel6 rel7 rel8
           //
-          let rel1 = info.lToA[ $1 ]
-          let rel2 = info.lToA[ $1 ]
-          let rel3 = info.lToA[ $1 ]
-          let rel4 = info.lToA[ $1 + 1 ]
-          let name = info.lToA[ $1 + 1 ]
-          let rel5 = info.lToA[ $1 + 1 ]
-          let rel6 = info.lToA[ $1 + 2 ]
-          let rel7 = info.lToA[ $1 + 2 ]
-          let rel8 = info.lToA[ $1 + 2 ]
+          let rel1 = lToA[ $1 ]
+          let rel2 = lToA[ $1 ]
+          let rel3 = lToA[ $1 ]
+          let rel4 = lToA[ $1 + 1 ]
+          let name = lToA[ $1 + 1 ]
+          let rel5 = lToA[ $1 + 1 ]
+          let rel6 = lToA[ $1 + 2 ]
+          let rel7 = lToA[ $1 + 2 ]
+          let rel8 = lToA[ $1 + 2 ]
 
           //--------------------------------------------------------------------
           // This is here because so far it has no global usefulness

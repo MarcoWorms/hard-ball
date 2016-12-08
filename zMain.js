@@ -3,7 +3,7 @@
 
 //////////////////////////////////////////////////////////////////////////////// GLOBALS
 //
-// GAME LISTEN TEXT PAGE ATOZ INFO TEXT EVENT CHANGE STATE ENGINE
+// GAME EXTRA LISTEN TEXT PAGE ATOZ INFO TEXT EVENT CHANGE STATE ENGINE
 
 //////////////////////////////////////////////////////////////////////////////// STATE
 //
@@ -38,6 +38,7 @@ const engine =
   create: () =>
   {
     state.create()
+    game.create()
   },
 
   ////////////////////////////////////////////////////////////////////////////// E.update
@@ -45,6 +46,7 @@ const engine =
   update: () =>
   {
     state.update()
+    game.update()
 
     window.requestAnimationFrame( engine.update )
   },

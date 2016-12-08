@@ -176,13 +176,19 @@ BOX
 .box{height:70px}
 
 /*==============================================================================
+YES OR NO
+*/
+.yon{width:6.25%; display: none}
+
+/*==============================================================================
 ATHLETE
 */
 .atl
 {
-  width:32px;
-  height:32px;
-  background-color:var(--c17);
+  width:46px;
+  height:46px;
+  border:2px solid var(--c16);
+  box-sizing:border-box;
 }
 
 /*////////////////////////////////////////////////////////////////////////////// SPECIFICS

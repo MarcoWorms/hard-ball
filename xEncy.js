@@ -3,7 +3,7 @@
 
 //////////////////////////////////////////////////////////////////////////////// GLOBALS
 //
-// GAME LISTEN TEXT PAGE ATOZ INFO TEXT EVENT CHANGE STATE ENGINE
+// GAME EXTRA LISTEN TEXT PAGE ATOZ INFO TEXT EVENT CHANGE STATE ENGINE
 
 //////////////////////////////////////////////////////////////////////////////// PAGE
 //
@@ -16,6 +16,12 @@ const page =
 
   //////////////////////////////////////////////////////////////////////////////
   // Get HTML elements
+  //
+  yes: document.getElementById( 'yes' ),
+  reset: document.getElementById( 'reset' ),
+  no: document.getElementById( 'no' ),
+
+  //============================================================================
   //
   athlete:
   [
@@ -39,7 +45,7 @@ const page =
     document.getElementById( 'T17' ),
     document.getElementById( 'T18' ),
     document.getElementById( 'T19' ),
-  ]
+  ],
 }
 
 //////////////////////////////////////////////////////////////////////////////// ATOZ
@@ -63,7 +69,8 @@ const info =
   //////////////////////////////////////////////////////////////////////////////
   //
   family:
-  {},
+  {
+  },
 
   //////////////////////////////////////////////////////////////////////////////
   // GPS is an array containing 13 arrays (arena rows)
@@ -75,10 +82,11 @@ const info =
     function()
     {
       let array1 = []
-      let array2 = []
 
       for( let $1 = 0; $1 < 13; $1 ++ ) // insert 13 rows into array1
       {
+        let array2 = []
+
         for( let $2 = 0; $2 < 20; $2 ++ ) // insert 20 cells into array2
         {
           let x = $2 * 48

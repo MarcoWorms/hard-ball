@@ -21,6 +21,8 @@ const page =
   reset: document.getElementById( 'reset' ),
   no: document.getElementById( 'no' ),
 
+  ball: document.getElementById( 'ball' ),
+
   //============================================================================
   //
   athlete:

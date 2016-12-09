@@ -15,7 +15,7 @@ const game =
   {
     //==========================================================================
     // Checking if there is a save or not
-    //
+    // 
     if( change.turn === 0 )
     {
       //========================================================================
@@ -27,6 +27,11 @@ const game =
         change.athlete[ $ ][ 1 ] = info.gps[ 12 ][ $ ][ 1 ] + 1
         change.athlete[ $ ][ 2 ] = info.gps[ 12 ][ $ ][ 2 ]
       }
+
+      //========================================================================
+      // Setting the ball's initial position
+      //
+      page.ball.style.transform = 'translate(457px,265px)'
     }
   },
 

@@ -21,6 +21,9 @@
   --c21:rgb(95,63,191); /* Dark Blue */
   --c22:rgb(111,79,207); /* Light Blue */
 
+  --c23:rgb(111,79,47); /* Dark Brown */
+  --c24:rgb(143,111,79); /* Light Brown */
+
   /*
   003 007 011 015    019 023 027 031    035 039 043 047    051 055 059 063
   067 071 075 079    083 087 091 095    099 103 107 111    115 119 123 127
@@ -57,11 +60,21 @@ CENTER
 }
 
 /*==============================================================================
-DISPLAY or BUTTON
+DISPLAY or BUTTON or GREEN or BLUE or BALL
 */
 .dsp{      background-color:var(--c04); color:var(--c10)}
+
 .btn{      background-color:var(--c09); color:var(--c14)}
 .btn:hover{background-color:var(--c10); color:var(--c15)}
+
+.grn{      background-color:var(--c19)}
+.grn:hover{background-color:var(--c20)}
+
+.blu{      background-color:var(--c21)}
+.blu:hover{background-color:var(--c22)}
+
+.bal{      background-color:var(--c23)}
+.bal:hover{background-color:var(--c24)}
 
 /*==============================================================================
 MASK
@@ -178,7 +191,12 @@ BOX
 /*==============================================================================
 YES OR NO
 */
-.yon{width:6.25%; display: none}
+.yon{width:6.25%; display:none}
+
+/*==============================================================================
+SVG
+*/
+.svg{fill:var(--c15)} 
 
 /*==============================================================================
 ATHLETE
@@ -187,8 +205,8 @@ ATHLETE
 {
   width:46px;
   height:46px;
-  border:2px solid var(--c16);
   box-sizing:border-box;
+  border:2px solid var(--c16)
 }
 
 /*////////////////////////////////////////////////////////////////////////////// SPECIFICS

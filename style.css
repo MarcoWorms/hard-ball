@@ -199,14 +199,23 @@ SVG
 .svg{fill:var(--c15)} 
 
 /*==============================================================================
-ATHLETE
+STANDARD SIZE
 */
-.atl
+.stn
 {
   width:46px;
   height:46px;
+  border:2px solid var(--c16);
   box-sizing:border-box;
-  border:2px solid var(--c16)
+}
+
+/*==============================================================================
+ZONE
+*/
+.zon
+{
+  border: 2px dashed rgba(255,191,0,1);
+  display:none;
 }
 
 /*////////////////////////////////////////////////////////////////////////////// SPECIFICS

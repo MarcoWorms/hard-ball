@@ -3,7 +3,7 @@
 
 //////////////////////////////////////////////////////////////////////////////// GLOBALS
 //
-// GAME EXTRA LISTEN TEXT PAGE LTOA INFO TEXT EVENT CHANGE STATE ENGINE
+// TOOL LISTEN GAME MESSAGE PAGE LTOA INFO TEXT EVENT CHANGE STATE ENGINE
 
 //////////////////////////////////////////////////////////////////////////////// PAGE
 //
@@ -17,6 +17,9 @@ const page =
   //////////////////////////////////////////////////////////////////////////////
   // Get HTML elements
   //
+  notation: document.getElementById( 'notation' ),
+  console: document.getElementById( 'console' ),
+
   yes: document.getElementById( 'yes' ),
   reset: document.getElementById( 'reset' ),
   no: document.getElementById( 'no' ),
@@ -25,7 +28,29 @@ const page =
 
   //============================================================================
   //
-  athlete:
+  zone: // 16 zones
+  [
+    document.getElementById( 'zon00' ),
+    document.getElementById( 'zon01' ),
+    document.getElementById( 'zon02' ),
+    document.getElementById( 'zon03' ),
+    document.getElementById( 'zon04' ),
+    document.getElementById( 'zon05' ),
+    document.getElementById( 'zon06' ),
+    document.getElementById( 'zon07' ),
+    document.getElementById( 'zon08' ),
+    document.getElementById( 'zon09' ),
+    document.getElementById( 'zon10' ),
+    document.getElementById( 'zon11' ),
+    document.getElementById( 'zon12' ),
+    document.getElementById( 'zon13' ),
+    document.getElementById( 'zon14' ),
+    document.getElementById( 'zon15' ),
+  ],
+
+  //============================================================================
+  //
+  athlete: // 20 athletes
   [
     document.getElementById( 'T00' ),
     document.getElementById( 'T01' ),
@@ -59,6 +84,17 @@ const lToA = [ 'L','A','B','C','D','E','F','G','H','I','J','K','L','A' ]
 //
 const info =
 {
+  ////////////////////////////////////////////////////////////////////////////// I.athlete
+  // Shows what are the acceptable HTML IDs to be declared an athlete
+  //
+  athlete:
+  [
+    'minT00', 'minT01', 'minT02', 'minT03', 'minT04',
+    'minT05', 'minT06', 'minT07', 'minT08', 'minT09',
+    'minT10', 'minT11', 'minT12', 'minT13', 'minT14',
+    'minT15', 'minT16', 'minT17', 'minT18', 'minT19',
+  ],
+
   ////////////////////////////////////////////////////////////////////////////// I.possible
   // Matrix of how each athlete moves
   //
@@ -146,7 +182,7 @@ const info =
         for( let $2 = 0; $2 < 20; $2 ++ ) // insert 20 cells into array2
         {
           //--------------------------------------------------------------------
-          // Starts writing name
+          // Starting names
           //
           // rel1 rel2 rel3
           // rel4 name rel5
@@ -172,7 +208,7 @@ const info =
           ]
 
           //--------------------------------------------------------------------
-          // Finishing naming each element
+          // Finishing names
           //
           rel1 += array[ $2 ]
           rel2 += array[ $2 + 1 ]
@@ -187,7 +223,8 @@ const info =
           //--------------------------------------------------------------------
           // IMPORTANT!
           //
-          // NAME is the array's element 0
+          // NAME is the array's element 0, it's been shown before in the middle
+          // of 'rel's for the sake of clarity in displaying the logic
           //
           array2.push( [ name,rel1,rel2,rel3,rel4,rel5,rel6,rel7,rel8 ] )
         }

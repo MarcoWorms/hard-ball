@@ -60,21 +60,39 @@ CENTER
 }
 
 /*==============================================================================
-DISPLAY or BUTTON or GREEN or BLUE or BALL
+DISPLAY or BUTTON
 */
 .dsp{      background-color:var(--c04); color:var(--c10)}
 
 .btn{      background-color:var(--c09); color:var(--c14)}
 .btn:hover{background-color:var(--c10); color:var(--c15)}
 
+/*==============================================================================
+GREEN or BLUE
+*/
 .grn{      background-color:var(--c19)}
 .grn:hover{background-color:var(--c20)}
 
 .blu{      background-color:var(--c21)}
 .blu:hover{background-color:var(--c22)}
 
+/*==============================================================================
+BALL
+*/
 .bal{      background-color:var(--c23)}
 .bal:hover{background-color:var(--c24)}
+
+/*==============================================================================
+ZONE
+*/
+.zon
+{
+  width:40px;
+  height:40px;
+  box-sizing: border-box;
+  border: 2px dashed rgba(207,159,0,1);}
+
+.zon:hover{border: 2px dashed rgba(255,191,0,1)}
 
 /*==============================================================================
 MASK
@@ -207,15 +225,6 @@ STANDARD SIZE
   height:46px;
   border:2px solid var(--c16);
   box-sizing:border-box;
-}
-
-/*==============================================================================
-ZONE
-*/
-.zon
-{
-  border: 2px dashed rgba(255,191,0,1);
-  display:none;
 }
 
 /*////////////////////////////////////////////////////////////////////////////// SPECIFICS

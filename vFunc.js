@@ -95,17 +95,19 @@ const listen =
   }, false ),
 
   ////////////////////////////////////////////////////////////////////////////// L.hoverer
-  // Athletes' possible moves are identified here
+  // Tells if the mouse entered any given athlete
   //
   hoverer: document.addEventListener( 'mouseover', ( $ ) =>
   {
     if( info.athlete.indexOf( $.target.id ) !== -1 )
     {
-      console.log( 'athlete' )
+      change.now = Number( $.target.id.substring( 4, 6 ) )
+      game.updZon()
     }
     else
     {
-      console.log( 'not' )
+      change.now = 'none'
+      game.updZon()
     }
   }, false ),
 
@@ -115,5 +117,15 @@ const listen =
   presser: document.addEventListener( 'keydown', ( $ ) =>
   {
     // console.log( $ )
+
+    ////////////////////////////////////////////////////////////////////////////
+    // CLEAR local storage
+    //
+    if( $.key === 'Escape' )
+    {
+      console.log( localStorage )
+      localStorage.clear()
+      console.log( localStorage )
+    }
   }, false ),
 }

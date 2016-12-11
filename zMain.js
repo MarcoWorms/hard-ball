@@ -46,7 +46,6 @@ const engine =
   update: () =>
   {
     state.update()
-    game.update()
 
     window.requestAnimationFrame( engine.update )
   },

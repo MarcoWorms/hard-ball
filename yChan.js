@@ -3,21 +3,26 @@
 
 //////////////////////////////////////////////////////////////////////////////// GLOBALS
 //
-// TOOL LISTEN GAME MESSAGE PAGE LTOA INFO TEXT EVENT CHANGE STATE ENGINE
+// TOOL TIMER LISTEN GAME MESSAGE PAGE LTOA INFO TEXT EVENT CHANGE STATE ENGINE
 
 //////////////////////////////////////////////////////////////////////////////// CHANGE
 //
 let change =
 {
   //============================================================================
-  //
+  // Records how many moves went down so far
   //
   turn: 0,
 
   //============================================================================
+  // tbd...
+  //
+  selected: 0,
+
+  //============================================================================
   // This is a number from 0 to 19 or 'none' (athlete currently being hovered)
   //
-  now: '',
+  hovered: 0,
 
   //============================================================================
   // Gives current coordinates to the ball
@@ -27,13 +32,14 @@ let change =
   //============================================================================
   // ATHLETE is an array containing 20 arrays
   // each of these arrays contain 1 athlete (x, y, cell, color, condition)
+  //                                        num num str   str     str
   //
   athlete:
   (
     function()
     {
       let array = []
-      for( let $ = 0; $ < 20; $ ++ ) array.push( [ 0, 0, '', 0, 0 ] )
+      for( let $ = 0; $ < 20; $ ++ ) array.push( [ 0, 0, '', 'none', 'ready' ] )
       return array
     }()
   ),

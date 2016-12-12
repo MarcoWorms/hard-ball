@@ -87,12 +87,13 @@ ZONE
 */
 .zon
 {
-  width:40px;
-  height:40px;
+  width:42px;
+  height:42px;
   box-sizing: border-box;
-  border: 2px dashed rgba(207,159,0,1);}
+  border: 2px dashed rgba(239,239,239,0.75);
+}
 
-.zon:hover{border: 2px dashed rgba(255,191,0,1)}
+.zon:hover{border: 2px dashed rgba(255,255,255,1)}
 
 /*==============================================================================
 MASK

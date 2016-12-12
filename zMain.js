@@ -3,7 +3,7 @@
 
 //////////////////////////////////////////////////////////////////////////////// GLOBALS
 //
-// TOOL LISTEN GAME MESSAGE PAGE LTOA INFO TEXT EVENT CHANGE STATE ENGINE
+// TOOL LISTEN TIMER GAME MESSAGE PAGE LTOA INFO TEXT EVENT CHANGE STATE ENGINE
 
 //////////////////////////////////////////////////////////////////////////////// STATE
 //
@@ -46,12 +46,17 @@ const engine =
   update: () =>
   {
     state.update()
+    game.update()
 
     window.requestAnimationFrame( engine.update )
   },
 }
 
 //////////////////////////////////////////////////////////////////////////////// CALL
+// Loading...
 //
-engine.create()
-engine.update()
+setTimeout( function()
+{
+  engine.create()
+  engine.update()
+}, 1 )

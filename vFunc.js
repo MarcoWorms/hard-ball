@@ -3,38 +3,63 @@
 
 //////////////////////////////////////////////////////////////////////////////// GLOBALS
 //
-// TOOL LISTEN GAME MESSAGE PAGE LTOA INFO TEXT EVENT CHANGE STATE ENGINE
+// TOOL TIMER LISTEN GAME MESSAGE PAGE LTOA INFO TEXT EVENT CHANGE STATE ENGINE
 
 //////////////////////////////////////////////////////////////////////////////// TOOL
 //
 const tool =
 {
-  ////////////////////////////////////////////////////////////////////////////// E.hasCls
-  // Check for a class in any HTML element
+  ////////////////////////////////////////////////////////////////////////////// E.translate
   //
-  hasCls: function( element, klass )
+  translate: function( entity, x, y )
   {
-    return !!element.className.match( klass ) // TRUE or FALSE
+    entity.style.transform = 'translate(' + x + 'px,' + y + 'px)'
+  },
+
+  ////////////////////////////////////////////////////////////////////////////// E.rotate
+  //
+  rotate: function( entity, speed )
+  {
+    entity.style.transform += ' rotate(' + timer.spin[ 0 ] * speed + 'deg)'
+  },
+
+  ////////////////////////////////////////////////////////////////////////////// E.hasCls
+  // Check for a class in any HTML object
+  //
+  hasCls: function( entity, klass )
+  {
+    return !!entity.className.match( klass ) // TRUE or FALSE
   },
 
   ////////////////////////////////////////////////////////////////////////////// E.chgCls
-  // Adds or removes a class in any HTML element
+  // Adds or removes a class in any HTML object
   //
-  chgCls: function( element, klass, action )
+  chgCls: function( entity, klass, action )
   {
-    if( !tool.hasCls( element, klass ) && action === "add" )
+    if( !tool.hasCls( entity, klass ) && action === "add" )
     {
-      element.classList.add( klass );
+      entity.classList.add( klass );
     }
-    else if( tool.hasCls( element, klass ) && action === "rmv" )
+    else if( tool.hasCls( entity, klass ) && action === "rmv" )
     {
-      element.classList.remove( klass )
+      entity.classList.remove( klass )
     }
     else
     {
       console.log( "You shall not class!" )
     }
   },
+}
+
+//////////////////////////////////////////////////////////////////////////////// TIMER
+//
+const timer =
+{
+  spin: [ 0, setInterval( function()
+    {
+      if( timer.spin[ 0 ] > 359 ) timer.spin[ 0 ] = 0
+      else                        timer.spin[ 0 ] ++
+    }, 10 ) ],
 }
 
 //////////////////////////////////////////////////////////////////////////////// LISTEN
@@ -60,6 +85,8 @@ const listen =
       tool.chgCls( page.reset, 'dsp', 'add' )
       page.yes.style.display = 'flex'
       page.no.style.display = 'flex'
+
+      change.selected = 0
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -101,13 +128,15 @@ const listen =
   {
     if( info.athlete.indexOf( $.target.id ) !== -1 )
     {
-      change.now = Number( $.target.id.substring( 4, 6 ) )
-      game.updZon()
+      change.hovered = Number( $.target.id.substring( 4, 6 ) )
+
+      console.log( change.hovered + ' . ' + change.athlete[ change.hovered ] )
     }
     else
     {
-      change.now = 'none'
-      game.updZon()
+      change.hovered = 'none'
+
+      console.log( $.target.id )
     }
   }, false ),
 

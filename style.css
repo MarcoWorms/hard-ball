@@ -226,6 +226,11 @@ STANDARD SIZE
   box-sizing:border-box;
 }
 
+/*==============================================================================
+SPECIAL CASE 1
+*/
+.sc1{transform:translate(-1px,0)}
+
 /*////////////////////////////////////////////////////////////////////////////// SPECIFICS
 */
 body
@@ -260,3 +265,8 @@ body
   background-color:rgba(0,0,0,0);
   transform:translate(462px,270px);
 }
+
+/*==============================================================================
+*/
+#golGre1{transform:translate(-1px,-1px)}
+#golBlu1{transform:translate(0,-1px)}

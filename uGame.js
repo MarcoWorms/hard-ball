@@ -9,7 +9,7 @@
 //
 const game =
 {
-  ////////////////////////////////////////////////////////////////////////////// G.update
+  ////////////////////////////////////////////////////////////////////////////// G.create
   //
   create: function()
   {
@@ -107,11 +107,14 @@ const game =
   //
   updZon: function()
   {
+    //==========================================================================
+    // Updating every other zone
+    //
     for( let $ = 0; $ < 16; $ ++ )
     {
       let entity = page.zone[ $ ]
 
-      if( change.hovered === 'none' && change.selected === 0 )
+      if( change.hovered === 'none' )
       {
          entity.style.display = 'none'
       }
@@ -127,11 +130,301 @@ const game =
         }
       }
 
-      let x = $ * 8
-      let y = $ * 8
+      let x = info.zone[ $ ][ 0 ]
+      let y = info.zone[ $ ][ 1 ]
 
       tool.translate( entity, x, y )
       tool.rotate( entity, 1 )
+    }
+  },
+
+  ////////////////////////////////////////////////////////////////////////////// G.updZonCdn
+  // Activated on 'listen.hoverer'
+  //
+  updZonCdn: function()
+  {
+    //==========================================================================
+    // Clean 'info.zone'
+    //
+    info.zone =
+    (
+      function()
+      {
+        let array = []
+        for( let $ = 0; $ < 16; $ ++ ) array.push( [ 0, 0 ] )
+        return array
+      }()
+    )
+
+    //==========================================================================
+    // Fill 'info.zone'
+    //
+    let counter = 0
+    let x
+    let y
+
+    //==========================================================================
+    // Matrix 1
+    //
+    if( info.possible[ change.hovered ][ 1 ] === 1 )
+    {
+      x = change.athlete[ change.hovered ][ 0 ] + 2 + 48
+      y = change.athlete[ change.hovered ][ 1 ] + 2
+      info.zone[ counter ] = [ x, y ]
+
+      x = change.athlete[ change.hovered ][ 0 ] + 2 - 48
+      y = change.athlete[ change.hovered ][ 1 ] + 2
+      info.zone[ counter + 1 ] = [ x, y ]
+
+      x = change.athlete[ change.hovered ][ 0 ] + 2
+      y = change.athlete[ change.hovered ][ 1 ] + 2 + 48
+      info.zone[ counter + 2 ] = [ x, y ]
+
+      x = change.athlete[ change.hovered ][ 0 ] + 2
+      y = change.athlete[ change.hovered ][ 1 ] + 2 - 48
+      info.zone[ counter + 3 ] = [ x, y ]
+
+      counter += 4
+    }
+
+    //==========================================================================
+    // Matrix 2
+    //
+    if( info.possible[ change.hovered ][ 2 ] === 1 )
+    {
+      x = change.athlete[ change.hovered ][ 0 ] + 2 + 96
+      y = change.athlete[ change.hovered ][ 1 ] + 2
+      info.zone[ counter ] = [ x, y ]
+
+      x = change.athlete[ change.hovered ][ 0 ] + 2 - 96
+      y = change.athlete[ change.hovered ][ 1 ] + 2
+      info.zone[ counter + 1 ] = [ x, y ]
+
+      x = change.athlete[ change.hovered ][ 0 ] + 2
+      y = change.athlete[ change.hovered ][ 1 ] + 2 + 96
+      info.zone[ counter + 2 ] = [ x, y ]
+
+      x = change.athlete[ change.hovered ][ 0 ] + 2
+      y = change.athlete[ change.hovered ][ 1 ] + 2 - 96
+      info.zone[ counter + 3 ] = [ x, y ]
+
+      counter += 4
+    }
+
+    //==========================================================================
+    // Matrix 3
+    //
+    if( info.possible[ change.hovered ][ 3 ] === 1 )
+    {
+      x = change.athlete[ change.hovered ][ 0 ] + 2 + 144
+      y = change.athlete[ change.hovered ][ 1 ] + 2
+      info.zone[ counter ] = [ x, y ]
+
+      x = change.athlete[ change.hovered ][ 0 ] + 2 - 144
+      y = change.athlete[ change.hovered ][ 1 ] + 2
+      info.zone[ counter + 1 ] = [ x, y ]
+
+      x = change.athlete[ change.hovered ][ 0 ] + 2
+      y = change.athlete[ change.hovered ][ 1 ] + 2 + 144
+      info.zone[ counter + 2 ] = [ x, y ]
+
+      x = change.athlete[ change.hovered ][ 0 ] + 2
+      y = change.athlete[ change.hovered ][ 1 ] + 2 - 144
+      info.zone[ counter + 3 ] = [ x, y ]
+
+      counter += 4
+    }
+
+    //==========================================================================
+    // Matrix 4
+    //
+    if( info.possible[ change.hovered ][ 4 ] === 1 )
+    {
+      x = change.athlete[ change.hovered ][ 0 ] + 2 + 48
+      y = change.athlete[ change.hovered ][ 1 ] + 2 + 48
+      info.zone[ counter ] = [ x, y ]
+
+      x = change.athlete[ change.hovered ][ 0 ] + 2 + 48
+      y = change.athlete[ change.hovered ][ 1 ] + 2 - 48
+      info.zone[ counter + 1 ] = [ x, y ]
+
+      x = change.athlete[ change.hovered ][ 0 ] + 2 - 48
+      y = change.athlete[ change.hovered ][ 1 ] + 2 - 48
+      info.zone[ counter + 2 ] = [ x, y ]
+
+      x = change.athlete[ change.hovered ][ 0 ] + 2 - 48
+      y = change.athlete[ change.hovered ][ 1 ] + 2 + 48
+      info.zone[ counter + 3 ] = [ x, y ]
+
+      counter += 4
+    }
+
+    //==========================================================================
+    // Matrix 5
+    //
+    if( info.possible[ change.hovered ][ 5 ] === 1 )
+    {
+      x = change.athlete[ change.hovered ][ 0 ] + 2 + 48
+      y = change.athlete[ change.hovered ][ 1 ] + 2 + 96
+      info.zone[ counter ] = [ x, y ]
+
+      x = change.athlete[ change.hovered ][ 0 ] + 2 - 48
+      y = change.athlete[ change.hovered ][ 1 ] + 2 + 96
+      info.zone[ counter + 1 ] = [ x, y ]
+
+      x = change.athlete[ change.hovered ][ 0 ] + 2 - 96
+      y = change.athlete[ change.hovered ][ 1 ] + 2 + 48
+      info.zone[ counter + 2 ] = [ x, y ]
+
+      x = change.athlete[ change.hovered ][ 0 ] + 2 - 96
+      y = change.athlete[ change.hovered ][ 1 ] + 2 - 48
+      info.zone[ counter + 3 ] = [ x, y ]
+
+      x = change.athlete[ change.hovered ][ 0 ] + 2 - 48
+      y = change.athlete[ change.hovered ][ 1 ] + 2 - 96
+      info.zone[ counter + 4 ] = [ x, y ]
+
+      x = change.athlete[ change.hovered ][ 0 ] + 2 + 48
+      y = change.athlete[ change.hovered ][ 1 ] + 2 - 96
+      info.zone[ counter + 5 ] = [ x, y ]
+
+      x = change.athlete[ change.hovered ][ 0 ] + 2 + 96
+      y = change.athlete[ change.hovered ][ 1 ] + 2 - 48
+      info.zone[ counter + 6 ] = [ x, y ]
+
+      x = change.athlete[ change.hovered ][ 0 ] + 2 + 96
+      y = change.athlete[ change.hovered ][ 1 ] + 2 + 48
+      info.zone[ counter + 7 ] = [ x, y ]
+
+      counter += 8
+    }
+
+    //==========================================================================
+    // Matrix 6
+    //
+    if( info.possible[ change.hovered ][ 6 ] === 1 )
+    {
+      x = change.athlete[ change.hovered ][ 0 ] + 2 + 48
+      y = change.athlete[ change.hovered ][ 1 ] + 2 + 144
+      info.zone[ counter ] = [ x, y ]
+
+      x = change.athlete[ change.hovered ][ 0 ] + 2 - 48
+      y = change.athlete[ change.hovered ][ 1 ] + 2 + 144
+      info.zone[ counter + 1 ] = [ x, y ]
+
+      x = change.athlete[ change.hovered ][ 0 ] + 2 - 144
+      y = change.athlete[ change.hovered ][ 1 ] + 2 + 48
+      info.zone[ counter + 2 ] = [ x, y ]
+
+      x = change.athlete[ change.hovered ][ 0 ] + 2 - 144
+      y = change.athlete[ change.hovered ][ 1 ] + 2 - 48
+      info.zone[ counter + 3 ] = [ x, y ]
+
+      x = change.athlete[ change.hovered ][ 0 ] + 2 - 48
+      y = change.athlete[ change.hovered ][ 1 ] + 2 - 144
+      info.zone[ counter + 4 ] = [ x, y ]
+
+      x = change.athlete[ change.hovered ][ 0 ] + 2 + 48
+      y = change.athlete[ change.hovered ][ 1 ] + 2 - 144
+      info.zone[ counter + 5 ] = [ x, y ]
+
+      x = change.athlete[ change.hovered ][ 0 ] + 2 + 144
+      y = change.athlete[ change.hovered ][ 1 ] + 2 - 48
+      info.zone[ counter + 6 ] = [ x, y ]
+
+      x = change.athlete[ change.hovered ][ 0 ] + 2 + 144
+      y = change.athlete[ change.hovered ][ 1 ] + 2 + 48
+      info.zone[ counter + 7 ] = [ x, y ]
+
+      counter += 8
+    }
+
+    //==========================================================================
+    // Matrix 7
+    //
+    if( info.possible[ change.hovered ][ 7 ] === 1 )
+    {
+      x = change.athlete[ change.hovered ][ 0 ] + 2 + 96
+      y = change.athlete[ change.hovered ][ 1 ] + 2 + 96
+      info.zone[ counter ] = [ x, y ]
+
+      x = change.athlete[ change.hovered ][ 0 ] + 2 + 96
+      y = change.athlete[ change.hovered ][ 1 ] + 2 - 96
+      info.zone[ counter + 1 ] = [ x, y ]
+
+      x = change.athlete[ change.hovered ][ 0 ] + 2 - 96
+      y = change.athlete[ change.hovered ][ 1 ] + 2 - 96
+      info.zone[ counter + 2 ] = [ x, y ]
+
+      x = change.athlete[ change.hovered ][ 0 ] + 2 - 96
+      y = change.athlete[ change.hovered ][ 1 ] + 2 + 96
+      info.zone[ counter + 3 ] = [ x, y ]
+
+      counter += 4
+    }
+
+    //==========================================================================
+    // Matrix 8
+    //
+    if( info.possible[ change.hovered ][ 8 ] === 1 )
+    {
+      x = change.athlete[ change.hovered ][ 0 ] + 2 + 96
+      y = change.athlete[ change.hovered ][ 1 ] + 2 + 144
+      info.zone[ counter ] = [ x, y ]
+
+      x = change.athlete[ change.hovered ][ 0 ] + 2 - 96
+      y = change.athlete[ change.hovered ][ 1 ] + 2 + 144
+      info.zone[ counter + 1 ] = [ x, y ]
+
+      x = change.athlete[ change.hovered ][ 0 ] + 2 - 144
+      y = change.athlete[ change.hovered ][ 1 ] + 2 + 96
+      info.zone[ counter + 2 ] = [ x, y ]
+
+      x = change.athlete[ change.hovered ][ 0 ] + 2 - 144
+      y = change.athlete[ change.hovered ][ 1 ] + 2 - 96
+      info.zone[ counter + 3 ] = [ x, y ]
+
+      x = change.athlete[ change.hovered ][ 0 ] + 2 - 96
+      y = change.athlete[ change.hovered ][ 1 ] + 2 - 144
+      info.zone[ counter + 4 ] = [ x, y ]
+
+      x = change.athlete[ change.hovered ][ 0 ] + 2 + 96
+      y = change.athlete[ change.hovered ][ 1 ] + 2 - 144
+      info.zone[ counter + 5 ] = [ x, y ]
+
+      x = change.athlete[ change.hovered ][ 0 ] + 2 + 144
+      y = change.athlete[ change.hovered ][ 1 ] + 2 - 96
+      info.zone[ counter + 6 ] = [ x, y ]
+
+      x = change.athlete[ change.hovered ][ 0 ] + 2 + 144
+      y = change.athlete[ change.hovered ][ 1 ] + 2 + 96
+      info.zone[ counter + 7 ] = [ x, y ]
+
+      counter += 8
+    }
+
+    //==========================================================================
+    // Matrix 9
+    //
+    if( info.possible[ change.hovered ][ 9 ] === 1 )
+    {
+      x = change.athlete[ change.hovered ][ 0 ] + 2 + 144
+      y = change.athlete[ change.hovered ][ 1 ] + 2 + 144
+      info.zone[ counter ] = [ x, y ]
+
+      x = change.athlete[ change.hovered ][ 0 ] + 2 + 144
+      y = change.athlete[ change.hovered ][ 1 ] + 2 - 144
+      info.zone[ counter + 1 ] = [ x, y ]
+
+      x = change.athlete[ change.hovered ][ 0 ] + 2 - 144
+      y = change.athlete[ change.hovered ][ 1 ] + 2 - 144
+      info.zone[ counter + 2 ] = [ x, y ]
+
+      x = change.athlete[ change.hovered ][ 0 ] + 2 - 144
+      y = change.athlete[ change.hovered ][ 1 ] + 2 + 144
+      info.zone[ counter + 3 ] = [ x, y ]
+
+      counter += 4
     }
   },
 }

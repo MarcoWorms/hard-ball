@@ -86,7 +86,7 @@ const listen =
       page.yes.style.display = 'flex'
       page.no.style.display = 'flex'
 
-      change.selected = 0
+      change.selected = 'none'
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -130,6 +130,8 @@ const listen =
     {
       change.hovered = Number( $.target.id.substring( 4, 6 ) )
 
+      game.updZonCdn()
+
       console.log( change.hovered + ' . ' + change.athlete[ change.hovered ] )
     }
     else
@@ -152,9 +154,8 @@ const listen =
     //
     if( $.key === 'Escape' )
     {
-      console.log( localStorage )
       localStorage.clear()
-      console.log( localStorage )
+      engine.create()
     }
   }, false ),
 }

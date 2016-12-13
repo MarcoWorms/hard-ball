@@ -15,14 +15,9 @@ let change =
   turn: 0,
 
   //============================================================================
-  // tbd...
-  //
-  selected: 0,
-
-  //============================================================================
   // This is a number from 0 to 19 or 'none' (athlete currently being hovered)
   //
-  hovered: 0,
+  hovered: 'none',
 
   //============================================================================
   // Gives current coordinates to the ball

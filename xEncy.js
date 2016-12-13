@@ -95,6 +95,20 @@ const info =
     'minT15', 'minT16', 'minT17', 'minT18', 'minT19',
   ],
 
+  ////////////////////////////////////////////////////////////////////////////// I.zone
+  // ZONE is an array containing 16 arrays (zone coordinates)
+  // each of these arrays contain 2 numbers (x, y )
+  //
+  zone:
+  (
+    function()
+    {
+      let array = []
+      for( let $ = 0; $ < 16; $ ++ ) array.push( [ 0, 0 ] )
+      return array
+    }()
+  ),
+
   ////////////////////////////////////////////////////////////////////////////// I.possible
   // Matrix of how each athlete moves
   //

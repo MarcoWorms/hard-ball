@@ -9,6 +9,34 @@
 //
 const tool =
 {
+  ////////////////////////////////////////////////////////////////////////////// E.bender
+  //
+  bender: function( entity, axis )
+  {
+    if( axis === 'x' )
+    {
+      if( entity === -48 ) entity = 912
+      else if( entity === -96 ) entity = 864
+      else if( entity === -144 ) entity = 816
+
+      else if( entity === 1056 ) entity = 96
+      else if( entity === 1008 ) entity = 48
+      else if( entity === 960 ) entity = 0
+    }
+    else if( axis === 'y' )
+    {
+      if( entity === -48 ) entity = 528
+      else if( entity === -96 ) entity = 480
+      else if( entity === -144 ) entity = 432
+
+      else if( entity === 672 ) entity = 96
+      else if( entity === 624 ) entity = 48
+      else if( entity === 576 ) entity = 0
+    }
+
+    return entity
+  },
+
   ////////////////////////////////////////////////////////////////////////////// E.translate
   //
   translate: function( entity, x, y )

@@ -28,24 +28,46 @@ const page =
 
   //============================================================================
   //
-  zone: // 16 zones
+  hoverZone: // 16 zones
   [
-    document.getElementById( 'zon00' ),
-    document.getElementById( 'zon01' ),
-    document.getElementById( 'zon02' ),
-    document.getElementById( 'zon03' ),
-    document.getElementById( 'zon04' ),
-    document.getElementById( 'zon05' ),
-    document.getElementById( 'zon06' ),
-    document.getElementById( 'zon07' ),
-    document.getElementById( 'zon08' ),
-    document.getElementById( 'zon09' ),
-    document.getElementById( 'zon10' ),
-    document.getElementById( 'zon11' ),
-    document.getElementById( 'zon12' ),
-    document.getElementById( 'zon13' ),
-    document.getElementById( 'zon14' ),
-    document.getElementById( 'zon15' ),
+    document.getElementById( 'hov00' ),
+    document.getElementById( 'hov01' ),
+    document.getElementById( 'hov02' ),
+    document.getElementById( 'hov03' ),
+    document.getElementById( 'hov04' ),
+    document.getElementById( 'hov05' ),
+    document.getElementById( 'hov06' ),
+    document.getElementById( 'hov07' ),
+    document.getElementById( 'hov08' ),
+    document.getElementById( 'hov09' ),
+    document.getElementById( 'hov10' ),
+    document.getElementById( 'hov11' ),
+    document.getElementById( 'hov12' ),
+    document.getElementById( 'hov13' ),
+    document.getElementById( 'hov14' ),
+    document.getElementById( 'hov15' ),
+  ],
+
+  //============================================================================
+  //
+  selectZone: // 16 zones
+  [
+    document.getElementById( 'sel00' ),
+    document.getElementById( 'sel01' ),
+    document.getElementById( 'sel02' ),
+    document.getElementById( 'sel03' ),
+    document.getElementById( 'sel04' ),
+    document.getElementById( 'sel05' ),
+    document.getElementById( 'sel06' ),
+    document.getElementById( 'sel07' ),
+    document.getElementById( 'sel08' ),
+    document.getElementById( 'sel09' ),
+    document.getElementById( 'sel10' ),
+    document.getElementById( 'sel11' ),
+    document.getElementById( 'sel12' ),
+    document.getElementById( 'sel13' ),
+    document.getElementById( 'sel14' ),
+    document.getElementById( 'sel15' ),
   ],
 
   //============================================================================
@@ -96,10 +118,22 @@ const info =
   ],
 
   ////////////////////////////////////////////////////////////////////////////// I.zone
-  // ZONE is an array containing 16 arrays (zone coordinates)
+  // ZONES are each an array containing 16 arrays (zone coordinates)
   // each of these arrays contain 2 numbers (x, y )
   //
-  zone:
+  hoverZone:
+  (
+    function()
+    {
+      let array = []
+      for( let $ = 0; $ < 16; $ ++ ) array.push( [ 0, 0 ] )
+      return array
+    }()
+  ),
+
+  //----------------------------------------------------------------------------
+  //
+  selectZone:
   (
     function()
     {

@@ -113,8 +113,6 @@ const listen =
       tool.chgCls( page.reset, 'dsp', 'add' )
       page.yes.style.display = 'flex'
       page.no.style.display = 'flex'
-
-      change.selected = 'none'
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -147,6 +145,29 @@ const listen =
       page.yes.style.display = 'none'
       page.no.style.display = 'none'
     }
+
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Updating selected
+    //
+    else if( info.athlete.indexOf( $.target.id ) !== -1 )
+    {
+      change.selected = Number( $.target.id.substring( 4, 6 ) )
+
+      game.updZonCdn( 'select' )
+
+      console.log( change.selected + ' . ' + change.athlete[ change.selected ] )
+    }
+    else
+    {
+      change.selected = 'none'
+
+      console.log( $.target.id )
+    }
+
+
+
+
   }, false ),
 
   ////////////////////////////////////////////////////////////////////////////// L.hoverer
@@ -158,7 +179,7 @@ const listen =
     {
       change.hovered = Number( $.target.id.substring( 4, 6 ) )
 
-      game.updZonCdn()
+      game.updZonCdn( 'hover' )
 
       console.log( change.hovered + ' . ' + change.athlete[ change.hovered ] )
     }

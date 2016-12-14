@@ -20,6 +20,11 @@ let change =
   hovered: 'none',
 
   //============================================================================
+  // This is a number from 0 to 19 or 'none' (athlete currently being selected)
+  //
+  selected: 'none',
+
+  //============================================================================
   // Gives current coordinates to the ball
   //
   ball: [ 0, 0 ],

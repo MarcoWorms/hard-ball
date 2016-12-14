@@ -44,7 +44,8 @@ const game =
   //
   update: function()
   {
-    game.updZon()
+    game.updZon( 'hover' )
+    game.updZon( 'select' )
   },
 
   ////////////////////////////////////////////////////////////////////////////// G.updAtl
@@ -105,22 +106,39 @@ const game =
 
   ////////////////////////////////////////////////////////////////////////////// G.updZon
   //
-  updZon: function()
+  updZon: function( guide )
   {
+    let target1
+    let target2
+    let target3
+
+    if( guide === 'hover' )
+    {
+      target1 = page.hoverZone
+      target2 = info.hoverZone
+      target3 = change.hovered
+    }
+    else if( guide === 'select' )
+    {
+      target1 = page.selectZone
+      target2 = info.selectZone
+      target3 = change.selected
+    }
+
     //==========================================================================
     // Updating every other zone
     //
     for( let $ = 0; $ < 16; $ ++ )
     {
-      let entity = page.zone[ $ ]
+      let entity = target1[ $ ]
 
-      if( change.hovered === 'none' )
+      if( target3 === 'none' )
       {
          entity.style.display = 'none'
       }
-      else if( change.athlete[ change.hovered ][ 2 ].substring( 0, 1 ) !== 'M' )
+      else if( change.athlete[ target3 ][ 2 ].substring( 0, 1 ) !== 'M' )
       {
-        if( $ < info.possible[ change.hovered ][ 0 ] )
+        if( $ < info.possible[ target3 ][ 0 ] )
         {
           entity.style.display = 'flex'
         }
@@ -130,8 +148,8 @@ const game =
         }
       }
 
-      let x = info.zone[ $ ][ 0 ]
-      let y = info.zone[ $ ][ 1 ]
+      let x = target2[ $ ][ 0 ]
+      let y = target2[ $ ][ 1 ]
 
       tool.translate( entity, x, y )
       tool.rotate( entity, 1 )
@@ -141,12 +159,26 @@ const game =
   ////////////////////////////////////////////////////////////////////////////// G.updZonCdn
   // Activated on 'listen.hoverer'
   //
-  updZonCdn: function()
+  updZonCdn: function( guide )
   {
+    let target1
+    let target2
+
+    if( guide === 'hover' )
+    {
+      target1 = info.hoverZone
+      target2 = change.hovered
+    }
+    else if( guide === 'select' )
+    {
+      target1 = info.selectZone
+      target2 = change.selected
+    }
+
     //==========================================================================
     // Clean 'info.zone'
     //
-    info.zone =
+    target1 =
     (
       function()
       {
@@ -168,21 +200,21 @@ const game =
     //
     if( info.possible[ change.hovered ][ 1 ] === 1 )
     {
-      x = tool.bender( change.athlete[ change.hovered ][ 0 ] + 47, 'x' ) + 3
-      y = tool.bender( change.athlete[ change.hovered ][ 1 ] - 1, 'y' ) + 3
-      info.zone[ counter ] = [ x, y ]
+      x = tool.bender( change.athlete[ target2 ][ 0 ] + 47, 'x' ) + 3
+      y = tool.bender( change.athlete[ target2 ][ 1 ] - 1, 'y' ) + 3
+      target1[ counter ] = [ x, y ]
 
-      x = tool.bender( change.athlete[ change.hovered ][ 0 ] - 49, 'x' ) + 3
-      y = tool.bender( change.athlete[ change.hovered ][ 1 ] - 1, 'y' ) + 3
-      info.zone[ counter + 1 ] = [ x, y ]
+      x = tool.bender( change.athlete[ target2 ][ 0 ] - 49, 'x' ) + 3
+      y = tool.bender( change.athlete[ target2 ][ 1 ] - 1, 'y' ) + 3
+      target1[ counter + 1 ] = [ x, y ]
 
-      x = tool.bender( change.athlete[ change.hovered ][ 0 ] - 1, 'x' ) + 3
-      y = tool.bender( change.athlete[ change.hovered ][ 1 ] + 47, 'y' ) + 3
-      info.zone[ counter + 2 ] = [ x, y ]
+      x = tool.bender( change.athlete[ target2 ][ 0 ] - 1, 'x' ) + 3
+      y = tool.bender( change.athlete[ target2 ][ 1 ] + 47, 'y' ) + 3
+      target1[ counter + 2 ] = [ x, y ]
 
-      x = tool.bender( change.athlete[ change.hovered ][ 0 ] - 1, 'x' ) + 3
-      y = tool.bender( change.athlete[ change.hovered ][ 1 ] - 49, 'y' ) + 3
-      info.zone[ counter + 3 ] = [ x, y ]
+      x = tool.bender( change.athlete[ target2 ][ 0 ] - 1, 'x' ) + 3
+      y = tool.bender( change.athlete[ target2 ][ 1 ] - 49, 'y' ) + 3
+      target1[ counter + 3 ] = [ x, y ]
 
       counter += 4
     }
@@ -190,23 +222,23 @@ const game =
     //==========================================================================
     // Matrix 2
     //
-    if( info.possible[ change.hovered ][ 2 ] === 1 )
+    if( info.possible[ target2 ][ 2 ] === 1 )
     {
-      x = tool.bender( change.athlete[ change.hovered ][ 0 ] + 95, 'x' ) + 3
-      y = tool.bender( change.athlete[ change.hovered ][ 1 ] - 1, 'y' ) + 3
-      info.zone[ counter ] = [ x, y ]
+      x = tool.bender( change.athlete[ target2 ][ 0 ] + 95, 'x' ) + 3
+      y = tool.bender( change.athlete[ target2 ][ 1 ] - 1, 'y' ) + 3
+      target1[ counter ] = [ x, y ]
 
-      x = tool.bender( change.athlete[ change.hovered ][ 0 ] - 97, 'x' ) + 3
-      y = tool.bender( change.athlete[ change.hovered ][ 1 ] - 1, 'y' ) + 3
-      info.zone[ counter + 1 ] = [ x, y ]
+      x = tool.bender( change.athlete[ target2 ][ 0 ] - 97, 'x' ) + 3
+      y = tool.bender( change.athlete[ target2 ][ 1 ] - 1, 'y' ) + 3
+      target1[ counter + 1 ] = [ x, y ]
 
-      x = tool.bender( change.athlete[ change.hovered ][ 0 ] - 1, 'x' ) + 3
-      y = tool.bender( change.athlete[ change.hovered ][ 1 ] + 95, 'y' ) + 3
-      info.zone[ counter + 2 ] = [ x, y ]
+      x = tool.bender( change.athlete[ target2 ][ 0 ] - 1, 'x' ) + 3
+      y = tool.bender( change.athlete[ target2 ][ 1 ] + 95, 'y' ) + 3
+      target1[ counter + 2 ] = [ x, y ]
 
-      x = tool.bender( change.athlete[ change.hovered ][ 0 ] - 1, 'x' ) + 3
-      y = tool.bender( change.athlete[ change.hovered ][ 1 ] - 97, 'y' ) + 3
-      info.zone[ counter + 3 ] = [ x, y ]
+      x = tool.bender( change.athlete[ target2 ][ 0 ] - 1, 'x' ) + 3
+      y = tool.bender( change.athlete[ target2 ][ 1 ] - 97, 'y' ) + 3
+      target1[ counter + 3 ] = [ x, y ]
 
       counter += 4
     }
@@ -214,23 +246,23 @@ const game =
     //==========================================================================
     // Matrix 3
     //
-    if( info.possible[ change.hovered ][ 3 ] === 1 )
+    if( info.possible[ target2 ][ 3 ] === 1 )
     {
-      x = tool.bender( change.athlete[ change.hovered ][ 0 ] + 143, 'x' ) + 3
-      y = tool.bender( change.athlete[ change.hovered ][ 1 ] - 1, 'y' ) + 3
-      info.zone[ counter ] = [ x, y ]
+      x = tool.bender( change.athlete[ target2 ][ 0 ] + 143, 'x' ) + 3
+      y = tool.bender( change.athlete[ target2 ][ 1 ] - 1, 'y' ) + 3
+      target1[ counter ] = [ x, y ]
 
-      x = tool.bender( change.athlete[ change.hovered ][ 0 ] - 145, 'x' ) + 3
-      y = tool.bender( change.athlete[ change.hovered ][ 1 ] - 1, 'y' ) + 3
-      info.zone[ counter + 1 ] = [ x, y ]
+      x = tool.bender( change.athlete[ target2 ][ 0 ] - 145, 'x' ) + 3
+      y = tool.bender( change.athlete[ target2 ][ 1 ] - 1, 'y' ) + 3
+      target1[ counter + 1 ] = [ x, y ]
 
-      x = tool.bender( change.athlete[ change.hovered ][ 0 ] - 1, 'x' ) + 3
-      y = tool.bender( change.athlete[ change.hovered ][ 1 ] + 143, 'y' ) + 3
-      info.zone[ counter + 2 ] = [ x, y ]
+      x = tool.bender( change.athlete[ target2 ][ 0 ] - 1, 'x' ) + 3
+      y = tool.bender( change.athlete[ target2 ][ 1 ] + 143, 'y' ) + 3
+      target1[ counter + 2 ] = [ x, y ]
 
-      x = tool.bender( change.athlete[ change.hovered ][ 0 ] - 1, 'x' ) + 3
-      y = tool.bender( change.athlete[ change.hovered ][ 1 ] - 145, 'y' ) + 3
-      info.zone[ counter + 3 ] = [ x, y ]
+      x = tool.bender( change.athlete[ target2 ][ 0 ] - 1, 'x' ) + 3
+      y = tool.bender( change.athlete[ target2 ][ 1 ] - 145, 'y' ) + 3
+      target1[ counter + 3 ] = [ x, y ]
 
       counter += 4
     }
@@ -238,23 +270,23 @@ const game =
     //==========================================================================
     // Matrix 4
     //
-    if( info.possible[ change.hovered ][ 4 ] === 1 )
+    if( info.possible[ target2 ][ 4 ] === 1 )
     {
-      x = tool.bender( change.athlete[ change.hovered ][ 0 ] + 47, 'x' ) + 3
-      y = tool.bender( change.athlete[ change.hovered ][ 1 ] + 47, 'y' ) + 3
-      info.zone[ counter ] = [ x, y ]
+      x = tool.bender( change.athlete[ target2 ][ 0 ] + 47, 'x' ) + 3
+      y = tool.bender( change.athlete[ target2 ][ 1 ] + 47, 'y' ) + 3
+      target1[ counter ] = [ x, y ]
 
-      x = tool.bender( change.athlete[ change.hovered ][ 0 ] + 47, 'x' ) + 3
-      y = tool.bender( change.athlete[ change.hovered ][ 1 ] - 49, 'y' ) + 3
-      info.zone[ counter + 1 ] = [ x, y ]
+      x = tool.bender( change.athlete[ target2 ][ 0 ] + 47, 'x' ) + 3
+      y = tool.bender( change.athlete[ target2 ][ 1 ] - 49, 'y' ) + 3
+      target1[ counter + 1 ] = [ x, y ]
 
-      x = tool.bender( change.athlete[ change.hovered ][ 0 ] - 49, 'x' ) + 3
-      y = tool.bender( change.athlete[ change.hovered ][ 1 ] - 49, 'y' ) + 3
-      info.zone[ counter + 2 ] = [ x, y ]
+      x = tool.bender( change.athlete[ target2 ][ 0 ] - 49, 'x' ) + 3
+      y = tool.bender( change.athlete[ target2 ][ 1 ] - 49, 'y' ) + 3
+      target1[ counter + 2 ] = [ x, y ]
 
-      x = tool.bender( change.athlete[ change.hovered ][ 0 ] - 49, 'x' ) + 3
-      y = tool.bender( change.athlete[ change.hovered ][ 1 ] + 47, 'y' ) + 3
-      info.zone[ counter + 3 ] = [ x, y ]
+      x = tool.bender( change.athlete[ target2 ][ 0 ] - 49, 'x' ) + 3
+      y = tool.bender( change.athlete[ target2 ][ 1 ] + 47, 'y' ) + 3
+      target1[ counter + 3 ] = [ x, y ]
 
       counter += 4
     }
@@ -262,39 +294,39 @@ const game =
     //==========================================================================
     // Matrix 5
     //
-    if( info.possible[ change.hovered ][ 5 ] === 1 )
+    if( info.possible[ target2 ][ 5 ] === 1 )
     {
-      x = tool.bender( change.athlete[ change.hovered ][ 0 ] + 47, 'x' ) + 3
-      y = tool.bender( change.athlete[ change.hovered ][ 1 ] + 95, 'y' ) + 3
-      info.zone[ counter ] = [ x, y ]
+      x = tool.bender( change.athlete[ target2 ][ 0 ] + 47, 'x' ) + 3
+      y = tool.bender( change.athlete[ target2 ][ 1 ] + 95, 'y' ) + 3
+      target1[ counter ] = [ x, y ]
 
-      x = tool.bender( change.athlete[ change.hovered ][ 0 ] - 49, 'x' ) + 3
-      y = tool.bender( change.athlete[ change.hovered ][ 1 ] + 95, 'y' ) + 3
-      info.zone[ counter + 1 ] = [ x, y ]
+      x = tool.bender( change.athlete[ target2 ][ 0 ] - 49, 'x' ) + 3
+      y = tool.bender( change.athlete[ target2 ][ 1 ] + 95, 'y' ) + 3
+      target1[ counter + 1 ] = [ x, y ]
 
-      x = tool.bender( change.athlete[ change.hovered ][ 0 ] - 97, 'x' ) + 3
-      y = tool.bender( change.athlete[ change.hovered ][ 1 ] + 47, 'y' ) + 3
-      info.zone[ counter + 2 ] = [ x, y ]
+      x = tool.bender( change.athlete[ target2 ][ 0 ] - 97, 'x' ) + 3
+      y = tool.bender( change.athlete[ target2 ][ 1 ] + 47, 'y' ) + 3
+      target1[ counter + 2 ] = [ x, y ]
 
-      x = tool.bender( change.athlete[ change.hovered ][ 0 ] - 97, 'x' ) + 3
-      y = tool.bender( change.athlete[ change.hovered ][ 1 ] - 49, 'y' ) + 3
-      info.zone[ counter + 3 ] = [ x, y ]
+      x = tool.bender( change.athlete[ target2 ][ 0 ] - 97, 'x' ) + 3
+      y = tool.bender( change.athlete[ target2 ][ 1 ] - 49, 'y' ) + 3
+      target1[ counter + 3 ] = [ x, y ]
 
-      x = tool.bender( change.athlete[ change.hovered ][ 0 ] - 49, 'x' ) + 3
-      y = tool.bender( change.athlete[ change.hovered ][ 1 ] - 97, 'y' ) + 3
-      info.zone[ counter + 4 ] = [ x, y ]
+      x = tool.bender( change.athlete[ target2 ][ 0 ] - 49, 'x' ) + 3
+      y = tool.bender( change.athlete[ target2 ][ 1 ] - 97, 'y' ) + 3
+      target1[ counter + 4 ] = [ x, y ]
 
-      x = tool.bender( change.athlete[ change.hovered ][ 0 ] + 47, 'x' ) + 3
-      y = tool.bender( change.athlete[ change.hovered ][ 1 ] - 97, 'y' ) + 3
-      info.zone[ counter + 5 ] = [ x, y ]
+      x = tool.bender( change.athlete[ target2 ][ 0 ] + 47, 'x' ) + 3
+      y = tool.bender( change.athlete[ target2 ][ 1 ] - 97, 'y' ) + 3
+      target1[ counter + 5 ] = [ x, y ]
 
-      x = tool.bender( change.athlete[ change.hovered ][ 0 ] + 95, 'x' ) + 3
-      y = tool.bender( change.athlete[ change.hovered ][ 1 ] - 49, 'y' ) + 3
-      info.zone[ counter + 6 ] = [ x, y ]
+      x = tool.bender( change.athlete[ target2 ][ 0 ] + 95, 'x' ) + 3
+      y = tool.bender( change.athlete[ target2 ][ 1 ] - 49, 'y' ) + 3
+      target1[ counter + 6 ] = [ x, y ]
 
-      x = tool.bender( change.athlete[ change.hovered ][ 0 ] + 95, 'x' ) + 3
-      y = tool.bender( change.athlete[ change.hovered ][ 1 ] + 47, 'y' ) + 3
-      info.zone[ counter + 7 ] = [ x, y ]
+      x = tool.bender( change.athlete[ target2 ][ 0 ] + 95, 'x' ) + 3
+      y = tool.bender( change.athlete[ target2 ][ 1 ] + 47, 'y' ) + 3
+      target1[ counter + 7 ] = [ x, y ]
 
       counter += 8
     }
@@ -302,39 +334,39 @@ const game =
     //==========================================================================
     // Matrix 6
     //
-    if( info.possible[ change.hovered ][ 6 ] === 1 )
+    if( info.possible[ target2 ][ 6 ] === 1 )
     {
-      x = tool.bender( change.athlete[ change.hovered ][ 0 ] + 47, 'x' ) + 3
-      y = tool.bender( change.athlete[ change.hovered ][ 1 ] + 143, 'y' ) + 3
-      info.zone[ counter ] = [ x, y ]
+      x = tool.bender( change.athlete[ target2 ][ 0 ] + 47, 'x' ) + 3
+      y = tool.bender( change.athlete[ target2 ][ 1 ] + 143, 'y' ) + 3
+      target1[ counter ] = [ x, y ]
 
-      x = tool.bender( change.athlete[ change.hovered ][ 0 ] - 49, 'x' ) + 3
-      y = tool.bender( change.athlete[ change.hovered ][ 1 ] + 143, 'y' ) + 3
-      info.zone[ counter + 1 ] = [ x, y ]
+      x = tool.bender( change.athlete[ target2 ][ 0 ] - 49, 'x' ) + 3
+      y = tool.bender( change.athlete[ target2 ][ 1 ] + 143, 'y' ) + 3
+      target1[ counter + 1 ] = [ x, y ]
 
-      x = tool.bender( change.athlete[ change.hovered ][ 0 ] - 145, 'x' ) + 3
-      y = tool.bender( change.athlete[ change.hovered ][ 1 ] + 47, 'y' ) + 3
-      info.zone[ counter + 2 ] = [ x, y ]
+      x = tool.bender( change.athlete[ target2 ][ 0 ] - 145, 'x' ) + 3
+      y = tool.bender( change.athlete[ target2 ][ 1 ] + 47, 'y' ) + 3
+      target1[ counter + 2 ] = [ x, y ]
 
-      x = tool.bender( change.athlete[ change.hovered ][ 0 ] - 145, 'x' ) + 3
-      y = tool.bender( change.athlete[ change.hovered ][ 1 ] - 49, 'y' ) + 3
-      info.zone[ counter + 3 ] = [ x, y ]
+      x = tool.bender( change.athlete[ target2 ][ 0 ] - 145, 'x' ) + 3
+      y = tool.bender( change.athlete[ target2 ][ 1 ] - 49, 'y' ) + 3
+      target1[ counter + 3 ] = [ x, y ]
 
-      x = tool.bender( change.athlete[ change.hovered ][ 0 ] - 49, 'x' ) + 3
-      y = tool.bender( change.athlete[ change.hovered ][ 1 ] - 145, 'y' ) + 3
-      info.zone[ counter + 4 ] = [ x, y ]
+      x = tool.bender( change.athlete[ target2 ][ 0 ] - 49, 'x' ) + 3
+      y = tool.bender( change.athlete[ target2 ][ 1 ] - 145, 'y' ) + 3
+      target1[ counter + 4 ] = [ x, y ]
 
-      x = tool.bender( change.athlete[ change.hovered ][ 0 ] + 47, 'x' ) + 3
-      y = tool.bender( change.athlete[ change.hovered ][ 1 ] - 145, 'y' ) + 3
-      info.zone[ counter + 5 ] = [ x, y ]
+      x = tool.bender( change.athlete[ target2 ][ 0 ] + 47, 'x' ) + 3
+      y = tool.bender( change.athlete[ target2 ][ 1 ] - 145, 'y' ) + 3
+      target1[ counter + 5 ] = [ x, y ]
 
-      x = tool.bender( change.athlete[ change.hovered ][ 0 ] + 143, 'x' ) + 3
-      y = tool.bender( change.athlete[ change.hovered ][ 1 ] - 49, 'y' ) + 3
-      info.zone[ counter + 6 ] = [ x, y ]
+      x = tool.bender( change.athlete[ target2 ][ 0 ] + 143, 'x' ) + 3
+      y = tool.bender( change.athlete[ target2 ][ 1 ] - 49, 'y' ) + 3
+      target1[ counter + 6 ] = [ x, y ]
 
-      x = tool.bender( change.athlete[ change.hovered ][ 0 ] + 143, 'x' ) + 3
-      y = tool.bender( change.athlete[ change.hovered ][ 1 ] + 47, 'y' ) + 3
-      info.zone[ counter + 7 ] = [ x, y ]
+      x = tool.bender( change.athlete[ target2 ][ 0 ] + 143, 'x' ) + 3
+      y = tool.bender( change.athlete[ target2 ][ 1 ] + 47, 'y' ) + 3
+      target1[ counter + 7 ] = [ x, y ]
 
       counter += 8
     }
@@ -342,23 +374,23 @@ const game =
     //==========================================================================
     // Matrix 7
     //
-    if( info.possible[ change.hovered ][ 7 ] === 1 )
+    if( info.possible[ target2 ][ 7 ] === 1 )
     {
-      x = tool.bender( change.athlete[ change.hovered ][ 0 ] + 95, 'x' ) + 3
-      y = tool.bender( change.athlete[ change.hovered ][ 1 ] + 95, 'y' ) + 3
-      info.zone[ counter ] = [ x, y ]
+      x = tool.bender( change.athlete[ target2 ][ 0 ] + 95, 'x' ) + 3
+      y = tool.bender( change.athlete[ target2 ][ 1 ] + 95, 'y' ) + 3
+      target1[ counter ] = [ x, y ]
 
-      x = tool.bender( change.athlete[ change.hovered ][ 0 ] + 95, 'x' ) + 3
-      y = tool.bender( change.athlete[ change.hovered ][ 1 ] - 97, 'y' ) + 3
-      info.zone[ counter + 1 ] = [ x, y ]
+      x = tool.bender( change.athlete[ target2 ][ 0 ] + 95, 'x' ) + 3
+      y = tool.bender( change.athlete[ target2 ][ 1 ] - 97, 'y' ) + 3
+      target1[ counter + 1 ] = [ x, y ]
 
-      x = tool.bender( change.athlete[ change.hovered ][ 0 ] - 97, 'x' ) + 3
-      y = tool.bender( change.athlete[ change.hovered ][ 1 ] - 97, 'y' ) + 3
-      info.zone[ counter + 2 ] = [ x, y ]
+      x = tool.bender( change.athlete[ target2 ][ 0 ] - 97, 'x' ) + 3
+      y = tool.bender( change.athlete[ target2 ][ 1 ] - 97, 'y' ) + 3
+      target1[ counter + 2 ] = [ x, y ]
 
-      x = tool.bender( change.athlete[ change.hovered ][ 0 ] - 97, 'x' ) + 3
-      y = tool.bender( change.athlete[ change.hovered ][ 1 ] + 95, 'y' ) + 3
-      info.zone[ counter + 3 ] = [ x, y ]
+      x = tool.bender( change.athlete[ target2 ][ 0 ] - 97, 'x' ) + 3
+      y = tool.bender( change.athlete[ target2 ][ 1 ] + 95, 'y' ) + 3
+      target1[ counter + 3 ] = [ x, y ]
 
       counter += 4
     }
@@ -366,39 +398,39 @@ const game =
     //==========================================================================
     // Matrix 8
     //
-    if( info.possible[ change.hovered ][ 8 ] === 1 )
+    if( info.possible[ target2 ][ 8 ] === 1 )
     {
-      x = tool.bender( change.athlete[ change.hovered ][ 0 ] + 95, 'x' ) + 3
-      y = tool.bender( change.athlete[ change.hovered ][ 1 ] + 143, 'y' ) + 3
-      info.zone[ counter ] = [ x, y ]
+      x = tool.bender( change.athlete[ target2 ][ 0 ] + 95, 'x' ) + 3
+      y = tool.bender( change.athlete[ target2 ][ 1 ] + 143, 'y' ) + 3
+      target1[ counter ] = [ x, y ]
 
-      x = tool.bender( change.athlete[ change.hovered ][ 0 ] - 97, 'x' ) + 3
-      y = tool.bender( change.athlete[ change.hovered ][ 1 ] + 143, 'y' ) + 3
-      info.zone[ counter + 1 ] = [ x, y ]
+      x = tool.bender( change.athlete[ target2 ][ 0 ] - 97, 'x' ) + 3
+      y = tool.bender( change.athlete[ target2 ][ 1 ] + 143, 'y' ) + 3
+      target1[ counter + 1 ] = [ x, y ]
 
-      x = tool.bender( change.athlete[ change.hovered ][ 0 ] - 145, 'x' ) + 3
-      y = tool.bender( change.athlete[ change.hovered ][ 1 ] + 95, 'y' ) + 3
-      info.zone[ counter + 2 ] = [ x, y ]
+      x = tool.bender( change.athlete[ target2 ][ 0 ] - 145, 'x' ) + 3
+      y = tool.bender( change.athlete[ target2 ][ 1 ] + 95, 'y' ) + 3
+      target1[ counter + 2 ] = [ x, y ]
 
-      x = tool.bender( change.athlete[ change.hovered ][ 0 ] - 145, 'x' ) + 3
-      y = tool.bender( change.athlete[ change.hovered ][ 1 ] - 97, 'y' ) + 3
-      info.zone[ counter + 3 ] = [ x, y ]
+      x = tool.bender( change.athlete[ target2 ][ 0 ] - 145, 'x' ) + 3
+      y = tool.bender( change.athlete[ target2 ][ 1 ] - 97, 'y' ) + 3
+      target1[ counter + 3 ] = [ x, y ]
 
-      x = tool.bender( change.athlete[ change.hovered ][ 0 ] - 97, 'x' ) + 3
-      y = tool.bender( change.athlete[ change.hovered ][ 1 ] - 145, 'y' ) + 3
-      info.zone[ counter + 4 ] = [ x, y ]
+      x = tool.bender( change.athlete[ target2 ][ 0 ] - 97, 'x' ) + 3
+      y = tool.bender( change.athlete[ target2 ][ 1 ] - 145, 'y' ) + 3
+      target1[ counter + 4 ] = [ x, y ]
 
-      x = tool.bender( change.athlete[ change.hovered ][ 0 ] + 95, 'x' ) + 3
-      y = tool.bender( change.athlete[ change.hovered ][ 1 ] - 145, 'y' ) + 3
-      info.zone[ counter + 5 ] = [ x, y ]
+      x = tool.bender( change.athlete[ target2 ][ 0 ] + 95, 'x' ) + 3
+      y = tool.bender( change.athlete[ target2 ][ 1 ] - 145, 'y' ) + 3
+      target1[ counter + 5 ] = [ x, y ]
 
-      x = tool.bender( change.athlete[ change.hovered ][ 0 ] + 143, 'x' ) + 3
-      y = tool.bender( change.athlete[ change.hovered ][ 1 ] - 97, 'y' ) + 3
-      info.zone[ counter + 6 ] = [ x, y ]
+      x = tool.bender( change.athlete[ target2 ][ 0 ] + 143, 'x' ) + 3
+      y = tool.bender( change.athlete[ target2 ][ 1 ] - 97, 'y' ) + 3
+      target1[ counter + 6 ] = [ x, y ]
 
-      x = tool.bender( change.athlete[ change.hovered ][ 0 ] + 143, 'x' ) + 3
-      y = tool.bender( change.athlete[ change.hovered ][ 1 ] + 95, 'y' ) + 3
-      info.zone[ counter + 7 ] = [ x, y ]
+      x = tool.bender( change.athlete[ target2 ][ 0 ] + 143, 'x' ) + 3
+      y = tool.bender( change.athlete[ target2 ][ 1 ] + 95, 'y' ) + 3
+      target1[ counter + 7 ] = [ x, y ]
 
       counter += 8
     }
@@ -406,25 +438,31 @@ const game =
     //==========================================================================
     // Matrix 9
     //
-    if( info.possible[ change.hovered ][ 9 ] === 1 )
+    if( info.possible[ target2 ][ 9 ] === 1 )
     {
-      x = tool.bender( change.athlete[ change.hovered ][ 0 ] + 143, 'x' ) + 3
-      y = tool.bender( change.athlete[ change.hovered ][ 1 ] + 143, 'y' ) + 3
-      info.zone[ counter ] = [ x, y ]
+      x = tool.bender( change.athlete[ target2 ][ 0 ] + 143, 'x' ) + 3
+      y = tool.bender( change.athlete[ target2 ][ 1 ] + 143, 'y' ) + 3
+      target1[ counter ] = [ x, y ]
 
-      x = tool.bender( change.athlete[ change.hovered ][ 0 ] + 143, 'x' ) + 3
-      y = tool.bender( change.athlete[ change.hovered ][ 1 ] - 145, 'y' ) + 3
-      info.zone[ counter + 1 ] = [ x, y ]
+      x = tool.bender( change.athlete[ target2 ][ 0 ] + 143, 'x' ) + 3
+      y = tool.bender( change.athlete[ target2 ][ 1 ] - 145, 'y' ) + 3
+      target1[ counter + 1 ] = [ x, y ]
 
-      x = tool.bender( change.athlete[ change.hovered ][ 0 ] - 145, 'x' ) + 3
-      y = tool.bender( change.athlete[ change.hovered ][ 1 ] - 145, 'y' ) + 3
-      info.zone[ counter + 2 ] = [ x, y ]
+      x = tool.bender( change.athlete[ target2 ][ 0 ] - 145, 'x' ) + 3
+      y = tool.bender( change.athlete[ target2 ][ 1 ] - 145, 'y' ) + 3
+      target1[ counter + 2 ] = [ x, y ]
 
-      x = tool.bender( change.athlete[ change.hovered ][ 0 ] - 145, 'x' ) + 3
-      y = tool.bender( change.athlete[ change.hovered ][ 1 ] + 143, 'y' ) + 3
-      info.zone[ counter + 3 ] = [ x, y ]
+      x = tool.bender( change.athlete[ target2 ][ 0 ] - 145, 'x' ) + 3
+      y = tool.bender( change.athlete[ target2 ][ 1 ] + 143, 'y' ) + 3
+      target1[ counter + 3 ] = [ x, y ]
 
       counter += 4
     }
+
+    //==========================================================================
+    // Updating the calculated coordinates
+    //
+    if( guide === 'hover' ) info.hoverZone = target1
+    else if( guide === 'select' ) info.selectZone = target1
   },
 }

@@ -47,6 +47,8 @@ const game =
 
     game.updSel()
     game.updTgt()
+
+    page.selectZone.forEach( function( $ ) $.style.display = 'none' )
   },
 
   ////////////////////////////////////////////////////////////////////////////// G.update
@@ -482,12 +484,17 @@ const game =
   {
     if( change.selected !== 'none' )
     {
-      page.selected.style.display = 'flex'
+      page.selected.style.display = 'none'
 
-      let x = change.athlete[ change.selected ][ 0 ] + 2
-      let y = change.athlete[ change.selected ][ 1 ] + 2
+      setTimeout( function()
+      {
+        page.selected.style.display = 'flex'
 
-      tool.translate( page.selected, x, y )
+        let x = change.athlete[ change.selected ][ 0 ] + 2
+        let y = change.athlete[ change.selected ][ 1 ] + 2
+
+        tool.translate( page.selected, x, y )
+      }, 1 )
     }
     else
     {

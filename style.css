@@ -273,4 +273,16 @@ body
 
 /*==============================================================================
 */
-#selected{border: 4px solid rgba(255,255,255,0.5)}
+#selected
+{
+  border:4px solid rgba(255,255,255,0.5);
+  animation-name: bob;
+  animation-duration: 0.25s;
+}
+
+@keyframes bob
+{
+  0%  {border:4px solid rgba(255,255,255,0.5)}
+  50% {border:8px solid rgba(255,255,255,0.5)}
+  100%{border:2px solid rgba(255,255,255,0.5)}
+}

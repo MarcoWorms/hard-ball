@@ -158,8 +158,7 @@ const listen =
     ////////////////////////////////////////////////////////////////////////////
     // Updating selected zones
     //
-    else if( info.athlete.indexOf( $.target.id ) !== -1
-      && change.athlete[ Number( $.target.id.substring( 4, 6 ) ) ][ 1 ] < 530 )
+    else if( info.athlete.indexOf( $.target.id ) !== -1 )
     {
       change.selected = Number( $.target.id.substring( 4, 6 ) )
       change.last = Number( $.target.id.substring( 4, 6 ) )
@@ -167,6 +166,11 @@ const listen =
       game.updSel()
       game.updTgt()
       game.updZonCdn( 'select' )
+
+      if( change.athlete[ Number( $.target.id.substring( 4, 6 ) ) ][ 1 ] > 529 )
+      {
+        page.selectZone.forEach( function( $ ) $.style.display = 'none' )
+      }
 
       console.log( change.selected + ' . ' + change.athlete[ change.selected ] )
     }

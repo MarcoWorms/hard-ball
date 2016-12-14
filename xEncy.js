@@ -26,6 +26,8 @@ const page =
 
   ball: document.getElementById( 'ball' ),
 
+  selected: document.getElementById( 'selected' ),
+
   //============================================================================
   //
   hoverZone: // 16 zones
@@ -106,6 +108,11 @@ const lToA = [ 'L','A','B','C','D','E','F','G','H','I','J','K','L','A' ]
 //
 const info =
 {
+  ////////////////////////////////////////////////////////////////////////////// I.target
+  // Shows what are the athletes currently under another's aim
+  //
+  target: [],
+
   ////////////////////////////////////////////////////////////////////////////// I.athlete
   // Shows what are the acceptable HTML IDs to be declared an athlete
   //

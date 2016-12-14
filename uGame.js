@@ -38,6 +38,15 @@ const game =
 
     game.updAtl()
     game.updBal()
+
+    if( change.hovered !== 'none' )game.updZonCdn( 'hover' )
+    if( change.selected !== 'none' )game.updZonCdn( 'select' )
+
+    game.updZon( 'hover' )
+    game.updZon( 'select' )
+
+    game.updSel()
+    game.updTgt()
   },
 
   ////////////////////////////////////////////////////////////////////////////// G.update
@@ -198,7 +207,7 @@ const game =
     //==========================================================================
     // Matrix 1
     //
-    if( info.possible[ change.hovered ][ 1 ] === 1 )
+    if( info.possible[ target2 ][ 1 ] === 1 )
     {
       x = tool.bender( change.athlete[ target2 ][ 0 ] + 47, 'x' ) + 3
       y = tool.bender( change.athlete[ target2 ][ 1 ] - 1, 'y' ) + 3
@@ -464,5 +473,47 @@ const game =
     //
     if( guide === 'hover' ) info.hoverZone = target1
     else if( guide === 'select' ) info.selectZone = target1
+  },
+
+  ////////////////////////////////////////////////////////////////////////////// G.updSel
+  // Activated on 'listen.clicker'
+  //
+  updSel: function()
+  {
+    if( change.selected !== 'none' )
+    {
+      page.selected.style.display = 'flex'
+
+      let x = change.athlete[ change.selected ][ 0 ] + 2
+      let y = change.athlete[ change.selected ][ 1 ] + 2
+
+      tool.translate( page.selected, x, y )
+    }
+    else
+    {
+      page.selected.style.display = 'none'
+    }
+  },
+
+  ////////////////////////////////////////////////////////////////////////////// G.updTgt
+  // Activated on 'listen.clicker'
+  //
+  updTgt: function()
+  {
+    let array = []
+
+    for( let $1 = 0; $1 < 20; $1 ++ )
+    {
+      for( let $2 = 0; $2 < 16; $2 ++ )
+      {
+        if( change.athlete[ $1 ][ 0 ] - 1 === info.selectZone[ $2 ][ 0 ] - 3 )
+        {
+          if( change.athlete[ $1 ][ 1 ] - 1 === info.selectZone[ $2 ][ 1 ] - 3 )
+          {
+            info.target.push( $1 )
+          }
+        }
+      }
+    }
   },
 }

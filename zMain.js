@@ -53,10 +53,6 @@ const engine =
 }
 
 //////////////////////////////////////////////////////////////////////////////// CALL
-// Loading...
 //
-setTimeout( function()
-{
-  engine.create()
-  engine.update()
-}, 1 )
+engine.create()
+engine.update()

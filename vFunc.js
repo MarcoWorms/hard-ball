@@ -113,6 +113,9 @@ const listen =
       tool.chgCls( page.reset, 'dsp', 'add' )
       page.yes.style.display = 'flex'
       page.no.style.display = 'flex'
+
+      change.selected = 'none'
+      change.last = 'none'
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -130,6 +133,9 @@ const listen =
 
       change = JSON.parse( localStorage.getItem( '0' ) )
       game.create()
+
+      change.selected = 'none'
+      change.last = 'none'
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -144,16 +150,22 @@ const listen =
 
       page.yes.style.display = 'none'
       page.no.style.display = 'none'
+
+      change.selected = 'none'
+      change.last = 'none'
     }
 
-
     ////////////////////////////////////////////////////////////////////////////
-    // Updating selected
+    // Updating selected zones
     //
-    else if( info.athlete.indexOf( $.target.id ) !== -1 )
+    else if( info.athlete.indexOf( $.target.id ) !== -1
+      && change.athlete[ Number( $.target.id.substring( 4, 6 ) ) ][ 1 ] < 530 )
     {
       change.selected = Number( $.target.id.substring( 4, 6 ) )
+      change.last = Number( $.target.id.substring( 4, 6 ) )
 
+      game.updSel()
+      game.updTgt()
       game.updZonCdn( 'select' )
 
       console.log( change.selected + ' . ' + change.athlete[ change.selected ] )
@@ -161,13 +173,12 @@ const listen =
     else
     {
       change.selected = 'none'
+      change.last = 'none'
+
+      game.updSel()
 
       console.log( $.target.id )
     }
-
-
-
-
   }, false ),
 
   ////////////////////////////////////////////////////////////////////////////// L.hoverer
@@ -175,9 +186,16 @@ const listen =
   //
   hoverer: document.addEventListener( 'mouseover', ( $ ) =>
   {
-    if( info.athlete.indexOf( $.target.id ) !== -1 )
+    if( info.athlete.indexOf( $.target.id ) !== -1
+      && info.athlete.indexOf( $.target.id ) !== change.selected
+      && info.target.indexOf( info.athlete.indexOf( $.target.id ) ) === - 1 )
     {
       change.hovered = Number( $.target.id.substring( 4, 6 ) )
+
+      if( change.athlete[ change.hovered ][ 2 ].substring( 0, 1 ) !== 'M' )
+      {
+        change.selected = 'none'
+      }
 
       game.updZonCdn( 'hover' )
 
@@ -186,6 +204,7 @@ const listen =
     else
     {
       change.hovered = 'none'
+      change.selected = change.last
 
       console.log( $.target.id )
     }

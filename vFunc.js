@@ -163,23 +163,27 @@ const listen =
       change.selected = Number( $.target.id.substring( 4, 6 ) )
       change.last = Number( $.target.id.substring( 4, 6 ) )
 
-      game.updSel()
-      game.updTgt()
       game.updZonCdn( 'select' )
 
+      game.updSel()
+      game.updTgt()
+
+      //========================================================================
+      // Hide every selected zone if the athlete is ready or benched
+      //
       if( change.athlete[ Number( $.target.id.substring( 4, 6 ) ) ][ 1 ] > 529 )
       {
         page.selectZone.forEach( function( $ ) $.style.display = 'none' )
       }
-
-      console.log( change.selected + ' . ' + change.athlete[ change.selected ] )
     }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // If anything without commands was clicked
+    //
     else
     {
       change.selected = 'none'
       change.last = 'none'
-
-      game.updSel()
 
       console.log( $.target.id )
     }
@@ -190,27 +194,43 @@ const listen =
   //
   hoverer: document.addEventListener( 'mouseover', ( $ ) =>
   {
+    //==========================================================================
+    // If it is an athlete
+    //
     if( info.athlete.indexOf( $.target.id ) !== -1
+
+    //--------------------------------------------------------------------------
+    // And if it isn't the currently selected
+    //
       && info.athlete.indexOf( $.target.id ) !== change.selected
+
+    //--------------------------------------------------------------------------
+    // And if it isn't in the selected's aim
+    //
       && info.target.indexOf( info.athlete.indexOf( $.target.id ) ) === - 1 )
     {
+      //========================================================================
+      // Change the number of who is being hovered
+      //
       change.hovered = Number( $.target.id.substring( 4, 6 ) )
 
+      //------------------------------------------------------------------------
+      // And if it isn't ready or benched, stop displaying the selecteds
+      //
       if( change.athlete[ change.hovered ][ 2 ].substring( 0, 1 ) !== 'M' )
       {
         change.selected = 'none'
       }
 
       game.updZonCdn( 'hover' )
-
-      console.log( change.hovered + ' . ' + change.athlete[ change.hovered ] )
     }
     else
     {
+      //------------------------------------------------------------------------
+      // Start displaying the selecteds again if no athlete is being hovered
+      //
       change.hovered = 'none'
       change.selected = change.last
-
-      console.log( $.target.id )
     }
   }, false ),
 

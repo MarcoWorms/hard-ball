@@ -39,6 +39,9 @@ const game =
     game.updAtl()
     game.updBal()
 
+    //==========================================================================
+    // Avoid minor bugs with the zone on refreshing the page
+    //
     if( change.hovered !== 'none' )game.updZonCdn( 'hover' )
     if( change.selected !== 'none' )game.updZonCdn( 'select' )
 
@@ -137,7 +140,7 @@ const game =
     }
 
     //==========================================================================
-    // Updating every other zone
+    // Updating the display of every guide related zone
     //
     for( let $ = 0; $ < 16; $ ++ )
     {
@@ -168,7 +171,6 @@ const game =
   },
 
   ////////////////////////////////////////////////////////////////////////////// G.updZonCdn
-  // Activated on 'listen.hoverer'
   //
   updZonCdn: function( guide )
   {
@@ -478,7 +480,6 @@ const game =
   },
 
   ////////////////////////////////////////////////////////////////////////////// G.updSel
-  // Activated on 'listen.clicker'
   //
   updSel: function()
   {
@@ -503,11 +504,11 @@ const game =
   },
 
   ////////////////////////////////////////////////////////////////////////////// G.updTgt
-  // Activated on 'listen.clicker'
   //
   updTgt: function()
   {
     let array = []
+    info.target = []
 
     for( let $1 = 0; $1 < 20; $1 ++ )
     {

@@ -173,8 +173,8 @@
             if( $ < 8 )
             {
               Ω.page.zone[ $ ].style.display = 'flex'
-              Ω.info.zone[ $ ][ 0 ] = Ω.info.spawn[ $ ][ 0 ]
-              Ω.info.zone[ $ ][ 1 ] = Ω.info.spawn[ $ ][ 1 ]
+              Ω.info.zone[ $ ][ 0 ] = Ω.info.spawn[ $ ][ 0 ] + 1
+              Ω.info.zone[ $ ][ 1 ] = Ω.info.spawn[ $ ][ 1 ] + 1
             }
           }
         }
@@ -221,8 +221,8 @@
             if( $ < 8 )
             {
               Ω.page.zone[ $ ].style.display = 'flex'
-              Ω.info.zone[ $ ][ 0 ] = Ω.info.spawn[ $ ][ 0 ]
-              Ω.info.zone[ $ ][ 1 ] = Ω.info.spawn[ $ ][ 1 ]
+              Ω.info.zone[ $ ][ 0 ] = Ω.info.spawn[ $ ][ 0 ] + 1
+              Ω.info.zone[ $ ][ 1 ] = Ω.info.spawn[ $ ][ 1 ] + 1
             }
           }
         }
@@ -241,8 +241,8 @@
         }
       }
 
-      let x = Ω.info.zone[ $ ][ 0 ] + 4
-      let y = Ω.info.zone[ $ ][ 1 ] + 4
+      let x = Ω.info.zone[ $ ][ 0 ] + 3
+      let y = Ω.info.zone[ $ ][ 1 ] + 3
 
       Ω.tool.translate( Ω.page.zone[ $ ], x, y )
       Ω.tool.rotate( Ω.page.zone[ $ ], 1 )

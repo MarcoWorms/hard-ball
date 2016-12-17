@@ -10,8 +10,6 @@
   //
   clicker: addEventListener( 'mousedown', function( $ )
   {
-    Ω.now.selected = 'none'
-
     ////////////////////////////////////////////////////////////////////////////
     // 00 . START resetting the game
     //
@@ -77,6 +75,67 @@
     // 04 . Select the ball
     //
     else if( $.target.id === 'ball' ) Ω.now.selected = 'ball'
+
+
+    ////////////////////////////////////////////////////////////////////////////
+    // 05 . Click on a zone
+    //
+    else if( $.target.id.substring( 0, 3 ) === 'zon' )
+    {
+      ////////////////////////////////////////////////////////////////////////////
+      // Ball is selected
+      //
+      if( Ω.now.selected === 'ball' )
+      {
+        // tbd
+      }
+
+      //////////////////////////////////////////////////////////////////////////
+      // Athlete is selected
+      //
+      else if( Ω.now.selected !== 'none' )
+      {
+
+        ////////////////////////////////////////////////////////////////////////
+        // Athlete is ready
+        //
+        if( Ω.now.athlete[ Ω.now.selected ][ 1 ] > 555 
+          && Ω.now.athlete[ Ω.now.selected ][ 3 ] === 'ready' )
+        {
+
+          //====================================================================
+          // TURN 0
+          //
+          if( Ω.now.turn === 0 )
+          {
+            let entity = Number( $.target.id.substring( 3, 5 ) )
+
+            let x = Ω.info.zone[ entity ][ 0 ]
+            let y = Ω.info.zone[ entity ][ 1 ]
+
+            Ω.now.athlete[ Ω.now.selected ][ 0 ] = x
+            Ω.now.athlete[ Ω.now.selected ][ 1 ] = y
+
+            Ω.now.turn = 1
+          }
+        }
+
+        ////////////////////////////////////////////////////////////////////////
+        // Athlete is playing
+        //
+        else
+        {
+        }
+      }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // 06 . Select nothing
+    //
+    else
+    {
+      Ω.now.selected = 'none'
+    }
 
     ////////////////////////////////////////////////////////////////////////////
     // EXTRA

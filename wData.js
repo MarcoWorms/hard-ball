@@ -101,6 +101,22 @@
 
     [ 4,0,0,0, 1,0,0, 0,0, 0 ], // T19
   ],
+
+  ////////////////////////////////////////////////////////////////////////////// I.spawn
+  // Spawn sets which cells are the initials
+  //
+  spawn:
+  [
+    Ω.tool.convert( 'C02' ),
+    Ω.tool.convert( 'D03' ),
+    Ω.tool.convert( 'I03' ),
+    Ω.tool.convert( 'J02' ),
+
+    Ω.tool.convert( 'J17' ),
+    Ω.tool.convert( 'I16' ),
+    Ω.tool.convert( 'D16' ),
+    Ω.tool.convert( 'C17' ),
+  ],
 }
 
 //////////////////////////////////////////////////////////////////////////////// NOW

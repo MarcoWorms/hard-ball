@@ -60,9 +60,9 @@
     entity.style.transform += ' rotate(' + Ω.changer.spin[ 0 ] * speed + 'deg)'
   },
 
-  ////////////////////////////////////////////////////////////////////////////// T.bender
+  ////////////////////////////////////////////////////////////////////////////// T.bend
   //
-  bender: function( entity, axis )
+  bend: function( entity, axis )
   {
     if( axis === 'x' )
     {
@@ -87,6 +87,53 @@
 
     return entity
   },
+
+  ////////////////////////////////////////////////////////////////////////////// T.bend
+  //
+  convert: function( entity )
+  {
+    let aToL = [ 'A','B','C','D','E','F','G','H','I','J','K','L' ]
+
+    let x
+    let y
+
+    ////////////////////////////////////////////////////////////////////////////
+    // If you want the coordinates
+    //
+    if( typeof( entity ) === 'string' )
+    {
+      let letter = entity.substring( 0, 1 )
+      let digit = Number( entity.substring( 1, 3 ) )
+
+      for( let $ = 0; $ < 12; $ ++ ) if( letter === aToL[ $ ] ) y = $ * 48
+      for( let $ = 0; $ < 20; $ ++ ) if( digit === $ ) x = $ * 48
+
+      return [ x, y ]
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // If you want the name
+    //
+    else if( typeof( entity ) === 'object' )
+    {
+      let name
+
+      x = entity[ 0 ]
+      y = entity[ 1 ]
+
+      for( let $ = 0; $ < 12; $ ++ ) if( y / 48 === $ ) name = aToL[ $ ]
+      for( let $ = 0; $ < 20; $ ++ )
+      {
+        if( x / 48 === $ )
+        {
+          if( $ < 10 ) name += '0'
+          name += $
+        }
+      }
+
+      return name
+    }
+  }
 }
 
 //////////////////////////////////////////////////////////////////////////////// CHANGER

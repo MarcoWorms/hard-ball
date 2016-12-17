@@ -6,7 +6,7 @@
 //
 Ω.info =
 {
-  ////////////////////////////////////////////////////////////////////////////// I.cell
+  //============================================================================
   // 'info.cell' is an array containing 13 arrays (arena rows)
   // Each of these arrays contain 20 arrays (row's cells coordinates)
   // Each of these arrays contain 1 cell's information as follows...
@@ -40,7 +40,7 @@
     }()
   ),
 
-  ////////////////////////////////////////////////////////////////////////////// I.zone
+  //============================================================================
   // 'info.zone' is an array containing 16 arrays (zone coordinates)
   // each of these arrays contain 1 zone's coordinates as follows...
   //
@@ -56,7 +56,7 @@
     }()
   ),
 
-  ////////////////////////////////////////////////////////////////////////////// I.move
+  //============================================================================
   // Matrix of how each athlete moves
   //
   // 00 01 02 03
@@ -102,9 +102,9 @@
     [ 4,0,0,0, 1,0,0, 0,0, 0 ], // T19
   ],
 
-  ////////////////////////////////////////////////////////////////////////////// I.spawn
-  // Spawn sets which cells are the initials
-  //
+  //============================================================================
+  // 'info.spawn' sets which cells are the initials
+  //  
   spawn:
   [
     Ω.tool.convert( 'C02' ),
@@ -117,6 +117,11 @@
     Ω.tool.convert( 'D16' ),
     Ω.tool.convert( 'C17' ),
   ],
+
+  //============================================================================
+  // 'info.freeSpawn' sets which initials cells are still available
+  //  
+  freeSpawn: [],
 }
 
 //////////////////////////////////////////////////////////////////////////////// NOW
@@ -124,25 +129,26 @@
 //
 Ω.now =
 {
-  //////////////////////////////////////////////////////////////////////////////
-  // Shows how many plays have happened
+  //============================================================================
+  // Shows how many plays have happened and who started
   //
   turn: 0,
+  color: '',
 
-  //////////////////////////////////////////////////////////////////////////////
+  //============================================================================
   // Both may return 'none', 'ball' or a value between 0 and 19 (some athlete)
   //
   selected: 'none',
   hovered: 'none',
 
-  //////////////////////////////////////////////////////////////////////////////
+  //============================================================================
   // Position of the ball as follows...
   //
   // [ numX, numY ]
   //
   ball: [ 0, 0 ],
 
-  //////////////////////////////////////////////////////////////////////////////
+  //============================================================================
   // 'now.athlete' is an array containing 20 arrays
   // Each of these arrays is 1 athlete's information as follows...
   //
@@ -153,8 +159,13 @@
     function()
     {
       let array = []
-      for( let $ = 0; $ < 20; $ ++ ) array.push( [ 0, 0, 'none', 'ready' ] )
+      for( let $ = 0; $ < 20; $ ++ ) array.push( [ 0, 0, 'none' ] )
       return array
     }()
   ),
+
+  //============================================================================
+  // 'now.spawned' are occupied spawn cells
+  //
+  spawned: [],
 }

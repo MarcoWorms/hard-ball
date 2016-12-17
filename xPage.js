@@ -6,14 +6,18 @@
 //
 Ω.page =
 {
+  //============================================================================
+  //
   yes: document.getElementById( 'yes' ),
   reset: document.getElementById( 'reset' ),
   no: document.getElementById( 'no' ),
 
+  //============================================================================
+  //
   ball: document.getElementById( 'ball' ),
 
-  selected: document.getElementById( 'selected' ),
-
+  //............................................................................
+  //
   athlete:
   [
     document.getElementById( 'T00' ),
@@ -41,6 +45,12 @@
     document.getElementById( 'T19' ),
   ],
 
+  //============================================================================
+  //
+  selected: document.getElementById( 'selected' ),
+
+  //............................................................................
+  //
   zone:
   [
     document.getElementById( 'zon00' ),

@@ -20,12 +20,12 @@
   ////////////////////////////////////////////////////////////////////////////// T.chgCls
   // Adds or removes a class in any HTML object
   //
-  chgCls: function( entity, klass, action )
+  chgCls: function( entity, action, klass )
   {
     //==========================================================================
     // It must have the class so it can be removed
     //
-    if( !Ω.tool.hasCls( entity, klass ) && action === "add" )
+    if( !Ω.tool.hasCls( entity, klass ) && action === "+" )
     {
       entity.classList.add( klass )
     }
@@ -33,7 +33,7 @@
     //==========================================================================
     // It mustn't have the class so it can be added
     //
-    else if( Ω.tool.hasCls( entity, klass ) && action === "rmv" )
+    else if( Ω.tool.hasCls( entity, klass ) && action === "-" )
     {
       entity.classList.remove( klass )
     }
@@ -42,7 +42,9 @@
     //
     else
     {
-      console.log( "You shall not class!" )
+      // console.log( "You shall not class!" )
+      //
+      // This would be ok to log, but happens too often... Like me watching LOTR
     }
   },
 
@@ -50,6 +52,8 @@
   //
   translate: function( entity, x, y )
   {
+    //==========================================================================
+    //
     entity.style.transform = 'translate(' + x + 'px,' + y + 'px)'
   },
 
@@ -57,6 +61,8 @@
   //
   rotate: function( entity, speed )
   {
+    //==========================================================================
+    //
     entity.style.transform += ' rotate(' + Ω.changer.spin[ 0 ] * speed + 'deg)'
   },
 
@@ -64,6 +70,8 @@
   //
   bend: function( entity, axis )
   {
+    //==========================================================================
+    //
     if( axis === 'x' )
     {
       if( entity === -48 ) entity = 912
@@ -74,6 +82,9 @@
       else if( entity === 1008 ) entity = 48
       else if( entity === 960 ) entity = 0
     }
+
+    //==========================================================================
+    //
     else if( axis === 'y' )
     {
       if( entity === -48 ) entity = 528
@@ -85,6 +96,8 @@
       else if( entity === 576 ) entity = 0
     }
 
+    //==========================================================================
+    //
     return entity
   },
 
@@ -92,12 +105,14 @@
   //
   convert: function( entity )
   {
+    //==========================================================================
+    //
     let aToL = [ 'A','B','C','D','E','F','G','H','I','J','K','L' ]
 
     let x
     let y
 
-    ////////////////////////////////////////////////////////////////////////////
+    //==========================================================================
     // If you want the coordinates
     //
     if( typeof( entity ) === 'string' )
@@ -111,7 +126,7 @@
       return [ x, y ]
     }
 
-    ////////////////////////////////////////////////////////////////////////////
+    //==========================================================================
     // If you want the name
     //
     else if( typeof( entity ) === 'object' )
@@ -131,7 +146,9 @@
         }
       }
 
-      return name
+    //==========================================================================
+    //
+    return name
     }
   }
 }
@@ -140,6 +157,8 @@
 //
 Ω.changer =
 {
+  //============================================================================
+  //
   spin: [ 0, setInterval( function()
     {
       if( Ω.changer.spin[ 0 ] > 359 ) Ω.changer.spin[ 0 ] = 0

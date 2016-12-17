@@ -79,10 +79,30 @@
   {
     for( let $ = 0; $ < 20; $ ++ )
     {
+      //////////////////////////////////////////////////////////////////////////
+      // Position
+      //
       let x = Ω.now.athlete[ $ ][ 0 ]
       let y = Ω.now.athlete[ $ ][ 1 ]
 
       Ω.tool.translate( Ω.page.athlete[ $ ], x, y )
+
+      //////////////////////////////////////////////////////////////////////////
+      // Color
+      //
+      Ω.tool.chgCls( Ω.page.athlete[ $ ], '-', 'btn' )
+      Ω.tool.chgCls( Ω.page.athlete[ $ ], '-', 'red' )
+      Ω.tool.chgCls( Ω.page.athlete[ $ ], '-', 'gre' )
+      Ω.tool.chgCls( Ω.page.athlete[ $ ], '-', 'blu' )
+
+      let toAdd
+
+      if( Ω.now.athlete[ $ ][ 2 ] === 'none' ) toAdd = 'btn'
+      else if( Ω.now.athlete[ $ ][ 2 ] === 'red' ) toAdd = 'red'
+      else if( Ω.now.athlete[ $ ][ 2 ] === 'gre' ) toAdd = 'gre'
+      else if( Ω.now.athlete[ $ ][ 2 ] === 'blu' ) toAdd = 'blu'
+
+      Ω.tool.chgCls( Ω.page.athlete[ $ ], '+', toAdd )
     }
   },
 
@@ -159,23 +179,29 @@
       else if( Ω.now.hovered !== 'none' )
       {
         ////////////////////////////////////////////////////////////////////////
-        // Athlete is ready
+        // Athlete is ready to play
         //
-        if( Ω.now.athlete[ Ω.now.hovered ][ 1 ] > 555 
-          && Ω.now.athlete[ Ω.now.hovered ][ 3 ] === 'ready' )
+        if( Ω.now.athlete[ Ω.now.hovered ][ 2 ] === 'none' )
         {
 
           //====================================================================
-          // TURN 0
+          // Turn 0
           //
           if( Ω.now.turn === 0 )
           {
             if( $ < 8 )
             {
               Ω.page.zone[ $ ].style.display = 'flex'
-              Ω.info.zone[ $ ][ 0 ] = Ω.info.spawn[ $ ][ 0 ] + 1
-              Ω.info.zone[ $ ][ 1 ] = Ω.info.spawn[ $ ][ 1 ] + 1
+              Ω.info.zone[ $ ][ 0 ] = Ω.info.spawn[ $ ][ 0 ]
+              Ω.info.zone[ $ ][ 1 ] = Ω.info.spawn[ $ ][ 1 ]
             }
+          }
+
+          //====================================================================
+          // Rest of selection time
+          //
+          else if( Ω.now.turn < 8 )
+          {
           }
         }
 
@@ -186,8 +212,6 @@
         {
           if( $ < Ω.info.move[ Ω.now.hovered ][ 0 ] )
           {
-            Ω.game.updZonCdn( 'hover' ) // This is so far the best place for it
-
             Ω.page.zone[ $ ].style.display = 'flex'
           }
         }
@@ -207,23 +231,29 @@
       else if( Ω.now.selected !== 'none' )
       {
         ////////////////////////////////////////////////////////////////////////
-        // Athlete is ready
+        // Athlete is ready to play
         //
-        if( Ω.now.athlete[ Ω.now.selected ][ 1 ] > 555
-          && Ω.now.athlete[ Ω.now.selected ][ 3 ] === 'ready' )
+        if( Ω.now.athlete[ Ω.now.selected ][ 2 ] === 'none' )
         {
 
           //====================================================================
-          // TURN 0
+          // Turn 0
           //
           if( Ω.now.turn === 0 )
           {
             if( $ < 8 )
             {
               Ω.page.zone[ $ ].style.display = 'flex'
-              Ω.info.zone[ $ ][ 0 ] = Ω.info.spawn[ $ ][ 0 ] + 1
-              Ω.info.zone[ $ ][ 1 ] = Ω.info.spawn[ $ ][ 1 ] + 1
+              Ω.info.zone[ $ ][ 0 ] = Ω.info.spawn[ $ ][ 0 ]
+              Ω.info.zone[ $ ][ 1 ] = Ω.info.spawn[ $ ][ 1 ]
             }
+          }
+
+          //====================================================================
+          // Rest of selection time
+          //
+          else if( Ω.now.turn < 8 )
+          {
           }
         }
 
@@ -234,8 +264,6 @@
         {
           if( $ < Ω.info.move[ Ω.now.selected ][ 0 ] )
           {
-            Ω.game.updZonCdn( 'select' ) // This is so far the best place for it
-
             Ω.page.zone[ $ ].style.display = 'flex'
           }
         }

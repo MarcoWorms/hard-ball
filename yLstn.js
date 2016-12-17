@@ -17,22 +17,22 @@
     {
       Ω.page.reset.innerHTML = 'REALLY ?'
       Ω.page.reset.style.width = '12.5%'
-      Ω.tool.chgCls( Ω.page.reset, 'btn', 'rmv' )
-      Ω.tool.chgCls( Ω.page.reset, 'dsp', 'add' )
+      Ω.tool.chgCls( Ω.page.reset, '-', 'btn' )
+      Ω.tool.chgCls( Ω.page.reset, '+', 'dsp' )
 
       Ω.page.yes.style.display = 'flex'
       Ω.page.no.style.display = 'flex'
     }
 
-    //==========================================================================
+    ////////////////////////////////////////////////////////////////////////////
     // 01 . FINISH resetting the game
     //
     else if( $.target.id === 'yes' )
     {
       Ω.page.reset.innerHTML = 'RESET'
       Ω.page.reset.style.width = '25%'
-      Ω.tool.chgCls( Ω.page.reset, 'dsp', 'rmv' )
-      Ω.tool.chgCls( Ω.page.reset, 'btn', 'add' )
+      Ω.tool.chgCls( Ω.page.reset, '-', 'dsp' )
+      Ω.tool.chgCls( Ω.page.reset, '+', 'btn' )
 
       Ω.page.yes.style.display = 'none'
       Ω.page.no.style.display = 'none'
@@ -49,15 +49,15 @@
       Ω.engine.create()
     }
 
-    //==========================================================================
+    ////////////////////////////////////////////////////////////////////////////
     // 02 . STOP resetting the game
     //
     else if( $.target.id === 'no' )
     {
       Ω.page.reset.innerHTML = 'RESET'
       Ω.page.reset.style.width = '25%'
-      Ω.tool.chgCls( Ω.page.reset, 'dsp', 'rmv' )
-      Ω.tool.chgCls( Ω.page.reset, 'btn', 'add' )
+      Ω.tool.chgCls( Ω.page.reset, '-', 'dsp' )
+      Ω.tool.chgCls( Ω.page.reset, '+', 'btn' )
 
       Ω.page.yes.style.display = 'none'
       Ω.page.no.style.display = 'none'
@@ -69,9 +69,10 @@
     else if( $.target.id.substring( 0, 3 ) === 'min' )
     {
       Ω.now.selected = Number( $.target.id.substring( 4, 6 ) ) // 0 to 19
+      Ω.game.updZonCdn( 'select' ) // This is so far the best place for it
     }
 
-    //==========================================================================
+    ////////////////////////////////////////////////////////////////////////////
     // 04 . Select the ball
     //
     else if( $.target.id === 'ball' ) Ω.now.selected = 'ball'
@@ -82,7 +83,7 @@
     //
     else if( $.target.id.substring( 0, 3 ) === 'zon' )
     {
-      ////////////////////////////////////////////////////////////////////////////
+      //////////////////////////////////////////////////////////////////////////
       // Ball is selected
       //
       if( Ω.now.selected === 'ball' )
@@ -97,33 +98,57 @@
       {
 
         ////////////////////////////////////////////////////////////////////////
-        // Athlete is ready
+        // Athlete is ready to play
         //
-        if( Ω.now.athlete[ Ω.now.selected ][ 1 ] > 555 
-          && Ω.now.athlete[ Ω.now.selected ][ 3 ] === 'ready' )
+        if( Ω.now.athlete[ Ω.now.selected ][ 2 ] === 'none' )
         {
+          let entity = Number( $.target.id.substring( 3, 5 ) )
+
+          let x
+          let y
 
           //====================================================================
-          // TURN 0
+          // Turn 0
           //
           if( Ω.now.turn === 0 )
           {
-            let entity = Number( $.target.id.substring( 3, 5 ) )
+            x = Ω.info.zone[ entity ][ 0 ] + 1
+            y = Ω.info.zone[ entity ][ 1 ] + 1
 
-            let x = Ω.info.zone[ entity ][ 0 ]
-            let y = Ω.info.zone[ entity ][ 1 ]
+            let color
+
+            if( entity < 4 ){ color = 'gre'; Ω.now.color = 'green' }
+            else            { color = 'blu'; Ω.now.color = 'blue' }
 
             Ω.now.athlete[ Ω.now.selected ][ 0 ] = x
             Ω.now.athlete[ Ω.now.selected ][ 1 ] = y
+            Ω.now.athlete[ Ω.now.selected ][ 2 ] = color
 
-            Ω.now.turn = 1
+            //..................................................................
+            // States that this cell is now occupied
+            //
+            Ω.now.spawned.push( Ω.tool.convert( [ x - 1, y - 1 ] ) )
+
+            //..................................................................
+            // Should happen every time athletes move
+            //
+            Ω.now.turn += 1
+            Ω.now.selected = 'none'
+          }
+
+          //====================================================================
+          // Rest of selection time
+          //
+          if( Ω.now.turn < 8 )
+          {
           }
         }
 
         ////////////////////////////////////////////////////////////////////////
-        // Athlete is playing
+        // Athlete is playing and selection time is over
         //
-        else
+        else if( Ω.now.athlete[ Ω.now.selected ][ 2 ] !== 'red'
+        && Ω.now.turn > 8 )
         {
         }
       }
@@ -159,6 +184,7 @@
     if( $.target.id.substring( 0, 3 ) === 'min' )
     {
       Ω.now.hovered = Number( $.target.id.substring( 4, 6 ) ) // 0 to 19
+      Ω.game.updZonCdn( 'hover' ) // This is so far the best place for it
     }
 
     ////////////////////////////////////////////////////////////////////////////

@@ -180,26 +180,26 @@
       {
 
         ////////////////////////////////////////////////////////////////////////
-        // Athlete is ready to play
+        // Hovered athlete is ready to play
         //
         if( Ω.now.athlete[ Ω.now.hovered ][ 2 ] === 'none' )
         {
-          // tbd
+          //====================================================================
+          // 'game.updZonStt' changes 'info.zone', but also returns a number
+          //
+          let amount = Ω.game.updZonStt( 'hover' )
+          if( $ < amount ) Ω.page.zone[ $ ].style.display = 'flex'
         }
 
         ////////////////////////////////////////////////////////////////////////
-        // Athlete is playing
+        // Hovered athlete is playing
         //
         else if( Ω.now.athlete[ Ω.now.hovered ][ 2 ] !== 'red' )
         {
           if( $ < Ω.info.move[ Ω.now.hovered ][ 0 ] )
           {
             Ω.page.zone[ $ ].style.display = 'flex'
-
-            //==================================================================
-            // This call is good here for updating
-            //
-            Ω.game.updZonCdn( 'hover' )
+            Ω.game.updZonMtx( 'hover' )
           }
         }
       }
@@ -219,32 +219,32 @@
       {
 
         ////////////////////////////////////////////////////////////////////////
-        // Athlete is ready to play
+        // Selected athlete is ready to play
         //
         if( Ω.now.athlete[ Ω.now.selected ][ 2 ] === 'none' )
         {
-          // tbd
+          //====================================================================
+          // 'game.updZonStt' changes 'info.zone', but also returns a number
+          //
+          let amount = Ω.game.updZonStt( 'select' )
+          if( $ < amount ) Ω.page.zone[ $ ].style.display = 'flex'
         }
 
         ////////////////////////////////////////////////////////////////////////
-        // Athlete is playing
+        // Selected athlete is playing
         //
         else if( Ω.now.athlete[ Ω.now.selected ][ 2 ] !== 'red' )
         {
           if( $ < Ω.info.move[ Ω.now.selected ][ 0 ] )
           {
             Ω.page.zone[ $ ].style.display = 'flex'
-
-            //==================================================================
-            // This call is good here for updating
-            //
-            Ω.game.updZonCdn( 'select' )
+            Ω.game.updZonMtx( 'select' )
           }
         }
       }
 
       //////////////////////////////////////////////////////////////////////////
-      // Every mutation of 'Ω.info.zone' shall happen before here
+      // Every mutation of 'info.zone' shall happen before here
       //
       let x = Ω.info.zone[ $ ][ 0 ] + 3
       let y = Ω.info.zone[ $ ][ 1 ] + 3
@@ -254,9 +254,10 @@
     }
   },
 
-  ////////////////////////////////////////////////////////////////////////////// G.updZonCdn
+  ////////////////////////////////////////////////////////////////////////////// G.updZonMtx
+  // Updating zones through a matrix
   //
-  updZonCdn: function( guide )
+  updZonMtx: function( guide )
   {
     let target
 
@@ -546,6 +547,39 @@
 
       counter += 4
     }
+  },
+
+  ////////////////////////////////////////////////////////////////////////////// G.updZonStt
+  // Updating zones for the starting selection of athletes
+  //
+  updZonStt: function( guide )
+  {
+    let target
+
+    if( guide === 'hover' )       target = Ω.now.hovered
+    else if( guide === 'select' ) target = Ω.now.selected
+
+    //==========================================================================
+    // Clean 'info.zone'
+    //
+    Ω.info.zone =
+    (
+      function()
+      {
+        let array = []
+        for( let $ = 0; $ < 16; $ ++ ) array.push( [ 0, 0 ] )
+        return array
+      }()
+    )
+
+    //==========================================================================
+    // Fill 'info.zone'
+    //
+
+    //==========================================================================
+    // Return how many zones will be necessary
+    //
+    return 0
   },
 }
 

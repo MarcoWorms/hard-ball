@@ -6,6 +6,68 @@
 //
 Ω.listen =
 {
+  ////////////////////////////////////////////////////////////////////////////// L.zoner
+  //
+  zoner: addEventListener( 'mousedown', function( $ )
+  {
+    if( $.target.id.substring( 0, 3 ) === 'zon' )
+    {
+      let digit = Number( $.target.id.substring( 3, 5 ) )
+
+      //////////////////////////////////////////////////////////////////////////
+      // Turn 0
+      //
+      if( Ω.now.turn === 0 ) // too unique
+      {
+        ////////////////////////////////////////////////////////////////////////
+        // Position
+        //
+        let x = Ω.info.zone[ digit ][ 0 ]
+        let y = Ω.info.zone[ digit ][ 1 ]
+
+        Ω.now.athlete[ Ω.now.selected ][ 0 ] = x + 1
+        Ω.now.athlete[ Ω.now.selected ][ 1 ] = y + 1
+
+        ////////////////////////////////////////////////////////////////////////
+        // Color and defining cell is now occupied
+        //
+        let coordinate = Ω.tool.convert( [ x, y ] )
+        let entity
+
+        if( digit < 4 )
+        {
+          Ω.now.athlete[ Ω.now.selected ][ 2 ] = 'gre'
+          Ω.now.firstPlayer = 'green'
+          entity = Ω.now.spawn.green
+        }
+        else
+        {
+          Ω.now.athlete[ Ω.now.selected ][ 2 ] = 'blu'
+          Ω.now.firstPlayer = 'blue'
+          entity = Ω.now.spawn.blue
+        }
+
+        Ω.tool.remove( coordinate, entity )
+
+        ////////////////////////////////////////////////////////////////////////
+        // Extra
+        //
+        Ω.now.turn += 1
+      }
+
+      //////////////////////////////////////////////////////////////////////////
+      // Turn 1 to 7
+      //
+      else if( Ω.now.turn < 8 && Ω.now.athlete[ digit ][ 2 ] === 'none' )
+      {
+      }
+    }
+
+  //////////////////////////////////////////////////////////////////////////////
+  // END of 'listen.clicker'
+  //
+  }, false ),
+
   ////////////////////////////////////////////////////////////////////////////// L.clicker
   //
   clicker: addEventListener( 'mousedown', function( $ )
@@ -68,6 +130,8 @@
     //
     else if( $.target.id.substring( 0, 3 ) === 'min' )
     {
+      //========================================================================
+      //
       Ω.now.selected = Number( $.target.id.substring( 4, 6 ) ) // 0 to 19
     }
 
@@ -102,6 +166,8 @@
     //
     if( $.target.id.substring( 0, 3 ) === 'min' )
     {
+      //========================================================================
+      //
       Ω.now.hovered = Number( $.target.id.substring( 4, 6 ) ) // 0 to 19
     }
 

@@ -114,9 +114,10 @@
   turn: 0,
 
   //============================================================================
-  // Which player is first
+  // Which player played first and which is to play now
   //
-  color: '',
+  firstPlayer: '',
+  currentPlayer: '',
 
   //============================================================================
   // Both may return 'none', 'ball' or a value between 0 and 19 (some athlete)
@@ -148,24 +149,13 @@
   ),
 
   //============================================================================
-  // 'now.spawn' sets which cells are the initials
+  // 'now.spawn' sets which cells are the initials as follows...
+  //
+  // [ numX, numY ]
   //
   spawn:
   {
-    green:
-    [
-      Ω.tool.convert( 'C02' ),
-      Ω.tool.convert( 'D03' ),
-      Ω.tool.convert( 'I03' ),
-      Ω.tool.convert( 'J02' ),
-    ],
-
-    blue:
-    [
-      Ω.tool.convert( 'J17' ),
-      Ω.tool.convert( 'I16' ),
-      Ω.tool.convert( 'D16' ),
-      Ω.tool.convert( 'C17' ),
-    ],
+    green: [ 'C02', 'D03', 'I03', 'J02' ],
+    blue: [ 'J17', 'I16', 'D16', 'C17' ],
   },
 }

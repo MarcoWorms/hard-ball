@@ -141,7 +141,15 @@
     //
     return name
     }
-  }
+  },
+
+  ////////////////////////////////////////////////////////////////////////////// T.remove
+  //
+  remove: function( coordinate, entity )
+  {
+    let index = entity.indexOf( coordinate )
+    entity.splice( index, 1 )
+  },
 }
 
 //////////////////////////////////////////////////////////////////////////////// CHANGER
@@ -152,7 +160,17 @@
   //
   spin: [ 0, setInterval( function()
     {
-      if( Ω.changer.spin[ 0 ] > 359 ) Ω.changer.spin[ 0 ] = 0
-      else                          Ω.changer.spin[ 0 ] ++
+      if( Ω.changer.spin[ 0 ] > 360 ) Ω.changer.spin[ 0 ] = 0
+      else                            Ω.changer.spin[ 0 ] ++
     }, 10 ) ],
+  //============================================================================
+  //
+  glow: [ 0.75, false, setInterval( function()
+    {
+      if( Ω.changer.glow[ 1 ] === false ) Ω.changer.glow[ 0 ] += 0.05
+      else if( Ω.changer.glow[ 1 ] === true ) Ω.changer.glow[ 0 ] -= 0.05
+
+      if( Ω.changer.glow[ 0 ] > 0.75 ) Ω.changer.glow[ 1 ] = true
+      else if( Ω.changer.glow[ 0 ] < 0.25 ) Ω.changer.glow[ 1 ] = false
+    }, 120 ) ],
 }

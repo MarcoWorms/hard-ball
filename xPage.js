@@ -69,4 +69,9 @@
     document.getElementById( 'zon14' ),
     document.getElementById( 'zon15' ),
   ],
+
+  //============================================================================
+  //
+  areaGreen: document.querySelectorAll( '.arg' ),
+  areaBlue: document.querySelectorAll( '.arb' ),
 }

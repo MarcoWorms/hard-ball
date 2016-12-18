@@ -151,7 +151,7 @@
   //============================================================================
   // 'now.spawn' sets which cells are the initials as follows...
   //
-  // [ numX, numY ]
+  // [ strXY ]
   //
   spawn:
   {

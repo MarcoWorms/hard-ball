@@ -15,9 +15,9 @@
       let digit = Number( $.target.id.substring( 3, 5 ) )
 
       //////////////////////////////////////////////////////////////////////////
-      // Turn 0
+      // Turn 0 to 7
       //
-      if( Ω.now.turn === 0 ) // too unique
+      if( Ω.now.turn < 8 && Ω.now.athlete[ digit ][ 2 ] === 'none' )
       {
         ////////////////////////////////////////////////////////////////////////
         // Position
@@ -34,16 +34,16 @@
         let coordinate = Ω.tool.convert( [ x, y ] )
         let entity
 
-        if( digit < 4 )
+        if( Ω.now.spawn.green.indexOf( coordinate ) !== -1 ) // zone is green
         {
           Ω.now.athlete[ Ω.now.selected ][ 2 ] = 'gre'
-          Ω.now.firstPlayer = 'green'
+          if( Ω.now.turn === 0 ) Ω.now.firstPlayer = 'green'
           entity = Ω.now.spawn.green
         }
         else
         {
           Ω.now.athlete[ Ω.now.selected ][ 2 ] = 'blu'
-          Ω.now.firstPlayer = 'blue'
+         if( Ω.now.turn === 0 ) Ω.now.firstPlayer = 'blue'
           entity = Ω.now.spawn.blue
         }
 
@@ -53,13 +53,6 @@
         // Extra
         //
         Ω.now.turn += 1
-      }
-
-      //////////////////////////////////////////////////////////////////////////
-      // Turn 1 to 7
-      //
-      else if( Ω.now.turn < 8 && Ω.now.athlete[ digit ][ 2 ] === 'none' )
-      {
       }
     }
 

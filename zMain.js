@@ -577,7 +577,19 @@
       //
       else
       {
-        let entity = 0 // tbc
+        let entity
+
+        if( Ω.now.currentPlayer === 'green' ) entity = Ω.now.spawn.green
+        else if( Ω.now.currentPlayer === 'blue' ) entity = Ω.now.spawn.blue
+
+        for( let $ = 0; $ < entity.length; $ ++ )
+        {
+          let x = Ω.tool.convert( entity[ $ ] )[ 0 ]
+          let y = Ω.tool.convert( entity[ $ ] )[ 1 ]
+
+          Ω.info.zone[ $ ][ 0 ] = x
+          Ω.info.zone[ $ ][ 1 ] = y
+        }
 
         value = entity.length
       }

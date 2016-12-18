@@ -101,27 +101,6 @@
 
     [ 4,0,0,0, 1,0,0, 0,0, 0 ], // T19
   ],
-
-  //============================================================================
-  // 'info.spawn' sets which cells are the initials
-  //  
-  spawn:
-  [
-    Ω.tool.convert( 'C02' ),
-    Ω.tool.convert( 'D03' ),
-    Ω.tool.convert( 'I03' ),
-    Ω.tool.convert( 'J02' ),
-
-    Ω.tool.convert( 'J17' ),
-    Ω.tool.convert( 'I16' ),
-    Ω.tool.convert( 'D16' ),
-    Ω.tool.convert( 'C17' ),
-  ],
-
-  //============================================================================
-  // 'info.freeSpawn' sets which initials cells are still available
-  //  
-  freeSpawn: [],
 }
 
 //////////////////////////////////////////////////////////////////////////////// NOW
@@ -130,10 +109,9 @@
 Ω.now =
 {
   //============================================================================
-  // Shows how many plays have happened and who started
+  // Shows how many plays have happened
   //
   turn: 0,
-  color: '',
 
   //============================================================================
   // Both may return 'none', 'ball' or a value between 0 and 19 (some athlete)
@@ -165,7 +143,24 @@
   ),
 
   //============================================================================
-  // 'now.spawned' are occupied spawn cells
+  // 'now.spawn' sets which cells are the initials
   //
-  spawned: [],
+  spawn:
+  {
+    green:
+    [
+      Ω.tool.convert( 'C02' ),
+      Ω.tool.convert( 'D03' ),
+      Ω.tool.convert( 'I03' ),
+      Ω.tool.convert( 'J02' ),
+    ],
+
+    blue:
+    [
+      Ω.tool.convert( 'J17' ),
+      Ω.tool.convert( 'I16' ),
+      Ω.tool.convert( 'D16' ),
+      Ω.tool.convert( 'C17' ),
+    ],
+  },
 }

@@ -16,8 +16,6 @@
   //
   ball: document.getElementById( 'ball' ),
 
-  //............................................................................
-  //
   athlete:
   [
     document.getElementById( 'T00' ),
@@ -49,8 +47,6 @@
   //
   selected: document.getElementById( 'selected' ),
 
-  //............................................................................
-  //
   zone:
   [
     document.getElementById( 'zon00' ),

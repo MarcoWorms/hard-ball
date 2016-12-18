@@ -178,41 +178,28 @@
       //
       else if( Ω.now.hovered !== 'none' )
       {
+
         ////////////////////////////////////////////////////////////////////////
         // Athlete is ready to play
         //
         if( Ω.now.athlete[ Ω.now.hovered ][ 2 ] === 'none' )
         {
-
-          //====================================================================
-          // Turn 0
-          //
-          if( Ω.now.turn === 0 )
-          {
-            if( $ < 8 )
-            {
-              Ω.page.zone[ $ ].style.display = 'flex'
-              Ω.info.zone[ $ ][ 0 ] = Ω.info.spawn[ $ ][ 0 ]
-              Ω.info.zone[ $ ][ 1 ] = Ω.info.spawn[ $ ][ 1 ]
-            }
-          }
-
-          //====================================================================
-          // Rest of selection time
-          //
-          else if( Ω.now.turn < 8 )
-          {
-          }
+          // tbd
         }
 
         ////////////////////////////////////////////////////////////////////////
         // Athlete is playing
         //
-        else
+        else if( Ω.now.athlete[ Ω.now.hovered ][ 2 ] !== 'red' )
         {
           if( $ < Ω.info.move[ Ω.now.hovered ][ 0 ] )
           {
             Ω.page.zone[ $ ].style.display = 'flex'
+
+            //==================================================================
+            // This call is good here for updating
+            //
+            Ω.game.updZonCdn( 'hover' )
           }
         }
       }
@@ -230,45 +217,35 @@
       //
       else if( Ω.now.selected !== 'none' )
       {
+
         ////////////////////////////////////////////////////////////////////////
         // Athlete is ready to play
         //
         if( Ω.now.athlete[ Ω.now.selected ][ 2 ] === 'none' )
         {
-
-          //====================================================================
-          // Turn 0
-          //
-          if( Ω.now.turn === 0 )
-          {
-            if( $ < 8 )
-            {
-              Ω.page.zone[ $ ].style.display = 'flex'
-              Ω.info.zone[ $ ][ 0 ] = Ω.info.spawn[ $ ][ 0 ]
-              Ω.info.zone[ $ ][ 1 ] = Ω.info.spawn[ $ ][ 1 ]
-            }
-          }
-
-          //====================================================================
-          // Rest of selection time
-          //
-          else if( Ω.now.turn < 8 )
-          {
-          }
+          // tbd
         }
 
         ////////////////////////////////////////////////////////////////////////
         // Athlete is playing
         //
-        else
+        else if( Ω.now.athlete[ Ω.now.selected ][ 2 ] !== 'red' )
         {
           if( $ < Ω.info.move[ Ω.now.selected ][ 0 ] )
           {
             Ω.page.zone[ $ ].style.display = 'flex'
+
+            //==================================================================
+            // This call is good here for updating
+            //
+            Ω.game.updZonCdn( 'select' )
           }
         }
       }
 
+      //////////////////////////////////////////////////////////////////////////
+      // Every mutation of 'Ω.info.zone' shall happen before here
+      //
       let x = Ω.info.zone[ $ ][ 0 ] + 3
       let y = Ω.info.zone[ $ ][ 1 ] + 3
 
@@ -577,6 +554,7 @@
 //
 Ω.engine =
 {
+
   ////////////////////////////////////////////////////////////////////////////// E.create
   //
   create: function()

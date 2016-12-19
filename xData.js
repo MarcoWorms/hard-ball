@@ -101,6 +101,33 @@
 
     [ 4,0,0,0, 1,0,0, 0,0, 0 ], // T19
   ],
+
+  //============================================================================
+  // Each is an array of cell names relative to the area
+  //
+  areaGreen:
+  (
+    function()
+    {
+      let entity = Ω.page.areaGreen
+      let array = []
+      for( let $ = 0; $ < entity.length; $ ++ ) array.push( entity[ $ ].id )
+      return array
+    }()
+  ),
+
+  //............................................................................
+  //
+  areaBlue:
+  (
+    function()
+    {
+      let entity = Ω.page.areaBlue
+      let array = []
+      for( let $ = 0; $ < entity.length; $ ++ ) array.push( entity[ $ ].id )
+      return array
+    }()
+  ),
 }
 
 //////////////////////////////////////////////////////////////////////////////// NOW

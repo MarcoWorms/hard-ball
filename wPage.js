@@ -72,6 +72,9 @@
 
   //============================================================================
   //
+  textGreen: document.querySelectorAll( '.txg' ),
+  textBlue: document.querySelectorAll( '.txb' ),
+
   areaGreen: document.querySelectorAll( '.arg' ),
   areaBlue: document.querySelectorAll( '.arb' ),
 }

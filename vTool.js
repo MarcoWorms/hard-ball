@@ -92,6 +92,30 @@
     return entity
   },
 
+  ////////////////////////////////////////////////////////////////////////////// T.isZone
+  //
+  isZone: function( color, counter, x, y )
+  {
+    let target
+
+    if( color === 'gre' ) target = Ω.info.areaBlue
+    else                  target = Ω.info.areaGreen
+
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Checks wheter zone is in adversary's area or not
+    //
+    if( target.indexOf( Ω.tool.convert( [ x, y ] ) ) === -1 )
+    {
+      Ω.info.zone[ counter ] = [ x, y ]
+      return 1
+    }
+    else
+    {
+      return 0
+    }
+  },
+
   ////////////////////////////////////////////////////////////////////////////// T.convert
   //
   convert: function( entity )

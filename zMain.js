@@ -72,6 +72,7 @@
     Ω.game.updBal()
     Ω.game.updZon()
     Ω.game.updCur()
+    Ω.game.updTar()
   },
 
   ////////////////////////////////////////////////////////////////////////////// G.updAtl
@@ -175,7 +176,8 @@
     ////////////////////////////////////////////////////////////////////////////
     // Athlete is hovered
     //
-    else if( Ω.now.hovered !== 'none' )
+    else if( Ω.now.hovered !== 'none'
+    && Ω.info.target.indexOf( Ω.now.hovered ) === -1 )
     {
 
       //////////////////////////////////////////////////////////////////////////
@@ -207,7 +209,8 @@
     ////////////////////////////////////////////////////////////////////////////
     // Athlete is selected
     //
-    else if( Ω.now.selected !== 'none' )
+    else if( Ω.now.selected !== 'none'
+    && Ω.info.target.indexOf( Ω.now.selected ) === -1 )
     {
 
       //////////////////////////////////////////////////////////////////////////
@@ -226,6 +229,21 @@
       {
         Ω.game.updZonCdn( 'mtx', 'select' )
       }
+    }
+    else
+    {
+      //========================================================================
+      // Clean 'info.zone'
+      //
+      Ω.info.zone =
+      (
+        function()
+        {
+          let array = []
+          for( let $ = 0; $ < 16; $ ++ ) array.push( [ 0, 0 ] )
+          return array
+        }()
+      )
     }
   },
 
@@ -663,6 +681,26 @@
         $.style.color = 'rgba(255,255,255,' + entity + ')'
         $.style.textShadow = '0 0 4px rgba(255,255,255,' + entity + ')'
       } )
+    }
+  },
+
+  ////////////////////////////////////////////////////////////////////////////// G.updTar
+  // Updates an array containing currently targeted athletes
+  //
+  updTar: function()
+  {
+    Ω.info.target = []
+
+    for( let $1 = 0; $1 < 20; $1 ++ )
+    {
+      for( let $2 = 0; $2 < 16; $2 ++ )
+      {
+        if( Ω.now.athlete[ $1 ][ 0 ] - 1 === Ω.info.zone[ $2 ][ 0 ]
+        && Ω.now.athlete[ $1 ][ 1 ] - 1 === Ω.info.zone[ $2 ][ 1 ] )
+        {
+          Ω.info.target.push( $1 )
+        }
+      }
     }
   },
 }

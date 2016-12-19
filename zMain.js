@@ -630,12 +630,6 @@
   //
   updCur: function()
   {
-    let array1 = Array.from( Ω.page.areaGreen )
-    let array2 = Array.from( Ω.page.areaGreen )
-
-    array1.forEach( ( $ ) => { $.style.color = 'rgba(255,255,255,0.25)' } )
-    array2.forEach( ( $ ) => { $.style.color = 'rgba(255,255,255,0.25)' } )
-
     ////////////////////////////////////////////////////////////////////////////
     // Step 1
     //

@@ -17,7 +17,7 @@
       //////////////////////////////////////////////////////////////////////////
       // Turn 0 to 7
       //
-      if( Ω.now.turn < 8 && Ω.now.athlete[ digit ][ 2 ] === 'none' )
+      if( Ω.now.turn < 8 && Ω.now.athlete[ Ω.now.selected ][ 2 ] === 'none' )
       {
         ////////////////////////////////////////////////////////////////////////
         // Position
@@ -34,16 +34,25 @@
         let coordinate = Ω.tool.convert( [ x, y ] )
         let entity
 
-        if( Ω.now.spawn.green.indexOf( coordinate ) !== -1 ) // zone is green
+        //======================================================================
+        // Zone is green
+        //
+        if( Ω.now.spawn.green.indexOf( coordinate ) !== -1 )
         {
-          Ω.now.athlete[ Ω.now.selected ][ 2 ] = 'gre'
           if( Ω.now.turn === 0 ) Ω.now.firstPlayer = 'green'
+
+          Ω.now.athlete[ Ω.now.selected ][ 2 ] = 'gre'
           entity = Ω.now.spawn.green
         }
+
+        //======================================================================
+        // Zone is blue
+        //
         else
         {
+          if( Ω.now.turn === 0 ) Ω.now.firstPlayer = 'blue'
+
           Ω.now.athlete[ Ω.now.selected ][ 2 ] = 'blu'
-         if( Ω.now.turn === 0 ) Ω.now.firstPlayer = 'blue'
           entity = Ω.now.spawn.blue
         }
 

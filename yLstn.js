@@ -15,9 +15,16 @@
       let digit = Number( $.target.id.substring( 3, 5 ) )
 
       //////////////////////////////////////////////////////////////////////////
-      // Turn 0 to 7
+      // MAIN MOVE BEHAVIOR
       //
-      if( Ω.now.turn < 8 && Ω.now.athlete[ Ω.now.selected ][ 2 ] === 'none' )
+      let A = Ω.now.athlete[ Ω.now.selected ][ 2 ]
+      // A = athlete color as 'gre' or 'blu'
+
+      let B = A === Ω.now.currentPlayer.substring( 0, 3 )
+      // B = A === turn color as 'green' or 'blue'
+
+      if( Ω.now.turn < 8 && A === 'none'
+      || Ω.now.turn > 7 && A !== 'none' && A !== 'red' && B )
       {
         ////////////////////////////////////////////////////////////////////////
         // Position
@@ -31,32 +38,35 @@
         ////////////////////////////////////////////////////////////////////////
         // Color and defining cell is now occupied
         //
-        let coordinate = Ω.tool.convert( [ x, y ] )
-        let entity
-
-        //======================================================================
-        // Zone is green
-        //
-        if( Ω.now.spawn.green.indexOf( coordinate ) !== -1 )
+        if( Ω.now.turn < 8 )
         {
-          if( Ω.now.turn === 0 ) Ω.now.firstPlayer = 'green'
+          let coordinate = Ω.tool.convert( [ x, y ] )
+          let entity
 
-          Ω.now.athlete[ Ω.now.selected ][ 2 ] = 'gre'
-          entity = Ω.now.spawn.green
+          //======================================================================
+          // Zone is green
+          //
+          if( Ω.now.spawn.green.indexOf( coordinate ) !== -1 )
+          {
+            if( Ω.now.turn === 0 ) Ω.now.firstPlayer = 'green'
+
+            Ω.now.athlete[ Ω.now.selected ][ 2 ] = 'gre'
+            entity = Ω.now.spawn.green
+          }
+
+          //======================================================================
+          // Zone is blue
+          //
+          else
+          {
+            if( Ω.now.turn === 0 ) Ω.now.firstPlayer = 'blue'
+
+            Ω.now.athlete[ Ω.now.selected ][ 2 ] = 'blu'
+            entity = Ω.now.spawn.blue
+          }
+
+          Ω.tool.remove( coordinate, entity )
         }
-
-        //======================================================================
-        // Zone is blue
-        //
-        else
-        {
-          if( Ω.now.turn === 0 ) Ω.now.firstPlayer = 'blue'
-
-          Ω.now.athlete[ Ω.now.selected ][ 2 ] = 'blu'
-          entity = Ω.now.spawn.blue
-        }
-
-        Ω.tool.remove( coordinate, entity )
 
         ////////////////////////////////////////////////////////////////////////
         // Extra

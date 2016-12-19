@@ -18,13 +18,13 @@
       // MAIN MOVE BEHAVIOR
       //
       let A = Ω.now.athlete[ Ω.now.selected ][ 2 ]
-      // A = athlete color as 'gre' or 'blu'
+      // athlete color as 'gre' or 'blu'
 
-      let B = A === Ω.now.currentPlayer.substring( 0, 3 )
-      // B = A === turn color as 'green' or 'blue'
+      let B = Ω.now.currentPlayer.substring( 0, 3 )
+      // turn color as 'gre' or 'blu'
 
       if( Ω.now.turn < 8 && A === 'none'
-      || Ω.now.turn > 7 && A !== 'none' && A !== 'red' && B )
+      || Ω.now.turn > 7 && A !== 'none' && A !== 'red' && A === B )
       {
         ////////////////////////////////////////////////////////////////////////
         // Position
@@ -43,7 +43,7 @@
           let coordinate = Ω.tool.convert( [ x, y ] )
           let entity
 
-          //======================================================================
+          //====================================================================
           // Zone is green
           //
           if( Ω.now.spawn.green.indexOf( coordinate ) !== -1 )
@@ -54,7 +54,7 @@
             entity = Ω.now.spawn.green
           }
 
-          //======================================================================
+          //====================================================================
           // Zone is blue
           //
           else

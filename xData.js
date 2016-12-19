@@ -163,7 +163,7 @@
   // 'now.athlete' is an array containing 20 arrays
   // Each of these arrays is 1 athlete's information as follows...
   //
-  // [ numX, numY, strColor, strState ]
+  // [ numX, numY, strColor ]
   //
   athlete:
   (

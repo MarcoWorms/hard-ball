@@ -1,0 +1,293 @@
+
+/*////////////////////////////////////////////////////////////////////////////// VARIABLES
+*/
+:root
+{
+  /*////////////////////////////////////////////////////////////////////////////
+  COLOR
+  */
+  --c00:rgb(  0,  0,  0); /* Black */
+  --c01:rgb( 15, 15, 15); --c02:rgb( 31, 31, 31); --c03:rgb( 47, 47, 47);
+  --c04:rgb( 63, 63, 63); --c05:rgb( 79, 79, 79); --c06:rgb( 95, 95, 95);
+  --c07:rgb(111,111,111); --c08:rgb(127,127,127); --c09:rgb(143,143,143);
+  --c10:rgb(159,159,159); --c11:rgb(175,175,175); --c12:rgb(191,191,191);
+  --c13:rgb(207,207,207); --c14:rgb(223,223,223); --c15:rgb(239,239,239);
+  --c16:rgb(255,255,255); /* White */
+
+  --c17:rgb(207,47,47); /* Dark Red */
+  --c18:rgb(223,63,63); /* Light Red */
+  --c19:rgb(127,175,47); /* Dark Green */
+  --c20:rgb(143,191,63); /* Light Green */
+  --c21:rgb(95,63,191); /* Dark Blue */
+  --c22:rgb(111,79,207); /* Light Blue */
+
+  --c23:rgb(111,79,47); /* Dark Brown */
+  --c24:rgb(143,111,79); /* Light Brown */
+
+  /*
+  003 007 011 015    019 023 027 031    035 039 043 047    051 055 059 063
+  067 071 075 079    083 087 091 095    099 103 107 111    115 119 123 127
+  131 135 139 143    147 151 155 159    163 167 171 175    179 183 187 191
+  195 199 203 207    211 215 219 223    227 231 235 239    243 247 251 255
+  */
+}
+
+/*////////////////////////////////////////////////////////////////////////////// GENERAL
+*/
+.w00{width:0}  .w05{width:5%} .w10{width:10%}.w15{width:15%}.w20{width:20%}
+.w25{width:25%}.w30{width:30%}.w35{width:35%}.w40{width:40%}.w45{width:45%}
+.w50{width:50%}.w55{width:55%}.w60{width:60%}.w65{width:65%}.w70{width:70%}
+.w75{width:75%}.w80{width:80%}.w85{width:85%}.w90{width:90%}.w95{width:95%}
+.wfl{width:100%}
+
+.h00{height:0}  .h05{height:5%} .h10{height:10%}.h15{height:15%}.h20{height:20%}
+.h25{height:25%}.h30{height:30%}.h35{height:35%}.h40{height:40%}.h45{height:45%}
+.h50{height:50%}.h55{height:55%}.h60{height:60%}.h65{height:65%}.h70{height:70%}
+.h75{height:75%}.h80{height:80%}.h85{height:85%}.h90{height:90%}.h95{height:95%}
+.hfl{height:100%}
+
+.m00{margin:0}
+
+/*==============================================================================
+CENTER
+*/
+.cnt
+{
+  display:flex;
+  text-align:center;
+  align-items:center;
+  justify-content:center;
+}
+
+/*==============================================================================
+DISPLAY or BUTTON
+*/
+.dsp{      background-color:var(--c04); color:var(--c10)}
+
+.btn{      background-color:var(--c09); color:var(--c14)}
+.btn:hover{background-color:var(--c10); color:var(--c15)}
+
+/*==============================================================================
+RED or GREEN or BLUE
+*/
+.red{      background-color:var(--c17)}
+.red:hover{background-color:var(--c18)}
+
+.gre{      background-color:var(--c19)}
+.gre:hover{background-color:var(--c20)}
+
+.blu{      background-color:var(--c21)}
+.blu:hover{background-color:var(--c22)}
+
+/*==============================================================================
+BALL
+*/
+.bal{      background-color:var(--c23)}
+.bal:hover{background-color:var(--c24)}
+
+/*==============================================================================
+ZONE
+*/
+.zon
+{
+  width:42px;
+  height:42px;
+  box-sizing: border-box;
+  border: 2px dashed var(--c16);
+}
+
+/*==============================================================================
+MASK
+*/
+.msk{overflow:auto}
+
+/*==============================================================================
+FLOAT
+*/
+.flt{float:left}
+
+/*==============================================================================
+CELL
+*/
+.cll{width:48px; height:48px}
+
+/*==============================================================================
+COLORS
+*/
+.drd{background-color:var(--c17)}
+.lrd{background-color:var(--c18)}
+.dgr{background-color:var(--c19)}
+.lgr{background-color:var(--c20)}
+.dbl{background-color:var(--c21)}
+.lbl{background-color:var(--c22)}
+
+.bnc{background-color:var(--c14)}
+
+/*==============================================================================
+BORDERS
+*/
+.brd
+{
+  border:1px solid var(--c15);
+  box-sizing:border-box;
+}
+
+/*..............................................................................
+A, B, K and L (n=none; s=solid; d=dashed)
+*/
+.ssns{border-bottom-width:0}
+.sdns{border-bottom-width:0; border-right-style:dashed}
+.ssnd{border-bottom-width:0; border-left-style:dashed}
+
+.nsss{border-top-width:0}
+.ndss{border-top-width:0; border-right-style:dashed}
+.nssd{border-top-width:0; border-left-style:dashed}
+
+/*..............................................................................
+C
+*/
+.snns{border-width:1px 0 0 1px}
+.ssnn{border-width:1px 1px 0 0}
+.snss{border-right-width:0}
+.snnn{border-width:1px 0 0 0}
+.sdnn{border-width:1px 1px 0 0; border-right-style:dashed}
+.snnd{border-width:1px 0 0 1px; border-left-style:dashed}
+.sssn{border-left-width:0}
+
+/*..............................................................................
+D
+*/
+.nnns{border-width:0 0 0 1px}
+.nnss{border-width:0 0 1px 1px}
+.ndnn{border-width:0 1px 0 0; border-right-style:dashed}
+.nnnd{border-width:0 0 0 1px; border-left-style:dashed}
+.nsnn{border-width:0 1px 0 0}
+.nssn{border-width:0 1px 1px 0}
+
+/*..............................................................................
+E
+*/
+.ndns{border-width:0 1px 0 1px; border-right-style:dashed}
+.nsnd{border-width:0 1px 0 1px; border-left-style:dashed}
+
+/*..............................................................................
+J
+*/
+.nnsn{border-width:0 0 1px 0}
+.ndsn{border-width:0 1px 1px 0; border-right-style:dashed}
+.nnsd{border-width:0 0 1px 1px; border-left-style:dashed}
+
+/*==============================================================================
+GOAL
+*/
+.gol
+{
+  width:32px;
+  height:32px;
+  border:2px solid rgb(239,239,239);
+  background-color: rgba(255,255,255,0.25)
+}
+
+/*==============================================================================
+ABSOLUTE
+*/
+.abs{position:absolute}
+
+/*==============================================================================
+ROUND
+*/
+.rnd{border-radius:100%}
+
+/*==============================================================================
+SPACE
+*/
+.spc{height:7px}
+
+/*==============================================================================
+BOX
+*/
+.box{height:70px}
+
+/*==============================================================================
+YES OR NO
+*/
+.yon{width:6.25%; display:none}
+
+/*==============================================================================
+SVG
+*/
+.svg{fill:var(--c15)} 
+
+/*==============================================================================
+STANDARD SIZE
+*/
+.stn
+{
+  width:46px;
+  height:46px;
+  border:2px solid var(--c16);
+  box-sizing:border-box;
+}
+
+/*==============================================================================
+SPECIAL CASE 1
+*/
+.sc1{transform:translate(-1px,0)}
+
+/*////////////////////////////////////////////////////////////////////////////// SPECIFICS
+*/
+body
+{
+  background-color:var(--c04);
+  color:rgba(255,255,255,0.25);
+  font-family:sans-serif;
+  font-size:12px;
+  cursor:default;
+
+  -webkit-touch-callout:none;/* iOS Safari */
+  -webkit-user-select:none;/* Chrome/Safari/Opera */
+  -moz-user-select:none;/* Firefox */
+  -ms-user-select:none;/* Internet Explorer/Edge */
+}
+
+/*==============================================================================
+*/
+#arena
+{
+  width:962px;
+  min-width: 962px;
+  height:710px;
+  min-height:710px;
+  background-color:var(--c15);
+}
+
+/*==============================================================================
+*/
+#center
+{
+  background-color:rgba(0,0,0,0);
+  transform:translate(462px,270px);
+}
+
+/*==============================================================================
+*/
+#golGre1{transform:translate(-1px,-1px)}
+#golBlu1{transform:translate(0,-1px)}
+
+/*==============================================================================
+*/
+#selected
+{
+  border:4px solid rgba(255,255,255,0.5);
+  animation-name: ripple;
+  animation-duration: 0.25s;
+}
+
+/*..............................................................................
+*/
+@keyframes ripple
+{
+  0%  {border:4px solid rgba(255,255,255,0.5)}
+  50% {border:8px solid rgba(255,255,255,0.5)}
+  100%{border:2px solid rgba(255,255,255,0.5)}
+}

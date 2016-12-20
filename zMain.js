@@ -686,8 +686,8 @@
     ////////////////////////////////////////////////////////////////////////////
     // Step 4
     //
-    let hideGlow
-    let showGlow
+    let hideGlow = 0
+    let showGlow = 0
 
     if( Ω.now.currentPlayer === 'green' )
     {
@@ -703,45 +703,97 @@
     ////////////////////////////////////////////////////////////////////////////
     // Step 5
     //
-    for( let $ = 0; $ < hideGlow.length; $ ++ )
+    if( hideGlow !== 0 )
     {
-      Array.from( Ω.page.glow[ hideGlow[ $ ] ] ).forEach( function( $ )
+      for( let $ = 0; $ < hideGlow.length; $ ++ )
       {
-        $.style.fill = 'rgba(255,255,255,0.75)'
-      } )
-    }
+        Array.from( Ω.page.glow[ hideGlow[ $ ] ] ).forEach( function( $ )
+        {
+          $.style.fill = 'rgba(255,255,255,0.75)'
+        } )
+      }
 
-    for( let $ = 0; $ < showGlow.length; $ ++ )
-    {
-      Array.from( Ω.page.glow[ showGlow[ $ ] ] ).forEach( function( $ )
+      for( let $ = 0; $ < showGlow.length; $ ++ )
       {
-        let value = ( Ω.changer.glow[ 0 ] - Ω.changer.glow[ 0 ] / 8 )
+        Array.from( Ω.page.glow[ showGlow[ $ ] ] ).forEach( function( $ )
+        {
+          let value = ( Ω.changer.glow[ 0 ] - Ω.changer.glow[ 0 ] / 8 )
 
-        $.style.fill = 'rgba(255,255,255,' + ( 1 - value ) + ')'
-      } )
+          $.style.fill = 'rgba(255,255,255,' + ( 1 - value ) + ')'
+        } )
+      }
     }
 
     ////////////////////////////////////////////////////////////////////////////
     // Step 6
     //
-    let value
+    let key = true
+    let value = 1
     let entity =  Ω.now.currentPlayer.substring( 0, 3 )
 
-    if( Ω.now.hovered !== 'none' )
+    if( Ω.now.turn !== 0 )
     {
-      if( Ω.now.athlete[ Ω.now.hovered ][ 2 ] === entity ) value = 1
-      else                                                 value = 0.5
-    }
+      //========================================================================
+      // Athlete is hovered
+      //
+      if( Ω.now.hovered !== 'none'
+      && Ω.now.hovered !== 'ball')
+      {
+        //......................................................................
+        // Hovered athlete is playing
+        //
+        if( Ω.now.athlete[ Ω.now.hovered ][ 2 ] !== 'none' )
+        {
+          //....................................................................
+          // Athlete is the same color as the turn AND turn is higher than 7
+          //
+          if( Ω.now.athlete[ Ω.now.hovered ][ 2 ] === entity
+          && Ω.now.turn > 7 )
+          {
+            value = 1
+          }
+          else
+          {
+            value = 0.66
+            key = false
+          }
+        }
+      }
 
-    else if( Ω.now.selected !== 'none' )
-    {
-      if( Ω.now.athlete[ Ω.now.selected ][ 2 ] === entity ) value = 1
-      else                                                  value = 0.5
+      //========================================================================
+      // Athlete is selected
+      //
+      else if( Ω.now.selected !== 'none'
+      && Ω.now.selected !== 'ball')
+      {
+        //......................................................................
+        // Selected athlete is playing
+        //
+        if( Ω.now.athlete[ Ω.now.selected ][ 2 ] !== 'none' )
+        {
+          //....................................................................
+          // Athlete is the same color as the turn AND turn is higher than 7
+          //
+          if( Ω.now.athlete[ Ω.now.selected ][ 2 ] === entity
+          && Ω.now.turn > 7 )
+          {
+            value = 1
+          }
+          else
+          {
+            value = 0.66
+            key = false
+          }
+        }
+      }
     }
 
     Array.from( Ω.page.zone ).forEach( function( $ )
     {
       $.style.borderColor = 'rgba(255,255,255,' + value + ')'
+
+      if( key ) $.style.boxShadow = '0 0 0 4px rgba(255,255,255,0.5)'
+      else      $.style.boxShadow = ''
     } )
   },
 

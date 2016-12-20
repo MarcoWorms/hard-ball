@@ -648,19 +648,19 @@
     ////////////////////////////////////////////////////////////////////////////
     // Step 2
     //
-    let hide
-    let show
+    let hideText
+    let showText
 
     if( Ω.now.currentPlayer === 'green' )
     {
-      hide = Array.from( Ω.page.textBlue )
-      show = Array.from( Ω.page.textGreen )
+      hideText = Array.from( Ω.page.textBlue )
+      showText = Array.from( Ω.page.textGreen )
     }
 
     else if( Ω.now.currentPlayer === 'blue' )
     {
-      hide = Array.from( Ω.page.textGreen )
-      show = Array.from( Ω.page.textBlue )
+      hideText = Array.from( Ω.page.textGreen )
+      showText = Array.from( Ω.page.textBlue )
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -668,20 +668,81 @@
     //
     if( Ω.now.currentPlayer !== '' )
     {
-      hide.forEach( ( $ ) =>
+      hideText.forEach( ( $ ) =>
       {
         $.style.color = 'rgba(255,255,255,0.25)'
         $.style.textShadow = ''
       } )
 
-      show.forEach( ( $ ) =>
+      showText.forEach( ( $ ) =>
       {
-        let entity = Ω.changer.glow[ 0 ]
+        let value = Ω.changer.glow[ 0 ]
 
-        $.style.color = 'rgba(255,255,255,' + entity + ')'
-        $.style.textShadow = '0 0 4px rgba(255,255,255,' + entity + ')'
+        $.style.color = 'rgba(255,255,255,' + value + ')'
+        $.style.textShadow = '0 0 4px rgba(255,255,255,' + value + ')'
       } )
     }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Step 4
+    //
+    let hideGlow
+    let showGlow
+
+    if( Ω.now.currentPlayer === 'green' )
+    {
+      hideGlow = Ω.now.team.blue
+      showGlow = Ω.now.team.green
+    }
+    else if( Ω.now.currentPlayer === 'blue' )
+    {
+      hideGlow = Ω.now.team.green
+      showGlow = Ω.now.team.blue
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Step 5
+    //
+    for( let $ = 0; $ < hideGlow.length; $ ++ )
+    {
+      Array.from( Ω.page.glow[ hideGlow[ $ ] ] ).forEach( function( $ )
+      {
+        $.style.fill = 'rgba(255,255,255,0.75)'
+      } )
+    }
+
+    for( let $ = 0; $ < showGlow.length; $ ++ )
+    {
+      Array.from( Ω.page.glow[ showGlow[ $ ] ] ).forEach( function( $ )
+      {
+        let value = ( Ω.changer.glow[ 0 ] - Ω.changer.glow[ 0 ] / 8 )
+
+        $.style.fill = 'rgba(255,255,255,' + ( 1 - value ) + ')'
+      } )
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Step 6
+    //
+    let value
+    let entity =  Ω.now.currentPlayer.substring( 0, 3 )
+
+    if( Ω.now.hovered !== 'none' )
+    {
+      if( Ω.now.athlete[ Ω.now.hovered ][ 2 ] === entity ) value = 1
+      else                                                 value = 0.5
+    }
+
+    else if( Ω.now.selected !== 'none' )
+    {
+      if( Ω.now.athlete[ Ω.now.selected ][ 2 ] === entity ) value = 1
+      else                                                  value = 0.5
+    }
+
+    Array.from( Ω.page.zone ).forEach( function( $ )
+    {
+      $.style.borderColor = 'rgba(255,255,255,' + value + ')'
+    } )
   },
 
   ////////////////////////////////////////////////////////////////////////////// G.updTar

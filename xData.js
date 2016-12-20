@@ -145,6 +145,11 @@
   turn: 0,
 
   //============================================================================
+  // Shows which players are in which team,
+  //
+  team: { green: [], blue: [] },
+
+  //============================================================================
   // Which player played first and which is to play now
   //
   firstPlayer: '',

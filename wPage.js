@@ -77,4 +77,33 @@
 
   areaGreen: document.querySelectorAll( '.arg' ),
   areaBlue: document.querySelectorAll( '.arb' ),
+
+  //============================================================================
+  //
+  glow:
+  [
+    document.querySelectorAll( '.glw00' ),
+    document.querySelectorAll( '.glw01' ),
+    document.querySelectorAll( '.glw02' ),
+    document.querySelectorAll( '.glw03' ),
+    document.querySelectorAll( '.glw04' ),
+
+    document.querySelectorAll( '.glw05' ),
+    document.querySelectorAll( '.glw06' ),
+    document.querySelectorAll( '.glw07' ),
+    document.querySelectorAll( '.glw08' ),
+    document.querySelectorAll( '.glw09' ),
+
+    document.querySelectorAll( '.glw10' ),
+    document.querySelectorAll( '.glw11' ),
+    document.querySelectorAll( '.glw12' ),
+    document.querySelectorAll( '.glw13' ),
+    document.querySelectorAll( '.glw14' ),
+
+    document.querySelectorAll( '.glw15' ),
+    document.querySelectorAll( '.glw16' ),
+    document.querySelectorAll( '.glw17' ),
+    document.querySelectorAll( '.glw18' ),
+    document.querySelectorAll( '.glw19' ),
+  ],
 }

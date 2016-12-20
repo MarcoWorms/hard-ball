@@ -189,12 +189,12 @@
     }, 10 ) ],
   //============================================================================
   //
-  glow: [ 0.75, false, setInterval( function()
+  glow: [ 0.66, false, setInterval( function()
     {
-      if( Ω.changer.glow[ 1 ] === false ) Ω.changer.glow[ 0 ] += 0.05
-      else if( Ω.changer.glow[ 1 ] === true ) Ω.changer.glow[ 0 ] -= 0.05
+      if( Ω.changer.glow[ 1 ] === false ) Ω.changer.glow[ 0 ] += 0.03
+      else if( Ω.changer.glow[ 1 ] === true ) Ω.changer.glow[ 0 ] -= 0.03
 
-      if( Ω.changer.glow[ 0 ] > 0.75 ) Ω.changer.glow[ 1 ] = true
-      else if( Ω.changer.glow[ 0 ] < 0.25 ) Ω.changer.glow[ 1 ] = false
-    }, 120 ) ],
+      if( Ω.changer.glow[ 0 ] > 0.66 ) Ω.changer.glow[ 1 ] = true
+      else if( Ω.changer.glow[ 0 ] < 0.33 ) Ω.changer.glow[ 1 ] = false
+    }, 40 ) ],
 }

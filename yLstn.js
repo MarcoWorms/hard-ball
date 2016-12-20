@@ -76,7 +76,7 @@
     }
 
   //////////////////////////////////////////////////////////////////////////////
-  // END of 'listen.clicker'
+  // END of 'listen.zoner'
   //
   }, false ),
 
@@ -120,7 +120,7 @@
       localStorage.removeItem( 'last' )
       // So it does not trigger load below
 
-      Ω.engine.create()
+      location.reload()
     }
 
     ////////////////////////////////////////////////////////////////////////////

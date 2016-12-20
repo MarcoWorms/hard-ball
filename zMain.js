@@ -736,13 +736,13 @@
       //========================================================================
       // Athlete is hovered
       //
-      if( Ω.now.hovered !== 'none'
-      && Ω.now.hovered !== 'ball')
+      if( Ω.now.hovered !== 'none' && Ω.now.hovered !== 'ball' )
       {
         //......................................................................
-        // Hovered athlete is playing
+        // Hovered athlete is playing and is not a target
         //
-        if( Ω.now.athlete[ Ω.now.hovered ][ 2 ] !== 'none' )
+        if( Ω.now.athlete[ Ω.now.hovered ][ 2 ] !== 'none'
+        && Ω.info.target.indexOf( Ω.now.hovered ) === -1 )
         {
           //....................................................................
           // Athlete is the same color as the turn AND turn is higher than 7
@@ -763,8 +763,7 @@
       //========================================================================
       // Athlete is selected
       //
-      else if( Ω.now.selected !== 'none'
-      && Ω.now.selected !== 'ball')
+      else if( Ω.now.selected !== 'none' && Ω.now.selected !== 'ball' )
       {
         //......................................................................
         // Selected athlete is playing
@@ -792,7 +791,7 @@
     {
       $.style.borderColor = 'rgba(255,255,255,' + value + ')'
 
-      if( key ) $.style.boxShadow = '0 0 0 4px rgba(255,255,255,0.5)'
+      if( key ) $.style.boxShadow = '0 0 0 3px rgba(255,255,255,0.5)'
       else      $.style.boxShadow = ''
     } )
   },

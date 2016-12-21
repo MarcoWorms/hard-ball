@@ -364,26 +364,29 @@
     let y2
     let coordinate2
 
-    for( let $ = 0; $ < 4; $ ++ )
+    if( Ω.now.turn > 7 )
     {
-      x1 = Ω.now.athlete[ Ω.now.team.green[ $ ] ][ 0 ] - 1
-      y1 = Ω.now.athlete[ Ω.now.team.green[ $ ] ][ 1 ] - 1
-      coordinate1 = Ω.tool.convert( [ x1, y1 ] )
-
-      x2 = Ω.now.athlete[ Ω.now.team.blue[ $ ] ][ 0 ] - 1
-      y2 = Ω.now.athlete[ Ω.now.team.blue[ $ ] ][ 1 ] - 1
-      coordinate2 = Ω.tool.convert( [ x2, y2 ] )
-
-      if( Ω.info.area.green.indexOf( coordinate1 ) !== -1 )
+      for( let $ = 0; $ < 4; $ ++ )
       {
-        Ω.info.keeper.green[ 0 ] = true
-        Ω.info.keeper.green[ 1 ] = Ω.now.team.green[ $ ]
-      }
+        x1 = Ω.now.athlete[ Ω.now.team.green[ $ ] ][ 0 ] - 1
+        y1 = Ω.now.athlete[ Ω.now.team.green[ $ ] ][ 1 ] - 1
+        coordinate1 = Ω.tool.convert( [ x1, y1 ] )
 
-      if( Ω.info.area.blue.indexOf( coordinate2 ) !== -1 )
-      {
-        Ω.info.keeper.blue[ 0 ] = true
-        Ω.info.keeper.blue[ 1 ] = Ω.now.team.blue[ $ ]
+        x2 = Ω.now.athlete[ Ω.now.team.blue[ $ ] ][ 0 ] - 1
+        y2 = Ω.now.athlete[ Ω.now.team.blue[ $ ] ][ 1 ] - 1
+        coordinate2 = Ω.tool.convert( [ x2, y2 ] )
+
+        if( Ω.info.area.green.indexOf( coordinate1 ) !== -1 )
+        {
+          Ω.info.keeper.green[ 0 ] = true
+          Ω.info.keeper.green[ 1 ] = Ω.now.team.green[ $ ]
+        }
+
+        if( Ω.info.area.blue.indexOf( coordinate2 ) !== -1 )
+        {
+          Ω.info.keeper.blue[ 0 ] = true
+          Ω.info.keeper.blue[ 1 ] = Ω.now.team.blue[ $ ]
+        }
       }
     }
   },

@@ -73,6 +73,7 @@
     Ω.game.updZon()
     Ω.game.updCur()
     Ω.game.updTar()
+    Ω.game.updKee()
   },
 
   ////////////////////////////////////////////////////////////////////////////// G.updAtl
@@ -156,6 +157,234 @@
     else
     {
       Ω.page.selected.style.display = 'none'
+    }
+  },
+
+  ////////////////////////////////////////////////////////////////////////////// G.updCur
+  // Updates whose turn it is and side-effects
+  //
+  updCur: function()
+  {
+    ////////////////////////////////////////////////////////////////////////////
+    // Defining who is to play now
+    //
+    if( Ω.now.firstPlayer === 'green' )
+    {
+      if( Ω.now.turn % 2 === 0 ) Ω.now.currentPlayer = 'green'
+      else                       Ω.now.currentPlayer = 'blue'
+    }
+
+    else if( Ω.now.firstPlayer === 'blue' )
+    {
+      if( Ω.now.turn % 2 === 0 ) Ω.now.currentPlayer = 'blue'
+      else                       Ω.now.currentPlayer = 'green'
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Determining which cell text is to be shown with glow effect
+    //
+    let hideText
+    let showText
+
+    if( Ω.now.currentPlayer === 'green' )
+    {
+      hideText = Array.from( Ω.page.textBlue )
+      showText = Array.from( Ω.page.textGreen )
+    }
+
+    else if( Ω.now.currentPlayer === 'blue' )
+    {
+      hideText = Array.from( Ω.page.textGreen )
+      showText = Array.from( Ω.page.textBlue )
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Making the selected cells glow
+    //
+    if( Ω.now.turn !== 0 )
+    {
+      hideText.forEach( ( $ ) =>
+      {
+        $.style.color = 'rgba(255,255,255,0.25)'
+        $.style.textShadow = ''
+      } )
+
+      showText.forEach( ( $ ) =>
+      {
+        let value = Ω.changer.glow[ 0 ]
+
+        $.style.color = 'rgba(255,255,255,' + value + ')'
+        $.style.textShadow = '0 0 4px rgba(255,255,255,' + value + ')'
+      } )
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Determining which athlete art is to be shown with glow effect
+    //
+    let hideGlow = 0
+    let showGlow = 0
+
+    if( Ω.now.currentPlayer === 'green' )
+    {
+      hideGlow = Ω.now.team.blue
+      showGlow = Ω.now.team.green
+    }
+    else if( Ω.now.currentPlayer === 'blue' )
+    {
+      hideGlow = Ω.now.team.green
+      showGlow = Ω.now.team.blue
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Making the selected arts glow
+    //
+    if( hideGlow !== 0 )
+    {
+      for( let $ = 0; $ < hideGlow.length; $ ++ )
+      {
+        Array.from( Ω.page.glow[ hideGlow[ $ ] ] ).forEach( function( $ )
+        {
+          $.style.fill = 'rgba(255,255,255,0.75)'
+        } )
+      }
+
+      for( let $ = 0; $ < showGlow.length; $ ++ )
+      {
+        Array.from( Ω.page.glow[ showGlow[ $ ] ] ).forEach( function( $ )
+        {
+          let value = ( Ω.changer.glow[ 0 ] - Ω.changer.glow[ 0 ] / 8 )
+
+          $.style.fill = 'rgba(255,255,255,' + ( 1 - value ) + ')'
+        } )
+      }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Determining how are zones to be shown
+    //
+    let key = true
+    let value = 1
+    let entity =  Ω.now.currentPlayer.substring( 0, 3 )
+
+    if( Ω.now.turn !== 0 )
+    {
+      //========================================================================
+      // Athlete is hovered
+      //
+      if( Ω.now.hovered !== 'none' && Ω.now.hovered !== 'ball' )
+      {
+        //......................................................................
+        // Hovered athlete is playing and is not a target
+        //
+        if( Ω.now.athlete[ Ω.now.hovered ][ 2 ] !== 'none'
+        && Ω.info.target.indexOf( Ω.now.hovered ) === -1 )
+        {
+          //....................................................................
+          // Athlete is the same color as the turn AND turn is higher than 7
+          //
+          if( Ω.now.athlete[ Ω.now.hovered ][ 2 ] === entity
+          && Ω.now.turn > 7 )
+          {
+            value = 1
+          }
+          else
+          {
+            value = 0.66
+            key = false
+          }
+        }
+      }
+
+      //========================================================================
+      // Athlete is selected
+      //
+      else if( Ω.now.selected !== 'none' && Ω.now.selected !== 'ball' )
+      {
+        //......................................................................
+        // Selected athlete is playing
+        //
+        if( Ω.now.athlete[ Ω.now.selected ][ 2 ] !== 'none' )
+        {
+          //....................................................................
+          // Athlete is the same color as the turn AND turn is higher than 7
+          //
+          if( Ω.now.athlete[ Ω.now.selected ][ 2 ] === entity
+          && Ω.now.turn > 7 )
+          {
+            value = 1
+          }
+          else
+          {
+            value = 0.66
+            key = false
+          }
+        }
+      }
+    }
+
+    Array.from( Ω.page.zone ).forEach( function( $ )
+    {
+      $.style.borderColor = 'rgba(255,255,255,' + value + ')'
+
+      if( key ) $.style.boxShadow = '0 0 0 3px rgba(255,255,255,0.5)'
+      else      $.style.boxShadow = ''
+    } )
+  },
+
+  ////////////////////////////////////////////////////////////////////////////// G.updTar
+  // Updates an array containing currently targeted athletes
+  //
+  updTar: function()
+  {
+    Ω.info.target = []
+
+    for( let $1 = 0; $1 < 20; $1 ++ )
+    {
+      for( let $2 = 0; $2 < 16; $2 ++ )
+      {
+        if( Ω.now.athlete[ $1 ][ 0 ] - 1 === Ω.info.zone[ $2 ][ 0 ]
+        && Ω.now.athlete[ $1 ][ 1 ] - 1 === Ω.info.zone[ $2 ][ 1 ] )
+        {
+          Ω.info.target.push( $1 )
+        }
+      }
+    }
+  },
+
+  ////////////////////////////////////////////////////////////////////////////// G.updKee
+  // Updating if there is a current athlete inside its area
+  //
+  updKee: function()
+  {
+    let x1
+    let y1
+    let coordinate1
+
+    let x2
+    let y2
+    let coordinate2
+
+    for( let $ = 0; $ < 4; $ ++ )
+    {
+      x1 = Ω.now.athlete[ Ω.now.team.green[ $ ] ][ 0 ] - 1
+      y1 = Ω.now.athlete[ Ω.now.team.green[ $ ] ][ 1 ] - 1
+      coordinate1 = Ω.tool.convert( [ x1, y1 ] )
+
+      x2 = Ω.now.athlete[ Ω.now.team.blue[ $ ] ][ 0 ] - 1
+      y2 = Ω.now.athlete[ Ω.now.team.blue[ $ ] ][ 1 ] - 1
+      coordinate2 = Ω.tool.convert( [ x2, y2 ] )
+
+      if( Ω.info.area.green.indexOf( coordinate1 ) !== -1 )
+      {
+        Ω.info.keeper.green[ 0 ] = true
+        Ω.info.keeper.green[ 1 ] = Ω.now.team.green[ $ ]
+      }
+
+      if( Ω.info.area.blue.indexOf( coordinate2 ) !== -1 )
+      {
+        Ω.info.keeper.blue[ 0 ] = true
+        Ω.info.keeper.blue[ 1 ] = Ω.now.team.blue[ $ ]
+      }
     }
   },
 
@@ -621,197 +850,6 @@
       else
       {
         Ω.page.zone[ $ ].style.display = 'none'
-      }
-    }
-  },
-
-  ////////////////////////////////////////////////////////////////////////////// G.updCur
-  // Updates whose turn is it
-  //
-  updCur: function()
-  {
-    ////////////////////////////////////////////////////////////////////////////
-    // Step 1
-    //
-    if( Ω.now.firstPlayer === 'green' )
-    {
-      if( Ω.now.turn % 2 === 0 ) Ω.now.currentPlayer = 'green'
-      else                       Ω.now.currentPlayer = 'blue'
-    }
-
-    else if( Ω.now.firstPlayer === 'blue' )
-    {
-      if( Ω.now.turn % 2 === 0 ) Ω.now.currentPlayer = 'blue'
-      else                       Ω.now.currentPlayer = 'green'
-    }
-
-    ////////////////////////////////////////////////////////////////////////////
-    // Step 2
-    //
-    let hideText
-    let showText
-
-    if( Ω.now.currentPlayer === 'green' )
-    {
-      hideText = Array.from( Ω.page.textBlue )
-      showText = Array.from( Ω.page.textGreen )
-    }
-
-    else if( Ω.now.currentPlayer === 'blue' )
-    {
-      hideText = Array.from( Ω.page.textGreen )
-      showText = Array.from( Ω.page.textBlue )
-    }
-
-    ////////////////////////////////////////////////////////////////////////////
-    // Step 3
-    //
-    if( Ω.now.currentPlayer !== '' )
-    {
-      hideText.forEach( ( $ ) =>
-      {
-        $.style.color = 'rgba(255,255,255,0.25)'
-        $.style.textShadow = ''
-      } )
-
-      showText.forEach( ( $ ) =>
-      {
-        let value = Ω.changer.glow[ 0 ]
-
-        $.style.color = 'rgba(255,255,255,' + value + ')'
-        $.style.textShadow = '0 0 4px rgba(255,255,255,' + value + ')'
-      } )
-    }
-
-    ////////////////////////////////////////////////////////////////////////////
-    // Step 4
-    //
-    let hideGlow = 0
-    let showGlow = 0
-
-    if( Ω.now.currentPlayer === 'green' )
-    {
-      hideGlow = Ω.now.team.blue
-      showGlow = Ω.now.team.green
-    }
-    else if( Ω.now.currentPlayer === 'blue' )
-    {
-      hideGlow = Ω.now.team.green
-      showGlow = Ω.now.team.blue
-    }
-
-    ////////////////////////////////////////////////////////////////////////////
-    // Step 5
-    //
-    if( hideGlow !== 0 )
-    {
-      for( let $ = 0; $ < hideGlow.length; $ ++ )
-      {
-        Array.from( Ω.page.glow[ hideGlow[ $ ] ] ).forEach( function( $ )
-        {
-          $.style.fill = 'rgba(255,255,255,0.75)'
-        } )
-      }
-
-      for( let $ = 0; $ < showGlow.length; $ ++ )
-      {
-        Array.from( Ω.page.glow[ showGlow[ $ ] ] ).forEach( function( $ )
-        {
-          let value = ( Ω.changer.glow[ 0 ] - Ω.changer.glow[ 0 ] / 8 )
-
-          $.style.fill = 'rgba(255,255,255,' + ( 1 - value ) + ')'
-        } )
-      }
-    }
-
-    ////////////////////////////////////////////////////////////////////////////
-    // Step 6
-    //
-    let key = true
-    let value = 1
-    let entity =  Ω.now.currentPlayer.substring( 0, 3 )
-
-    if( Ω.now.turn !== 0 )
-    {
-      //========================================================================
-      // Athlete is hovered
-      //
-      if( Ω.now.hovered !== 'none' && Ω.now.hovered !== 'ball' )
-      {
-        //......................................................................
-        // Hovered athlete is playing and is not a target
-        //
-        if( Ω.now.athlete[ Ω.now.hovered ][ 2 ] !== 'none'
-        && Ω.info.target.indexOf( Ω.now.hovered ) === -1 )
-        {
-          //....................................................................
-          // Athlete is the same color as the turn AND turn is higher than 7
-          //
-          if( Ω.now.athlete[ Ω.now.hovered ][ 2 ] === entity
-          && Ω.now.turn > 7 )
-          {
-            value = 1
-          }
-          else
-          {
-            value = 0.66
-            key = false
-          }
-        }
-      }
-
-      //========================================================================
-      // Athlete is selected
-      //
-      else if( Ω.now.selected !== 'none' && Ω.now.selected !== 'ball' )
-      {
-        //......................................................................
-        // Selected athlete is playing
-        //
-        if( Ω.now.athlete[ Ω.now.selected ][ 2 ] !== 'none' )
-        {
-          //....................................................................
-          // Athlete is the same color as the turn AND turn is higher than 7
-          //
-          if( Ω.now.athlete[ Ω.now.selected ][ 2 ] === entity
-          && Ω.now.turn > 7 )
-          {
-            value = 1
-          }
-          else
-          {
-            value = 0.66
-            key = false
-          }
-        }
-      }
-    }
-
-    Array.from( Ω.page.zone ).forEach( function( $ )
-    {
-      $.style.borderColor = 'rgba(255,255,255,' + value + ')'
-
-      if( key ) $.style.boxShadow = '0 0 0 3px rgba(255,255,255,0.5)'
-      else      $.style.boxShadow = ''
-    } )
-  },
-
-  ////////////////////////////////////////////////////////////////////////////// G.updTar
-  // Updates an array containing currently targeted athletes
-  //
-  updTar: function()
-  {
-    Ω.info.target = []
-
-    for( let $1 = 0; $1 < 20; $1 ++ )
-    {
-      for( let $2 = 0; $2 < 16; $2 ++ )
-      {
-        if( Ω.now.athlete[ $1 ][ 0 ] - 1 === Ω.info.zone[ $2 ][ 0 ]
-        && Ω.now.athlete[ $1 ][ 1 ] - 1 === Ω.info.zone[ $2 ][ 1 ] )
-        {
-          Ω.info.target.push( $1 )
-        }
       }
     }
   },

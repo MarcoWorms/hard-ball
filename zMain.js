@@ -356,6 +356,8 @@
   //
   updKee: function()
   {
+    //==========================================================================
+    //
     let x1
     let y1
     let coordinate1
@@ -370,24 +372,34 @@
     Ω.info.keeper.blue[ 0 ] = false
     Ω.info.keeper.blue[ 1 ] = 0
 
+    //==========================================================================
+    //
     if( Ω.now.turn > 7 )
     {
       for( let $ = 0; $ < 4; $ ++ )
       {
+        //======================================================================
+        //
         x1 = Ω.now.athlete[ Ω.now.team.green[ $ ] ][ 0 ] - 1
         y1 = Ω.now.athlete[ Ω.now.team.green[ $ ] ][ 1 ] - 1
         coordinate1 = Ω.tool.convert( [ x1, y1 ] )
 
-        x2 = Ω.now.athlete[ Ω.now.team.blue[ $ ] ][ 0 ] - 1
-        y2 = Ω.now.athlete[ Ω.now.team.blue[ $ ] ][ 1 ] - 1
-        coordinate2 = Ω.tool.convert( [ x2, y2 ] )
-
+        //......................................................................
+        //
         if( Ω.info.area.green.indexOf( coordinate1 ) !== -1 )
         {
           Ω.info.keeper.green[ 0 ] = true
           Ω.info.keeper.green[ 1 ] = Ω.now.team.green[ $ ]
         }
 
+        //======================================================================
+        //
+        x2 = Ω.now.athlete[ Ω.now.team.blue[ $ ] ][ 0 ] - 1
+        y2 = Ω.now.athlete[ Ω.now.team.blue[ $ ] ][ 1 ] - 1
+        coordinate2 = Ω.tool.convert( [ x2, y2 ] )
+
+        //......................................................................
+        //
         if( Ω.info.area.blue.indexOf( coordinate2 ) !== -1 )
         {
           Ω.info.keeper.blue[ 0 ] = true
@@ -478,7 +490,7 @@
         function()
         {
           let array = []
-          for( let $ = 0; $ < 16; $ ++ ) array.push( [ 0, 0 ] )
+          for( let $ = 0; $ < 16; $ ++ ) array.push( [ 'none', 'none' ] ) // !@#$%$#@!
           return array
         }()
       )
@@ -503,7 +515,7 @@
       function()
       {
         let array = []
-        for( let $ = 0; $ < 16; $ ++ ) array.push( [ 0, 0 ] )
+        for( let $ = 0; $ < 16; $ ++ ) array.push( [ 'none', 'none' ] ) // !@#$%$#@!
         return array
       }()
     )

@@ -42,6 +42,7 @@
         {
           let coordinate = Ω.tool.convert( [ x, y ] )
           let entity
+          let team
 
           //====================================================================
           // Zone is green
@@ -51,7 +52,7 @@
             if( Ω.now.turn === 0 ) Ω.now.firstPlayer = 'green'
             Ω.now.athlete[ Ω.now.selected ][ 2 ] = 'gre'
             entity = Ω.now.spawn.green
-            Ω.now.team.green.push( Ω.now.selected )
+            team = Ω.now.team.green
           }
 
           //====================================================================
@@ -62,10 +63,11 @@
             if( Ω.now.turn === 0 ) Ω.now.firstPlayer = 'blue'
             Ω.now.athlete[ Ω.now.selected ][ 2 ] = 'blu'
             entity = Ω.now.spawn.blue
-            Ω.now.team.blue.push( Ω.now.selected )
+            team = Ω.now.team.blue
           }
 
           Ω.tool.remove( coordinate, entity )
+          team.push( Ω.now.selected )
         }
 
         ////////////////////////////////////////////////////////////////////////

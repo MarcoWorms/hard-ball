@@ -96,22 +96,49 @@
   //
   isZone: function( color, counter, x, y )
   {
-    let target
+    let area
+    let aera
+    let keeper
 
-    if( color === 'gre' ) target = Ω.info.areaBlue
-    else                  target = Ω.info.areaGreen
+    if( color === 'gre' )
+    {
+      area = Ω.info.area.blue
+      aera = Ω.info.area.green
+      keeper = Ω.info.keeper.green
+    }
+    else
+    {
+      area = Ω.info.area.green
+      aera = Ω.info.area.blue
+      keeper = Ω.info.keeper.blue
+    }
 
+    ////////////////////////////////////////////////////////////////////////////
+    // Checks wheter there is a keeper and if the athlete is said keeper
+    //
+    let coordinate = Ω.tool.convert( [ x, y ] ) // returns something like 'D12'
+
+    let kee = false
+    let one = false
+
+    if( keeper[ 1 ] === Ω.info.currentDisplayed ) one = true
+
+    if( keeper[ 0 ] && aera.indexOf( coordinate ) !== -1 && !one ) // ¡ aeRa !
+    {
+      kee = true
+    }
 
     ////////////////////////////////////////////////////////////////////////////
     // Checks wheter zone is in adversary's area or not
     //
-    if( target.indexOf( Ω.tool.convert( [ x, y ] ) ) === -1 )
+    if( area.indexOf( coordinate ) === -1 && !kee ) // ¡ aRea !
     {
       Ω.info.zone[ counter ] = [ x, y ]
       return 1
     }
     else
     {
+      kee = false
       return 0
     }
   },

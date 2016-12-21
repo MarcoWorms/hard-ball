@@ -145,17 +145,26 @@
       //========================================================================
       //
       Ω.now.selected = Number( $.target.id.substring( 4, 6 ) ) // 0 to 19
+      Ω.info.currentDisplayed = Ω.now.selected
     }
 
     ////////////////////////////////////////////////////////////////////////////
     // 04 . Select the ball
     //
-    else if( $.target.id === 'ball' ) Ω.now.selected = 'ball'
+    else if( $.target.id === 'ball' )
+    {
+      Ω.now.selected = 'ball'
+      Ω.info.currentDisplayed = Ω.now.selected
+    }
 
     ////////////////////////////////////////////////////////////////////////////
     // 05 . Select nothing
     //
-    else Ω.now.selected = 'none'
+    else 
+    {
+      Ω.now.selected = 'none'
+      Ω.info.currentDisplayed = Ω.now.selected
+    }
 
     ////////////////////////////////////////////////////////////////////////////
     // EXTRA
@@ -178,15 +187,18 @@
     //
     if( $.target.id.substring( 0, 3 ) === 'min' )
     {
-      //========================================================================
-      //
       Ω.now.hovered = Number( $.target.id.substring( 4, 6 ) ) // 0 to 19
+      Ω.info.currentDisplayed = Ω.now.hovered
     }
 
     ////////////////////////////////////////////////////////////////////////////
     // 01 . Hover the ball
     //
-    else if( $.target.id === 'ball' ) Ω.now.hovered = 'ball'
+    else if( $.target.id === 'ball' )
+    {
+      Ω.now.hovered = 'ball'
+      Ω.info.currentDisplayed = Ω.now.hovered
+    }
 
   //////////////////////////////////////////////////////////////////////////////
   // END of 'listen.hoverer'

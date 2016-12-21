@@ -7,6 +7,18 @@
 Ω.info =
 {
   //============================================================================
+  //
+  currentDisplayed: 'none',
+
+  //============================================================================
+  //
+  target: [],
+
+  //============================================================================
+  //
+  keeper: { green: [ false, 0 ], blue: [ false, 0 ] },
+
+  //============================================================================
   // 'info.cell' is an array containing 13 arrays (arena rows)
   // Each of these arrays contain 20 arrays (row's cells coordinates)
   // Each of these arrays contain 1 cell's information as follows...
@@ -105,33 +117,34 @@
   //============================================================================
   // Each is an array of cell names relative to the area
   //
-  areaGreen:
-  (
-    function()
-    {
-      let entity = Ω.page.areaGreen
-      let array = []
-      for( let $ = 0; $ < entity.length; $ ++ ) array.push( entity[ $ ].id )
-      return array
-    }()
-  ),
+  area:
+  {
+    //..........................................................................
+    //
+    green:
+    (
+      function()
+      {
+        let entity = Ω.page.areaGreen
+        let array = []
+        for( let $ = 0; $ < entity.length; $ ++ ) array.push( entity[ $ ].id )
+        return array
+      }()
+    ),
 
-  //............................................................................
-  //
-  areaBlue:
-  (
-    function()
-    {
-      let entity = Ω.page.areaBlue
-      let array = []
-      for( let $ = 0; $ < entity.length; $ ++ ) array.push( entity[ $ ].id )
-      return array
-    }()
-  ),
-
-  //============================================================================
-  //
-  target: [],
+    //..........................................................................
+    //
+    blue:
+    (
+      function()
+      {
+        let entity = Ω.page.areaBlue
+        let array = []
+        for( let $ = 0; $ < entity.length; $ ++ ) array.push( entity[ $ ].id )
+        return array
+      }()
+    ),
+  },
 }
 
 //////////////////////////////////////////////////////////////////////////////// NOW

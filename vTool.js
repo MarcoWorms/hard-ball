@@ -129,7 +129,8 @@
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Checks wheter zone is in adversary's area or not
+    // Checks wheter the zone is in adversary's area and if there is anyone
+    // currently being the goalkeeper for its team
     //
     if( area.indexOf( coordinate ) === -1 && !kee ) // ¡ aRea !
     {

@@ -16,7 +16,7 @@
 
   //============================================================================
   //
-  keeper: { green: [ false, 0 ], blue: [ false, 0 ] },
+  keeper: { green: [ false, 'none' ], blue: [ false, 'none' ] },
 
   //============================================================================
   // 'info.cell' is an array containing 13 arrays (arena rows)
@@ -63,7 +63,7 @@
     function()
     {
       let array = []
-      for( let $ = 0; $ < 16; $ ++ ) array.push( [ 0, 0 ] )
+      for( let $ = 0; $ < 16; $ ++ ) array.push( [ 'none', 'none' ] ) // !@#$%$#@!
       return array
     }()
   ),

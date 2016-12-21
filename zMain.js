@@ -364,6 +364,12 @@
     let y2
     let coordinate2
 
+    Ω.info.keeper.green[ 0 ] = false
+    Ω.info.keeper.green[ 1 ] = 0
+
+    Ω.info.keeper.blue[ 0 ] = false
+    Ω.info.keeper.blue[ 1 ] = 0
+
     if( Ω.now.turn > 7 )
     {
       for( let $ = 0; $ < 4; $ ++ )

@@ -10,24 +10,25 @@
   //
   zoner: addEventListener( 'mousedown', function( $ )
   {
-    if( $.target.id.substring( 0, 3 ) === 'zon' )
+    if( $.target.id.substring( 0, 3 ) === 'zon' ) // target is a zone
     {
-      let digit = Number( $.target.id.substring( 3, 5 ) )
+      let digit = Number( $.target.id.substring( 3, 5 ) ) // zone's number
 
       //////////////////////////////////////////////////////////////////////////
       // MAIN MOVE BEHAVIOR
       //
-      let A = Ω.now.athlete[ Ω.now.selected ][ 2 ]
-      // athlete color as 'gre' or 'blu'
+      let athleteColor = Ω.now.athlete[ Ω.now.selected ][ 2 ] // 'gre' or 'blu'
+      let turnColor = Ω.now.currentPlayer.substring( 0, 3 ) // 'gre' or 'blu'
 
-      let B = Ω.now.currentPlayer.substring( 0, 3 )
-      // turn color as 'gre' or 'blu'
+      if( Ω.now.turn < 8 // turns 0 to 7
+      && athleteColor === 'none' // selected athlete has no team
 
-      if( Ω.now.turn < 8 && A === 'none'
-      || Ω.now.turn > 7 && A !== 'none' && A !== 'red' && A === B )
+      || Ω.now.turn > 7 // turns 8+
+      && athleteColor !== 'red' // selected athlete is not benched
+      && athleteColor === turnColor ) // it is the athlete's team turn
       {
-        ////////////////////////////////////////////////////////////////////////
-        // Position
+        //======================================================================
+        // Change athlete's position through the zone to its new cell
         //
         let x = Ω.info.zone[ digit ][ 0 ]
         let y = Ω.info.zone[ digit ][ 1 ]
@@ -35,43 +36,50 @@
         Ω.now.athlete[ Ω.now.selected ][ 0 ] = x + 1
         Ω.now.athlete[ Ω.now.selected ][ 1 ] = y + 1
 
-        ////////////////////////////////////////////////////////////////////////
-        // Color and defining cell is now occupied
+        //======================================================================
+        // Setting initial parameters of each athlete
         //
-        if( Ω.now.turn < 8 )
+        if( Ω.now.turn < 8 ) // turns 0 to 7
         {
-          let coordinate = Ω.tool.convert( [ x, y ] )
-          let entity
-          let team
+          let coordinate = Ω.tool.convert( [ x, y ] ) // zone's coordinate
+          let spawn // available zone to enter the arena
+          let team // which team the athlete will be entered
 
-          //====================================================================
+          //....................................................................
           // Zone is green
           //
           if( Ω.now.spawn.green.indexOf( coordinate ) !== -1 )
           {
             if( Ω.now.turn === 0 ) Ω.now.firstPlayer = 'green'
             Ω.now.athlete[ Ω.now.selected ][ 2 ] = 'gre'
-            entity = Ω.now.spawn.green
+            spawn = Ω.now.spawn.green
             team = Ω.now.team.green
           }
 
-          //====================================================================
+          //....................................................................
           // Zone is blue
           //
           else
           {
             if( Ω.now.turn === 0 ) Ω.now.firstPlayer = 'blue'
             Ω.now.athlete[ Ω.now.selected ][ 2 ] = 'blu'
-            entity = Ω.now.spawn.blue
+            spawn = Ω.now.spawn.blue
             team = Ω.now.team.blue
           }
 
-          Ω.tool.remove( coordinate, entity )
+          //....................................................................
+          // Update the array of vacant initial cells
+          //
+          Ω.tool.remove( coordinate, spawn )
+
+          //....................................................................
+          // Update the team's formation array
+          //
           team.push( Ω.now.selected )
         }
 
-        ////////////////////////////////////////////////////////////////////////
-        // Extra
+        //======================================================================
+        // End turn
         //
         Ω.now.turn += 1
       }
@@ -144,8 +152,6 @@
     //
     else if( $.target.id.substring( 0, 3 ) === 'min' )
     {
-      //========================================================================
-      //
       Ω.now.selected = Number( $.target.id.substring( 4, 6 ) ) // 0 to 19
       Ω.info.currentDisplayed = Ω.now.selected
     }
@@ -169,7 +175,7 @@
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // EXTRA
+    // EXTRA . Updating the position of the selection zone
     //
     Ω.game.updSel() // Updated here to preserve animation
 
@@ -185,13 +191,15 @@
     ////////////////////////////////////////////////////////////////////////////
     // 00 . Hover some athlete that is not targeted
     //
-    let digit = Number( $.target.id.substring( 4, 6 ) )
-
-    if( $.target.id.substring( 0, 3 ) === 'min'
-    && Ω.info.target.indexOf( digit ) === -1 )
+    if( $.target.id.substring( 0, 3 ) === 'min' ) // if target is an athlete
     {
-      Ω.now.hovered = Number( $.target.id.substring( 4, 6 ) ) // 0 to 19
-      Ω.info.currentDisplayed = Ω.now.hovered
+      let digit = Number( $.target.id.substring( 4, 6 ) ) // athlete's number
+
+      if( Ω.info.target.indexOf( digit ) === -1 ) // and it isn't a target
+      {
+        Ω.now.hovered = digit // 'none' or 0 to 19
+        Ω.info.currentDisplayed = Ω.now.hovered
+      }
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -204,9 +212,9 @@
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // 02 . Hover the selected zone
+    // 02 . Hover the selection zone
     //
-    else if( $.target.id === 'selected' )
+    else if( $.target.id === 'selection' )
     {
       Ω.now.hovered = Ω.now.selected
       Ω.info.currentDisplayed = Ω.now.hovered
@@ -219,7 +227,10 @@
     {
       Ω.now.hovered = 'none'
 
-      if( Ω.now.selected !== 'none' )
+      //========================================================================
+      // Hovering nothing is tricky and must be safeguarded by this condition
+      //
+      if( Ω.now.selected !== 'none' ) // could be any athlete or the ball
       {
         Ω.info.currentDisplayed = Ω.now.selected
       }

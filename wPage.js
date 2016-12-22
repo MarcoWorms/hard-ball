@@ -45,7 +45,7 @@
 
   //============================================================================
   //
-  selected: document.getElementById( 'selected' ),
+  selection: document.getElementById( 'selection' ),
 
   zone:
   [

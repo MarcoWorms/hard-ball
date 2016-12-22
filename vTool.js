@@ -7,12 +7,11 @@
 Ω.tool =
 {
   ////////////////////////////////////////////////////////////////////////////// T.hasCls
-  // Check for a class in any HTML object
+  // Check for a class in any HTML object (returns 'true' or 'false')
   //
   hasCls: function( entity, klass )
   {
     //==========================================================================
-    // Returns 'true' or 'false'
     //
     return !!entity.className.match( klass )
   },
@@ -25,7 +24,8 @@
     //==========================================================================
     // It must have the class so it can be removed
     //
-    if( !Ω.tool.hasCls( entity, klass ) && action === "+" )
+    if( !Ω.tool.hasCls( entity, klass )
+    && action === "+" )
     {
       entity.classList.add( klass )
     }
@@ -33,13 +33,15 @@
     //==========================================================================
     // It mustn't have the class so it can be added
     //
-    else if( Ω.tool.hasCls( entity, klass ) && action === "-" )
+    else if( Ω.tool.hasCls( entity, klass )
+    && action === "-" )
     {
       entity.classList.remove( klass )
     }
   },
 
   ////////////////////////////////////////////////////////////////////////////// T.translate
+  // Just a shortener of a JS/CSS line
   //
   translate: function( entity, x, y )
   {
@@ -49,6 +51,7 @@
   },
 
   ////////////////////////////////////////////////////////////////////////////// T.rotate
+  // Just a shortener of a JS/CSS line
   //
   rotate: function( entity, speed )
   {
@@ -58,6 +61,7 @@
   },
 
   ////////////////////////////////////////////////////////////////////////////// T.bend
+  // Gives the desired torus (donut shape) effect to the display of zones
   //
   bend: function( entity, axis )
   {
@@ -93,53 +97,58 @@
   },
 
   ////////////////////////////////////////////////////////////////////////////// T.isZone
+  // Is intended to regulate which zone is displayed and which is not
   //
-  isZone: function( color, counter, x, y )
+  isZone: function( digit, counter, x, y )
   {
-    let area
-    let aera
-    let keeper
+    let color = Ω.now.athlete[ digit ][ 2 ] // athlete's color
+
+    let area // the athlete's own area
+    let aera // the opponent's area
+    let keeper // 'none' or the number of the athlete (0 to 19)
 
     if( color === 'gre' )
     {
-      area = Ω.info.area.blue
-      aera = Ω.info.area.green
-      keeper = Ω.info.keeper.green
-    }
-    else
-    {
       area = Ω.info.area.green
       aera = Ω.info.area.blue
+      keeper = Ω.info.keeper.green
+    }
+    else if( color === 'blu' )
+    {
+      area = Ω.info.area.blue
+      aera = Ω.info.area.green
       keeper = Ω.info.keeper.blue
     }
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Checks wheter there is a keeper and if the athlete is said keeper
+    //==========================================================================
     //
-    let coordinate = Ω.tool.convert( [ x, y ] ) // returns something like 'D12'
+    let one = false // the displayed (maybe an athlete) isn't the keeper (?)
 
-    let one = false
-    let kee = false
+    if( keeper === Ω.info.currentDisplayed ) one = true // yes, it is the keeper
 
-    if( keeper[ 1 ] === Ω.info.currentDisplayed ) one = true
+    //==========================================================================
+    //
+    let coordinate = Ω.tool.convert( [ x, y ] ) // zone's cell name
 
-    if( keeper[ 0 ] && aera.indexOf( coordinate ) !== -1 && !one ) // ¡ aeRa !
+    let kee = true // display the zone (?)
+
+    if( area.indexOf( coordinate ) !== -1 // but if the zone is inside 'AREA'!
+    && keeper !== 'none' // and there is a keeper
+    && !one ) // and the displayed (maybe an athlete) isn't the keeper
     {
-      kee = true
+      kee = false // don't display the zone
     }
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Checks wheter the zone is in adversary's area and if there is anyone
-    // currently being the goalkeeper for its team
+    //==========================================================================
     //
-    if( area.indexOf( coordinate ) === -1 && !kee ) // ¡ aRea !
+    if( aera.indexOf( coordinate ) === -1 // if the zone isn't inside 'AERA'!
+    && kee ) // and there isn't a keeper which the athlete isn't, display zone
     {
-      Ω.info.zone[ counter ] = [ x, y ]
-      return 1
+      Ω.info.zone[ counter ] = [ x, y ] // change master coordinates
+      return 1 // (+1 zone to show)
     }
     else
     {
-      kee = false
       return 0
     }
   },

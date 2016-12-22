@@ -295,14 +295,6 @@
         }
 
         //......................................................................
-        //
-        else if( Ω.now.athlete[ Ω.now.hovered ][ 2 ] === 'none'
-        && Ω.now.turn < 8 )
-        {
-          value = 1
-        }
-
-        //......................................................................
         // Athlete isn't the same color as the turn AND turn isn't higher than 7
         //
         // It means it should already be 'value = 0.66' and 'key = false', but

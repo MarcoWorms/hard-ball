@@ -16,12 +16,12 @@
 
   //============================================================================
   //
-  keeper: { green: [ false, 'none' ], blue: [ false, 'none' ] },
+  keeper: { green: 'none', blue: 'none' },
 
   //============================================================================
   // 'info.cell' is an array containing 13 arrays (arena rows)
   // Each of these arrays contain 20 arrays (row's cells coordinates)
-  // Each of these arrays contain 1 cell's information as follows...
+  // Each of these arrays contain 1 cell's information as follows
   //
   // [ numX, numY ]
   //
@@ -31,16 +31,16 @@
     {
       let array1 = []
 
-      for( let $1 = 0; $1 < 13; $1 ++ ) // Insert 13 rows into array1
+      for( let $1 = 0; $1 < 13; $1 ++ ) // insert 13 rows into array1
       {
         let array2 = []
 
-        for( let $2 = 0; $2 < 20; $2 ++ ) // Insert 20 cells into array2
+        for( let $2 = 0; $2 < 20; $2 ++ ) // insert 20 cells into array2
         {
           let x = $2 * 48
           let y = $1 * 48
 
-          if( $1 === 12 ) y += 7 // Correction for the bench
+          if( $1 === 12 ) y += 7 // correction for the bench
 
           array2.push( [ x, y ] )
         }
@@ -54,7 +54,7 @@
 
   //============================================================================
   // 'info.zone' is an array containing 16 arrays (zone coordinates)
-  // each of these arrays contain 1 zone's coordinates as follows...
+  // each of these arrays contain 1 zone's coordinates as follows
   //
   // [ numX, numY ]
   //
@@ -63,7 +63,7 @@
     function()
     {
       let array = []
-      for( let $ = 0; $ < 16; $ ++ ) array.push( [ 'none', 'none' ] ) // !@#$%$#@!
+      for( let $ = 0; $ < 16; $ ++ ) array.push( [ 'none', 'none' ] )
       return array
     }()
   ),
@@ -175,7 +175,7 @@
   hovered: 'none',
 
   //============================================================================
-  // Position of the ball as follows...
+  // Position of the ball as follows
   //
   // [ numX, numY ]
   //
@@ -183,7 +183,7 @@
 
   //============================================================================
   // 'now.athlete' is an array containing 20 arrays
-  // Each of these arrays is 1 athlete's information as follows...
+  // Each of these arrays is 1 athlete's information as follows
   //
   // [ numX, numY, strColor ]
   //
@@ -198,7 +198,7 @@
   ),
 
   //============================================================================
-  // 'now.spawn' sets which cells are the initials as follows...
+  // 'now.spawn' sets which cells are the initials as follows
   //
   // [ strXY ]
   //

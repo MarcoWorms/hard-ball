@@ -182,8 +182,6 @@
   //
   hoverer: addEventListener( 'mouseover', function( $ )
   {
-    Ω.now.hovered = 'none'
-
     ////////////////////////////////////////////////////////////////////////////
     // 00 . Hover some athlete
     //
@@ -199,6 +197,15 @@
     else if( $.target.id === 'ball' )
     {
       Ω.now.hovered = 'ball'
+      Ω.info.currentDisplayed = Ω.now.hovered
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // 02 . Hover nothing
+    //
+    else
+    {
+      Ω.now.hovered = 'none'
       Ω.info.currentDisplayed = Ω.now.hovered
     }
 

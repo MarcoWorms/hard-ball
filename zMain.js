@@ -39,13 +39,13 @@
   {
     if( Ω.now.turn === 0 )
     {
-      //////////////////////////////////////////////////////////////////////////
+      //========================================================================
       // Ball initial position
       //
       Ω.now.ball[ 0 ] = 457
       Ω.now.ball[ 1 ] = 265
 
-      //////////////////////////////////////////////////////////////////////////
+      //========================================================================
       // Athletes' initial positions
       //
       for( let $ = 0; $ < 20; $ ++ )
@@ -58,7 +58,7 @@
       }
     }
 
-    ////////////////////////////////////////////////////////////////////////////
+    //==========================================================================
     // Preserving the selection zone's appearance on loads
     //
     Ω.game.updSel()
@@ -85,7 +85,7 @@
   {
     for( let $ = 0; $ < 20; $ ++ )
     {
-      //////////////////////////////////////////////////////////////////////////
+      //========================================================================
       // Position
       //
       let x = Ω.now.athlete[ $ ][ 0 ]
@@ -93,7 +93,7 @@
 
       Ω.tool.translate( Ω.page.athlete[ $ ], x, y )
 
-      //////////////////////////////////////////////////////////////////////////
+      //========================================================================
       // Color
       //
       Ω.tool.chgCls( Ω.page.athlete[ $ ], '-', 'btn' )
@@ -166,7 +166,7 @@
   //
   updCur: function()
   {
-    ////////////////////////////////////////////////////////////////////////////
+    //==========================================================================
     // Defining who is to play now
     //
     if( Ω.now.firstPlayer === 'green' )
@@ -181,7 +181,7 @@
       else                       Ω.now.currentPlayer = 'green' // even turn
     }
 
-    ////////////////////////////////////////////////////////////////////////////
+    //==========================================================================
     // Determining which cell text is to be shown with glow effect
     //
     let hideText
@@ -199,7 +199,7 @@
       showText = Array.from( Ω.page.textBlue )
     }
 
-    ////////////////////////////////////////////////////////////////////////////
+    //==========================================================================
     // Making the selected cells glow
     //
     if( Ω.now.turn !== 0 ) // except on turn 0
@@ -223,7 +223,7 @@
       } )
     }
 
-    ////////////////////////////////////////////////////////////////////////////
+    //==========================================================================
     // Determining which athlete art is to be shown with glow effect
     //
     let hideGlow = 0
@@ -241,7 +241,7 @@
       showGlow = Ω.now.team.blue
     }
 
-    ////////////////////////////////////////////////////////////////////////////
+    //==========================================================================
     // Making the selected arts glow
     //
     if( hideGlow !== 0 )
@@ -354,10 +354,13 @@
   //
   updZon1: function()
   {
+
+    //==========================================================================
+    // Undisplay every zone and refresh 'info.zone'
+    //
     for( let $ = 0; $ < 16; $ ++ ) Ω.page.zone[ $ ].style.display = 'none'
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Clean 'info.zone'
+    //..........................................................................
     //
     Ω.info.zone =
     (
@@ -369,7 +372,7 @@
       }()
     )
 
-    ////////////////////////////////////////////////////////////////////////////
+    //==========================================================================
     // Ball is hovered
     //
     if( Ω.now.hovered === 'ball' )
@@ -377,7 +380,7 @@
       // tbd
     }
 
-    ////////////////////////////////////////////////////////////////////////////
+    //==========================================================================
     // Athlete is hovered and is not a target
     //
     else if( Ω.now.hovered !== 'none'
@@ -401,7 +404,7 @@
       }
     }
 
-    ////////////////////////////////////////////////////////////////////////////
+    //==========================================================================
     // Ball is selected
     //
     else if( Ω.now.selected === 'ball' )
@@ -409,7 +412,7 @@
       // tbd
     }
 
-    ////////////////////////////////////////////////////////////////////////////
+    //==========================================================================
     // Athlete is selected and is not a targeted
     //
     else if( Ω.now.selected !== 'none'
@@ -433,21 +436,6 @@
         Ω.game.updZonCdn( 'mtx', 'select' )
       }
     }
-    else
-    {
-      //========================================================================
-      // Clean 'info.zone'
-      //
-      Ω.info.zone =
-      (
-        function()
-        {
-          let array = []
-          for( let $ = 0; $ < 16; $ ++ ) array.push( [ 'none', 'none' ] )
-          return array
-        }()
-      )
-    }
   },
 
   ////////////////////////////////////////////////////////////////////////////// G.updZon2
@@ -455,7 +443,7 @@
   //
   updZon2: function()
   {
-    ////////////////////////////////////////////////////////////////////////////
+    //==========================================================================
     // Determining how are zones to be shown
     //
     let current =  Ω.now.currentPlayer.substring( 0, 3 ) // 'gre' or 'blu' turn
@@ -463,106 +451,94 @@
     let key = true
     let value = 1
 
-    if( Ω.now.turn !== 0 ) // except on turn 0
+    //==========================================================================
+    // Ball is hovered
+    //
+    if( Ω.now.hovered === 'ball' )
     {
-      //========================================================================
-      // If athlete is hovered
+      // tbd
+    }
+
+    //==========================================================================
+    // Athlete is hovered and is not a target
+    //
+    else if( Ω.now.hovered !== 'none'
+    && Ω.info.target.indexOf( Ω.now.hovered ) === -1 )
+    {
+      //........................................................................
+      // Hovered and non-targeted athlete is ready to play
       //
-      if( Ω.now.hovered !== 'none'
-      && Ω.now.hovered !== 'ball' )
+      if( Ω.now.athlete[ Ω.now.hovered ][ 2 ] === 'none' )
       {
-        //......................................................................
-        // And hovered athlete is playing and is not a target
-        //
-        if( Ω.now.athlete[ Ω.now.hovered ][ 2 ] !== 'none'
-        && Ω.info.target.indexOf( Ω.now.hovered ) === -1 )
-        {
-          //....................................................................
-          // Athlete is the same color as the turn AND turn is higher than 7
-          //
-          if( Ω.now.athlete[ Ω.now.hovered ][ 2 ] === current
-          && Ω.now.turn > 7 )
-          {
-            value = 1
-          }
-          else
-          {
-            value = 0.66
-            key = false
-          }
-        }
-
-        //......................................................................
-        //
-        else if( Ω.now.athlete[ Ω.now.hovered ][ 2 ] === 'none'
-        && Ω.now.turn < 8 )
-        {
-          value = 1
-        }
-
-        //......................................................................
-        // Athlete isn't the same color as the turn AND turn isn't higher than 7
-        //
-        // It means it should already be 'value = 0.66' and 'key = false', but
-        // there is an exception...
-        //
-        else
-        {
-          let A = 0
-          let B = 1
-
-          //....................................................................
-          // The exception is some selected athlete having the same color as the
-          // current turn player's color
-          //
-          if( Ω.now.selected !== 'none' && Ω.now.selected !== 'ball' )
-          {
-            A = Ω.now.athlete[ Ω.now.selected ][ 2 ]
-            B = Ω.now.currentPlayer.substring( 0, 3 )
-          }
-
-          //....................................................................
-          // If there was in fact the exception, aknowledge it
-          //
-          if( A === B )
-          {
-            value = 1
-          }
-          else
-          {
-            value = 0.66
-            key = false
-          }
-        }
+        // tbd
       }
 
-      //========================================================================
-      // Athlete is selected
+      //........................................................................
+      // Hovered and non-targeted athlete is playing
       //
-      else if( Ω.now.selected !== 'none' && Ω.now.selected !== 'ball' )
+      else if( Ω.now.athlete[ Ω.now.hovered ][ 2 ] !== 'red' )
       {
         //......................................................................
-        // Selected athlete is playing
+        // Athlete is the same color as the turn AND turn is higher than 7
         //
-        if( Ω.now.athlete[ Ω.now.selected ][ 2 ] !== 'none' )
+        if( Ω.now.athlete[ Ω.now.hovered ][ 2 ] === current
+        && Ω.now.turn > 7 )
         {
-          //....................................................................
-          // Athlete is the same color as the turn AND turn is higher than 7
-          //
-          if( Ω.now.athlete[ Ω.now.selected ][ 2 ] === current
-          && Ω.now.turn > 7 )
-          {
-            value = 1
-          }
-          else
-          {
-            value = 0.66
-            key = false
-          }
+          // ?
+        }
+        else
+        {
+          value = 0.66
+          key = false
         }
       }
     }
 
+    //==========================================================================
+    // Ball is selected
+    //
+    else if( Ω.now.selected === 'ball' )
+    {
+      // tbd
+    }
+
+    //==========================================================================
+    // Athlete is selected and is not a targeted
+    //
+    else if( Ω.now.selected !== 'none'
+    && Ω.info.target.indexOf( Ω.now.selected ) === -1 )
+    {
+      //........................................................................
+      // Selected and non-targeted athlete is ready to play
+      //
+      if( Ω.now.athlete[ Ω.now.selected ][ 2 ] === 'none' )
+      {
+      }
+
+      //........................................................................
+      // Selected and non-targeted athlete is playing
+      //
+      else if( Ω.now.athlete[ Ω.now.selected ][ 2 ] !== 'red' )
+      {
+        //......................................................................
+        // Athlete is the same color as the turn AND turn is higher than 7
+        //
+        if( Ω.now.athlete[ Ω.now.selected ][ 2 ] === current
+        && Ω.now.turn > 7 )
+        {
+          // ?
+        }
+        else
+        {
+          value = 0.66
+          key = false
+        }
+      }
+    }
+
+    //==========================================================================
+    // Finally apply the desired effects
+    //
     Array.from( Ω.page.zone ).forEach( function( $ )
     {
       $.style.borderColor = 'rgba(255,255,255,' + value + ')'
@@ -585,9 +561,9 @@
     //==========================================================================
     // Fill 'info.zone'
     //
-    let value
+    let value = 0
 
-    //..........................................................................
+    //==========================================================================
     // By matrix
     //
     if( behavior === 'mtx' )
@@ -596,7 +572,7 @@
       let x
       let y
 
-      //==========================================================================
+      //........................................................................
       // Matrix 1
       //
       if( Ω.info.move[ digit ][ 1 ] === 1 )
@@ -618,7 +594,7 @@
         counter += Ω.tool.isZone( digit, counter, x, y )
       }
 
-      //==========================================================================
+      //........................................................................
       // Matrix 2
       //
       if( Ω.info.move[ digit ][ 2 ] === 1 )
@@ -640,7 +616,7 @@
         counter += Ω.tool.isZone( digit, counter, x, y )
       }
 
-      //==========================================================================
+      //........................................................................
       // Matrix 3
       //
       if( Ω.info.move[ digit ][ 3 ] === 1 )
@@ -662,7 +638,7 @@
         counter += Ω.tool.isZone( digit, counter, x, y )
       }
 
-      //==========================================================================
+      //........................................................................
       // Matrix 4
       //
       if( Ω.info.move[ digit ][ 4 ] === 1 )
@@ -684,7 +660,7 @@
         counter += Ω.tool.isZone( digit, counter, x, y )
       }
 
-      //==========================================================================
+      //........................................................................
       // Matrix 5
       //
       if( Ω.info.move[ digit ][ 5 ] === 1 )
@@ -722,7 +698,7 @@
         counter += Ω.tool.isZone( digit, counter, x, y )
       }
 
-      //==========================================================================
+      //........................................................................
       // Matrix 6
       //
       if( Ω.info.move[ digit ][ 6 ] === 1 )
@@ -760,7 +736,7 @@
         counter += Ω.tool.isZone( digit, counter, x, y )
       }
 
-      //==========================================================================
+      //........................................................................
       // Matrix 7
       //
       if( Ω.info.move[ digit ][ 7 ] === 1 )
@@ -782,7 +758,7 @@
         counter += Ω.tool.isZone( digit, counter, x, y )
       }
 
-      //==========================================================================
+      //........................................................................
       // Matrix 8
       //
       if( Ω.info.move[ digit ][ 8 ] === 1 )
@@ -820,7 +796,7 @@
         counter += Ω.tool.isZone( digit, counter, x, y )
       }
 
-      //==========================================================================
+      //........................................................................
       // Matrix 9
       //
       if( Ω.info.move[ digit ][ 9 ] === 1 )
@@ -845,13 +821,13 @@
       value = counter
     }
 
-    //..........................................................................
+    //==========================================================================
     // By start
     //
     else if( behavior === 'stt' )
     {
 
-      //////////////////////////////////////////////////////////////////////////
+      //........................................................................
       // Turn 0
       //
       if( Ω.now.turn === 0 )
@@ -862,6 +838,9 @@
           let x
           let y
 
+          //....................................................................
+          // Show every green spawn point
+          //
           if( $ < 4 )
           {
             digit = $
@@ -869,6 +848,10 @@
             x = Ω.tool.convert( Ω.now.spawn.green[ digit ] )[ 0 ]
             y = Ω.tool.convert( Ω.now.spawn.green[ digit ] )[ 1 ]
           }
+
+          //....................................................................
+          // Show every blue spawn point
+          //
           else
           {
             digit = $ - 4
@@ -877,11 +860,14 @@
             y = Ω.tool.convert( Ω.now.spawn.blue[ digit ] )[ 1 ]
           }
 
+          //....................................................................
+          // Apply coordinates accordingly
+          //
           Ω.info.zone[ $ ][ 0 ] = x
           Ω.info.zone[ $ ][ 1 ] = y
         }
 
-        value = 8
+        value = 8 // always 8 zones in turn 0
       }
 
       //////////////////////////////////////////////////////////////////////////
@@ -889,34 +875,43 @@
       //
       else
       {
+        //......................................................................
+        // Only show color specific spawn points
+        //
         let entity
 
         if( Ω.now.currentPlayer === 'green' ) entity = Ω.now.spawn.green
         else if( Ω.now.currentPlayer === 'blue' ) entity = Ω.now.spawn.blue
 
+        //......................................................................
+        // And only as many as there are
+        //
         for( let $ = 0; $ < entity.length; $ ++ )
         {
           let x = Ω.tool.convert( entity[ $ ] )[ 0 ]
           let y = Ω.tool.convert( entity[ $ ] )[ 1 ]
 
+          //....................................................................
+          // Apply coordinates accordingly
+          //
           Ω.info.zone[ $ ][ 0 ] = x
           Ω.info.zone[ $ ][ 1 ] = y
         }
 
-        value = entity.length
+        value = entity.length // decreases each athlete selection (team related)
       }
     }
 
-    //..........................................................................
+    //==========================================================================
     // By replacement
     //
     else if( behavior === 'rep' )
     {
-      value = 0
+      // tbd
     }
 
     //==========================================================================
-    // Actually display zones
+    // Display zones accordingly
     //
     for( let $ = 0; $ < 16; $ ++ )
     {
@@ -929,10 +924,6 @@
         Ω.tool.rotate( Ω.page.zone[ $ ], 1 )
 
         Ω.page.zone[ $ ].style.display = 'flex'
-      }
-      else
-      {
-        Ω.page.zone[ $ ].style.display = 'none'
       }
     }
   },

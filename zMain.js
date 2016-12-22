@@ -293,6 +293,11 @@
             key = false
           }
         }
+        else
+        {
+          value = 0.66
+          key = false
+        }
       }
 
       //========================================================================
@@ -424,14 +429,14 @@
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Athlete is hovered
+    // Athlete is hovered and is not a target
     //
     else if( Ω.now.hovered !== 'none'
     && Ω.info.target.indexOf( Ω.now.hovered ) === -1 )
     {
 
       //////////////////////////////////////////////////////////////////////////
-      // Hovered athlete is ready to play
+      // Hovered and non-targeted athlete is ready to play
       //
       if( Ω.now.athlete[ Ω.now.hovered ][ 2 ] === 'none' )
       {
@@ -440,7 +445,7 @@
       }
 
       //////////////////////////////////////////////////////////////////////////
-      // Hovered athlete is playing
+      // Hovered and non-targeted athlete is playing
       //
       else if( Ω.now.athlete[ Ω.now.hovered ][ 2 ] !== 'red' )
       {
@@ -457,14 +462,14 @@
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // Athlete is selected
+    // Athlete is selected and is not a targeted
     //
     else if( Ω.now.selected !== 'none'
     && Ω.info.target.indexOf( Ω.now.selected ) === -1 )
     {
 
       //////////////////////////////////////////////////////////////////////////
-      // Selected athlete is ready to play
+      // Selected and non-targeted athlete is ready to play
       //
       if( Ω.now.athlete[ Ω.now.selected ][ 2 ] === 'none' )
       {
@@ -473,7 +478,7 @@
       }
 
       //////////////////////////////////////////////////////////////////////////
-      // Selected athlete is playing
+      // Selected and non-targeted athlete is playing
       //
       else if( Ω.now.athlete[ Ω.now.selected ][ 2 ] !== 'red' )
       {

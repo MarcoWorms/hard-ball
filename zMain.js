@@ -459,6 +459,19 @@
     for( let $ = 0; $ < 16; $ ++ ) Ω.page.zone[ $ ].style.display = 'none'
 
     ////////////////////////////////////////////////////////////////////////////
+    // Clean 'info.zone'
+    //
+    Ω.info.zone =
+    (
+      function()
+      {
+        let array = []
+        for( let $ = 0; $ < 16; $ ++ ) array.push( [ 'none', 'none' ] ) // !@#$%$#@!
+        return array
+      }()
+    )
+
+    ////////////////////////////////////////////////////////////////////////////
     // Ball is hovered
     //
     if( Ω.now.hovered === 'ball' )
@@ -549,19 +562,6 @@
 
     if( guide === 'hover' )       digit = Ω.now.hovered
     else if( guide === 'select' ) digit = Ω.now.selected
-
-    //==========================================================================
-    // Clean 'info.zone'
-    //
-    Ω.info.zone =
-    (
-      function()
-      {
-        let array = []
-        for( let $ = 0; $ < 16; $ ++ ) array.push( [ 'none', 'none' ] ) // !@#$%$#@!
-        return array
-      }()
-    )
 
     //==========================================================================
     // Fill 'info.zone'

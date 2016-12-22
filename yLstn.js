@@ -183,9 +183,12 @@
   hoverer: addEventListener( 'mouseover', function( $ )
   {
     ////////////////////////////////////////////////////////////////////////////
-    // 00 . Hover some athlete
+    // 00 . Hover some athlete that is not targeted
     //
-    if( $.target.id.substring( 0, 3 ) === 'min' )
+    let digit = Number( $.target.id.substring( 4, 6 ) )
+
+    if( $.target.id.substring( 0, 3 ) === 'min'
+    && Ω.info.target.indexOf( digit ) === -1 )
     {
       Ω.now.hovered = Number( $.target.id.substring( 4, 6 ) ) // 0 to 19
       Ω.info.currentDisplayed = Ω.now.hovered
@@ -216,7 +219,7 @@
     {
       Ω.now.hovered = 'none'
 
-      if( Ω.now.selected !== 'none' && Ω.now.selected !== 'ball' )
+      if( Ω.now.selected !== 'none' )
       {
         Ω.info.currentDisplayed = Ω.now.selected
       }

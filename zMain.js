@@ -293,10 +293,40 @@
             key = false
           }
         }
+
+        //......................................................................
+        // Athlete isn't the same color as the turn AND turn isn't higher than 7
+        //
+        // It means it should already be 'value = 0.66' and 'key = false', but
+        // there is an exception...
+        //
         else
         {
-          value = 0.66
-          key = false
+          let A = 0
+          let B = 1
+
+          //....................................................................
+          // The exception is some selected athlete having the same color as the
+          // current turn player's color
+          //
+          if( Ω.now.selected !== 'none' && Ω.now.selected !== 'ball' )
+          {
+            A = Ω.now.athlete[ Ω.now.selected ][ 2 ]
+            B = Ω.now.currentPlayer.substring( 0, 3 )
+          }
+
+          //....................................................................
+          // If there was in fact the exception, aknowledge it
+          //
+          if( A === B )
+          {
+            value = 1
+          }
+          else
+          {
+            value = 0.66
+            key = false
+          }
         }
       }
 
@@ -855,7 +885,7 @@
     //
     else if( behavior === 'rep' )
     {
-      value = 4
+      value = 0
     }
 
     //==========================================================================

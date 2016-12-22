@@ -201,12 +201,29 @@
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // 02 . Hover nothing
+    // 02 . Hover the selected zone
+    //
+    else if( $.target.id === 'selected' )
+    {
+      Ω.now.hovered = Ω.now.selected
+      Ω.info.currentDisplayed = Ω.now.hovered
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // 03 . Hover nothing
     //
     else
     {
       Ω.now.hovered = 'none'
-      Ω.info.currentDisplayed = Ω.now.hovered
+
+      if( Ω.now.selected !== 'none' && Ω.now.selected !== 'ball' )
+      {
+        Ω.info.currentDisplayed = Ω.now.selected
+      }
+      else
+      {
+        Ω.info.currentDisplayed = Ω.now.hovered
+      }
     }
 
   //////////////////////////////////////////////////////////////////////////////

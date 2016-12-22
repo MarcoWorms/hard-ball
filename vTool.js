@@ -118,8 +118,8 @@
     //
     let coordinate = Ω.tool.convert( [ x, y ] ) // returns something like 'D12'
 
-    let kee = false
     let one = false
+    let kee = false
 
     if( keeper[ 1 ] === Ω.info.currentDisplayed ) one = true
 

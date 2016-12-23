@@ -200,6 +200,20 @@
         Ω.now.hovered = digit // 'none' or 0 to 19
         Ω.info.currentDisplayed = Ω.now.hovered
       }
+
+      //========================================================================
+      // Hover color effects
+      //
+      let color =  Ω.now.athlete[ digit ][ 2 ]
+
+      let lighterColor
+
+      if( color === 'none' ) lighterColor = 'rgb(191,191,191)'
+      else if( color === 'red' ) lighterColor = 'rgb(223,63,63)'
+      else if( color === 'gre' ) lighterColor = 'rgb(143,191,63)'
+      else if( color === 'blu' ) lighterColor = 'rgb(111,79,207)'
+
+      Ω.page.athlete[ digit ].style.backgroundColor = lighterColor
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -209,6 +223,11 @@
     {
       Ω.now.hovered = 'ball'
       Ω.info.currentDisplayed = Ω.now.hovered
+
+      //========================================================================
+      // Hover color effects
+      //
+      Ω.page.ball.style.backgroundColor = 'rgb(143,111,79)'
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -218,6 +237,27 @@
     {
       Ω.now.hovered = Ω.now.selected
       Ω.info.currentDisplayed = Ω.now.hovered
+
+      //========================================================================
+      // Hover color effects
+      //
+      if( Ω.info.currentDisplayed === 'ball' )
+      {
+        Ω.page.ball.style.backgroundColor = 'rgb(143,111,79)'
+      }
+      else if( Ω.info.currentDisplayed !== 'none' ) // athlete
+      {
+        let current = Ω.info.currentDisplayed
+        let color = Ω.now.athlete[ current ][ 2 ]
+        let lighterColor
+
+        if( color === 'none' ) lighterColor = 'rgb(191,191,191)'
+        else if( color === 'red' ) lighterColor = 'rgb(223,63,63)'
+        else if( color === 'gre' ) lighterColor = 'rgb(143,191,63)'
+        else if( color === 'blu' ) lighterColor = 'rgb(111,79,207)'
+
+        Ω.page.athlete[ current ].style.backgroundColor = lighterColor
+      }
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -226,6 +266,25 @@
     else
     {
       Ω.now.hovered = 'none'
+
+      //========================================================================
+      // Hover color effects
+      //
+      Ω.page.ball.style.backgroundColor = 'rgb(111,79,47)'
+
+      for( let $ = 0; $ < 20; $ ++ )
+      {
+        let athlete = Ω.now.athlete[ $ ]
+        let newColor = Ω.now.athlete[ $ ][ 2 ]
+        let darkerColor
+
+        if( newColor === 'none' ) darkerColor = 'rgb(143,143,143)'
+        else if( newColor === 'red' ) darkerColor = 'rgb(207,47,47)'
+        else if( newColor === 'gre' ) darkerColor = 'rgb(127,175,47)'
+        else if( newColor === 'blu' ) darkerColor = 'rgb(95,63,191)'
+
+        Ω.page.athlete[ $ ].style.backgroundColor = darkerColor
+      }
 
       //========================================================================
       // Hovering nothing is tricky and must be safeguarded by this condition

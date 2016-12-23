@@ -241,7 +241,16 @@
     else if( $.target.id === 'ball' )
     {
       Ω.now.hovered = 'ball'
-      Ω.info.currentlyDisplayed = Ω.now.hovered
+
+      if( Ω.now.selected === 'ball' )
+      {
+        Ω.info.currentlyDisplayed = Ω.now.hovered
+      }
+      else if( Ω.now.selected !== 'none' ) // athlete
+      {
+        Ω.now.hovered = Ω.now.selected
+        Ω.info.currentlyDisplayed = Ω.now.hovered
+      }
 
       //========================================================================
       // Hover color effects

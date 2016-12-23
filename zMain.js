@@ -88,30 +88,10 @@
   {
     for( let $ = 0; $ < 20; $ ++ )
     {
-      //========================================================================
-      // Position
-      //
       let x = Ω.now.athlete[ $ ][ 0 ]
       let y = Ω.now.athlete[ $ ][ 1 ]
 
       Ω.tool.translate( Ω.page.athlete[ $ ], x, y )
-
-      //========================================================================
-      // Color
-      //
-      Ω.tool.chgCls( Ω.page.athlete[ $ ], '-', 'btn' )
-      Ω.tool.chgCls( Ω.page.athlete[ $ ], '-', 'red' )
-      Ω.tool.chgCls( Ω.page.athlete[ $ ], '-', 'gre' )
-      Ω.tool.chgCls( Ω.page.athlete[ $ ], '-', 'blu' )
-
-      let toAdd
-
-      if( Ω.now.athlete[ $ ][ 2 ] === 'none' ) toAdd = 'btn'
-      else if( Ω.now.athlete[ $ ][ 2 ] === 'red' ) toAdd = 'red'
-      else if( Ω.now.athlete[ $ ][ 2 ] === 'gre' ) toAdd = 'gre'
-      else if( Ω.now.athlete[ $ ][ 2 ] === 'blu' ) toAdd = 'blu'
-
-      Ω.tool.chgCls( Ω.page.athlete[ $ ], '+', toAdd )
     }
   },
 

@@ -153,7 +153,7 @@
     else if( $.target.id.substring( 0, 3 ) === 'min' )
     {
       Ω.now.selected = Number( $.target.id.substring( 4, 6 ) ) // 0 to 19
-      Ω.info.currentDisplayed = Ω.now.selected
+      Ω.info.currentlyDisplayed = Ω.now.selected
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -162,7 +162,7 @@
     else if( $.target.id === 'ball' )
     {
       Ω.now.selected = 'ball'
-      Ω.info.currentDisplayed = Ω.now.selected
+      Ω.info.currentlyDisplayed = Ω.now.selected
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -171,7 +171,7 @@
     else 
     {
       Ω.now.selected = 'none'
-      Ω.info.currentDisplayed = Ω.now.selected
+      Ω.info.currentlyDisplayed = Ω.now.selected
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -195,10 +195,10 @@
     {
       let digit = Number( $.target.id.substring( 4, 6 ) ) // athlete's number
 
-      if( Ω.info.target.indexOf( digit ) === -1 ) // and it isn't a target
+      if( Ω.info.target[ 0 ].indexOf( digit ) === -1 ) // and it isn't a target
       {
         Ω.now.hovered = digit // 'none' or 0 to 19
-        Ω.info.currentDisplayed = Ω.now.hovered
+        Ω.info.currentlyDisplayed = Ω.now.hovered
       }
 
       //========================================================================
@@ -241,7 +241,7 @@
     else if( $.target.id === 'ball' )
     {
       Ω.now.hovered = 'ball'
-      Ω.info.currentDisplayed = Ω.now.hovered
+      Ω.info.currentlyDisplayed = Ω.now.hovered
 
       //========================================================================
       // Hover color effects
@@ -255,18 +255,18 @@
     else if( $.target.id === 'selection' )
     {
       Ω.now.hovered = Ω.now.selected
-      Ω.info.currentDisplayed = Ω.now.hovered
+      Ω.info.currentlyDisplayed = Ω.now.hovered
 
       //========================================================================
-      // Hover color effects
+      // Hover color effects . Part 3 . Get whatever is below the selection zone
       //
-      if( Ω.info.currentDisplayed === 'ball' )
+      if( Ω.info.currentlyDisplayed === 'ball' )
       {
         Ω.page.ball.style.backgroundColor = 'rgb(143,111,79)'
       }
-      else if( Ω.info.currentDisplayed !== 'none' ) // athlete
+      else if( Ω.info.currentlyDisplayed !== 'none' ) // athlete
       {
-        let current = Ω.info.currentDisplayed
+        let current = Ω.info.currentlyDisplayed
         let color = Ω.now.athlete[ current ][ 2 ]
         let lighterColor
 
@@ -280,14 +280,45 @@
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // 03 . Hover nothing
+    // 03 . Hover a zone
+    //
+    else if( $.target.id.substring( 0, 3 ) === 'zon' )
+    {
+      let zone = Number( $.target.id.substring( 3, 5 ) )
+      let indexOfZone = Ω.info.target[ 1 ].indexOf( zone )
+
+      if( indexOfZone !== -1 ) // zone is targeting
+      {
+        let digit = Ω.info.target[ 0 ][ indexOfZone ]
+
+        if( digit === 'ball' )
+        {
+          Ω.page.ball.style.backgroundColor = 'rgb(143,111,79)'
+        }
+        else // athlete
+        {
+          let color = Ω.now.athlete[ digit ][ 2 ]
+          let lighterColor
+
+          if( color === 'none' ) lighterColor = 'rgb(191,191,191)'
+          else if( color === 'red' ) lighterColor = 'rgb(223,63,63)'
+          else if( color === 'gre' ) lighterColor = 'rgb(143,191,63)'
+          else if( color === 'blu' ) lighterColor = 'rgb(111,79,207)'
+
+          Ω.page.athlete[ digit ].style.backgroundColor = lighterColor
+        }
+      }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // 04 . Hover nothing
     //
     else
     {
       Ω.now.hovered = 'none'
 
       //========================================================================
-      // Hover color effects . Part 3 . Refresh everything again
+      // Hover color effects . Part 5 . Refresh everything again
       //
       Ω.page.ball.style.backgroundColor = 'rgb(111,79,47)'
 
@@ -310,11 +341,11 @@
       //
       if( Ω.now.selected !== 'none' ) // could be any athlete or the ball
       {
-        Ω.info.currentDisplayed = Ω.now.selected
+        Ω.info.currentlyDisplayed = Ω.now.selected
       }
       else
       {
-        Ω.info.currentDisplayed = Ω.now.hovered
+        Ω.info.currentlyDisplayed = Ω.now.hovered
       }
     }
 

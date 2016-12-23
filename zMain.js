@@ -258,21 +258,34 @@
   //
   updTar: function()
   {
-    Ω.info.target = [] // refresh the array
+    Ω.info.target = [ [], [] ] // refresh the array (targets & zones)
 
-    for( let $1 = 0; $1 < 20; $1 ++ )
+    for( let $1 = 0; $1 < 16; $1 ++ )
     {
-      for( let $2 = 0; $2 < 16; $2 ++ )
+      //========================================================================
+      // Look for athletes
+      //
+      for( let $2 = 0; $2 < 20; $2 ++ )
       {
-        //======================================================================
+        //......................................................................
         // If any athlete's X is equal to any zone's X and
         // If any athlete's Y is equal to any zone's Y
         //
-        if( Ω.now.athlete[ $1 ][ 0 ] - 1 === Ω.info.zone[ $2 ][ 0 ]
-        && Ω.now.athlete[ $1 ][ 1 ] - 1 === Ω.info.zone[ $2 ][ 1 ] )
+        if( Ω.now.athlete[ $2 ][ 0 ] - 1 === Ω.info.zone[ $1 ][ 0 ]
+        && Ω.now.athlete[ $2 ][ 1 ] - 1 === Ω.info.zone[ $1 ][ 1 ] )
         {
-          Ω.info.target.push( $1 ) // such athletes are an array of targets
+          Ω.info.target[ 1 ].push( $1 ) // zones
+          Ω.info.target[ 0 ].push( $2 ) // targets
         }
+      }
+
+      //========================================================================
+      // Look for the ball
+      //
+      if( Ω.now.ball[ 0 ] - 1 === Ω.info.zone[ $1 ][ 0 ] )
+      {
+        Ω.info.target[ 1 ].push( $1 ) // zone
+        Ω.info.target[ 0 ].push( 'ball' ) // ball
       }
     }
   },
@@ -367,7 +380,7 @@
     // Athlete is hovered and is not a target
     //
     else if( Ω.now.hovered !== 'none'
-    && Ω.info.target.indexOf( Ω.now.hovered ) === -1 )
+    && Ω.info.target[ 0 ].indexOf( Ω.now.hovered ) === -1 )
     {
       //////////////////////////////////////////////////////////////////////////
       // Hovered and non-targeted athlete is ready to play
@@ -399,7 +412,7 @@
     // Athlete is selected and is not a targeted
     //
     else if( Ω.now.selected !== 'none'
-    && Ω.info.target.indexOf( Ω.now.selected ) === -1 )
+    && Ω.info.target[ 0 ].indexOf( Ω.now.selected ) === -1 )
     {
 
       //////////////////////////////////////////////////////////////////////////
@@ -446,7 +459,7 @@
     // Athlete is hovered and is not a target
     //
     else if( Ω.now.hovered !== 'none'
-    && Ω.info.target.indexOf( Ω.now.hovered ) === -1 )
+    && Ω.info.target[ 0 ].indexOf( Ω.now.hovered ) === -1 )
     {
       //........................................................................
       // Hovered and non-targeted athlete is ready to play
@@ -489,7 +502,7 @@
     // Athlete is selected and is not a targeted
     //
     else if( Ω.now.selected !== 'none'
-    && Ω.info.target.indexOf( Ω.now.selected ) === -1 )
+    && Ω.info.target[ 0 ].indexOf( Ω.now.selected ) === -1 )
     {
       //........................................................................
       // Selected and non-targeted athlete is ready to play

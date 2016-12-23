@@ -71,19 +71,13 @@ DISPLAY or BUTTON
 RED or GREEN or BLUE
 */
 .red{      background-color:var(--c17)}
-.red:hover{background-color:var(--c18)}
-
 .gre{      background-color:var(--c19)}
-.gre:hover{background-color:var(--c20)}
-
 .blu{      background-color:var(--c21)}
-.blu:hover{background-color:var(--c22)}
 
 /*==============================================================================
 BALL
 */
 .bal{      background-color:var(--c23)}
-.bal:hover{background-color:var(--c24)}
 
 /*==============================================================================
 ZONE

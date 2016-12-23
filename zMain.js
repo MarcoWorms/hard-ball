@@ -71,12 +71,15 @@
     Ω.game.updAtl()
     Ω.game.updBal()
 
+    Ω.game.updZon1()
+    Ω.game.updZon2()
+
     Ω.game.updCur()
     Ω.game.updTar()
     Ω.game.updKee()
 
-    Ω.game.updZon1()
-    Ω.game.updZon2()
+    // having both 'game.updZon1' and 'game.updZon2' after 'game.updKee' makes
+    // the hover effect non-existant after any athlete gets selected
   },
 
   ////////////////////////////////////////////////////////////////////////////// G.updAtl

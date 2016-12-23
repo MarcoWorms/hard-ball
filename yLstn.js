@@ -202,7 +202,25 @@
       }
 
       //========================================================================
-      // Hover color effects
+      // Hover color effects . Part 1 . Refresh everything
+      //
+      Ω.page.ball.style.backgroundColor = 'rgb(111,79,47)'
+
+      for( let $ = 0; $ < 20; $ ++ )
+      {
+        let athlete = Ω.now.athlete[ $ ]
+        let newColor = Ω.now.athlete[ $ ][ 2 ]
+        let darkerColor
+
+        if( newColor === 'none' ) darkerColor = 'rgb(143,143,143)'
+        else if( newColor === 'red' ) darkerColor = 'rgb(207,47,47)'
+        else if( newColor === 'gre' ) darkerColor = 'rgb(127,175,47)'
+        else if( newColor === 'blu' ) darkerColor = 'rgb(95,63,191)'
+
+        Ω.page.athlete[ $ ].style.backgroundColor = darkerColor
+      }
+      //========================================================================
+      // Hover color effects . Part 2 . Change the color of hovered
       //
       let color =  Ω.now.athlete[ digit ][ 2 ]
 
@@ -266,25 +284,6 @@
     else
     {
       Ω.now.hovered = 'none'
-
-      //========================================================================
-      // Hover color effects
-      //
-      Ω.page.ball.style.backgroundColor = 'rgb(111,79,47)'
-
-      for( let $ = 0; $ < 20; $ ++ )
-      {
-        let athlete = Ω.now.athlete[ $ ]
-        let newColor = Ω.now.athlete[ $ ][ 2 ]
-        let darkerColor
-
-        if( newColor === 'none' ) darkerColor = 'rgb(143,143,143)'
-        else if( newColor === 'red' ) darkerColor = 'rgb(207,47,47)'
-        else if( newColor === 'gre' ) darkerColor = 'rgb(127,175,47)'
-        else if( newColor === 'blu' ) darkerColor = 'rgb(95,63,191)'
-
-        Ω.page.athlete[ $ ].style.backgroundColor = darkerColor
-      }
 
       //========================================================================
       // Hovering nothing is tricky and must be safeguarded by this condition

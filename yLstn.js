@@ -189,6 +189,25 @@
   hoverer: addEventListener( 'mouseover', function( $ )
   {
     ////////////////////////////////////////////////////////////////////////////
+    // Hover color effects . Part 1 . Refresh everything
+    //
+    Ω.page.ball.style.backgroundColor = 'rgb(111,79,47)'
+
+    for( let $ = 0; $ < 20; $ ++ )
+    {
+      let athlete = Ω.now.athlete[ $ ]
+      let newColor = Ω.now.athlete[ $ ][ 2 ]
+      let darkerColor
+
+      if( newColor === 'none' ) darkerColor = 'rgb(143,143,143)'
+      else if( newColor === 'red' ) darkerColor = 'rgb(207,47,47)'
+      else if( newColor === 'gre' ) darkerColor = 'rgb(127,175,47)'
+      else if( newColor === 'blu' ) darkerColor = 'rgb(95,63,191)'
+
+      Ω.page.athlete[ $ ].style.backgroundColor = darkerColor
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
     // 00 . Hover some athlete that is not targeted
     //
     if( $.target.id.substring( 0, 3 ) === 'min' ) // if target is an athlete
@@ -202,26 +221,7 @@
       }
 
       //========================================================================
-      // Hover color effects . Part 1 . Refresh everything
-      //
-      Ω.page.ball.style.backgroundColor = 'rgb(111,79,47)'
-
-      for( let $ = 0; $ < 20; $ ++ )
-      {
-        let athlete = Ω.now.athlete[ $ ]
-        let newColor = Ω.now.athlete[ $ ][ 2 ]
-        let darkerColor
-
-        if( newColor === 'none' ) darkerColor = 'rgb(143,143,143)'
-        else if( newColor === 'red' ) darkerColor = 'rgb(207,47,47)'
-        else if( newColor === 'gre' ) darkerColor = 'rgb(127,175,47)'
-        else if( newColor === 'blu' ) darkerColor = 'rgb(95,63,191)'
-
-        Ω.page.athlete[ $ ].style.backgroundColor = darkerColor
-      }
-
-      //========================================================================
-      // Hover color effects . Part 2 . Change the color of hovered
+      // Hover color effects . Part 2 . Change the color of hovered athlete
       //
       let color =  Ω.now.athlete[ digit ][ 2 ]
 
@@ -253,7 +253,7 @@
       }
 
       //========================================================================
-      // Hover color effects
+      // Hover color effects . Part 3 . Change the color of hovered ball
       //
       Ω.page.ball.style.backgroundColor = 'rgb(143,111,79)'
     }
@@ -267,7 +267,7 @@
       Ω.info.currentlyDisplayed = Ω.now.hovered
 
       //========================================================================
-      // Hover color effects . Part 3 . Get whatever is below the selection zone
+      // Hover color effects . Part 4 . Get whatever is below the selection zone
       //
       if( Ω.info.currentlyDisplayed === 'ball' )
       {
@@ -300,6 +300,9 @@
       {
         let digit = Ω.info.target[ 0 ][ indexOfZone ]
 
+        //======================================================================
+        // Hover color effects . Part 5 . Get whatever is below a simple zone
+        //
         if( digit === 'ball' )
         {
           Ω.page.ball.style.backgroundColor = 'rgb(143,111,79)'
@@ -327,7 +330,7 @@
       Ω.now.hovered = 'none'
 
       //========================================================================
-      // Hover color effects . Part 5 . Refresh everything again
+      // Hover color effects . Part 6 . Refresh everything again
       //
       Ω.page.ball.style.backgroundColor = 'rgb(111,79,47)'
 

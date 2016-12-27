@@ -152,16 +152,16 @@
     //==========================================================================
     // Defining who is to play now
     //
-    if( Ω.now.firstPlayer === 'green' )
+    if( Ω.now.firstPlayer === 'gre' )
     {
-      if( Ω.now.turn % 2 === 0 ) Ω.now.currentPlayer = 'green' // odd turn
-      else                       Ω.now.currentPlayer = 'blue' // even turn
+      if( Ω.now.turn % 2 === 0 ) Ω.now.currentPlayer = 'gre' // odd turn
+      else                       Ω.now.currentPlayer = 'blu' // even turn
     }
 
-    else if( Ω.now.firstPlayer === 'blue' )
+    else if( Ω.now.firstPlayer === 'blu' )
     {
-      if( Ω.now.turn % 2 === 0 ) Ω.now.currentPlayer = 'blue' // odd turn
-      else                       Ω.now.currentPlayer = 'green' // even turn
+      if( Ω.now.turn % 2 === 0 ) Ω.now.currentPlayer = 'blu' // odd turn
+      else                       Ω.now.currentPlayer = 'gre' // even turn
     }
 
     //==========================================================================
@@ -170,13 +170,13 @@
     let hideText
     let showText
 
-    if( Ω.now.currentPlayer === 'green' )
+    if( Ω.now.currentPlayer === 'gre' )
     {
       hideText = Array.from( Ω.page.textBlue )
       showText = Array.from( Ω.page.textGreen )
     }
 
-    else if( Ω.now.currentPlayer === 'blue' )
+    else if( Ω.now.currentPlayer === 'blu' )
     {
       hideText = Array.from( Ω.page.textGreen )
       showText = Array.from( Ω.page.textBlue )
@@ -212,13 +212,13 @@
     let hideGlow = 0
     let showGlow = 0
 
-    if( Ω.now.currentPlayer === 'green' )
+    if( Ω.now.currentPlayer === 'gre' )
     {
       hideGlow = Ω.now.team.blue
       showGlow = Ω.now.team.green
     }
 
-    else if( Ω.now.currentPlayer === 'blue' )
+    else if( Ω.now.currentPlayer === 'blu' )
     {
       hideGlow = Ω.now.team.green
       showGlow = Ω.now.team.blue
@@ -274,18 +274,19 @@
         if( Ω.now.athlete[ $2 ][ 0 ] - 1 === Ω.info.zone[ $1 ][ 0 ]
         && Ω.now.athlete[ $2 ][ 1 ] - 1 === Ω.info.zone[ $1 ][ 1 ] )
         {
-          Ω.info.target[ 1 ].push( $1 ) // zones
           Ω.info.target[ 0 ].push( $2 ) // targets
+          Ω.info.target[ 1 ].push( $1 ) // zones
         }
       }
 
       //========================================================================
       // Look for the ball
       //
-      if( Ω.now.ball[ 0 ] - 1 === Ω.info.zone[ $1 ][ 0 ] )
+      if( Ω.now.ball[ 0 ] - 1 === Ω.info.zone[ $1 ][ 0 ]
+      && Ω.now.ball[ 1 ] - 1 === Ω.info.zone[ $1 ][ 1 ] )
       {
-        Ω.info.target[ 1 ].push( $1 ) // zone
         Ω.info.target[ 0 ].push( 'ball' ) // ball
+        Ω.info.target[ 1 ].push( $1 ) // zone
       }
     }
   },
@@ -343,6 +344,15 @@
         }
       }
     }
+  },
+
+  ////////////////////////////////////////////////////////////////////////////// G.updTrn
+  // Makes the turn pass to the next player
+  //
+  updTrn: function()
+  {
+    Ω.now.turn ++
+    Ω.now.selected = 'none'
   },
 
   ////////////////////////////////////////////////////////////////////////////// G.updZon1
@@ -442,7 +452,7 @@
     //==========================================================================
     // Determining how are zones to be shown
     //
-    let current =  Ω.now.currentPlayer.substring( 0, 3 ) // 'gre' or 'blu' turn
+    let current = Ω.now.currentPlayer // 'gre' or 'blu' turn
 
     let key = true
     let value = 1
@@ -876,8 +886,8 @@
         //
         let entity
 
-        if( Ω.now.currentPlayer === 'green' ) entity = Ω.now.spawn.green
-        else if( Ω.now.currentPlayer === 'blue' ) entity = Ω.now.spawn.blue
+        if( Ω.now.currentPlayer === 'gre' ) entity = Ω.now.spawn.green
+        else if( Ω.now.currentPlayer === 'blu' ) entity = Ω.now.spawn.blue
 
         //......................................................................
         // And only as many as there are

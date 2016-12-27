@@ -8,14 +8,17 @@
 {
   //============================================================================
   //
-  currentlyDisplayed: 'none',
+  currentlyDisplayed: 'none', // 'none', 'ball' or 0 to 19
 
   //============================================================================
+  // Defines which athletes (and/or the ball), if any, is under a zone
+  //
   // [ targets, zones ]
   //
   target: [ [], [] ],
 
   //============================================================================
+  // Which, if any, is the current goalkeeper of each team
   //
   keeper: { green: 'none', blue: 'none' },
 
@@ -201,7 +204,7 @@
   //============================================================================
   // 'now.spawn' sets which cells are the initials as follows
   //
-  // [ strXY ]
+  // [ strYX ]
   //
   spawn:
   {

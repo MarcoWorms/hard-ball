@@ -6,90 +6,6 @@
 //
 Ω.listen =
 {
-  ////////////////////////////////////////////////////////////////////////////// L.zoner
-  //
-  zoner: addEventListener( 'mousedown', function( $ )
-  {
-    if( $.target.id.substring( 0, 3 ) === 'zon' ) // target is a zone
-    {
-      let digit = Number( $.target.id.substring( 3, 5 ) ) // zone's number
-
-      //////////////////////////////////////////////////////////////////////////
-      // MAIN MOVE BEHAVIOR
-      //
-      let athleteColor = Ω.now.athlete[ Ω.now.selected ][ 2 ] // 'gre' or 'blu'
-      let turnColor = Ω.now.currentPlayer.substring( 0, 3 ) // 'gre' or 'blu'
-
-      if( Ω.now.turn < 8 // turns 0 to 7
-      && athleteColor === 'none' // selected athlete has no team
-
-      || Ω.now.turn > 7 // turns 8+
-      && athleteColor !== 'red' // selected athlete is not benched
-      && athleteColor === turnColor ) // it is the athlete's team turn
-      {
-        //======================================================================
-        // Change athlete's position through the zone to its new cell
-        //
-        let x = Ω.info.zone[ digit ][ 0 ]
-        let y = Ω.info.zone[ digit ][ 1 ]
-
-        Ω.now.athlete[ Ω.now.selected ][ 0 ] = x + 1
-        Ω.now.athlete[ Ω.now.selected ][ 1 ] = y + 1
-
-        //======================================================================
-        // Setting initial parameters of each athlete
-        //
-        if( Ω.now.turn < 8 ) // turns 0 to 7
-        {
-          let coordinate = Ω.tool.convert( [ x, y ] ) // zone's coordinate
-          let spawn // available zone to enter the arena
-          let team // which team the athlete will be entered
-
-          //....................................................................
-          // Zone is green
-          //
-          if( Ω.now.spawn.green.indexOf( coordinate ) !== -1 )
-          {
-            if( Ω.now.turn === 0 ) Ω.now.firstPlayer = 'green'
-            Ω.now.athlete[ Ω.now.selected ][ 2 ] = 'gre'
-            spawn = Ω.now.spawn.green
-            team = Ω.now.team.green
-          }
-
-          //....................................................................
-          // Zone is blue
-          //
-          else
-          {
-            if( Ω.now.turn === 0 ) Ω.now.firstPlayer = 'blue'
-            Ω.now.athlete[ Ω.now.selected ][ 2 ] = 'blu'
-            spawn = Ω.now.spawn.blue
-            team = Ω.now.team.blue
-          }
-
-          //....................................................................
-          // Update the array of vacant initial cells
-          //
-          Ω.tool.remove( coordinate, spawn )
-
-          //....................................................................
-          // Update the team's formation array
-          //
-          team.push( Ω.now.selected )
-        }
-
-        //======================================================================
-        // End turn
-        //
-        Ω.now.turn += 1
-      }
-    }
-
-  //////////////////////////////////////////////////////////////////////////////
-  // END of 'listen.zoner'
-  //
-  }, false ),
-
   ////////////////////////////////////////////////////////////////////////////// L.clicker
   //
   clicker: addEventListener( 'mousedown', function( $ )
@@ -148,7 +64,7 @@
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // 03 . Select some athlete
+    // 03 . Select an athlete
     //
     else if( $.target.id.substring( 0, 3 ) === 'min' )
     {
@@ -166,7 +82,131 @@
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // 05 . Select nothing
+    // 05 . Select a zone
+    //
+    // It's important to note that its only possible to click a zone when the
+    // ball or some athlete is selected
+    //
+    else if( $.target.id.substring( 0, 3 ) === 'zon' ) // target is a zone
+    {
+      let zone = Number( $.target.id.substring( 3, 5 ) ) // zone's number
+      let zoneIndex = Ω.info.target[ 1 ].indexOf( zone )
+
+      let zoneX = Ω.info.zone[ zone ][ 0 ]
+      let zoneY = Ω.info.zone[ zone ][ 1 ]
+
+      let coordinate = Ω.tool.convert( [ zoneX, zoneY ] )
+
+      let changeTurn = false
+
+      //========================================================================
+      // Has a target
+      //
+      if( zoneIndex !== -1 )
+      {
+        let zoneTarget = Ω.info.target[ 0 ][ zoneIndex ]
+      }
+
+      //========================================================================
+      // Hasn't a target
+      //
+      else
+      {
+        //......................................................................
+        // Ball is selected
+        //
+        if( Ω.now.selected === 'ball' )
+        {
+          // tbd (ball goes to 1 of the 8 cells around its player)
+        }
+
+        //......................................................................
+        // Athlete is selected
+        //
+        else
+        {
+          // Setting variables
+          //
+          let color
+          let team
+          let spawn
+
+          // Zone is green
+          //
+           if( Ω.now.spawn.green.indexOf( coordinate ) !== -1 )
+          {
+            color = 'gre'
+            team = Ω.now.team.green
+            spawn = Ω.now.spawn.green
+          }
+
+          // Zone is blue
+          //
+          else if( Ω.now.spawn.blue.indexOf( coordinate ) !== -1 )
+          {
+            color = 'blu'
+            team = Ω.now.team.blue
+            spawn = Ω.now.spawn.blue
+          }
+
+          // Set the new athlete's new position
+          //
+          if( Ω.now.turn === 0
+          //
+          || Ω.now.turn < 8
+          && Ω.now.currentPlayer === color
+          && Ω.now.athlete[ Ω.now.selected ][ 2 ] === 'none'
+          //
+          || Ω.now.turn > 7
+          && Ω.now.currentPlayer === Ω.now.athlete[ Ω.now.selected ][ 2 ] )
+          {
+            // Change the selected athlete's X and Y values
+            //
+            Ω.now.athlete[ Ω.now.selected ][ 0 ] = zoneX + 1
+            Ω.now.athlete[ Ω.now.selected ][ 1 ] = zoneY + 1
+
+            // Move on
+            //
+            changeTurn = true
+          }
+
+          // Set who's the first player of the match
+          //
+          if( Ω.now.turn === 0 ) Ω.now.firstPlayer = color
+
+          // Set initial standards
+          //
+          if( Ω.now.turn === 0
+          //
+          || Ω.now.turn < 8
+          && Ω.now.currentPlayer === color
+          && Ω.now.athlete[ Ω.now.selected ][ 2 ] === 'none' )
+          {
+            // Assign athlete to a team
+            //
+            Ω.now.athlete[ Ω.now.selected ][ 2 ] = color
+
+            // Remove this from the array of vacant initial cells
+            //
+            Ω.tool.remove( coordinate, spawn )
+
+            // Update the team's formation array
+            //
+            team.push( Ω.now.selected )
+          }
+        }
+      }
+
+      // Ending 
+      //
+      if( changeTurn )
+      {
+        Ω.game.updTrn()
+      }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // 06 . Select nothing
     //
     else 
     {
@@ -294,11 +334,11 @@
     else if( $.target.id.substring( 0, 3 ) === 'zon' )
     {
       let zone = Number( $.target.id.substring( 3, 5 ) )
-      let indexOfZone = Ω.info.target[ 1 ].indexOf( zone )
+      let zoneIndex = Ω.info.target[ 1 ].indexOf( zone )
 
-      if( indexOfZone !== -1 ) // zone is targeting
+      if( zoneIndex !== -1 ) // zone is targeting
       {
-        let digit = Ω.info.target[ 0 ][ indexOfZone ]
+        let digit = Ω.info.target[ 0 ][ zoneIndex ]
 
         //======================================================================
         // Hover color effects . Part 5 . Get whatever is below a simple zone

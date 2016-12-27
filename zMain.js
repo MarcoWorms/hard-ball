@@ -59,6 +59,11 @@
     }
 
     //==========================================================================
+    // Avoids 'fast-hover' bug right after reloading with a selected athlete
+    //
+    Ω.now.selected = 'none'
+
+    //==========================================================================
     // Preserving the selection zone's appearance on loads
     //
     Ω.game.updSel()
@@ -258,35 +263,47 @@
   //
   updTar: function()
   {
-    Ω.info.target = [ [], [] ] // refresh the array (targets & zones)
-
-    for( let $1 = 0; $1 < 16; $1 ++ )
+    //==========================================================================
+    // Making this function work only when there's nothing selected is a way to
+    // avoid a glitch happening when 'fast-hovering' from one non-targeted
+    // athlete to a targeted one.
+    //
+    // The usual behavior states that targeted athletes may not display its
+    // zones so they can be affected by other athletes targeting them, but the
+    // glitch allowed this to happen, therefore it had to be dealt with somehow
+    //
+    if( Ω.now.selected === 'none' )
     {
-      //========================================================================
-      // Look for athletes
-      //
-      for( let $2 = 0; $2 < 20; $2 ++ )
-      {
-        //......................................................................
-        // If any athlete's X is equal to any zone's X and
-        // If any athlete's Y is equal to any zone's Y
-        //
-        if( Ω.now.athlete[ $2 ][ 0 ] - 1 === Ω.info.zone[ $1 ][ 0 ]
-        && Ω.now.athlete[ $2 ][ 1 ] - 1 === Ω.info.zone[ $1 ][ 1 ] )
-        {
-          Ω.info.target[ 0 ].push( $2 ) // targets
-          Ω.info.target[ 1 ].push( $1 ) // zones
-        }
-      }
+      Ω.info.target = [ [], [] ] // refresh the array (targets & zones)
 
-      //========================================================================
-      // Look for the ball
-      //
-      if( Ω.now.ball[ 0 ] - 1 === Ω.info.zone[ $1 ][ 0 ]
-      && Ω.now.ball[ 1 ] - 1 === Ω.info.zone[ $1 ][ 1 ] )
+      for( let $1 = 0; $1 < 16; $1 ++ )
       {
-        Ω.info.target[ 0 ].push( 'ball' ) // ball
-        Ω.info.target[ 1 ].push( $1 ) // zone
+        //======================================================================
+        // Look for athletes
+        //
+        for( let $2 = 0; $2 < 20; $2 ++ )
+        {
+          //....................................................................
+          // If any athlete's X is equal to any zone's X and
+          // If any athlete's Y is equal to any zone's Y
+          //
+          if( Ω.now.athlete[ $2 ][ 0 ] - 1 === Ω.info.zone[ $1 ][ 0 ]
+          && Ω.now.athlete[ $2 ][ 1 ] - 1 === Ω.info.zone[ $1 ][ 1 ] )
+          {
+            Ω.info.target[ 0 ].push( $2 ) // targets
+            Ω.info.target[ 1 ].push( $1 ) // zones
+          }
+        }
+
+        //======================================================================
+        // Look for the ball
+        //
+        if( Ω.now.ball[ 0 ] - 1 === Ω.info.zone[ $1 ][ 0 ]
+        && Ω.now.ball[ 1 ] - 1 === Ω.info.zone[ $1 ][ 1 ] )
+        {
+          Ω.info.target[ 0 ].push( 'ball' ) // ball
+          Ω.info.target[ 1 ].push( $1 ) // zone
+        }
       }
     }
   },
@@ -347,7 +364,7 @@
   },
 
   ////////////////////////////////////////////////////////////////////////////// G.updTrn
-  // Makes the turn pass to the next player
+  // Makes the turn pass to the next player (not called every tick)
   //
   updTrn: function()
   {
@@ -559,10 +576,10 @@
   //
   updZonCdn: function( behavior, guide )
   {
-    let digit
+    let displayed
 
-    if( guide === 'hover' )       digit = Ω.now.hovered
-    else if( guide === 'select' ) digit = Ω.now.selected
+    if( guide === 'hover' )       displayed = Ω.now.hovered
+    else if( guide === 'select' ) displayed = Ω.now.selected
 
     //==========================================================================
     // Fill 'info.zone'
@@ -581,247 +598,247 @@
       //........................................................................
       // Matrix 1
       //
-      if( Ω.info.move[ digit ][ 1 ] === 1 )
+      if( Ω.info.move[ displayed ][ 1 ] === 1 )
       {
-        x = Ω.tool.bend( Ω.now.athlete[ digit ][ 0 ] + 47, 'x' )
-        y = Ω.tool.bend( Ω.now.athlete[ digit ][ 1 ] - 1, 'y' )
-        counter += Ω.tool.isZone( digit, counter, x, y )
+        x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] + 47, 'x' )
+        y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] - 1, 'y' )
+        counter += Ω.tool.isZone( displayed, counter, x, y )
 
-        x = Ω.tool.bend( Ω.now.athlete[ digit ][ 0 ] - 49, 'x' )
-        y = Ω.tool.bend( Ω.now.athlete[ digit ][ 1 ] - 1, 'y' )
-        counter += Ω.tool.isZone( digit, counter, x, y )
+        x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] - 49, 'x' )
+        y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] - 1, 'y' )
+        counter += Ω.tool.isZone( displayed, counter, x, y )
 
-        x = Ω.tool.bend( Ω.now.athlete[ digit ][ 0 ] - 1, 'x' )
-        y = Ω.tool.bend( Ω.now.athlete[ digit ][ 1 ] + 47, 'y' )
-        counter += Ω.tool.isZone( digit, counter, x, y )
+        x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] - 1, 'x' )
+        y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] + 47, 'y' )
+        counter += Ω.tool.isZone( displayed, counter, x, y )
 
-        x = Ω.tool.bend( Ω.now.athlete[ digit ][ 0 ] - 1, 'x' )
-        y = Ω.tool.bend( Ω.now.athlete[ digit ][ 1 ] - 49, 'y' )
-        counter += Ω.tool.isZone( digit, counter, x, y )
+        x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] - 1, 'x' )
+        y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] - 49, 'y' )
+        counter += Ω.tool.isZone( displayed, counter, x, y )
       }
 
       //........................................................................
       // Matrix 2
       //
-      if( Ω.info.move[ digit ][ 2 ] === 1 )
+      if( Ω.info.move[ displayed ][ 2 ] === 1 )
       {
-        x = Ω.tool.bend( Ω.now.athlete[ digit ][ 0 ] + 95, 'x' )
-        y = Ω.tool.bend( Ω.now.athlete[ digit ][ 1 ] - 1, 'y' )
-        counter += Ω.tool.isZone( digit, counter, x, y )
+        x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] + 95, 'x' )
+        y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] - 1, 'y' )
+        counter += Ω.tool.isZone( displayed, counter, x, y )
 
-        x = Ω.tool.bend( Ω.now.athlete[ digit ][ 0 ] - 97, 'x' )
-        y = Ω.tool.bend( Ω.now.athlete[ digit ][ 1 ] - 1, 'y' )
-        counter += Ω.tool.isZone( digit, counter, x, y )
+        x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] - 97, 'x' )
+        y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] - 1, 'y' )
+        counter += Ω.tool.isZone( displayed, counter, x, y )
 
-        x = Ω.tool.bend( Ω.now.athlete[ digit ][ 0 ] - 1, 'x' )
-        y = Ω.tool.bend( Ω.now.athlete[ digit ][ 1 ] + 95, 'y' )
-        counter += Ω.tool.isZone( digit, counter, x, y )
+        x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] - 1, 'x' )
+        y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] + 95, 'y' )
+        counter += Ω.tool.isZone( displayed, counter, x, y )
 
-        x = Ω.tool.bend( Ω.now.athlete[ digit ][ 0 ] - 1, 'x' )
-        y = Ω.tool.bend( Ω.now.athlete[ digit ][ 1 ] - 97, 'y' )
-        counter += Ω.tool.isZone( digit, counter, x, y )
+        x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] - 1, 'x' )
+        y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] - 97, 'y' )
+        counter += Ω.tool.isZone( displayed, counter, x, y )
       }
 
       //........................................................................
       // Matrix 3
       //
-      if( Ω.info.move[ digit ][ 3 ] === 1 )
+      if( Ω.info.move[ displayed ][ 3 ] === 1 )
       {
-        x = Ω.tool.bend( Ω.now.athlete[ digit ][ 0 ] + 143, 'x' )
-        y = Ω.tool.bend( Ω.now.athlete[ digit ][ 1 ] - 1, 'y' )
-        counter += Ω.tool.isZone( digit, counter, x, y )
+        x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] + 143, 'x' )
+        y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] - 1, 'y' )
+        counter += Ω.tool.isZone( displayed, counter, x, y )
 
-        x = Ω.tool.bend( Ω.now.athlete[ digit ][ 0 ] - 145, 'x' )
-        y = Ω.tool.bend( Ω.now.athlete[ digit ][ 1 ] - 1, 'y' )
-        counter += Ω.tool.isZone( digit, counter, x, y )
+        x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] - 145, 'x' )
+        y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] - 1, 'y' )
+        counter += Ω.tool.isZone( displayed, counter, x, y )
 
-        x = Ω.tool.bend( Ω.now.athlete[ digit ][ 0 ] - 1, 'x' )
-        y = Ω.tool.bend( Ω.now.athlete[ digit ][ 1 ] + 143, 'y' )
-        counter += Ω.tool.isZone( digit, counter, x, y )
+        x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] - 1, 'x' )
+        y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] + 143, 'y' )
+        counter += Ω.tool.isZone( displayed, counter, x, y )
 
-        x = Ω.tool.bend( Ω.now.athlete[ digit ][ 0 ] - 1, 'x' )
-        y = Ω.tool.bend( Ω.now.athlete[ digit ][ 1 ] - 145, 'y' )
-        counter += Ω.tool.isZone( digit, counter, x, y )
+        x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] - 1, 'x' )
+        y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] - 145, 'y' )
+        counter += Ω.tool.isZone( displayed, counter, x, y )
       }
 
       //........................................................................
       // Matrix 4
       //
-      if( Ω.info.move[ digit ][ 4 ] === 1 )
+      if( Ω.info.move[ displayed ][ 4 ] === 1 )
       {
-        x = Ω.tool.bend( Ω.now.athlete[ digit ][ 0 ] + 47, 'x' )
-        y = Ω.tool.bend( Ω.now.athlete[ digit ][ 1 ] + 47, 'y' )
-        counter += Ω.tool.isZone( digit, counter, x, y )
+        x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] + 47, 'x' )
+        y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] + 47, 'y' )
+        counter += Ω.tool.isZone( displayed, counter, x, y )
 
-        x = Ω.tool.bend( Ω.now.athlete[ digit ][ 0 ] + 47, 'x' )
-        y = Ω.tool.bend( Ω.now.athlete[ digit ][ 1 ] - 49, 'y' )
-        counter += Ω.tool.isZone( digit, counter, x, y )
+        x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] + 47, 'x' )
+        y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] - 49, 'y' )
+        counter += Ω.tool.isZone( displayed, counter, x, y )
 
-        x = Ω.tool.bend( Ω.now.athlete[ digit ][ 0 ] - 49, 'x' )
-        y = Ω.tool.bend( Ω.now.athlete[ digit ][ 1 ] - 49, 'y' )
-        counter += Ω.tool.isZone( digit, counter, x, y )
+        x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] - 49, 'x' )
+        y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] - 49, 'y' )
+        counter += Ω.tool.isZone( displayed, counter, x, y )
 
-        x = Ω.tool.bend( Ω.now.athlete[ digit ][ 0 ] - 49, 'x' )
-        y = Ω.tool.bend( Ω.now.athlete[ digit ][ 1 ] + 47, 'y' )
-        counter += Ω.tool.isZone( digit, counter, x, y )
+        x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] - 49, 'x' )
+        y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] + 47, 'y' )
+        counter += Ω.tool.isZone( displayed, counter, x, y )
       }
 
       //........................................................................
       // Matrix 5
       //
-      if( Ω.info.move[ digit ][ 5 ] === 1 )
+      if( Ω.info.move[ displayed ][ 5 ] === 1 )
       {
-        x = Ω.tool.bend( Ω.now.athlete[ digit ][ 0 ] + 47, 'x' )
-        y = Ω.tool.bend( Ω.now.athlete[ digit ][ 1 ] + 95, 'y' )
-        counter += Ω.tool.isZone( digit, counter, x, y )
+        x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] + 47, 'x' )
+        y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] + 95, 'y' )
+        counter += Ω.tool.isZone( displayed, counter, x, y )
 
-        x = Ω.tool.bend( Ω.now.athlete[ digit ][ 0 ] - 49, 'x' )
-        y = Ω.tool.bend( Ω.now.athlete[ digit ][ 1 ] + 95, 'y' )
-        counter += Ω.tool.isZone( digit, counter, x, y )
+        x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] - 49, 'x' )
+        y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] + 95, 'y' )
+        counter += Ω.tool.isZone( displayed, counter, x, y )
 
-        x = Ω.tool.bend( Ω.now.athlete[ digit ][ 0 ] - 97, 'x' )
-        y = Ω.tool.bend( Ω.now.athlete[ digit ][ 1 ] + 47, 'y' )
-        counter += Ω.tool.isZone( digit, counter, x, y )
+        x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] - 97, 'x' )
+        y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] + 47, 'y' )
+        counter += Ω.tool.isZone( displayed, counter, x, y )
 
-        x = Ω.tool.bend( Ω.now.athlete[ digit ][ 0 ] - 97, 'x' )
-        y = Ω.tool.bend( Ω.now.athlete[ digit ][ 1 ] - 49, 'y' )
-        counter += Ω.tool.isZone( digit, counter, x, y )
+        x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] - 97, 'x' )
+        y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] - 49, 'y' )
+        counter += Ω.tool.isZone( displayed, counter, x, y )
 
-        x = Ω.tool.bend( Ω.now.athlete[ digit ][ 0 ] - 49, 'x' )
-        y = Ω.tool.bend( Ω.now.athlete[ digit ][ 1 ] - 97, 'y' )
-        counter += Ω.tool.isZone( digit, counter, x, y )
+        x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] - 49, 'x' )
+        y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] - 97, 'y' )
+        counter += Ω.tool.isZone( displayed, counter, x, y )
 
-        x = Ω.tool.bend( Ω.now.athlete[ digit ][ 0 ] + 47, 'x' )
-        y = Ω.tool.bend( Ω.now.athlete[ digit ][ 1 ] - 97, 'y' )
-        counter += Ω.tool.isZone( digit, counter, x, y )
+        x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] + 47, 'x' )
+        y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] - 97, 'y' )
+        counter += Ω.tool.isZone( displayed, counter, x, y )
 
-        x = Ω.tool.bend( Ω.now.athlete[ digit ][ 0 ] + 95, 'x' )
-        y = Ω.tool.bend( Ω.now.athlete[ digit ][ 1 ] - 49, 'y' )
-        counter += Ω.tool.isZone( digit, counter, x, y )
+        x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] + 95, 'x' )
+        y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] - 49, 'y' )
+        counter += Ω.tool.isZone( displayed, counter, x, y )
 
-        x = Ω.tool.bend( Ω.now.athlete[ digit ][ 0 ] + 95, 'x' )
-        y = Ω.tool.bend( Ω.now.athlete[ digit ][ 1 ] + 47, 'y' )
-        counter += Ω.tool.isZone( digit, counter, x, y )
+        x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] + 95, 'x' )
+        y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] + 47, 'y' )
+        counter += Ω.tool.isZone( displayed, counter, x, y )
       }
 
       //........................................................................
       // Matrix 6
       //
-      if( Ω.info.move[ digit ][ 6 ] === 1 )
+      if( Ω.info.move[ displayed ][ 6 ] === 1 )
       {
-        x = Ω.tool.bend( Ω.now.athlete[ digit ][ 0 ] + 47, 'x' )
-        y = Ω.tool.bend( Ω.now.athlete[ digit ][ 1 ] + 143, 'y' )
-        counter += Ω.tool.isZone( digit, counter, x, y )
+        x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] + 47, 'x' )
+        y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] + 143, 'y' )
+        counter += Ω.tool.isZone( displayed, counter, x, y )
 
-        x = Ω.tool.bend( Ω.now.athlete[ digit ][ 0 ] - 49, 'x' )
-        y = Ω.tool.bend( Ω.now.athlete[ digit ][ 1 ] + 143, 'y' )
-        counter += Ω.tool.isZone( digit, counter, x, y )
+        x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] - 49, 'x' )
+        y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] + 143, 'y' )
+        counter += Ω.tool.isZone( displayed, counter, x, y )
 
-        x = Ω.tool.bend( Ω.now.athlete[ digit ][ 0 ] - 145, 'x' )
-        y = Ω.tool.bend( Ω.now.athlete[ digit ][ 1 ] + 47, 'y' )
-        counter += Ω.tool.isZone( digit, counter, x, y )
+        x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] - 145, 'x' )
+        y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] + 47, 'y' )
+        counter += Ω.tool.isZone( displayed, counter, x, y )
 
-        x = Ω.tool.bend( Ω.now.athlete[ digit ][ 0 ] - 145, 'x' )
-        y = Ω.tool.bend( Ω.now.athlete[ digit ][ 1 ] - 49, 'y' )
-        counter += Ω.tool.isZone( digit, counter, x, y )
+        x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] - 145, 'x' )
+        y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] - 49, 'y' )
+        counter += Ω.tool.isZone( displayed, counter, x, y )
 
-        x = Ω.tool.bend( Ω.now.athlete[ digit ][ 0 ] - 49, 'x' )
-        y = Ω.tool.bend( Ω.now.athlete[ digit ][ 1 ] - 145, 'y' )
-        counter += Ω.tool.isZone( digit, counter, x, y )
+        x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] - 49, 'x' )
+        y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] - 145, 'y' )
+        counter += Ω.tool.isZone( displayed, counter, x, y )
 
-        x = Ω.tool.bend( Ω.now.athlete[ digit ][ 0 ] + 47, 'x' )
-        y = Ω.tool.bend( Ω.now.athlete[ digit ][ 1 ] - 145, 'y' )
-        counter += Ω.tool.isZone( digit, counter, x, y )
+        x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] + 47, 'x' )
+        y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] - 145, 'y' )
+        counter += Ω.tool.isZone( displayed, counter, x, y )
 
-        x = Ω.tool.bend( Ω.now.athlete[ digit ][ 0 ] + 143, 'x' )
-        y = Ω.tool.bend( Ω.now.athlete[ digit ][ 1 ] - 49, 'y' )
-        counter += Ω.tool.isZone( digit, counter, x, y )
+        x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] + 143, 'x' )
+        y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] - 49, 'y' )
+        counter += Ω.tool.isZone( displayed, counter, x, y )
 
-        x = Ω.tool.bend( Ω.now.athlete[ digit ][ 0 ] + 143, 'x' )
-        y = Ω.tool.bend( Ω.now.athlete[ digit ][ 1 ] + 47, 'y' )
-        counter += Ω.tool.isZone( digit, counter, x, y )
+        x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] + 143, 'x' )
+        y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] + 47, 'y' )
+        counter += Ω.tool.isZone( displayed, counter, x, y )
       }
 
       //........................................................................
       // Matrix 7
       //
-      if( Ω.info.move[ digit ][ 7 ] === 1 )
+      if( Ω.info.move[ displayed ][ 7 ] === 1 )
       {
-        x = Ω.tool.bend( Ω.now.athlete[ digit ][ 0 ] + 95, 'x' )
-        y = Ω.tool.bend( Ω.now.athlete[ digit ][ 1 ] + 95, 'y' )
-        counter += Ω.tool.isZone( digit, counter, x, y )
+        x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] + 95, 'x' )
+        y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] + 95, 'y' )
+        counter += Ω.tool.isZone( displayed, counter, x, y )
 
-        x = Ω.tool.bend( Ω.now.athlete[ digit ][ 0 ] + 95, 'x' )
-        y = Ω.tool.bend( Ω.now.athlete[ digit ][ 1 ] - 97, 'y' )
-        counter += Ω.tool.isZone( digit, counter, x, y )
+        x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] + 95, 'x' )
+        y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] - 97, 'y' )
+        counter += Ω.tool.isZone( displayed, counter, x, y )
 
-        x = Ω.tool.bend( Ω.now.athlete[ digit ][ 0 ] - 97, 'x' )
-        y = Ω.tool.bend( Ω.now.athlete[ digit ][ 1 ] - 97, 'y' )
-        counter += Ω.tool.isZone( digit, counter, x, y )
+        x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] - 97, 'x' )
+        y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] - 97, 'y' )
+        counter += Ω.tool.isZone( displayed, counter, x, y )
 
-        x = Ω.tool.bend( Ω.now.athlete[ digit ][ 0 ] - 97, 'x' )
-        y = Ω.tool.bend( Ω.now.athlete[ digit ][ 1 ] + 95, 'y' )
-        counter += Ω.tool.isZone( digit, counter, x, y )
+        x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] - 97, 'x' )
+        y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] + 95, 'y' )
+        counter += Ω.tool.isZone( displayed, counter, x, y )
       }
 
       //........................................................................
       // Matrix 8
       //
-      if( Ω.info.move[ digit ][ 8 ] === 1 )
+      if( Ω.info.move[ displayed ][ 8 ] === 1 )
       {
-        x = Ω.tool.bend( Ω.now.athlete[ digit ][ 0 ] + 95, 'x' )
-        y = Ω.tool.bend( Ω.now.athlete[ digit ][ 1 ] + 143, 'y' )
-        counter += Ω.tool.isZone( digit, counter, x, y )
+        x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] + 95, 'x' )
+        y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] + 143, 'y' )
+        counter += Ω.tool.isZone( displayed, counter, x, y )
 
-        x = Ω.tool.bend( Ω.now.athlete[ digit ][ 0 ] - 97, 'x' )
-        y = Ω.tool.bend( Ω.now.athlete[ digit ][ 1 ] + 143, 'y' )
-        counter += Ω.tool.isZone( digit, counter, x, y )
+        x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] - 97, 'x' )
+        y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] + 143, 'y' )
+        counter += Ω.tool.isZone( displayed, counter, x, y )
 
-        x = Ω.tool.bend( Ω.now.athlete[ digit ][ 0 ] - 145, 'x' )
-        y = Ω.tool.bend( Ω.now.athlete[ digit ][ 1 ] + 95, 'y' )
-        counter += Ω.tool.isZone( digit, counter, x, y )
+        x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] - 145, 'x' )
+        y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] + 95, 'y' )
+        counter += Ω.tool.isZone( displayed, counter, x, y )
 
-        x = Ω.tool.bend( Ω.now.athlete[ digit ][ 0 ] - 145, 'x' )
-        y = Ω.tool.bend( Ω.now.athlete[ digit ][ 1 ] - 97, 'y' )
-        counter += Ω.tool.isZone( digit, counter, x, y )
+        x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] - 145, 'x' )
+        y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] - 97, 'y' )
+        counter += Ω.tool.isZone( displayed, counter, x, y )
 
-        x = Ω.tool.bend( Ω.now.athlete[ digit ][ 0 ] - 97, 'x' )
-        y = Ω.tool.bend( Ω.now.athlete[ digit ][ 1 ] - 145, 'y' )
-        counter += Ω.tool.isZone( digit, counter, x, y )
+        x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] - 97, 'x' )
+        y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] - 145, 'y' )
+        counter += Ω.tool.isZone( displayed, counter, x, y )
 
-        x = Ω.tool.bend( Ω.now.athlete[ digit ][ 0 ] + 95, 'x' )
-        y = Ω.tool.bend( Ω.now.athlete[ digit ][ 1 ] - 145, 'y' )
-        counter += Ω.tool.isZone( digit, counter, x, y )
+        x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] + 95, 'x' )
+        y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] - 145, 'y' )
+        counter += Ω.tool.isZone( displayed, counter, x, y )
 
-        x = Ω.tool.bend( Ω.now.athlete[ digit ][ 0 ] + 143, 'x' )
-        y = Ω.tool.bend( Ω.now.athlete[ digit ][ 1 ] - 97, 'y' )
-        counter += Ω.tool.isZone( digit, counter, x, y )
+        x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] + 143, 'x' )
+        y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] - 97, 'y' )
+        counter += Ω.tool.isZone( displayed, counter, x, y )
 
-        x = Ω.tool.bend( Ω.now.athlete[ digit ][ 0 ] + 143, 'x' )
-        y = Ω.tool.bend( Ω.now.athlete[ digit ][ 1 ] + 95, 'y' )
-        counter += Ω.tool.isZone( digit, counter, x, y )
+        x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] + 143, 'x' )
+        y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] + 95, 'y' )
+        counter += Ω.tool.isZone( displayed, counter, x, y )
       }
 
       //........................................................................
       // Matrix 9
       //
-      if( Ω.info.move[ digit ][ 9 ] === 1 )
+      if( Ω.info.move[ displayed ][ 9 ] === 1 )
       {
-        x = Ω.tool.bend( Ω.now.athlete[ digit ][ 0 ] + 143, 'x' )
-        y = Ω.tool.bend( Ω.now.athlete[ digit ][ 1 ] + 143, 'y' )
-        counter += Ω.tool.isZone( digit, counter, x, y )
+        x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] + 143, 'x' )
+        y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] + 143, 'y' )
+        counter += Ω.tool.isZone( displayed, counter, x, y )
 
-        x = Ω.tool.bend( Ω.now.athlete[ digit ][ 0 ] + 143, 'x' )
-        y = Ω.tool.bend( Ω.now.athlete[ digit ][ 1 ] - 145, 'y' )
-        counter += Ω.tool.isZone( digit, counter, x, y )
+        x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] + 143, 'x' )
+        y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] - 145, 'y' )
+        counter += Ω.tool.isZone( displayed, counter, x, y )
 
-        x = Ω.tool.bend( Ω.now.athlete[ digit ][ 0 ] - 145, 'x' )
-        y = Ω.tool.bend( Ω.now.athlete[ digit ][ 1 ] - 145, 'y' )
-        counter += Ω.tool.isZone( digit, counter, x, y )
+        x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] - 145, 'x' )
+        y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] - 145, 'y' )
+        counter += Ω.tool.isZone( displayed, counter, x, y )
 
-        x = Ω.tool.bend( Ω.now.athlete[ digit ][ 0 ] - 145, 'x' )
-        y = Ω.tool.bend( Ω.now.athlete[ digit ][ 1 ] + 143, 'y' )
-        counter += Ω.tool.isZone( digit, counter, x, y )
+        x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] - 145, 'x' )
+        y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] + 143, 'y' )
+        counter += Ω.tool.isZone( displayed, counter, x, y )
       }
 
       value = counter

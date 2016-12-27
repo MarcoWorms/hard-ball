@@ -338,18 +338,18 @@
 
       if( zoneIndex !== -1 ) // zone is targeting
       {
-        let digit = Ω.info.target[ 0 ][ zoneIndex ]
+        let zoneTarget = Ω.info.target[ 0 ][ zoneIndex ]
 
         //======================================================================
-        // Hover color effects . Part 5 . Get whatever is below a simple zone
+        // Hover color effects . Part 5 . Get whatever is below the zone
         //
-        if( digit === 'ball' )
+        if( zoneTarget === 'ball' )
         {
           Ω.page.ball.style.backgroundColor = 'rgb(143,111,79)'
         }
         else // athlete
         {
-          let color = Ω.now.athlete[ digit ][ 2 ]
+          let color = Ω.now.athlete[ zoneTarget ][ 2 ]
           let lighterColor
 
           if( color === 'none' ) lighterColor = 'rgb(191,191,191)'
@@ -357,7 +357,7 @@
           else if( color === 'gre' ) lighterColor = 'rgb(143,191,63)'
           else if( color === 'blu' ) lighterColor = 'rgb(111,79,207)'
 
-          Ω.page.athlete[ digit ].style.backgroundColor = lighterColor
+          Ω.page.athlete[ zoneTarget ].style.backgroundColor = lighterColor
         }
       }
     }

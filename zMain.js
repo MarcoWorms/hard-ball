@@ -80,6 +80,7 @@
     Ω.game.updZon2()
 
     Ω.game.updCur()
+    Ω.game.updTar()
     Ω.game.updKee()
 
     // having both 'game.updZon1' and 'game.updZon2' after 'game.updKee' makes

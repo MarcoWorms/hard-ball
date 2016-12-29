@@ -75,11 +75,6 @@
       {
         Ω.now.selected = newAthlete
         Ω.info.currentlyDisplayed = Ω.now.selected
-
-        // When this function is updated here it avoids certain bugs and also
-        // the need to further regulate when to update targets
-        //
-        Ω.game.updTar()
       }
     }
 
@@ -93,7 +88,7 @@
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // 05 . Click on   a zone
+    // 05 . Click on a zone
     //
     // It's important to note that its only possible to click a zone when the
     // ball or some athlete is selected

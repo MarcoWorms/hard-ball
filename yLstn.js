@@ -68,8 +68,14 @@
     //
     else if( $.target.id.substring( 0, 3 ) === 'min' )
     {
-      Ω.now.selected = Number( $.target.id.substring( 4, 6 ) ) // 0 to 19
-      Ω.info.currentlyDisplayed = Ω.now.selected
+      let newAthlete = Number( $.target.id.substring( 4, 6 ) ) // 0 to 19
+
+      if( Ω.now.athlete[ newAthlete ][ 2 ] === Ω.now.currentPlayer
+      || Ω.now.athlete[ newAthlete ][ 2 ] === 'none' )
+      {
+        Ω.now.selected = newAthlete
+        Ω.info.currentlyDisplayed = Ω.now.selected
+      }
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -82,7 +88,7 @@
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // 05 . Select a zone
+    // 05 . Click on a zone
     //
     // It's important to note that its only possible to click a zone when the
     // ball or some athlete is selected
@@ -104,7 +110,36 @@
       //
       if( zoneIndex !== -1 )
       {
-        let zoneTarget = Ω.info.target[ 0 ][ zoneIndex ]
+        let zoneTarget = Ω.info.target[ 0 ][ zoneIndex ] // 'ball' or 0 to 19
+
+         // Targeted ball was clicked
+         //
+        if( zoneTarget === 'ball' )
+        {
+          console.log( 'ball' )
+        }
+
+        // Targeted athlete was clicked
+        //
+        else
+        {
+          let targetColor = Ω.now.athlete[ zoneTarget ][ 2 ]
+          let selectedColor = Ω.now.athlete[ Ω.now.selected ][ 2 ]
+
+          // Friendly target
+          //
+          if( targetColor === selectedColor )
+          {
+            console.log( 'friend' )
+          }
+
+          // Opponent target
+          //
+          else
+          {
+            console.log( 'opponent' )
+          }
+        }
       }
 
       //========================================================================
@@ -208,7 +243,7 @@
     ////////////////////////////////////////////////////////////////////////////
     // 06 . Select nothing
     //
-    else 
+    else
     {
       Ω.now.selected = 'none'
       Ω.info.currentlyDisplayed = Ω.now.selected
@@ -228,6 +263,8 @@
   //
   hoverer: addEventListener( 'mouseover', function( $ )
   {
+    Ω.now.hovered = 'none'
+
     ////////////////////////////////////////////////////////////////////////////
     // Hover color effects . Part 1 . Refresh everything
     //

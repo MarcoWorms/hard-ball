@@ -396,7 +396,7 @@
     else if( Ω.now.hovered !== 'none'
     && Ω.info.target[ 0 ].indexOf( Ω.now.hovered ) === -1 )
     {
-      //////////////////////////////////////////////////////////////////////////
+      //........................................................................
       // Hovered and non-targeted athlete is ready to play
       //
       if( Ω.now.athlete[ Ω.now.hovered ][ 2 ] === 'none' )
@@ -405,7 +405,7 @@
         else                 Ω.game.updZonCdn( 'rep', 'select' )
       }
 
-      //////////////////////////////////////////////////////////////////////////
+      //........................................................................
       // Hovered and non-targeted athlete is playing
       //
       else if( Ω.now.athlete[ Ω.now.hovered ][ 2 ] !== 'red' )
@@ -429,7 +429,7 @@
     && Ω.info.target[ 0 ].indexOf( Ω.now.selected ) === -1 )
     {
 
-      //////////////////////////////////////////////////////////////////////////
+      //........................................................................
       // Selected and non-targeted athlete is ready to play
       //
       if( Ω.now.athlete[ Ω.now.selected ][ 2 ] === 'none' )
@@ -438,7 +438,7 @@
         else                 Ω.game.updZonCdn( 'rep', 'select' )
       }
 
-      //////////////////////////////////////////////////////////////////////////
+      //........................................................................
       // Selected and non-targeted athlete is playing
       //
       else if( Ω.now.athlete[ Ω.now.selected ][ 2 ] !== 'red' )
@@ -491,12 +491,8 @@
         //......................................................................
         // Athlete is the same color as the turn AND turn is higher than 7
         //
-        if( Ω.now.athlete[ Ω.now.hovered ][ 2 ] === current
-        && Ω.now.turn > 7 )
-        {
-          // ?
-        }
-        else
+        if( Ω.now.athlete[ Ω.now.hovered ][ 2 ] !== current
+        || Ω.now.turn < 8 )
         {
           value = 0.66
           key = false
@@ -533,12 +529,8 @@
         //......................................................................
         // Athlete is the same color as the turn AND turn is higher than 7
         //
-        if( Ω.now.athlete[ Ω.now.selected ][ 2 ] === current
-        && Ω.now.turn > 7 )
-        {
-          // ?
-        }
-        else
+        if( Ω.now.athlete[ Ω.now.selected ][ 2 ] !== current
+        || Ω.now.turn < 8 )
         {
           value = 0.66
           key = false

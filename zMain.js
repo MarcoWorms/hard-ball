@@ -80,7 +80,6 @@
     Ω.game.updZon2()
 
     Ω.game.updCur()
-    Ω.game.updTar()
     Ω.game.updKee()
 
     // having both 'game.updZon1' and 'game.updZon2' after 'game.updKee' makes
@@ -263,47 +262,35 @@
   //
   updTar: function()
   {
-    //==========================================================================
-    // Making this function work only when there's nothing selected is a way to
-    // avoid a glitch happening when 'fast-hovering' from one non-targeted
-    // athlete to a targeted one.
-    //
-    // The usual behavior states that targeted athletes may not display its
-    // zones so they can be affected by other athletes targeting them, but the
-    // glitch allowed this to happen, therefore it had to be dealt with somehow
-    //
-    if( Ω.now.selected === 'none' )
+    Ω.info.target = [ [], [] ] // refresh the array (targets & zones)
+
+    for( let $1 = 0; $1 < 16; $1 ++ )
     {
-      Ω.info.target = [ [], [] ] // refresh the array (targets & zones)
-
-      for( let $1 = 0; $1 < 16; $1 ++ )
+      //======================================================================
+      // Look for athletes
+      //
+      for( let $2 = 0; $2 < 20; $2 ++ )
       {
-        //======================================================================
-        // Look for athletes
+        //....................................................................
+        // If any athlete's X is equal to any zone's X and
+        // If any athlete's Y is equal to any zone's Y
         //
-        for( let $2 = 0; $2 < 20; $2 ++ )
+        if( Ω.now.athlete[ $2 ][ 0 ] - 1 === Ω.info.zone[ $1 ][ 0 ]
+        && Ω.now.athlete[ $2 ][ 1 ] - 1 === Ω.info.zone[ $1 ][ 1 ] )
         {
-          //....................................................................
-          // If any athlete's X is equal to any zone's X and
-          // If any athlete's Y is equal to any zone's Y
-          //
-          if( Ω.now.athlete[ $2 ][ 0 ] - 1 === Ω.info.zone[ $1 ][ 0 ]
-          && Ω.now.athlete[ $2 ][ 1 ] - 1 === Ω.info.zone[ $1 ][ 1 ] )
-          {
-            Ω.info.target[ 0 ].push( $2 ) // targets
-            Ω.info.target[ 1 ].push( $1 ) // zones
-          }
+          Ω.info.target[ 0 ].push( $2 ) // targets
+          Ω.info.target[ 1 ].push( $1 ) // zones
         }
+      }
 
-        //======================================================================
-        // Look for the ball
-        //
-        if( Ω.now.ball[ 0 ] - 1 === Ω.info.zone[ $1 ][ 0 ]
-        && Ω.now.ball[ 1 ] - 1 === Ω.info.zone[ $1 ][ 1 ] )
-        {
-          Ω.info.target[ 0 ].push( 'ball' ) // ball
-          Ω.info.target[ 1 ].push( $1 ) // zone
-        }
+      //======================================================================
+      // Look for the ball
+      //
+      if( Ω.now.ball[ 0 ] - 1 === Ω.info.zone[ $1 ][ 0 ]
+      && Ω.now.ball[ 1 ] - 1 === Ω.info.zone[ $1 ][ 1 ] )
+      {
+        Ω.info.target[ 0 ].push( 'ball' ) // ball
+        Ω.info.target[ 1 ].push( $1 ) // zone
       }
     }
   },
@@ -377,7 +364,6 @@
   //
   updZon1: function()
   {
-
     //==========================================================================
     // Undisplay every zone and refresh 'info.zone'
     //

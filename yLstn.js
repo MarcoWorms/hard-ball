@@ -38,6 +38,15 @@
       Ω.page.no.style.display = 'none'
 
       //========================================================================
+      // Preparation to avoid visual strange behavior
+      //
+      Array.from( Ω.page.animate ).forEach( function( $ )
+      {
+        $.style.transition = ''
+        $.style.display = 'none'
+      } )
+
+      //========================================================================
       // Actual RESET
       //
       Ω.now = JSON.parse( localStorage.getItem( 'first' ) )
@@ -71,6 +80,7 @@
       let newAthlete = Number( $.target.id.substring( 4, 6 ) ) // 0 to 19
 
       if( Ω.now.athlete[ newAthlete ][ 2 ] === Ω.now.currentPlayer
+      //
       || Ω.now.athlete[ newAthlete ][ 2 ] === 'none' )
       {
         Ω.now.selected = newAthlete
@@ -105,96 +115,151 @@
 
       let changeTurn = false
 
-      //......................................................................
-      // Ball is selected
+      //========================================================================
+      // Has a target
       //
-      if( Ω.now.selected === 'ball' )
+      if( zoneIndex !== -1 )
       {
-        // tbd (ball goes to 1 of the 8 cells around its player)
+        let zoneTarget = Ω.info.target[ 0 ][ zoneIndex ] // 'ball' or 0 to 19
+
+         // Targeted ball was clicked
+         //
+        if( zoneTarget === 'ball' )
+        {
+          console.log( 'ball' )
+        }
+
+        // Targeted athlete was clicked
+        //
+        else
+        {
+          let targetColor = Ω.now.athlete[ zoneTarget ][ 2 ]
+          let selectedColor = Ω.now.athlete[ Ω.now.selected ][ 2 ]
+
+          // Friendly target
+          //
+          if( targetColor === selectedColor )
+          {
+            console.log( 'friend' )
+          }
+
+          // Opponent target
+          //
+          else
+          {
+            console.log( 'opponent' )
+          }
+        }
       }
 
-      //......................................................................
-      // Athlete is selected
+      //========================================================================
+      // Hasn't a target
       //
       else
       {
-        // Setting variables
+        //......................................................................
+        // Ball is selected
         //
-        let color
-        let team
-        let spawn
-
-        // Zone is green
-        //
-         if( Ω.now.spawn.green.indexOf( coordinate ) !== -1 )
+        if( Ω.now.selected === 'ball' )
         {
-          color = 'gre'
-          team = Ω.now.team.green
-          spawn = Ω.now.spawn.green
+          // tbd (ball goes to 1 of the 8 cells around its player)
         }
 
-        // Zone is blue
+        //......................................................................
+        // Athlete is selected
         //
-        else if( Ω.now.spawn.blue.indexOf( coordinate ) !== -1 )
+        else
         {
-          color = 'blu'
-          team = Ω.now.team.blue
-          spawn = Ω.now.spawn.blue
-        }
-
-        // Set the new athlete's new position
-        //
-        if( Ω.now.turn === 0
-        //
-        || Ω.now.turn < 8
-        && Ω.now.currentPlayer === color
-        && Ω.now.athlete[ Ω.now.selected ][ 2 ] === 'none'
-        //
-        || Ω.now.turn > 7
-        && Ω.now.currentPlayer === Ω.now.athlete[ Ω.now.selected ][ 2 ] )
-        {
-          // Change the selected athlete's X and Y values
+          // Setting variables
           //
-          Ω.now.athlete[ Ω.now.selected ][ 0 ] = zoneX + 1
-          Ω.now.athlete[ Ω.now.selected ][ 1 ] = zoneY + 1
+          let color
+          let team
+          let spawn
 
-          // Move on
+          // Zone is green
           //
-          changeTurn = true
-        }
+           if( Ω.now.spawn.green.indexOf( coordinate ) !== -1 )
+          {
+            color = 'gre'
+            team = Ω.now.team.green
+            spawn = Ω.now.spawn.green
+          }
 
-        // Set who's the first player of the match
-        //
-        if( Ω.now.turn === 0 ) Ω.now.firstPlayer = color
-
-        // Set initial standards
-        //
-        if( Ω.now.turn === 0
-        //
-        || Ω.now.turn < 8
-        && Ω.now.currentPlayer === color
-        && Ω.now.athlete[ Ω.now.selected ][ 2 ] === 'none' )
-        {
-          // Assign athlete to a team
+          // Zone is blue
           //
-          Ω.now.athlete[ Ω.now.selected ][ 2 ] = color
+          else if( Ω.now.spawn.blue.indexOf( coordinate ) !== -1 )
+          {
+            color = 'blu'
+            team = Ω.now.team.blue
+            spawn = Ω.now.spawn.blue
+          }
 
-          // Remove this from the array of vacant initial cells
+          // Set the new athlete's new position
           //
-          Ω.tool.remove( coordinate, spawn )
+          if( Ω.now.turn === 0
+          //
+          || Ω.now.turn < 8
+          && Ω.now.currentPlayer === color
+          && Ω.now.athlete[ Ω.now.selected ][ 2 ] === 'none'
+          //
+          || Ω.now.turn > 7
+          && Ω.now.currentPlayer === Ω.now.athlete[ Ω.now.selected ][ 2 ] ) 
+          {
+            // So every moved piece looks like it moved above everything else
+            //
+            Array.from( Ω.page.zone ).forEach( function( $1 )
+            {
+              $1.style.zIndex = String( Ω.now.top )
+            } )
 
-          // Update the team's formation array
+            // The adjusments below are intended to make moving pieces appear on
+            // top of every other piece in the board
+            //
+            Ω.page.selection.style.zIndex = String( Ω.now.top )
+            Ω.page.athlete[ Ω.now.selected ].style.zIndex = String( Ω.now.top )
+            Ω.now.top ++
+
+            // Change the selected athlete's X and Y values
+            //
+            Ω.now.athlete[ Ω.now.selected ][ 0 ] = zoneX + 1
+            Ω.now.athlete[ Ω.now.selected ][ 1 ] = zoneY + 1
+
+            // Move on
+            //
+            changeTurn = true
+          }
+
+          // Set who's the first player of the match
           //
-          team.push( Ω.now.selected )
+          if( Ω.now.turn === 0 ) Ω.now.firstPlayer = color
+
+          // Set initial standards
+          //
+          if( Ω.now.turn === 0
+          //
+          || Ω.now.turn < 8
+          && Ω.now.currentPlayer === color
+          && Ω.now.athlete[ Ω.now.selected ][ 2 ] === 'none' )
+          {
+            // Assign athlete to a team
+            //
+            Ω.now.athlete[ Ω.now.selected ][ 2 ] = color
+
+            // Remove this from the array of vacant initial cells
+            //
+            Ω.tool.remove( coordinate, spawn )
+
+            // Update the team's formation array
+            //
+            team.push( Ω.now.selected )
+          }
         }
       }
 
+      //========================================================================
       // Ending 
       //
-      if( changeTurn )
-      {
-        Ω.game.updTrn()
-      }
+      if( changeTurn ) Ω.game.updTrn()
     }
 
     ////////////////////////////////////////////////////////////////////////////

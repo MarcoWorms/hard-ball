@@ -75,7 +75,7 @@
     {
       Array.from( Ω.page.animate ).forEach( function( $ )
       {
-        $.style.transition = 'all 0.5s ease-in'
+        $.style.transition = 'all 0.25s ease-in'
       } )
     }, 9 ) // beyond this value, animation on reset and reload is lost
   },
@@ -93,8 +93,9 @@
     Ω.game.updCur()
     Ω.game.updTar()
     Ω.game.updKee()
+    Ω.game.updRed()
 
-    // having both 'game.updZon1' and 'game.updZon2' after 'game.updKee' makes
+    // having both 'game.updZon1' and 'game.updZon2' after 'game.updRed' makes
     // the hover effect non-existant after any athlete gets selected
   },
 
@@ -371,6 +372,40 @@
     Ω.now.selected = 'none'
   },
 
+  ////////////////////////////////////////////////////////////////////////////// G.updRed
+  // Changes the color of a zone to red if targeted athlete cannot be pushed
+  //
+  updRed: function()
+  {
+    // It has to show which zone is red athlete and also which athlete is
+    // impeding the move from happening
+
+    let size = Ω.info.target[ 0 ].length
+
+    if( size !== 0  // there are targets
+    && Ω.now.selected !== 'none'
+    && Ω.now.selected !== 'ball' )
+    {
+      for( let $ = 0; $ < size; $ ++ )
+      {
+        // How far the zone/target is from the aiming athlete
+        //
+        let aimed = Ω.info.target[ 0 ][ $ ] // aimed
+
+        let pusherX = Ω.now.athlete[ Ω.now.selected ][ 0 ] - 1
+        let pusherY = Ω.now.athlete[ Ω.now.selected ][ 1 ] - 1
+
+        let aimedX = Ω.now.athlete[ aimed ][ 0 ] - 1
+        let aimedY = Ω.now.athlete[ aimed ][ 1 ] - 1
+
+        let distX = aimedX - pusherX
+        let distY = aimedY - pusherY
+
+        console.log( 'distX:' + distX + ' . distY:' + distY )
+      }
+    }
+  },
+
   ////////////////////////////////////////////////////////////////////////////// G.updZon1
   // Calls 'game.updZonCdn' differently depending on the situation
   //
@@ -503,6 +538,7 @@
         // Athlete is the same color as the turn AND turn is higher than 7
         //
         if( Ω.now.athlete[ Ω.now.hovered ][ 2 ] !== current
+        //
         || Ω.now.turn < 8 )
         {
           value = 0.66
@@ -541,6 +577,7 @@
         // Athlete is the same color as the turn AND turn is higher than 7
         //
         if( Ω.now.athlete[ Ω.now.selected ][ 2 ] !== current
+        //
         || Ω.now.turn < 8 )
         {
           value = 0.66

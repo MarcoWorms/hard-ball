@@ -113,6 +113,7 @@
       aera = Ω.info.area.blue
       keeper = Ω.info.keeper.green
     }
+
     else if( color === 'blu' )
     {
       area = Ω.info.area.blue
@@ -147,6 +148,9 @@
       Ω.info.zone[ counter ] = [ x, y ] // change master coordinates
       return 1 // (+1 zone to show)
     }
+
+    //==========================================================================
+    //
     else
     {
       return 0
@@ -198,9 +202,7 @@
         }
       }
 
-    //==========================================================================
-    //
-    return name
+      return name
     }
   },
 
@@ -224,6 +226,7 @@
       if( Ω.changer.spin[ 0 ] > 360 ) Ω.changer.spin[ 0 ] = 0
       else                            Ω.changer.spin[ 0 ] ++
     }, 10 ) ],
+
   //============================================================================
   //
   glow: [ 0.66, false, setInterval( function()

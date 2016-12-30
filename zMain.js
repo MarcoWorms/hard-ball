@@ -67,6 +67,17 @@
     // Preserving the selection zone's appearance on loads
     //
     Ω.game.updSel()
+
+    //==========================================================================
+    // Avoiding unwanted parts of animations during first load and resets
+    //
+    setTimeout( function()
+    {
+      Array.from( Ω.page.animate ).forEach( function( $ )
+      {
+        $.style.transition = 'all 0.5s ease-in'
+      } )
+    }, 9 ) // beyond this value, animation on reset and reload is lost
   },
 
   ////////////////////////////////////////////////////////////////////////////// G.update
@@ -361,7 +372,7 @@
   },
 
   ////////////////////////////////////////////////////////////////////////////// G.updZon1
-  // Calls 'game.updZonCdn' differently depending on the moment
+  // Calls 'game.updZonCdn' differently depending on the situation
   //
   updZon1: function()
   {

@@ -106,4 +106,8 @@
     document.querySelectorAll( '.glw18' ),
     document.querySelectorAll( '.glw19' ),
   ],
-}
+
+  //============================================================================
+  //
+  animate: document.querySelectorAll( '.ani' ),
+ }

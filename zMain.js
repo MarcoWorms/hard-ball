@@ -386,11 +386,12 @@
     && Ω.now.selected !== 'none'
     && Ω.now.selected !== 'ball' )
     {
-      for( let $ = 0; $ < size; $ ++ )
+      for( let $1 = 0; $1 < size; $1 ++ )
       {
         // How far the zone/target is from the aiming athlete
         //
-        let aimed = Ω.info.target[ 0 ][ $ ] // aimed
+        let aimed = Ω.info.target[ 0 ][ $1 ] // aimed
+        let zone = Ω.info.target[ 1 ][ $1 ] // zone
 
         let pusherX = Ω.now.athlete[ Ω.now.selected ][ 0 ] - 1
         let pusherY = Ω.now.athlete[ Ω.now.selected ][ 1 ] - 1
@@ -398,10 +399,51 @@
         let aimedX = Ω.now.athlete[ aimed ][ 0 ] - 1
         let aimedY = Ω.now.athlete[ aimed ][ 1 ] - 1
 
-        let distX = aimedX - pusherX
-        let distY = aimedY - pusherY
+        let distanceX = pusherX - aimedX
+        let distanceY = pusherY - aimedY
 
-        console.log( 'distX:' + distX + ' . distY:' + distY )
+        let newX = aimedX - distanceX
+        let newY = aimedY - distanceY
+
+        let blockedX = Ω.tool.bend( newX, 'x' )
+        let blockedY = Ω.tool.bend( newY, 'y' )
+
+        let coordinate = Ω.tool.convert( [ blockedX, blockedY ] )
+
+        console.log( coordinate )
+
+        // console.log( 'pusher . ' + Ω.tool.convert( [ pusherX, pusherY ] ) )
+        // console.log( 'aimed . ' + Ω.tool.convert( [ aimedX, aimedY ] ) )
+        // console.log( 'blocked . ' + Ω.tool.convert( [ blockedX, blockedY ] ) )
+        // console.log()
+
+        // Testing if there are athletes impeding the push action
+        //
+        for( let $2 = 0; $2 < 20; $2 ++ )
+        {
+          let athleteX = Ω.now.athlete[ $2 ][ 0 ]
+          let athleteY = Ω.now.athlete[ $2 ][ 1 ]
+
+          let area
+
+          // Avoid athletes from being pushed to its opponent's area
+          //
+          if( Ω.now.athlete[ aimed ][ 2 ] === 'gre' ) area = Ω.info.area.blue
+          else                                        area = Ω.info.area.green
+
+          // Checking if it's possible to push or not
+          //
+          if( area.indexOf( coordinate ) === -1 )
+          {
+            if( blockedX === athleteX - 1 )
+            {
+              if( blockedY === athleteY - 1 )
+              {
+                // tbd
+              }
+            }
+          }
+        }
       }
     }
   },

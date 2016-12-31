@@ -170,12 +170,14 @@
         //
         else
         {
+          //....................................................................
           // Setting variables
           //
           let color
           let team
           let spawn
 
+          //....................................................................
           // Zone is green
           //
            if( Ω.now.spawn.green.indexOf( coordinate ) !== -1 )
@@ -194,6 +196,7 @@
             spawn = Ω.now.spawn.blue
           }
 
+          //....................................................................
           // Set the new athlete's new position
           //
           if( Ω.now.turn === 0
@@ -229,10 +232,12 @@
             changeTurn = true
           }
 
+          //....................................................................
           // Set who's the first player of the match
           //
           if( Ω.now.turn === 0 ) Ω.now.firstPlayer = color
 
+          //....................................................................
           // Set initial standards
           //
           if( Ω.now.turn === 0

@@ -377,24 +377,27 @@
   //
   updRed: function()
   {
-    // It has to show which zone is red athlete and also which athlete is
-    // impeding the move from happening
+    // Refreshes which cell is blocked
+    //
+    Ω.info.blocked = []
 
-    let size = Ω.info.target[ 0 ].length
+    // Full process
+    //
+    let targetLength = Ω.info.target[ 0 ].length
 
-    if( size !== 0  // there are targets
-    && Ω.now.selected !== 'none'
-    && Ω.now.selected !== 'ball' )
+    if( targetLength !== 0
+    && Ω.info.currentlyDisplayed !== 'none'
+    && Ω.info.currentlyDisplayed !== 'ball' )
     {
-      for( let $1 = 0; $1 < size; $1 ++ )
+      for( let $1 = 0; $1 < targetLength; $1 ++ )
       {
         // How far the zone/target is from the aiming athlete
         //
         let aimed = Ω.info.target[ 0 ][ $1 ] // aimed
         let zone = Ω.info.target[ 1 ][ $1 ] // zone
 
-        let pusherX = Ω.now.athlete[ Ω.now.selected ][ 0 ] - 1
-        let pusherY = Ω.now.athlete[ Ω.now.selected ][ 1 ] - 1
+        let pusherX = Ω.now.athlete[ Ω.info.currentlyDisplayed ][ 0 ] - 1
+        let pusherY = Ω.now.athlete[ Ω.info.currentlyDisplayed ][ 1 ] - 1
 
         let aimedX = Ω.now.athlete[ aimed ][ 0 ] - 1
         let aimedY = Ω.now.athlete[ aimed ][ 1 ] - 1
@@ -410,11 +413,9 @@
 
         let coordinate = Ω.tool.convert( [ blockedX, blockedY ] )
 
-        console.log( coordinate )
-
-        // console.log( 'pusher . ' + Ω.tool.convert( [ pusherX, pusherY ] ) )
-        // console.log( 'aimed . ' + Ω.tool.convert( [ aimedX, aimedY ] ) )
-        // console.log( 'blocked . ' + Ω.tool.convert( [ blockedX, blockedY ] ) )
+        // console.log( 'pusher ' + Ω.tool.convert( [ pusherX, pusherY ] ) )
+        // console.log( 'aimed ' + Ω.tool.convert( [ aimedX, aimedY ] ) )
+        // console.log( 'blocked ' + Ω.tool.convert( [ blockedX, blockedY ] ) )
         // console.log()
 
         // Testing if there are athletes impeding the push action
@@ -439,7 +440,7 @@
             {
               if( blockedY === athleteY - 1 )
               {
-                // tbd
+                Ω.info.blocked.push( zone )
               }
             }
           }
@@ -631,12 +632,17 @@
     //==========================================================================
     // Finally apply the desired effects
     //
-    Array.from( Ω.page.zone ).forEach( function( $ )
+    Array.from( Ω.page.zone ).forEach( function( $1, $2 )
     {
-      $.style.borderColor = 'rgba(255,255,255,' + value + ')'
+      let color
 
-      if( key ) $.style.boxShadow = '0 0 0 3px rgba(255,255,255,0.5)'
-      else      $.style.boxShadow = ''
+      if( Ω.info.blocked.indexOf( $2 ) !== -1 ) color = '0,0,0'
+      else                                      color = '255,255,255'
+
+      $1.style.borderColor = 'rgba(' + color + ',' + value + ')'
+
+      if( key ) $1.style.boxShadow = '0 0 0 3px rgba(' + color + ',0.5)'
+      else      $1.style.boxShadow = ''
     } )
   },
 

@@ -73,9 +73,9 @@
     //
     setTimeout( function()
     {
-      Array.from( Ω.page.animate ).forEach( function( $ )
+      Array.from( Ω.page.animate1 ).forEach( function( $ )
       {
-        $.style.transition = 'all 0.25s ease-in'
+        $.style.transition = 'all 0.25s ease-in-out'
       } )
     }, 9 ) // beyond this value, animation on reset and reload is lost
   },

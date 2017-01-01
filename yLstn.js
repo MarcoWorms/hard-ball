@@ -40,7 +40,7 @@
       //========================================================================
       // Preparation to avoid visual strange behavior
       //
-      Array.from( Ω.page.animate ).forEach( function( $ )
+      Array.from( Ω.page.animate1 ).forEach( function( $ )
       {
         $.style.transition = ''
         $.style.display = 'none'
@@ -122,8 +122,8 @@
       {
         let zoneTarget = Ω.info.target[ 0 ][ zoneIndex ] // 'ball' or 0 to 19
 
-         // Targeted ball was clicked
-         //
+        // Targeted ball was clicked
+        //
         if( zoneTarget === 'ball' )
         {
           console.log( 'ball' )
@@ -215,8 +215,8 @@
               $1.style.zIndex = String( Ω.now.top )
             } )
 
-            // The adjusments below are intended to make moving pieces appear on
-            // top of every other piece in the board
+            // The adjustments below are intended to make moving pieces appear
+            // on top of every other piece in the board
             //
             Ω.page.selection.style.zIndex = String( Ω.now.top )
             Ω.page.athlete[ Ω.now.selected ].style.zIndex = String( Ω.now.top )

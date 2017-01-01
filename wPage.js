@@ -109,5 +109,5 @@
 
   //============================================================================
   //
-  animate: document.querySelectorAll( '.ani' ),
+  animate1: document.querySelectorAll( '.ani1' ),
  }

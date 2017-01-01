@@ -393,8 +393,8 @@
       {
         // How far the zone/target is from the aiming athlete
         //
-        let aimed = Ω.info.target[ 0 ][ $1 ] // aimed
-        let zone = Ω.info.target[ 1 ][ $1 ] // zone
+        let aimed = Ω.info.target[ 0 ][ $1 ]
+        let zone = Ω.info.target[ 1 ][ $1 ]
 
         let pusherX = Ω.now.athlete[ Ω.info.currentlyDisplayed ][ 0 ] - 1
         let pusherY = Ω.now.athlete[ Ω.info.currentlyDisplayed ][ 1 ] - 1
@@ -412,11 +412,6 @@
         let blockedY = Ω.tool.bend( newY, 'y' )
 
         let coordinate = Ω.tool.convert( [ blockedX, blockedY ] )
-
-        // console.log( 'pusher ' + Ω.tool.convert( [ pusherX, pusherY ] ) )
-        // console.log( 'aimed ' + Ω.tool.convert( [ aimedX, aimedY ] ) )
-        // console.log( 'blocked ' + Ω.tool.convert( [ blockedX, blockedY ] ) )
-        // console.log()
 
         // Testing if there are athletes impeding the push action
         //
@@ -443,6 +438,11 @@
                 Ω.info.blocked.push( zone )
               }
             }
+          }
+
+          else // part of opponent's area
+          {
+            Ω.info.blocked.push( zone )
           }
         }
       }

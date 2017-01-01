@@ -133,21 +133,23 @@
         //
         else
         {
-          let targetColor = Ω.now.athlete[ zoneTarget ][ 2 ]
-          let selectedColor = Ω.now.athlete[ Ω.now.selected ][ 2 ]
+          let targetIndex = Ω.info.target[ 1 ].indexOf( zone )
+          let targeted = Ω.info.target[ 0 ][ targetIndex ]
 
-          // Friendly target
-          //
-          if( targetColor === selectedColor )
+          if( Ω.info.blocked.indexOf( zone ) === -1 ) // not blocked
           {
-            console.log( 'friend' )
-          }
+            let newCoord = Ω.tool.tackle( targetIndex )
 
-          // Opponent target
-          //
-          else
-          {
-            console.log( 'opponent' )
+            Ω.now.athlete[ Ω.now.selected ][ 0 ] = Ω.info.zone[ zone ][ 0 ] + 1
+            Ω.now.athlete[ Ω.now.selected ][ 1 ] = Ω.info.zone[ zone ][ 1 ] + 1
+
+            setTimeout( function()
+            {
+              Ω.now.athlete[ targeted ][ 0 ] = newCoord[ 0 ] + 1
+              Ω.now.athlete[ targeted ][ 1 ] = newCoord[ 1 ] + 1
+            }, 90 )
+
+            Ω.game.updTrn()
           }
         }
       }

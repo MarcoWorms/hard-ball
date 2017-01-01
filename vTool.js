@@ -203,6 +203,37 @@
     let index = entity.indexOf( coordinate )
     entity.splice( index, 1 )
   },
+
+  ////////////////////////////////////////////////////////////////////////////// T.tackle
+  //
+  tackle: function( targeted )
+  {
+      let aimed = Ω.info.target[ 0 ][ targeted ]
+
+      let pusherX = Ω.now.athlete[ Ω.now.selected ][ 0 ] - 1
+      let pusherY = Ω.now.athlete[ Ω.now.selected ][ 1 ] - 1
+
+      let aimedX = Ω.now.athlete[ aimed ][ 0 ] - 1
+      let aimedY = Ω.now.athlete[ aimed ][ 1 ] - 1
+
+      let distanceX = pusherX - aimedX
+      let distanceY = pusherY - aimedY
+
+      let newX = aimedX - distanceX
+      let newY = aimedY - distanceY
+
+      let blockedX = Ω.tool.bend( newX, 'x' )
+      let blockedY = Ω.tool.bend( newY, 'y' )
+
+      let coordinate = [ blockedX, blockedY ]
+
+      // console.log( 'pusher ' + Ω.tool.convert( [ pusherX, pusherY ] ) )
+      // console.log( 'aimed ' + Ω.tool.convert( [ aimedX, aimedY ] ) )
+      // console.log( 'blocked ' + Ω.tool.convert( [ blockedX, blockedY ] ) )
+      // console.log()
+
+      return coordinate
+  },
 }
 
 //////////////////////////////////////////////////////////////////////////////// CHANGER

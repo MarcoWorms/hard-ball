@@ -94,6 +94,7 @@
     Ω.game.updTar()
     Ω.game.updKee()
     Ω.game.updRed()
+    Ω.game.updInd()
 
     // having both 'game.updZon1' and 'game.updZon2' after 'game.updRed' makes
     // the hover effect non-existant after any athlete gets selected
@@ -447,6 +448,14 @@
         }
       }
     }
+  },
+
+  ////////////////////////////////////////////////////////////////////////////// G.updInd
+  // Display moving objects above everything else in the arena
+  //
+  updInd: function()
+  {
+    // tbd
   },
 
   ////////////////////////////////////////////////////////////////////////////// G.updZon1

@@ -208,8 +208,12 @@
   //
   tackle: function( targeted )
   {
+      //========================================================================
+      //
       let aimed = Ω.info.target[ 0 ][ targeted ]
 
+      //========================================================================
+      //
       let pusherX = Ω.now.athlete[ Ω.now.selected ][ 0 ] - 1
       let pusherY = Ω.now.athlete[ Ω.now.selected ][ 1 ] - 1
 
@@ -225,14 +229,27 @@
       let blockedX = Ω.tool.bend( newX, 'x' )
       let blockedY = Ω.tool.bend( newY, 'y' )
 
-      let coordinate = [ blockedX, blockedY ]
+      //========================================================================
+      //
+      let animationTime
+
+      if( distanceX < 0 ) distanceX = -distanceX
+      if( distanceY < 0 ) distanceY = -distanceY
+
+      if( distanceX > distanceY )      animationTime = distanceX
+      else if( distanceX < distanceY ) animationTime = distanceY
+      else                             animationTime = distanceX
+
+      //========================================================================
+      //
+      let info = [ blockedX, blockedY, animationTime ]
 
       // console.log( 'pusher ' + Ω.tool.convert( [ pusherX, pusherY ] ) )
       // console.log( 'aimed ' + Ω.tool.convert( [ aimedX, aimedY ] ) )
       // console.log( 'blocked ' + Ω.tool.convert( [ blockedX, blockedY ] ) )
       // console.log()
 
-      return coordinate
+      return info
   },
 }
 

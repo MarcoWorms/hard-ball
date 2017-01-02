@@ -147,7 +147,7 @@
             {
               Ω.now.athlete[ targeted ][ 0 ] = newCoord[ 0 ] + 1
               Ω.now.athlete[ targeted ][ 1 ] = newCoord[ 1 ] + 1
-            }, 90 )
+            }, newCoord[ 2 ] )
 
             Ω.game.updTrn()
           }
@@ -210,20 +210,6 @@
           || Ω.now.turn > 7
           && Ω.now.currentPlayer === Ω.now.athlete[ Ω.now.selected ][ 2 ] ) 
           {
-            // So every moved piece looks like it moved above everything else
-            //
-            Array.from( Ω.page.zone ).forEach( function( $1 )
-            {
-              $1.style.zIndex = String( Ω.now.top )
-            } )
-
-            // The adjustments below are intended to make moving pieces appear
-            // on top of every other piece in the board
-            //
-            Ω.page.selection.style.zIndex = String( Ω.now.top )
-            Ω.page.athlete[ Ω.now.selected ].style.zIndex = String( Ω.now.top )
-            Ω.now.top ++
-
             // Change the selected athlete's X and Y values
             //
             Ω.now.athlete[ Ω.now.selected ][ 0 ] = zoneX + 1

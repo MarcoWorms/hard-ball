@@ -471,7 +471,11 @@
 
     //==========================================================================
     //
-    if( Ω.now.selected !== 'none' )
+    if( Ω.now.selected === 'ball' )
+    {
+      // tbd
+    }
+    else if( Ω.now.selected !== 'none' )
     {
       Ω.page.athlete[ Ω.info.currentlyDisplayed ].style.zIndex = 3
     }

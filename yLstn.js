@@ -105,49 +105,66 @@
     //
     else if( $.target.id.substring( 0, 3 ) === 'zon' ) // target is a zone
     {
-      let zone = Number( $.target.id.substring( 3, 5 ) ) // zone's number
+      let changeTurn = false
+
+      // Step 1
+      //
+      let zone = Number( $.target.id.substring( 3, 5 ) )
+
+      // Step 2
+      //
       let zoneIndex = Ω.info.target[ 1 ].indexOf( zone )
 
+      // Step 3
+      //
+      let zoneTarget = Ω.info.target[ 0 ][ zoneIndex ] // 'ball' or 0 to 19
+
+      // Step 4
+      //
       let zoneX = Ω.info.zone[ zone ][ 0 ]
       let zoneY = Ω.info.zone[ zone ][ 1 ]
 
       let coordinate = Ω.tool.convert( [ zoneX, zoneY ] )
-
-      let changeTurn = false
 
       //========================================================================
       // Has a target
       //
       if( zoneIndex !== -1 )
       {
-        let zoneTarget = Ω.info.target[ 0 ][ zoneIndex ] // 'ball' or 0 to 19
-
-        // Targeted ball was clicked
+        //......................................................................
+        // Athlete is selected
         //
-        if( zoneTarget === 'ball' )
+        if( Ω.now.selected !== 'ball' )
         {
-          console.log( 'ball' )
-        }
-
-        // Targeted athlete was clicked
-        //
-        else
-        {
-          let targetColor = Ω.now.athlete[ zoneTarget ][ 2 ]
-          let selectedColor = Ω.now.athlete[ Ω.now.selected ][ 2 ]
-
-          // Friendly target
+          // Targeted ball was clicked
           //
-          if( targetColor === selectedColor )
+          if( zoneTarget === 'ball' )
           {
-            console.log( 'friend' )
+            // tbd
           }
 
-          // Opponent target
+          // Targeted athlete was clicked
           //
           else
           {
-            console.log( 'opponent' )
+            let targetIndex = Ω.info.target[ 1 ].indexOf( zone )
+            let targeted = Ω.info.target[ 0 ][ targetIndex ]
+
+            if( Ω.info.blocked.indexOf( zone ) === -1 ) // not blocked
+            {
+              let newCoord = Ω.tool.tackle( targetIndex ) // it MUST be here!
+
+              Ω.now.athlete[ Ω.now.selected ][ 0 ] = zoneX + 1
+              Ω.now.athlete[ Ω.now.selected ][ 1 ] = zoneY + 1
+
+              setTimeout( function()
+              {
+                Ω.now.athlete[ targeted ][ 0 ] = newCoord[ 0 ] + 1
+                Ω.now.athlete[ targeted ][ 1 ] = newCoord[ 1 ] + 1
+              }, newCoord[ 2 ] )
+
+              Ω.game.updTrn()
+            }
           }
         }
       }
@@ -208,20 +225,6 @@
           || Ω.now.turn > 7
           && Ω.now.currentPlayer === Ω.now.athlete[ Ω.now.selected ][ 2 ] ) 
           {
-            // So every moved piece looks like it moved above everything else
-            //
-            Array.from( Ω.page.zone ).forEach( function( $1 )
-            {
-              $1.style.zIndex = String( Ω.now.top )
-            } )
-
-            // The adjustments below are intended to make moving pieces appear
-            // on top of every other piece in the board
-            //
-            Ω.page.selection.style.zIndex = String( Ω.now.top )
-            Ω.page.athlete[ Ω.now.selected ].style.zIndex = String( Ω.now.top )
-            Ω.now.top ++
-
             // Change the selected athlete's X and Y values
             //
             Ω.now.athlete[ Ω.now.selected ][ 0 ] = zoneX + 1

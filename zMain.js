@@ -94,6 +94,7 @@
     Ω.game.updTar()
     Ω.game.updKee()
     Ω.game.updRed()
+    Ω.game.updInd()
 
     // having both 'game.updZon1' and 'game.updZon2' after 'game.updRed' makes
     // the hover effect non-existant after any athlete gets selected
@@ -393,8 +394,8 @@
       {
         // How far the zone/target is from the aiming athlete
         //
-        let aimed = Ω.info.target[ 0 ][ $1 ] // aimed
-        let zone = Ω.info.target[ 1 ][ $1 ] // zone
+        let aimed = Ω.info.target[ 0 ][ $1 ]
+        let zone = Ω.info.target[ 1 ][ $1 ]
 
         let pusherX = Ω.now.athlete[ Ω.info.currentlyDisplayed ][ 0 ] - 1
         let pusherY = Ω.now.athlete[ Ω.info.currentlyDisplayed ][ 1 ] - 1
@@ -412,11 +413,6 @@
         let blockedY = Ω.tool.bend( newY, 'y' )
 
         let coordinate = Ω.tool.convert( [ blockedX, blockedY ] )
-
-        // console.log( 'pusher ' + Ω.tool.convert( [ pusherX, pusherY ] ) )
-        // console.log( 'aimed ' + Ω.tool.convert( [ aimedX, aimedY ] ) )
-        // console.log( 'blocked ' + Ω.tool.convert( [ blockedX, blockedY ] ) )
-        // console.log()
 
         // Testing if there are athletes impeding the push action
         //
@@ -444,9 +440,45 @@
               }
             }
           }
+
+          else // part of opponent's area
+          {
+            Ω.info.blocked.push( zone )
+          }
         }
       }
     }
+  },
+
+  ////////////////////////////////////////////////////////////////////////////// G.updInd
+  // Display moving objects above everything else in the arena
+  //
+  updInd: function()
+  {
+    //==========================================================================
+    //
+    Array.from( Ω.page.athlete ).forEach( function( $1, $2 )
+    {
+      $1.style.zIndex = 1
+    } )
+
+    //==========================================================================
+    //
+    Array.from( Ω.page.zone ).forEach( function( $1, $2 )
+    {
+      $1.style.zIndex = 2
+    } )
+
+    //==========================================================================
+    //
+    if( Ω.now.selected !== 'none' )
+    {
+      Ω.page.athlete[ Ω.info.currentlyDisplayed ].style.zIndex = 3
+    }
+
+    //==========================================================================
+    //
+    Ω.page.selection.style.zIndex = 4
   },
 
   ////////////////////////////////////////////////////////////////////////////// G.updZon1

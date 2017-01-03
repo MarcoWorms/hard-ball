@@ -113,7 +113,7 @@
 
     //==========================================================================
     //
-    let one = false // the displayed (maybe an athlete) isn't the keeper (?)
+    let one = false // the displayed (maybe an athlete) isn't the keeper
 
     if( keeper === Ω.info.currentlyDisplayed ) one = true // it's the keeper
 
@@ -121,7 +121,7 @@
     //
     let coordinate = Ω.tool.convert( [ x, y ] ) // zone's cell name
 
-    let kee = true // display the zone (?)
+    let kee = true // display the zone
 
     if( area.indexOf( coordinate ) !== -1 // but if the zone is inside 'AREA'!
     && keeper !== 'none' // and there is a keeper
@@ -202,6 +202,54 @@
   {
     let index = entity.indexOf( coordinate )
     entity.splice( index, 1 )
+  },
+
+  ////////////////////////////////////////////////////////////////////////////// T.tackle
+  //
+  tackle: function( targeted )
+  {
+      //========================================================================
+      //
+      let aimed = Ω.info.target[ 0 ][ targeted ]
+
+      //========================================================================
+      //
+      let pusherX = Ω.now.athlete[ Ω.now.selected ][ 0 ] - 1
+      let pusherY = Ω.now.athlete[ Ω.now.selected ][ 1 ] - 1
+
+      let aimedX = Ω.now.athlete[ aimed ][ 0 ] - 1
+      let aimedY = Ω.now.athlete[ aimed ][ 1 ] - 1
+
+      let distanceX = pusherX - aimedX
+      let distanceY = pusherY - aimedY
+
+      let newX = aimedX - distanceX
+      let newY = aimedY - distanceY
+
+      let blockedX = Ω.tool.bend( newX, 'x' )
+      let blockedY = Ω.tool.bend( newY, 'y' )
+
+      //========================================================================
+      //
+      let animationTime
+
+      if( distanceX < 0 ) distanceX = -distanceX
+      if( distanceY < 0 ) distanceY = -distanceY
+
+      if( distanceX > distanceY )      animationTime = distanceX
+      else if( distanceX < distanceY ) animationTime = distanceY
+      else                             animationTime = distanceX
+
+      //========================================================================
+      //
+      let info = [ blockedX, blockedY, animationTime ]
+
+      // console.log( 'pusher ' + Ω.tool.convert( [ pusherX, pusherY ] ) )
+      // console.log( 'aimed ' + Ω.tool.convert( [ aimedX, aimedY ] ) )
+      // console.log( 'blocked ' + Ω.tool.convert( [ blockedX, blockedY ] ) )
+      // console.log()
+
+      return info
   },
 }
 

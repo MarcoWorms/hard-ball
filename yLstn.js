@@ -105,51 +105,66 @@
     //
     else if( $.target.id.substring( 0, 3 ) === 'zon' ) // target is a zone
     {
-      let zone = Number( $.target.id.substring( 3, 5 ) ) // zone's number
+      let changeTurn = false
+
+      // Step 1
+      //
+      let zone = Number( $.target.id.substring( 3, 5 ) )
+
+      // Step 2
+      //
       let zoneIndex = Ω.info.target[ 1 ].indexOf( zone )
 
+      // Step 3
+      //
+      let zoneTarget = Ω.info.target[ 0 ][ zoneIndex ] // 'ball' or 0 to 19
+
+      // Step 4
+      //
       let zoneX = Ω.info.zone[ zone ][ 0 ]
       let zoneY = Ω.info.zone[ zone ][ 1 ]
 
       let coordinate = Ω.tool.convert( [ zoneX, zoneY ] )
-
-      let changeTurn = false
 
       //========================================================================
       // Has a target
       //
       if( zoneIndex !== -1 )
       {
-        let zoneTarget = Ω.info.target[ 0 ][ zoneIndex ] // 'ball' or 0 to 19
-
-        // Targeted ball was clicked
+        //......................................................................
+        // Athlete is selected
         //
-        if( zoneTarget === 'ball' )
+        if( Ω.now.selected !== 'ball' )
         {
-          console.log( 'ball' )
-        }
-
-        // Targeted athlete was clicked
-        //
-        else
-        {
-          let targetIndex = Ω.info.target[ 1 ].indexOf( zone )
-          let targeted = Ω.info.target[ 0 ][ targetIndex ]
-
-          if( Ω.info.blocked.indexOf( zone ) === -1 ) // not blocked
+          // Targeted ball was clicked
+          //
+          if( zoneTarget === 'ball' )
           {
-            let newCoord = Ω.tool.tackle( targetIndex )
+            // tbd
+          }
 
-            Ω.now.athlete[ Ω.now.selected ][ 0 ] = Ω.info.zone[ zone ][ 0 ] + 1
-            Ω.now.athlete[ Ω.now.selected ][ 1 ] = Ω.info.zone[ zone ][ 1 ] + 1
+          // Targeted athlete was clicked
+          //
+          else
+          {
+            let targetIndex = Ω.info.target[ 1 ].indexOf( zone )
+            let targeted = Ω.info.target[ 0 ][ targetIndex ]
 
-            setTimeout( function()
+            if( Ω.info.blocked.indexOf( zone ) === -1 ) // not blocked
             {
-              Ω.now.athlete[ targeted ][ 0 ] = newCoord[ 0 ] + 1
-              Ω.now.athlete[ targeted ][ 1 ] = newCoord[ 1 ] + 1
-            }, newCoord[ 2 ] )
+              let newCoord = Ω.tool.tackle( targetIndex ) // it MUST be here!
 
-            Ω.game.updTrn()
+              Ω.now.athlete[ Ω.now.selected ][ 0 ] = zoneX + 1
+              Ω.now.athlete[ Ω.now.selected ][ 1 ] = zoneY + 1
+
+              setTimeout( function()
+              {
+                Ω.now.athlete[ targeted ][ 0 ] = newCoord[ 0 ] + 1
+                Ω.now.athlete[ targeted ][ 1 ] = newCoord[ 1 ] + 1
+              }, newCoord[ 2 ] )
+
+              Ω.game.updTrn()
+            }
           }
         }
       }

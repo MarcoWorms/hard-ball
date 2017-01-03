@@ -113,7 +113,7 @@
 
     //==========================================================================
     //
-    let one = false // the displayed (maybe an athlete) isn't the keeper (?)
+    let one = false // the displayed (maybe an athlete) isn't the keeper
 
     if( keeper === Ω.info.currentlyDisplayed ) one = true // it's the keeper
 
@@ -121,7 +121,7 @@
     //
     let coordinate = Ω.tool.convert( [ x, y ] ) // zone's cell name
 
-    let kee = true // display the zone (?)
+    let kee = true // display the zone
 
     if( area.indexOf( coordinate ) !== -1 // but if the zone is inside 'AREA'!
     && keeper !== 'none' // and there is a keeper

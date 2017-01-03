@@ -18,7 +18,7 @@
   //============================================================================
   // Defines which athletes (and/or the ball), if any, is under a zone
   //
-  // [ targets, zones ]
+  // [ [ targets ], [ zones ] ]
   //
   target: [ [], [] ],
 

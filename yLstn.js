@@ -84,7 +84,7 @@
       || Ω.now.athlete[ newAthlete ][ 2 ] === 'none' )
       {
         Ω.now.selected = newAthlete
-        Ω.info.currentlyDisplayed = Ω.now.selected
+        Ω.now.displayed = Ω.now.selected
       }
     }
 
@@ -94,7 +94,7 @@
     else if( $.target.id === 'ball' )
     {
       Ω.now.selected = 'ball'
-      Ω.info.currentlyDisplayed = Ω.now.selected
+      Ω.now.displayed = Ω.now.selected
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -157,12 +157,30 @@
               Ω.now.athlete[ Ω.now.selected ][ 0 ] = zoneX + 1
               Ω.now.athlete[ Ω.now.selected ][ 1 ] = zoneY + 1
 
+              Ω.now.pushed = targeted
+
+              // Timeout 1
+              //
               setTimeout( function()
               {
                 Ω.now.athlete[ targeted ][ 0 ] = newCoord[ 0 ] + 1
                 Ω.now.athlete[ targeted ][ 1 ] = newCoord[ 1 ] + 1
-              }, newCoord[ 2 ] )
+              },
+              newCoord[ 2 ] )
 
+              // Timeout 2
+              //
+              setTimeout( function()
+              {
+                Ω.now.selected = 'none'
+                Ω.now.pushed = 'none'
+
+                Ω.game.updSel()
+              },
+              newCoord[ 2 ] + 260 )
+
+              // Move on
+              //
               changeTurn = true
             }
           }
@@ -270,7 +288,30 @@
       if( changeTurn )
       {
         Ω.now.turn ++
-        Ω.now.selected = 'none'
+
+        let athlete = Ω.now.athlete[ Ω.now.selected ]
+
+        let distX = zoneX - athlete[ 0 ]
+        let distY = zoneY - athlete[ 1 ]
+
+        if( distX < 0 ) distX = ( - distX )
+        if( distY < 0 ) distY = ( - distY )
+
+        let value
+
+        if( distX > distY ) value = distX
+        else                value = distY
+
+        if( Ω.now.pushed === 'none' )
+        {
+          setTimeout( function()
+          {
+            Ω.now.selected = 'none'
+
+            Ω.game.updSel()
+          },
+          value + 280 )
+        }
       }
     }
 
@@ -280,7 +321,7 @@
     else
     {
       Ω.now.selected = 'none'
-      Ω.info.currentlyDisplayed = Ω.now.selected
+      Ω.now.displayed = Ω.now.selected
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -328,7 +369,7 @@
       if( Ω.info.target[ 0 ].indexOf( digit ) === -1 ) // and it isn't a target
       {
         Ω.now.hovered = digit // 'none' or 0 to 19
-        Ω.info.currentlyDisplayed = Ω.now.hovered
+        Ω.now.displayed = Ω.now.hovered
       }
 
       //========================================================================
@@ -355,12 +396,12 @@
 
       if( Ω.now.selected === 'ball' )
       {
-        Ω.info.currentlyDisplayed = Ω.now.hovered
+        Ω.now.displayed = Ω.now.hovered
       }
       else if( Ω.now.selected !== 'none' ) // athlete
       {
         Ω.now.hovered = Ω.now.selected
-        Ω.info.currentlyDisplayed = Ω.now.hovered
+        Ω.now.displayed = Ω.now.hovered
       }
 
       //========================================================================
@@ -375,18 +416,18 @@
     else if( $.target.id === 'selection' )
     {
       Ω.now.hovered = Ω.now.selected
-      Ω.info.currentlyDisplayed = Ω.now.hovered
+      Ω.now.displayed = Ω.now.hovered
 
       //========================================================================
       // Hover color effects . Part 4 . Get whatever is below the selection zone
       //
-      if( Ω.info.currentlyDisplayed === 'ball' )
+      if( Ω.now.displayed === 'ball' )
       {
         Ω.page.ball.style.backgroundColor = 'rgb(143,111,79)'
       }
-      else if( Ω.info.currentlyDisplayed !== 'none' ) // athlete
+      else if( Ω.now.displayed !== 'none' ) // athlete
       {
-        let current = Ω.info.currentlyDisplayed
+        let current = Ω.now.displayed
         let color = Ω.now.athlete[ current ][ 2 ]
         let lighterColor
 
@@ -464,11 +505,11 @@
       //
       if( Ω.now.selected !== 'none' ) // could be any athlete or the ball
       {
-        Ω.info.currentlyDisplayed = Ω.now.selected
+        Ω.now.displayed = Ω.now.selected
       }
       else
       {
-        Ω.info.currentlyDisplayed = Ω.now.hovered
+        Ω.now.displayed = Ω.now.hovered
       }
     }
 

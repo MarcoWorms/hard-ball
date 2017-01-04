@@ -115,7 +115,7 @@
     //
     let one = false // the displayed (maybe an athlete) isn't the keeper
 
-    if( keeper === Ω.info.currentlyDisplayed ) one = true // it's the keeper
+    if( keeper === Ω.now.displayed ) one = true // it's the keeper
 
     //==========================================================================
     //

@@ -163,7 +163,7 @@
                 Ω.now.athlete[ targeted ][ 1 ] = newCoord[ 1 ] + 1
               }, newCoord[ 2 ] )
 
-              Ω.game.updTrn()
+              changeTurn = true
             }
           }
         }
@@ -267,7 +267,11 @@
       //========================================================================
       // Ending 
       //
-      if( changeTurn ) Ω.game.updTrn()
+      if( changeTurn )
+      {
+        Ω.now.turn ++
+        Ω.now.selected = 'none'
+      }
     }
 
     ////////////////////////////////////////////////////////////////////////////

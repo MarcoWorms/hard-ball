@@ -364,15 +364,6 @@
     }
   },
 
-  ////////////////////////////////////////////////////////////////////////////// G.updTrn
-  // Makes the turn pass to the next player (not called every tick)
-  //
-  updTrn: function()
-  {
-    Ω.now.turn ++
-    Ω.now.selected = 'none'
-  },
-
   ////////////////////////////////////////////////////////////////////////////// G.updRed
   // Changes the color of a zone to red if targeted athlete cannot be pushed
   //

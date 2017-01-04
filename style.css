@@ -62,13 +62,26 @@ CENTER
 /*==============================================================================
 DISPLAY
 */
-.dsp{background-color:var(--c04); color:var(--c10)}
+.dsp
+{
+  background-color:var(--c04);
+  color:var(--c10);
+}
 
 /*==============================================================================
 BUTTON
 */
-.btn{      background-color:var(--c09); color:var(--c14)}
-.btn:hover{background-color:var(--c10); color:var(--c15)}
+.btn
+{
+  background-color:var(--c09);
+  color:var(--c14);
+}
+
+.btn:hover
+{
+  background-color:var(--c10);
+  color:var(--c15);
+}
 
 /*==============================================================================
 ZONE
@@ -77,8 +90,8 @@ ZONE
 {
   width:42px;
   height:42px;
-  box-sizing: border-box;
-  border: 2px dashed var(--c16);
+  box-sizing:border-box;
+  border:2px dashed var(--c16);
 }
 
 /*==============================================================================
@@ -94,7 +107,11 @@ FLOAT
 /*==============================================================================
 CELL
 */
-.cll{width:48px; height:48px}
+.cll
+{
+  width:48px;
+  height:48px;
+}
 
 /*==============================================================================
 COLORS
@@ -170,7 +187,7 @@ GOAL
   width:32px;
   height:32px;
   border:2px solid rgb(239,239,239);
-  background-color: rgba(255,255,255,0.25)
+  background-color:rgba(255,255,255,0.25)
 }
 
 /*==============================================================================
@@ -196,7 +213,11 @@ BOX
 /*==============================================================================
 YES OR NO
 */
-.yon{width:6.25%; display:none}
+.yon
+{
+  width:6.25%;
+  display:none;
+}
 
 /*==============================================================================
 SVG
@@ -249,7 +270,7 @@ body
 #arena
 {
   width:962px;
-  min-width: 962px;
+  min-width:962px;
   height:710px;
   min-height:710px;
   background-color:var(--c15);
@@ -273,8 +294,8 @@ body
 #selection
 {
   border:4px solid rgba(255,255,255,0.5);
-  animation-name: ripple;
-  animation-duration: 0.25s;
+  animation-name:ripple;
+  animation-duration:0.25s;
 }
 
 /*..............................................................................

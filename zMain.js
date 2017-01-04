@@ -93,10 +93,10 @@
     Ω.game.updCur()
     Ω.game.updTar()
     Ω.game.updKee()
-    Ω.game.updRed()
+    Ω.game.updBlk()
     Ω.game.updInd()
 
-    // having both 'game.updZon1' and 'game.updZon2' after 'game.updRed' makes
+    // having both 'game.updZon1' and 'game.updZon2' after 'game.updInd' makes
     // the hover effect non-existant after any athlete gets selected
   },
 
@@ -364,19 +364,10 @@
     }
   },
 
-  ////////////////////////////////////////////////////////////////////////////// G.updTrn
-  // Makes the turn pass to the next player (not called every tick)
-  //
-  updTrn: function()
-  {
-    Ω.now.turn ++
-    Ω.now.selected = 'none'
-  },
-
-  ////////////////////////////////////////////////////////////////////////////// G.updRed
+  ////////////////////////////////////////////////////////////////////////////// G.updBlk
   // Changes the color of a zone to red if targeted athlete cannot be pushed
   //
-  updRed: function()
+  updBlk: function()
   {
     // Refreshes which cell is blocked
     //
@@ -425,8 +416,17 @@
 
           // Avoid athletes from being pushed to its opponent's area
           //
-          if( Ω.now.athlete[ aimed ][ 2 ] === 'gre' ) area = Ω.info.area.blue
-          else                                        area = Ω.info.area.green
+          if( Ω.now.athlete[ aimed ][ 2 ] === 'gre' )
+          {
+            area = Ω.info.area.blue
+            if( Ω.info.keeper.green !== 'none' ) area += Ω.info.area.green
+          }
+
+          else
+          {
+            area = Ω.info.area.green
+            if( Ω.info.keeper.blue !== 'none' ) area += Ω.info.area.blue
+          }
 
           // Checking if it's possible to push or not
           //
@@ -1068,7 +1068,6 @@
 //
 Ω.engine =
 {
-
   ////////////////////////////////////////////////////////////////////////////// E.create
   //
   create: function()

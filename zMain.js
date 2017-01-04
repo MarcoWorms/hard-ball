@@ -378,8 +378,8 @@
     let targetLength = Ω.info.target[ 0 ].length
 
     if( targetLength !== 0
-    && Ω.info.currentlyDisplayed !== 'none'
-    && Ω.info.currentlyDisplayed !== 'ball' )
+    && Ω.now.displayed !== 'none'
+    && Ω.now.displayed !== 'ball' )
     {
       for( let $1 = 0; $1 < targetLength; $1 ++ )
       {
@@ -388,8 +388,8 @@
         let aimed = Ω.info.target[ 0 ][ $1 ]
         let zone = Ω.info.target[ 1 ][ $1 ]
 
-        let pusherX = Ω.now.athlete[ Ω.info.currentlyDisplayed ][ 0 ] - 1
-        let pusherY = Ω.now.athlete[ Ω.info.currentlyDisplayed ][ 1 ] - 1
+        let pusherX = Ω.now.athlete[ Ω.now.displayed ][ 0 ] - 1
+        let pusherY = Ω.now.athlete[ Ω.now.displayed ][ 1 ] - 1
 
         let aimedX = Ω.now.athlete[ aimed ][ 0 ] - 1
         let aimedY = Ω.now.athlete[ aimed ][ 1 ] - 1
@@ -455,34 +455,14 @@
   //
   updInd: function()
   {
-    //==========================================================================
-    //
     Array.from( Ω.page.athlete ).forEach( function( $1, $2 )
     {
-      $1.style.zIndex = 1
+      let value = 1
+
+      if( Ω.now.selected === $2 || Ω.now.pushed === $2 ) value = 3
+
+      $1.style.zIndex = String( value )
     } )
-
-    //==========================================================================
-    //
-    Array.from( Ω.page.zone ).forEach( function( $1, $2 )
-    {
-      $1.style.zIndex = 2
-    } )
-
-    //==========================================================================
-    //
-    if( Ω.now.selected === 'ball' )
-    {
-      // tbd
-    }
-    else if( Ω.now.selected !== 'none' )
-    {
-      Ω.page.athlete[ Ω.info.currentlyDisplayed ].style.zIndex = 3
-    }
-
-    //==========================================================================
-    //
-    Ω.page.selection.style.zIndex = 4
   },
 
   ////////////////////////////////////////////////////////////////////////////// G.updZon1

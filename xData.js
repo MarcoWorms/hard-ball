@@ -12,10 +12,6 @@
   blocked: [],
 
   //============================================================================
-  //
-  currentlyDisplayed: 'none', // 'none', 'ball' or 0 to 19
-
-  //============================================================================
   // Defines which athletes (and/or the ball), if any, is under a zone
   //
   // [ [ targets ], [ zones ] ]
@@ -162,11 +158,6 @@
 Ω.now =
 {
   //============================================================================
-  // This number manages the z-index of the match
-  //
-  top: 0,
-
-  //============================================================================
   // Shows how many plays have happened
   //
   turn: 0,
@@ -183,10 +174,17 @@
   currentPlayer: '',
 
   //============================================================================
-  // Both may return 'none', 'ball' or a value between 0 and 19 (some athlete)
+  // Shows which athlete is being displayed
   //
-  selected: 'none',
-  hovered: 'none',
+  selected: 'none', // 'none', 'ball' or 0 to 19
+  hovered: 'none', // 'none', 'ball' or 0 to 19
+
+  displayed: 'none', // 'none', 'ball' or 0 to 19
+
+  //============================================================================
+  // Shows which athlete is being pushed
+  //
+  pushed: 'none',
 
   //============================================================================
   // Position of the ball as follows

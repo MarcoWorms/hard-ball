@@ -343,7 +343,6 @@
   hoverer: addEventListener( 'mouseover', function( $ )
   {
     Ω.now.hovered = 'none'
-    Ω.now.displayed = 'none'
 
     ////////////////////////////////////////////////////////////////////////////
     // Hover color effects . Part 1 . Refresh everything

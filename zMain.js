@@ -154,10 +154,11 @@
     }
 
     //==========================================================================
-    // Athlete is hovered and is not a target
+    // Athlete is hovered and is not a target and is not marked
     //
     else if( Ω.now.hovered !== 'none'
-    && Ω.info.target[ 0 ].indexOf( Ω.now.hovered ) === -1 )
+    && Ω.info.target[ 0 ].indexOf( Ω.now.hovered ) === -1
+    && Ω.info.marked.indexOf( Ω.now.hovered ) === -1 )
     {
       //........................................................................
       // Hovered and non-targeted athlete is ready to play

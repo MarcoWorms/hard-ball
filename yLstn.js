@@ -10,6 +10,8 @@
   //
   clicker: addEventListener( 'mousedown', function( $ )
   {
+    Ω.info.marked = []
+
     ////////////////////////////////////////////////////////////////////////////
     // 00 . START resetting the game
     //
@@ -85,6 +87,8 @@
       {
         Ω.now.selected = newAthlete
         Ω.now.displayed = Ω.now.selected
+
+        Ω.info.marked = Ω.info.target[ 0 ]
       }
     }
 
@@ -339,6 +343,7 @@
   hoverer: addEventListener( 'mouseover', function( $ )
   {
     Ω.now.hovered = 'none'
+    Ω.now.displayed = 'none'
 
     ////////////////////////////////////////////////////////////////////////////
     // Hover color effects . Part 1 . Refresh everything
@@ -366,7 +371,8 @@
     {
       let digit = Number( $.target.id.substring( 4, 6 ) ) // athlete's number
 
-      if( Ω.info.target[ 0 ].indexOf( digit ) === -1 ) // and it isn't a target
+      if( Ω.info.target[ 0 ].indexOf( digit ) === -1 // and it isn't a target
+      && Ω.info.marked.indexOf( digit ) === -1 ) // nor it's marked
       {
         Ω.now.hovered = digit // 'none' or 0 to 19
         Ω.now.displayed = Ω.now.hovered
@@ -393,16 +399,7 @@
     else if( $.target.id === 'ball' )
     {
       Ω.now.hovered = 'ball'
-
-      if( Ω.now.selected === 'ball' )
-      {
-        Ω.now.displayed = Ω.now.hovered
-      }
-      else if( Ω.now.selected !== 'none' ) // athlete
-      {
-        Ω.now.hovered = Ω.now.selected
-        Ω.now.displayed = Ω.now.hovered
-      }
+      Ω.now.displayed = Ω.now.hovered
 
       //========================================================================
       // Hover color effects . Part 3 . Change the color of hovered ball

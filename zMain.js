@@ -7,7 +7,6 @@
 Ω.save =
 {
   ////////////////////////////////////////////////////////////////////////////// S.create
-  // USED: engine.create
   //
   create: function()
   {
@@ -20,7 +19,6 @@
   },
 
   ////////////////////////////////////////////////////////////////////////////// S.update
-  // USED: engine.update
   //
   update: function()
   {
@@ -78,6 +76,8 @@
         $.style.transition = 'all 0.25s ease-in-out'
       } )
     }, 9 ) // beyond this value, animation on reset and reload is lost
+
+    Ω.game.updRpl()
   },
 
   ////////////////////////////////////////////////////////////////////////////// G.update
@@ -1072,6 +1072,27 @@
         Ω.page.selection.style.display = 'flex'
         Ω.tool.translate( Ω.page.selection, x, y )
       }, 1 )
+    }
+  },
+
+  ////////////////////////////////////////////////////////////////////////////// G.updRpl
+  //
+  updRpl: function()
+  {
+    //==========================================================================
+    // Colorize replaced athletes
+    //
+    for( let $1 = 0; $1 < 20; $1 ++ )
+    {
+      if( Ω.now.athlete[ $1 ][ 2 ].substring( 3, 6 ) === 'Blk' )
+      {
+        Ω.page.athlete[ $1 ].style.borderColor = 'black'
+
+        Array.from( Ω.page.glow[ $1 ] ).forEach( function( $2, $3 )
+        {
+          $2.style.fill = 'rgba(255,255,255,0.5)'
+        } )
+      }
     }
   },
 }

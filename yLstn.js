@@ -264,6 +264,7 @@
                 Ω.now.pushed = 'none'
 
                 Ω.game.updSel()
+                Ω.game.updRpl()
               },
               newCoord[ 2 ] )
 

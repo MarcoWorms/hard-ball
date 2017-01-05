@@ -61,7 +61,7 @@
     //==========================================================================
     // Avoids 'fast-hover' bug right after reloading with a selected athlete
     //
-    Ω.now.selected = 'none'
+    Ω.now.marked = Ω.info.target[ 0 ]
 
     //==========================================================================
     // Preserving the selection zone's appearance on loads
@@ -172,7 +172,7 @@
       //........................................................................
       // Hovered and non-targeted athlete is playing
       //
-      else if( Ω.now.athlete[ Ω.now.hovered ][ 2 ] !== 'red' )
+      else
       {
         Ω.game.updZonCdn( 'mtx', 'hover' )
       }
@@ -205,7 +205,7 @@
       //........................................................................
       // Selected and non-targeted athlete is playing
       //
-      else if( Ω.now.athlete[ Ω.now.selected ][ 2 ] !== 'red' )
+      else
       {
         Ω.game.updZonCdn( 'mtx', 'select' )
       }
@@ -250,7 +250,7 @@
       //........................................................................
       // Hovered and non-targeted athlete is playing
       //
-      else if( Ω.now.athlete[ Ω.now.hovered ][ 2 ] !== 'red' )
+      else
       {
         //......................................................................
         // Athlete is the same color as the turn AND turn is higher than 7
@@ -289,7 +289,7 @@
       //........................................................................
       // Selected and non-targeted athlete is playing
       //
-      else if( Ω.now.athlete[ Ω.now.selected ][ 2 ] !== 'red' )
+      else
       {
         //......................................................................
         // Athlete is the same color as the turn AND turn is higher than 7

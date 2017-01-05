@@ -192,6 +192,13 @@
   pushed: 'none',
 
   //============================================================================
+  // Shows which athletes have been replaced and how many replacements each
+  // player still has
+  //
+  outed: [],
+  reps: [ 2, 2 ],
+
+  //============================================================================
   // Position of the ball as follows
   //
   // [ numX, numY ]

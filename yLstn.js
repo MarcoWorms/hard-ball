@@ -81,15 +81,10 @@
     {
       let newAthlete = Number( $.target.id.substring( 4, 6 ) ) // 0 to 19
 
-      if( Ω.now.athlete[ newAthlete ][ 2 ] === Ω.now.currentPlayer
-      //
-      || Ω.now.athlete[ newAthlete ][ 2 ] === 'none' )
-      {
-        Ω.now.selected = newAthlete
-        Ω.now.displayed = Ω.now.selected
+      Ω.now.selected = newAthlete
+      Ω.now.displayed = Ω.now.selected
 
-        Ω.info.marked = Ω.info.target[ 0 ]
-      }
+      Ω.info.marked = Ω.info.target[ 0 ]
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -154,7 +149,10 @@
             let targetIndex = Ω.info.target[ 1 ].indexOf( zone )
             let targeted = Ω.info.target[ 0 ][ targetIndex ]
 
-            if( Ω.info.blocked.indexOf( zone ) === -1 ) // not blocked
+            let athleteColor = Ω.now.athlete[ Ω.now.selected ][ 2 ]
+
+            if( Ω.info.blocked.indexOf( zone ) === -1 // not blocked
+            && athleteColor === Ω.now.currentPlayer )
             {
               let newCoord = Ω.tool.tackle( targetIndex ) // it MUST be here!
 

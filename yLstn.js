@@ -194,8 +194,10 @@
             }
 
             // Select the aimed athlete if the selected athlete is off its turn
+            // and is also not on a blocked zone
             //
-            else if( Ω.info.target[ 0 ].indexOf( targeted ) === -1 )
+            else if( Ω.info.marked.indexOf( targeted ) === -1
+            && Ω.info.blocked.indexOf( zone ) === -1 )
             {
               Ω.now.selected = targeted
               Ω.now.displayed = targeted

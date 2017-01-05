@@ -24,11 +24,6 @@
   target: [ [], [] ],
 
   //============================================================================
-  // Which, if any, is the current goalkeeper of each team
-  //
-  keeper: { green: 'none', blue: 'none' },
-
-  //============================================================================
   // 'info.cell' is an array containing 13 arrays (arena rows)
   // Each of these arrays contain 20 arrays (row's cells coordinates)
   // Each of these arrays contain 1 cell's information as follows
@@ -190,6 +185,11 @@
   // Shows which athlete is being pushed
   //
   pushed: 'none',
+
+  //============================================================================
+  // Which, if any, is the current goalkeeper of each team
+  //
+  keeper: { green: 'none', blue: 'none' },
 
   //============================================================================
   // Shows which athletes have been replaced and how many replacements each

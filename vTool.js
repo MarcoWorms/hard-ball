@@ -101,14 +101,14 @@
     {
       area = Ω.info.area.green
       aera = Ω.info.area.blue
-      keeper = Ω.info.keeper.green
+      keeper = Ω.now.keeper.green
     }
 
     else if( color === 'blu' )
     {
       area = Ω.info.area.blue
       aera = Ω.info.area.green
-      keeper = Ω.info.keeper.blue
+      keeper = Ω.now.keeper.blue
     }
 
     //==========================================================================

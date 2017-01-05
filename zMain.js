@@ -863,8 +863,8 @@
     let y2
     let coordinate2
 
-    Ω.info.keeper.green = 'none'
-    Ω.info.keeper.blue = 'none'
+    Ω.now.keeper.green = 'none'
+    Ω.now.keeper.blue = 'none'
 
     //==========================================================================
     //
@@ -883,7 +883,7 @@
         //
         if( Ω.info.area.green.indexOf( coordinate1 ) !== -1 )
         {
-          Ω.info.keeper.green = Ω.now.team.green[ $ ]
+          Ω.now.keeper.green = Ω.now.team.green[ $ ]
         }
 
         //======================================================================
@@ -897,7 +897,7 @@
         //
         if( Ω.info.area.blue.indexOf( coordinate2 ) !== -1 )
         {
-          Ω.info.keeper.blue = Ω.now.team.blue[ $ ]
+          Ω.now.keeper.blue = Ω.now.team.blue[ $ ]
         }
       }
     }
@@ -958,13 +958,13 @@
           if( Ω.now.athlete[ aimed ][ 2 ] === 'gre' )
           {
             area = Ω.info.area.blue
-            if( Ω.info.keeper.green !== 'none' ) area += Ω.info.area.green
+            if( Ω.now.keeper.green !== 'none' ) area += Ω.info.area.green
           }
 
           else
           {
             area = Ω.info.area.green
-            if( Ω.info.keeper.blue !== 'none' ) area += Ω.info.area.blue
+            if( Ω.now.keeper.blue !== 'none' ) area += Ω.info.area.blue
           }
 
           // Checking if it's possible to push or not

@@ -10,6 +10,8 @@
   //
   clicker: addEventListener( 'mousedown', function( $ )
   {
+    // Refreshing
+    //
     Ω.info.marked = []
 
     ////////////////////////////////////////////////////////////////////////////
@@ -135,6 +137,7 @@
         //
         if( Ω.now.selected !== 'ball' )
         {
+          //....................................................................
           // Targeted ball was clicked
           //
           if( zoneTarget === 'ball' )
@@ -142,6 +145,7 @@
             // tbd
           }
 
+          //....................................................................
           // Targeted athlete was clicked
           //
           else
@@ -152,7 +156,7 @@
             let athleteColor = Ω.now.athlete[ Ω.now.selected ][ 2 ]
 
             if( Ω.info.blocked.indexOf( zone ) === -1 // not blocked
-            && athleteColor === Ω.now.currentPlayer )
+            && athleteColor === Ω.now.currentPlayer ) // athlete's turn
             {
               let newCoord = Ω.tool.tackle( targetIndex ) // it MUST be here!
 
@@ -184,6 +188,12 @@
               // Move on
               //
               changeTurn = true
+            }
+
+            else
+            {
+              Ω.now.selected = targeted
+              Ω.now.displayed = targeted
             }
           }
         }
@@ -340,6 +350,8 @@
   //
   hoverer: addEventListener( 'mouseover', function( $ )
   {
+    // Refreshing
+    //
     Ω.now.hovered = 'none'
 
     ////////////////////////////////////////////////////////////////////////////

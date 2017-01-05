@@ -197,11 +197,12 @@
   },
 
   ////////////////////////////////////////////////////////////////////////////// T.remove
+  // Removes an item from its array
   //
-  remove: function( coordinate, entity )
+  remove: function( entity, target )
   {
-    let index = entity.indexOf( coordinate )
-    entity.splice( index, 1 )
+    let index = target.indexOf( entity )
+    target.splice( index, 1 )
   },
 
   ////////////////////////////////////////////////////////////////////////////// T.tackle

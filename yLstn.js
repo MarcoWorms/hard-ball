@@ -158,6 +158,15 @@
 
             let athleteColor = Ω.now.athlete[ Ω.now.selected ][ 2 ]
 
+            // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+            //
+            let reps // amount of replacements available to the current team
+
+            if( Ω.now.currentPlayer === 'gre' ) reps = Ω.now.reps.green
+            else                                reps = Ω.now.reps.blue
+
+            // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+            //
             if( Ω.info.blocked.indexOf( zone ) === -1 // not blocked
             && athleteColor === Ω.now.currentPlayer ) // athlete's turn
             {
@@ -168,6 +177,7 @@
 
               Ω.now.pushed = targeted
 
+              //   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .
               // Timeout 1
               //
               setTimeout( function()
@@ -177,6 +187,7 @@
               },
               newCoord[ 2 ] )
 
+              //   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .
               // Timeout 2
               //
               setTimeout( function()
@@ -193,6 +204,76 @@
               changeTurn = true
             }
 
+            // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+            // Replace an athlete if there are replacements available
+            //
+            else if( athleteColor === 'none'
+            && reps > 0 )
+            {
+              let newCoord = Ω.tool.tackle( targetIndex )
+
+              // Arena
+              //
+              let x1 = Ω.now.athlete[ targeted ][ 0 ]
+              let y1 = Ω.now.athlete[ targeted ][ 1 ]
+
+              // Bench
+              //
+              let x2 = Ω.info.cell[ 12 ][ targeted ][ 0 ] + 1
+              let y2 = Ω.info.cell[ 12 ][ targeted ][ 1 ] + 1
+
+              Ω.now.athlete[ Ω.now.selected ][ 0 ] = x1
+              Ω.now.athlete[ Ω.now.selected ][ 1 ] = y1
+
+              Ω.now.athlete[ Ω.now.selected ][ 2 ] = Ω.now.currentPlayer
+
+              //   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .
+              // Change the team's setup
+              //
+              if( Ω.now.currentPlayer === 'gre' )
+              {
+                Ω.tool.remove( targeted, Ω.now.team.green )
+                Ω.now.team.green.push( Ω.now.selected )
+              }
+
+              else
+              {
+                Ω.tool.remove( targeted, Ω.now.team.blue )
+                Ω.now.team.blue.push( Ω.now.selected )
+              }
+
+              Ω.now.pushed = targeted
+
+              //   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .
+              // Timeout 1
+              //
+              setTimeout( function()
+              {
+                Ω.now.athlete[ targeted ][ 0 ] = x2
+                Ω.now.athlete[ targeted ][ 1 ] = y2
+                Ω.now.athlete[ targeted ][ 2 ] = Ω.now.currentPlayer + 'Blk'
+              },
+              newCoord[ 2 ] )
+
+              //   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .
+              // Timeout 2
+              //
+              setTimeout( function()
+              {
+                Ω.now.selected = 'none'
+                Ω.now.pushed = 'none'
+
+                Ω.game.updSel()
+              },
+              newCoord[ 2 ] )
+
+              // Finish process
+              //
+              if( Ω.now.currentPlayer === 'gre' ) Ω.now.reps.green --
+              else                                Ω.now.reps.blue --
+            }
+
+            // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
             // Select the aimed athlete if the selected athlete is off its turn
             // and is also not on a blocked zone
             //
@@ -373,15 +454,24 @@
       let darkerColor
 
       if( newColor === 'none' ) darkerColor = 'rgb(143,143,143)'
-      else if( newColor === 'red' ) darkerColor = 'rgb(207,47,47)'
-      else if( newColor === 'gre' ) darkerColor = 'rgb(127,175,47)'
-      else if( newColor === 'blu' ) darkerColor = 'rgb(95,63,191)'
+
+      else if( newColor === 'gre'
+      || newColor === 'greBlk' )
+      {
+        darkerColor = 'rgb(127,175,47)'
+      }
+
+      else if( newColor === 'blu'
+      || newColor === 'bluBlk' )
+      {
+        darkerColor = 'rgb(95,63,191)'
+      }
 
       Ω.page.athlete[ $ ].style.backgroundColor = darkerColor
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // 00 . Hover some athlete that is not targeted
+    // 00 . Hover some athlete that is not targeted nor marked
     //
     if( $.target.id.substring( 0, 3 ) === 'min' ) // if target is an athlete
     {
@@ -402,9 +492,18 @@
       let lighterColor
 
       if( color === 'none' ) lighterColor = 'rgb(191,191,191)'
-      else if( color === 'red' ) lighterColor = 'rgb(223,63,63)'
-      else if( color === 'gre' ) lighterColor = 'rgb(143,191,63)'
-      else if( color === 'blu' ) lighterColor = 'rgb(111,79,207)'
+
+      else if( color === 'gre'
+      || color === 'greBlk' )
+      {
+        lighterColor = 'rgb(143,191,63)'
+      }
+
+      else if( color === 'blu'
+      || color === 'bluBlk' )
+      {
+        lighterColor = 'rgb(111,79,207)'
+      }
 
       Ω.page.athlete[ digit ].style.backgroundColor = lighterColor
     }
@@ -445,9 +544,18 @@
         let lighterColor
 
         if( color === 'none' ) lighterColor = 'rgb(191,191,191)'
-        else if( color === 'red' ) lighterColor = 'rgb(223,63,63)'
-        else if( color === 'gre' ) lighterColor = 'rgb(143,191,63)'
-        else if( color === 'blu' ) lighterColor = 'rgb(111,79,207)'
+
+        else if( color === 'gre'
+        || color === 'greBlk' )
+        {
+          lighterColor = 'rgb(143,191,63)'
+        }
+
+        else if( color === 'blu'
+        || color === 'bluBlk' )
+        {
+          lighterColor = 'rgb(111,79,207)'
+        }
 
         Ω.page.athlete[ current ].style.backgroundColor = lighterColor
       }
@@ -478,9 +586,18 @@
           let lighterColor
 
           if( color === 'none' ) lighterColor = 'rgb(191,191,191)'
-          else if( color === 'red' ) lighterColor = 'rgb(223,63,63)'
-          else if( color === 'gre' ) lighterColor = 'rgb(143,191,63)'
-          else if( color === 'blu' ) lighterColor = 'rgb(111,79,207)'
+
+          else if( color === 'gre'
+          || color === 'greBlk' )
+          {
+            lighterColor = 'rgb(143,191,63)'
+          }
+
+          else if( color === 'blu'
+          || color === 'bluBlk' )
+          {
+            lighterColor = 'rgb(111,79,207)'
+          }
 
           Ω.page.athlete[ zoneTarget ].style.backgroundColor = lighterColor
         }
@@ -506,9 +623,16 @@
         let darkerColor
 
         if( newColor === 'none' ) darkerColor = 'rgb(143,143,143)'
-        else if( newColor === 'red' ) darkerColor = 'rgb(207,47,47)'
-        else if( newColor === 'gre' ) darkerColor = 'rgb(127,175,47)'
-        else if( newColor === 'blu' ) darkerColor = 'rgb(95,63,191)'
+        else if( newColor === 'gre'
+        || newColor === 'greBlk' )
+        {
+          darkerColor = 'rgb(127,175,47)'
+        }
+        else if( newColor === 'blu'
+        || newColor === 'bluBlk' )
+        {
+          darkerColor = 'rgb(95,63,191)'
+        }
 
         Ω.page.athlete[ $ ].style.backgroundColor = darkerColor
       }

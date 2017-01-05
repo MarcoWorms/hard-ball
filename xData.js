@@ -163,9 +163,24 @@
   turn: 0,
 
   //============================================================================
-  // Shows which players are in which team,
+  // Shows which players are in which team
   //
   team: { green: [], blue: [] },
+
+  //............................................................................
+  // Which, if any, is the current goalkeeper of each team
+  //
+  keeper: { green: 'none', blue: 'none' },
+
+  //............................................................................
+  // How many replacements each player still has
+  //
+  reps: { green: 2, blue: 2 },
+
+  //............................................................................
+  // Shows which athletes have been replaced
+  //
+  outed: [],
 
   //============================================================================
   // Which player played first and which is to play now
@@ -185,18 +200,6 @@
   // Shows which athlete is being pushed
   //
   pushed: 'none',
-
-  //============================================================================
-  // Which, if any, is the current goalkeeper of each team
-  //
-  keeper: { green: 'none', blue: 'none' },
-
-  //============================================================================
-  // Shows which athletes have been replaced and how many replacements each
-  // player still has
-  //
-  outed: [],
-  reps: [ 2, 2 ],
 
   //============================================================================
   // Position of the ball as follows

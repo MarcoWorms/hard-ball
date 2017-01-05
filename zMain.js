@@ -160,10 +160,12 @@
     && Ω.info.target[ 0 ].indexOf( Ω.now.hovered ) === -1
     && Ω.info.marked.indexOf( Ω.now.hovered ) === -1 )
     {
+      let athleteColor = Ω.now.athlete[ Ω.now.hovered ][ 2 ]
+
       //........................................................................
       // Hovered and non-targeted athlete is ready to play
       //
-      if( Ω.now.athlete[ Ω.now.hovered ][ 2 ] === 'none' )
+      if( athleteColor === 'none' )
       {
         if( Ω.now.turn < 8 ) Ω.game.updZonCdn( 'stt', 'select' )
         else                 Ω.game.updZonCdn( 'rep', 'select' )
@@ -172,7 +174,7 @@
       //........................................................................
       // Hovered and non-targeted athlete is playing
       //
-      else
+      else if( athleteColor.substring( 3, 6 ) !== 'Blk' )
       {
         Ω.game.updZonCdn( 'mtx', 'hover' )
       }
@@ -192,11 +194,12 @@
     else if( Ω.now.selected !== 'none'
     && Ω.info.target[ 0 ].indexOf( Ω.now.selected ) === -1 )
     {
+      let athleteColor = Ω.now.athlete[ Ω.now.selected ][ 2 ]
 
       //........................................................................
       // Selected and non-targeted athlete is ready to play
       //
-      if( Ω.now.athlete[ Ω.now.selected ][ 2 ] === 'none' )
+      if( athleteColor === 'none' )
       {
         if( Ω.now.turn < 8 ) Ω.game.updZonCdn( 'stt', 'select' )
         else                 Ω.game.updZonCdn( 'rep', 'select' )
@@ -205,7 +208,7 @@
       //........................................................................
       // Selected and non-targeted athlete is playing
       //
-      else
+      else if( athleteColor.substring( 3, 6 ) !== 'Blk' )
       {
         Ω.game.updZonCdn( 'mtx', 'select' )
       }
@@ -680,7 +683,36 @@
     //
     else if( behavior === 'rep' )
     {
-      // tbd
+      let team
+      let reps
+
+      //........................................................................
+      //
+      if( Ω.now.currentPlayer === 'gre' )
+      {
+        team = Ω.now.team.green
+        reps = Ω.now.reps.green
+      }
+      else
+      {
+        team = Ω.now.team.blue
+        reps = Ω.now.reps.blue
+      }
+
+      //........................................................................
+      //
+      if( reps > 0 )
+      {
+        for( let $ = 0; $ < 4; $ ++ )
+        {
+          let entity = Ω.now.athlete[ team[ $ ] ]
+
+          Ω.info.zone[ $ ][ 0 ] = entity[ 0 ] - 1
+          Ω.info.zone[ $ ][ 1 ] = entity[ 1 ] - 1
+        }
+
+        value = 4
+      }
     }
 
     //==========================================================================

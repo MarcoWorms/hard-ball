@@ -81,14 +81,19 @@
     //
     else if( $.target.id.substring( 0, 3 ) === 'min' )
     {
-      let newAthlete = Number( $.target.id.substring( 4, 6 ) ) // 0 to 19
-
-      if( Ω.now.outed.indexOf( newAthlete ) === -1 )
+      // Because nothing is selectable during roundabouting
+      //
+      if( Ω.now.rounding === 'none' )
       {
-        Ω.now.selected = newAthlete
-        Ω.now.displayed = Ω.now.selected
+        let newAthlete = Number( $.target.id.substring( 4, 6 ) ) // 0 to 19
 
-        Ω.info.marked = Ω.info.target[ 0 ]
+        if( Ω.now.outed.indexOf( newAthlete ) === -1 )
+        {
+          Ω.now.selected = newAthlete
+          Ω.now.displayed = Ω.now.selected
+
+          Ω.info.marked = Ω.info.target[ 0 ]
+        }
       }
     }
 
@@ -97,8 +102,13 @@
     //
     else if( $.target.id === 'ball' )
     {
-      Ω.now.selected = 'ball'
-      Ω.now.displayed = Ω.now.selected
+      // Because nothing is selectable during roundabouting
+      //
+      if( Ω.now.rounding === 'none' )
+      {
+        Ω.now.selected = 'ball'
+        Ω.now.displayed = Ω.now.selected
+      }
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -111,19 +121,19 @@
     {
       let changeTurn = false
 
-      // Step 1
+      // Step 1 . Check which is the zone clicked
       //
       let zone = Number( $.target.id.substring( 3, 5 ) )
 
-      // Step 2
+      // Step 2 . Check where and if the zone is targeting something
       //
       let zoneIndex = Ω.info.target[ 1 ].indexOf( zone )
 
-      // Step 3
+      // Step 3 . Check what the target, if any, is
       //
       let zoneTarget = Ω.info.target[ 0 ][ zoneIndex ] // 'ball' or 0 to 19
 
-      // Step 4
+      // Step 4 . Check the zone's coordinate
       //
       let zoneX = Ω.info.zone[ zone ][ 0 ]
       let zoneY = Ω.info.zone[ zone ][ 1 ]
@@ -159,26 +169,34 @@
             let athleteColor = Ω.now.athlete[ Ω.now.selected ][ 2 ]
 
             // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+            // Check the amount of replacements available to the current team
             //
-            let reps // amount of replacements available to the current team
+            let reps
 
             if( Ω.now.currentPlayer === 'gre' ) reps = Ω.now.reps.green
             else                                reps = Ω.now.reps.blue
 
             // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+            // Actually push another athlete
             //
             if( Ω.info.blocked.indexOf( zone ) === -1 // not blocked
             && athleteColor === Ω.now.currentPlayer ) // athlete's turn
             {
-              let newCoord = Ω.tool.tackle( targetIndex ) // it MUST be here!
+              // Check where it might land
+              //
+              let newCoord = Ω.tool.tackle( targetIndex )
 
+              // Move to push
+              //
               Ω.now.athlete[ Ω.now.selected ][ 0 ] = zoneX + 1
               Ω.now.athlete[ Ω.now.selected ][ 1 ] = zoneY + 1
 
+              // Push
+              //
               Ω.now.pushed = targeted
 
               //   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .
-              // Timeout 1
+              // Timeout 1 . Pushed athlete's move
               //
               setTimeout( function()
               {
@@ -188,17 +206,38 @@
               newCoord[ 2 ] )
 
               //   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .
-              // Timeout 2
+              // Timeout 2 . Complete pushing event
               //
               setTimeout( function()
               {
-                Ω.now.selected = 'none'
+                // If selected is in the roudabout
+                //
+                if( Ω.now.rounded.indexOf( Ω.now.selected ) !== -1 )
+                {
+                  // Say it's roundabouting
+                  //
+                  Ω.now.rounding = Ω.now.selected // on exit
+                }
+
+                // If selected isn't roundabouting, reset selected
+                //
+                if( Ω.now.rounding === 'none' ) Ω.now.selected = 'none'
+
+                // This update had to happen right after the test above
+                //
+                Ω.game.updRdb()
+
+                // Reset pushed (to avoid z-index problems)
+                //
                 Ω.now.pushed = 'none'
 
+                // Preserve animation
+                //
                 Ω.game.updSel()
               },
-              newCoord[ 2 ] + 260 )
+              newCoord[ 2 ] + 260 ) // To preserve z-index through motion
 
+              //   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .
               // Move on
               //
               changeTurn = true
@@ -210,6 +249,8 @@
             else if( athleteColor === 'none'
             && reps > 0 )
             {
+              //   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .
+              //
               let newCoord = Ω.tool.tackle( targetIndex )
 
               // Arena
@@ -222,9 +263,15 @@
               let x2 = Ω.info.cell[ 12 ][ targeted ][ 0 ] + 1
               let y2 = Ω.info.cell[ 12 ][ targeted ][ 1 ] + 1
 
+              //   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .
+              // Benched (but not replaced) athlete moves onto the arena
+              //
               Ω.now.athlete[ Ω.now.selected ][ 0 ] = x1
               Ω.now.athlete[ Ω.now.selected ][ 1 ] = y1
 
+              //   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .
+              // It gains its team's color
+              //
               Ω.now.athlete[ Ω.now.selected ][ 2 ] = Ω.now.currentPlayer
 
               //   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .
@@ -245,7 +292,7 @@
               Ω.now.pushed = targeted
 
               //   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .
-              // Timeout 1
+              // Timeout 1 . Playing athlete is sent to the bench
               //
               setTimeout( function()
               {
@@ -253,10 +300,10 @@
                 Ω.now.athlete[ targeted ][ 1 ] = y2
                 Ω.now.athlete[ targeted ][ 2 ] = Ω.now.currentPlayer + 'Blk'
               },
-              newCoord[ 2 ] )
+              newCoord[ 2 ] ) // To start when the benched arrives
 
               //   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .
-              // Timeout 2
+              // Timeout 2 . Refresh selected and pushed
               //
               setTimeout( function()
               {
@@ -266,7 +313,7 @@
                 Ω.game.updSel()
                 Ω.game.updRpl()
               },
-              newCoord[ 2 ] )
+              newCoord[ 2 ] ) // To preserve z-index through motion
 
               // Finish process
               //
@@ -279,7 +326,9 @@
             // and is also not on a blocked zone
             //
             else if( Ω.info.marked.indexOf( targeted ) === -1
-            && Ω.info.blocked.indexOf( zone ) === -1 )
+            && Ω.info.blocked.indexOf( zone ) === -1
+            //
+            || Ω.now.athlete[ Ω.now.selected ][ 2 ] !== Ω.now.currentPlayer )
             {
               Ω.now.selected = targeted
               Ω.now.displayed = targeted
@@ -388,8 +437,10 @@
       //
       if( changeTurn )
       {
-        Ω.now.turn ++
-
+        //......................................................................
+        // Find and correct the distances between the selected athlete and the
+        // zone which was clicked
+        //
         let athlete = Ω.now.athlete[ Ω.now.selected ]
 
         let distX = zoneX - athlete[ 0 ]
@@ -398,20 +449,61 @@
         if( distX < 0 ) distX = ( - distX )
         if( distY < 0 ) distY = ( - distY )
 
+        //......................................................................
+        // Set the initial animation time
+        //
         let value
 
         if( distX > distY ) value = distX
         else                value = distY
 
+        //......................................................................
+        // Stop the roundabouting bonus after 1 use
+        //
+        if( Ω.now.rounded.indexOf( Ω.now.rounding ) === -1 )
+        {
+          Ω.now.rounding = 'none'
+        }
+
+        //......................................................................
+        // Timeout 1 . Actually change turn
+        //
+        setTimeout( function()
+        {
+          if( Ω.now.rounding === 'none' )
+          {
+            Ω.now.turn ++
+
+            Ω.now.selected = 'none'
+
+            // Preserve animation
+            //
+            Ω.game.updSel()
+          }
+        },
+        value + 500 ) // To properly determine who, if anyone, is roundabouting
+
+        //......................................................................
+        // Timeout 2 . Compensate for lack of process inputed at line 208
+        //
         if( Ω.now.pushed === 'none' )
         {
           setTimeout( function()
           {
-            Ω.now.selected = 'none'
+            // If selected is in the roundabout
+            //
+            if( Ω.now.rounded.indexOf( Ω.now.selected ) !== -1 )
+            {
+              // Say it's roundabouting
+              //
+              Ω.now.rounding = Ω.now.selected // on exit
+            }
 
-            Ω.game.updSel()
+            // This update had to happen right after the test above
+            //
+            Ω.game.updRdb() 
           },
-          value + 280 )
+          value + 280 ) // To preserve z-index through motion
         }
       }
     }
@@ -421,8 +513,13 @@
     //
     else
     {
-      Ω.now.selected = 'none'
-      Ω.now.displayed = Ω.now.selected
+      // Because nothing is selectable during roundabouting
+      //
+      if( Ω.now.rounding === 'none' )
+      {
+        Ω.now.selected = 'none'
+        Ω.now.displayed = Ω.now.selected
+      }
     }
 
     ////////////////////////////////////////////////////////////////////////////

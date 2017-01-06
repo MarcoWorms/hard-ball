@@ -182,6 +182,13 @@
   //
   outed: [],
 
+  //............................................................................
+  // Shows which athletes are in the roundabout and which is currently moving
+  //
+  rounded: [],
+
+  rounding: 'none',
+
   //============================================================================
   // Which player played first and which is to play now
   //

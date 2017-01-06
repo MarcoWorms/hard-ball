@@ -167,8 +167,8 @@
       //
       if( athleteColor === 'none' )
       {
-        if( Ω.now.turn < 8 ) Ω.game.updZonCdn( 'stt', 'select' )
-        else                 Ω.game.updZonCdn( 'rep', 'select' )
+        if( Ω.now.turn < 8 ) Ω.game.updZonCdn( 'stt', 'select', false )
+        else                 Ω.game.updZonCdn( 'rep', 'select', false )
       }
 
       //........................................................................
@@ -176,7 +176,16 @@
       //
       else if( athleteColor.substring( 3, 6 ) !== 'Blk' )
       {
-        Ω.game.updZonCdn( 'mtx', 'hover' )
+        if( Ω.now.hovered !== 'none'
+        && Ω.now.hovered === Ω.now.rounding )
+        {
+          Ω.game.updZonCdn( 'mtx', 'hover', true )
+        }
+
+        else
+        {
+          Ω.game.updZonCdn( 'mtx', 'hover', false )
+        }
       }
     }
 
@@ -201,8 +210,8 @@
       //
       if( athleteColor === 'none' )
       {
-        if( Ω.now.turn < 8 ) Ω.game.updZonCdn( 'stt', 'select' )
-        else                 Ω.game.updZonCdn( 'rep', 'select' )
+        if( Ω.now.turn < 8 ) Ω.game.updZonCdn( 'stt', 'select', false )
+        else                 Ω.game.updZonCdn( 'rep', 'select', false )
       }
 
       //........................................................................
@@ -210,7 +219,16 @@
       //
       else if( athleteColor.substring( 3, 6 ) !== 'Blk' )
       {
-        Ω.game.updZonCdn( 'mtx', 'select' )
+        if( Ω.now.selected !== 'none'
+        && Ω.now.selected === Ω.now.rounding )
+        {
+          Ω.game.updZonCdn( 'mtx', 'select', true )
+        }
+
+        else
+        {
+          Ω.game.updZonCdn( 'mtx', 'select', false )
+        }
       }
     }
   },
@@ -223,10 +241,8 @@
     //==========================================================================
     // Determining how are zones to be shown
     //
-    let current = Ω.now.currentPlayer // 'gre' or 'blu' turn
-
-    let key = true
     let value = 1
+    let key = true
 
     //==========================================================================
     // Ball is hovered
@@ -242,29 +258,20 @@
     else if( Ω.now.hovered !== 'none'
     && Ω.info.target[ 0 ].indexOf( Ω.now.hovered ) === -1 )
     {
-      //........................................................................
-      // Hovered and non-targeted athlete is ready to play
+      //......................................................................
+      // Athlete is the same color as the turn AND turn is higher than 7
       //
-      if( Ω.now.athlete[ Ω.now.hovered ][ 2 ] === 'none' )
-      {
-        // tbd
-      }
-
-      //........................................................................
-      // Hovered and non-targeted athlete is playing
+      if( Ω.now.athlete[ Ω.now.hovered ][ 2 ] !== Ω.now.currentPlayer
+      && Ω.now.turn > 7
       //
-      else
+      || Ω.now.athlete[ Ω.now.hovered ][ 2 ] !== 'none'
+      && Ω.now.turn < 8
+      //
+      || Ω.now.rounding !== 'none'
+      && Ω.now.rounding !== Ω.now.hovered )
       {
-        //......................................................................
-        // Athlete is the same color as the turn AND turn is higher than 7
-        //
-        if( Ω.now.athlete[ Ω.now.hovered ][ 2 ] !== current
-        //
-        || Ω.now.turn < 8 )
-        {
-          value = 0.66
-          key = false
-        }
+        value = 0.66
+        key = false
       }
     }
 
@@ -282,28 +289,20 @@
     else if( Ω.now.selected !== 'none'
     && Ω.info.target[ 0 ].indexOf( Ω.now.selected ) === -1 )
     {
-      //........................................................................
-      // Selected and non-targeted athlete is ready to play
+      //......................................................................
+      // Athlete is the same color as the turn AND turn is higher than 7
       //
-      if( Ω.now.athlete[ Ω.now.selected ][ 2 ] === 'none' )
-      {
-      }
-
-      //........................................................................
-      // Selected and non-targeted athlete is playing
+      if( Ω.now.athlete[ Ω.now.selected ][ 2 ] !== Ω.now.currentPlayer
+      && Ω.now.turn > 7
       //
-      else
+      || Ω.now.athlete[ Ω.now.selected ][ 2 ] !== 'none'
+      && Ω.now.turn < 8
+      //
+      || Ω.now.rounding !== 'none'
+      && Ω.now.rounding !== Ω.now.selected )
       {
-        //......................................................................
-        // Athlete is the same color as the turn AND turn is higher than 7
-        //
-        if( Ω.now.athlete[ Ω.now.selected ][ 2 ] !== current
-        //
-        || Ω.now.turn < 8 )
-        {
-          value = 0.66
-          key = false
-        }
+        value = 0.66
+        key = false
       }
     }
 
@@ -327,12 +326,15 @@
   ////////////////////////////////////////////////////////////////////////////// G.updZonCdn
   // Updating zones coordinates
   //
-  updZonCdn: function( behavior, guide )
+  updZonCdn: function( behavior, guide, round )
   {
+    let origin
     let displayed
 
-    if( guide === 'hover' )       displayed = Ω.now.hovered
-    else if( guide === 'select' ) displayed = Ω.now.selected
+    if( guide === 'hover' )       origin = displayed = Ω.now.hovered
+    else if( guide === 'select' ) origin = displayed = Ω.now.selected
+
+    if( round ) origin = 18
 
     //==========================================================================
     // Fill 'info.zone'
@@ -351,7 +353,7 @@
       //........................................................................
       // Matrix 1
       //
-      if( Ω.info.move[ displayed ][ 1 ] === 1 )
+      if( Ω.info.move[ origin ][ 1 ] === 1 )
       {
         x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] + 47, 'x' )
         y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] - 1, 'y' )
@@ -373,7 +375,7 @@
       //........................................................................
       // Matrix 2
       //
-      if( Ω.info.move[ displayed ][ 2 ] === 1 )
+      if( Ω.info.move[ origin ][ 2 ] === 1 )
       {
         x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] + 95, 'x' )
         y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] - 1, 'y' )
@@ -395,7 +397,7 @@
       //........................................................................
       // Matrix 3
       //
-      if( Ω.info.move[ displayed ][ 3 ] === 1 )
+      if( Ω.info.move[ origin ][ 3 ] === 1 )
       {
         x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] + 143, 'x' )
         y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] - 1, 'y' )
@@ -417,7 +419,7 @@
       //........................................................................
       // Matrix 4
       //
-      if( Ω.info.move[ displayed ][ 4 ] === 1 )
+      if( Ω.info.move[ origin ][ 4 ] === 1 )
       {
         x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] + 47, 'x' )
         y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] + 47, 'y' )
@@ -439,7 +441,7 @@
       //........................................................................
       // Matrix 5
       //
-      if( Ω.info.move[ displayed ][ 5 ] === 1 )
+      if( Ω.info.move[ origin ][ 5 ] === 1 )
       {
         x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] + 47, 'x' )
         y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] + 95, 'y' )
@@ -477,7 +479,7 @@
       //........................................................................
       // Matrix 6
       //
-      if( Ω.info.move[ displayed ][ 6 ] === 1 )
+      if( Ω.info.move[ origin ][ 6 ] === 1 )
       {
         x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] + 47, 'x' )
         y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] + 143, 'y' )
@@ -515,7 +517,7 @@
       //........................................................................
       // Matrix 7
       //
-      if( Ω.info.move[ displayed ][ 7 ] === 1 )
+      if( Ω.info.move[ origin ][ 7 ] === 1 )
       {
         x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] + 95, 'x' )
         y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] + 95, 'y' )
@@ -537,7 +539,7 @@
       //........................................................................
       // Matrix 8
       //
-      if( Ω.info.move[ displayed ][ 8 ] === 1 )
+      if( Ω.info.move[ origin ][ 8 ] === 1 )
       {
         x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] + 95, 'x' )
         y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] + 143, 'y' )
@@ -575,7 +577,7 @@
       //........................................................................
       // Matrix 9
       //
-      if( Ω.info.move[ displayed ][ 9 ] === 1 )
+      if( Ω.info.move[ origin ][ 9 ] === 1 )
       {
         x = Ω.tool.bend( Ω.now.athlete[ displayed ][ 0 ] + 143, 'x' )
         y = Ω.tool.bend( Ω.now.athlete[ displayed ][ 1 ] + 143, 'y' )
@@ -1092,6 +1094,27 @@
         {
           $2.style.fill = 'rgba(255,255,255,0.5)'
         } )
+      }
+    }
+  },
+
+  ////////////////////////////////////////////////////////////////////////////// G.updRdb
+  // Updates an array containing the numbers of the athletes in the roundabout
+  //
+  updRdb: function()
+  {
+    Ω.now.rounded = []
+
+    for( let $ = 0; $ < 20; $ ++ )
+    {
+      let athleteY = Ω.now.athlete[ $ ][ 1 ]
+
+      if( athleteY < 50
+      //
+      || athleteY > 480
+      && athleteY < 584)
+      {
+        Ω.now.rounded.push( $ )
       }
     }
   },

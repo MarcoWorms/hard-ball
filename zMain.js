@@ -1090,7 +1090,7 @@
       {
         Ω.page.athlete[ $1 ].style.borderColor = 'black'
 
-        Array.from( Ω.page.glow[ $1 ] ).forEach( function( $2, $3 )
+        Array.from( Ω.page.glow[ $1 ] ).forEach( function( $2 )
         {
           $2.style.fill = 'rgba(255,255,255,0.5)'
         } )

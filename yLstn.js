@@ -117,28 +117,40 @@
     // It's important to note that its only possible to click a zone when the
     // ball or some athlete is selected
     //
-    else if( $.target.id.substring( 0, 3 ) === 'zon' ) // target is a zone
+    else if( $.target.id.substring( 0, 3 ) === 'zon' // target is a zone
+    && !Ω.now.lock ) // game is not locked
     {
+      // Lock the game
+      //
+      Ω.now.lock = true
+
+      // Don't change turns just yet
+      //
       let changeTurn = false
 
-      // Step 1 . Check which is the zone clicked
+      // Check which is the zone clicked
       //
       let zone = Number( $.target.id.substring( 3, 5 ) )
 
-      // Step 2 . Check where and if the zone is targeting something
+      // Check where and if the zone is targeting something
       //
       let zoneIndex = Ω.info.target[ 1 ].indexOf( zone )
 
-      // Step 3 . Check what the target, if any, is
+      // Check what the target, if any, is
       //
       let zoneTarget = Ω.info.target[ 0 ][ zoneIndex ] // 'ball' or 0 to 19
 
-      // Step 4 . Check the zone's coordinate
+      // Check the zone's coordinate
       //
       let zoneX = Ω.info.zone[ zone ][ 0 ]
       let zoneY = Ω.info.zone[ zone ][ 1 ]
 
       let coordinate = Ω.tool.convert( [ zoneX, zoneY ] )
+
+      // Preserve the athlete's old coordinates
+      //
+      let oldAthleteX = Ω.now.athlete[ Ω.now.selected ][ 0 ]
+      let oldAthleteY = Ω.now.athlete[ Ω.now.selected ][ 1 ]
 
       //========================================================================
       // Has a target
@@ -235,7 +247,7 @@
                 //
                 Ω.game.updSel()
               },
-              newCoord[ 2 ] + 260 ) // To preserve z-index through motion
+              newCoord[ 2 ] * 2 ) // To preserve z-index through motion
 
               //   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .
               // Move on
@@ -443,8 +455,8 @@
         //
         let athlete = Ω.now.athlete[ Ω.now.selected ]
 
-        let distX = zoneX - athlete[ 0 ]
-        let distY = zoneY - athlete[ 1 ]
+        let distX = zoneX - oldAthleteX
+        let distY = zoneY - oldAthleteY
 
         if( distX < 0 ) distX = ( - distX )
         if( distY < 0 ) distY = ( - distY )
@@ -456,6 +468,8 @@
 
         if( distX > distY ) value = distX
         else                value = distY
+
+        console.log( 'value . ' + value )
 
         //......................................................................
         // Stop the roundabouting bonus after 1 use
@@ -480,8 +494,12 @@
             //
             Ω.game.updSel()
           }
+
+          // Unlock game
+          //
+          Ω.now.lock = false
         },
-        value + 500 ) // To properly determine who, if anyone, is roundabouting
+        value * 4 ) // To properly determine who, if anyone, is roundabouting
 
         //......................................................................
         // Timeout 2 . Compensate for lack of process inputed at line 208
@@ -503,7 +521,7 @@
             //
             Ω.game.updRdb() 
           },
-          value + 280 ) // To preserve z-index through motion
+          value * 2 ) // To preserve z-index through motion
         }
       }
     }
@@ -519,6 +537,10 @@
       {
         Ω.now.selected = 'none'
         Ω.now.displayed = Ω.now.selected
+
+        // Unlock game
+        //
+        Ω.now.lock = false
       }
     }
 

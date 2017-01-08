@@ -192,7 +192,7 @@
   //
   rounded: [],
 
-  rounding: 'none',
+  rounding: [ 'none', 0 ],
 
   //============================================================================
   // Which player played first and which is to play now

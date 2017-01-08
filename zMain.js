@@ -177,7 +177,7 @@
       else if( athleteColor.substring( 3, 6 ) !== 'Blk' )
       {
         if( Ω.now.hovered !== 'none'
-        && Ω.now.hovered === Ω.now.rounding )
+        && Ω.now.hovered === Ω.now.rounding[ 0 ] )
         {
           Ω.game.updZonCdn( 'mtx', 'hover', true )
         }
@@ -220,7 +220,7 @@
       else if( athleteColor.substring( 3, 6 ) !== 'Blk' )
       {
         if( Ω.now.selected !== 'none'
-        && Ω.now.selected === Ω.now.rounding )
+        && Ω.now.selected === Ω.now.rounding[ 0 ] )
         {
           Ω.game.updZonCdn( 'mtx', 'select', true )
         }
@@ -267,8 +267,8 @@
       || Ω.now.athlete[ Ω.now.hovered ][ 2 ] !== 'none'
       && Ω.now.turn < 8
       //
-      || Ω.now.rounding !== 'none'
-      && Ω.now.rounding !== Ω.now.hovered )
+      || Ω.now.rounding[ 0 ] !== 'none'
+      && Ω.now.rounding[ 0 ] !== Ω.now.hovered )
       {
         value = 0.66
         key = false
@@ -298,8 +298,8 @@
       || Ω.now.athlete[ Ω.now.selected ][ 2 ] !== 'none'
       && Ω.now.turn < 8
       //
-      || Ω.now.rounding !== 'none'
-      && Ω.now.rounding !== Ω.now.selected )
+      || Ω.now.rounding[ 0 ] !== 'none'
+      && Ω.now.rounding[ 0 ] !== Ω.now.selected )
       {
         value = 0.66
         key = false
@@ -703,18 +703,15 @@
 
       //........................................................................
       //
-      if( reps > 0 )
+      for( let $ = 0; $ < 4; $ ++ )
       {
-        for( let $ = 0; $ < 4; $ ++ )
-        {
-          let entity = Ω.now.athlete[ team[ $ ] ]
+        let entity = Ω.now.athlete[ team[ $ ] ]
 
-          Ω.info.zone[ $ ][ 0 ] = entity[ 0 ] - 1
-          Ω.info.zone[ $ ][ 1 ] = entity[ 1 ] - 1
-        }
-
-        value = 4
+        Ω.info.zone[ $ ][ 0 ] = entity[ 0 ] - 1
+        Ω.info.zone[ $ ][ 1 ] = entity[ 1 ] - 1
       }
+
+      value = 4
     }
 
     //==========================================================================
@@ -1014,7 +1011,26 @@
             }
           }
 
-          else // part of opponent's area
+          // Part of opponent's area
+          //
+          else
+          {
+            Ω.info.blocked.push( zone )
+          }
+
+          //====================================================================
+          // UNRELATED TO ACTUAL BLOCKED-CELL TRACKING (code above)
+          //
+          // Shows that is not possible to further replace athletes
+          //
+          let athleteColor = Ω.now.athlete[ Ω.now.displayed ][ 2 ]
+          let replacementsLeft
+
+          if( athleteColor === 'gre' ) replacementsLeft = Ω.now.reps.green
+          else                         replacementsLeft = Ω.now.reps.blue
+
+          if( athleteColor === 'none'
+          && replacementsLeft > 0 )
           {
             Ω.info.blocked.push( zone )
           }

@@ -83,7 +83,7 @@
     {
       // Because nothing is selectable during roundabouting
       //
-      if( Ω.now.rounding === 'none' )
+      if( Ω.now.rounding[ 0 ] === 'none' )
       {
         let newAthlete = Number( $.target.id.substring( 4, 6 ) ) // 0 to 19
 
@@ -104,7 +104,7 @@
     {
       // Because nothing is selectable during roundabouting
       //
-      if( Ω.now.rounding === 'none' )
+      if( Ω.now.rounding[ 0 ] === 'none' )
       {
         Ω.now.selected = 'ball'
         Ω.now.displayed = Ω.now.selected
@@ -228,12 +228,12 @@
                 {
                   // Say it's roundabouting
                   //
-                  Ω.now.rounding = Ω.now.selected // on exit
+                  Ω.now.rounding[ 0 ] = Ω.now.selected // on exit
                 }
 
                 // If selected isn't roundabouting, reset selected
                 //
-                if( Ω.now.rounding === 'none' ) Ω.now.selected = 'none'
+                if( Ω.now.rounding[ 0 ] === 'none' ) Ω.now.selected = 'none'
 
                 // This update had to happen right after the test above
                 //
@@ -247,7 +247,7 @@
                 //
                 Ω.game.updSel()
               },
-              newCoord[ 2 ] * 2 ) // To preserve z-index through motion
+              250 ) // To preserve z-index through motion
 
               //   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .
               // Move on
@@ -311,6 +311,8 @@
                 Ω.now.athlete[ targeted ][ 0 ] = x2
                 Ω.now.athlete[ targeted ][ 1 ] = y2
                 Ω.now.athlete[ targeted ][ 2 ] = Ω.now.currentPlayer + 'Blk'
+
+                Ω.now.outed.push( targeted )
               },
               newCoord[ 2 ] ) // To start when the benched arrives
 
@@ -325,7 +327,7 @@
                 Ω.game.updSel()
                 Ω.game.updRpl()
               },
-              newCoord[ 2 ] ) // To preserve z-index through motion
+              newCoord[ 2 ] + 10 ) // To preserve z-index through motion
 
               // Finish process
               //
@@ -450,41 +452,14 @@
       if( changeTurn )
       {
         //......................................................................
-        // Find and correct the distances between the selected athlete and the
-        // zone which was clicked
-        //
-        let athlete = Ω.now.athlete[ Ω.now.selected ]
-
-        let distX = zoneX - oldAthleteX
-        let distY = zoneY - oldAthleteY
-
-        if( distX < 0 ) distX = ( - distX )
-        if( distY < 0 ) distY = ( - distY )
-
-        //......................................................................
-        // Set the initial animation time
-        //
-        let value
-
-        if( distX > distY ) value = distX
-        else                value = distY
-
-        console.log( 'value . ' + value )
-
-        //......................................................................
-        // Stop the roundabouting bonus after 1 use
-        //
-        if( Ω.now.rounded.indexOf( Ω.now.rounding ) === -1 )
-        {
-          Ω.now.rounding = 'none'
-        }
-
-        //......................................................................
         // Timeout 1 . Actually change turn
         //
         setTimeout( function()
         {
-          if( Ω.now.rounding === 'none' )
+          if( Ω.now.rounding[ 1 ] > 0 ) Ω.now.rounding[ 0 ] = 'none'
+          else                          Ω.now.rounding[ 1 ] ++
+
+          if( Ω.now.rounding[ 0 ] === 'none' )
           {
             Ω.now.turn ++
 
@@ -493,16 +468,20 @@
             // Preserve animation
             //
             Ω.game.updSel()
+
+            // Refreshing roundabouting counter
+            //
+            Ω.now.rounding[ 1 ] = 0
           }
 
           // Unlock game
           //
           Ω.now.lock = false
         },
-        value * 4 ) // To properly determine who, if anyone, is roundabouting
+        300 ) // To properly determine who, if anyone, is roundabouting
 
         //......................................................................
-        // Timeout 2 . Compensate for lack of process inputed at line 208
+        // Timeout 2 . Compensate for lack of process inputed at line 220
         //
         if( Ω.now.pushed === 'none' )
         {
@@ -514,14 +493,14 @@
             {
               // Say it's roundabouting
               //
-              Ω.now.rounding = Ω.now.selected // on exit
+              Ω.now.rounding[ 0 ] = Ω.now.selected // on exit
             }
 
             // This update had to happen right after the test above
             //
             Ω.game.updRdb() 
           },
-          value * 2 ) // To preserve z-index through motion
+          250 ) // To preserve z-index through motion
         }
       }
     }
@@ -533,7 +512,7 @@
     {
       // Because nothing is selectable during roundabouting
       //
-      if( Ω.now.rounding === 'none' )
+      if( Ω.now.rounding[ 0 ] === 'none' )
       {
         Ω.now.selected = 'none'
         Ω.now.displayed = Ω.now.selected

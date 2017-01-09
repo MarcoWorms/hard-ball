@@ -87,11 +87,17 @@
       {
         let newAthlete = Number( $.target.id.substring( 4, 6 ) ) // 0 to 19
 
+        // If the athlete wasn't replaced this match
+        //
         if( Ω.now.outed.indexOf( newAthlete ) === -1 )
         {
+          // Say it is selected and displayed
+          //
           Ω.now.selected = newAthlete
           Ω.now.displayed = Ω.now.selected
 
+          // Make a list of which athletes cannot be hovered nor selected
+          //
           Ω.info.marked = Ω.info.target[ 0 ]
         }
       }
@@ -321,9 +327,10 @@
               //
               setTimeout( function()
               {
-                Ω.now.selected = 'none'
                 Ω.now.pushed = 'none'
+                Ω.now.lock = false
 
+                Ω.game.updRdb()
                 Ω.game.updSel()
                 Ω.game.updRpl()
               },
@@ -336,11 +343,12 @@
             }
 
             // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-            // Select the aimed athlete if the selected athlete is off its turn
-            // and is also not on a blocked zone
+            // If targeted athlete isn't marked nor in a blocked zone
             //
             else if( Ω.info.marked.indexOf( targeted ) === -1
             && Ω.info.blocked.indexOf( zone ) === -1
+            //
+            // Or simply if it isn't the athlete's turn
             //
             || Ω.now.athlete[ Ω.now.selected ][ 2 ] !== Ω.now.currentPlayer )
             {

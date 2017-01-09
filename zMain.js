@@ -271,7 +271,9 @@
       && Ω.now.rounding[ 0 ] !== Ω.now.hovered )
       {
         value = 0.66
-        key = false
+
+        if( Ω.now.athlete[ Ω.now.hovered ][ 2 ] === 'none' ) key = true
+        else                                                 key = false
       }
     }
 
@@ -302,7 +304,9 @@
       && Ω.now.rounding[ 0 ] !== Ω.now.selected )
       {
         value = 0.66
-        key = false
+
+        if( Ω.now.athlete[ Ω.now.selected ][ 2 ] === 'none' ) key = true
+        else                                                  key = false
       }
     }
 
@@ -1023,14 +1027,15 @@
           //
           // Shows that is not possible to further replace athletes
           //
+          let turnColor = Ω.now.currentPlayer
           let athleteColor = Ω.now.athlete[ Ω.now.displayed ][ 2 ]
           let replacementsLeft
 
-          if( athleteColor === 'gre' ) replacementsLeft = Ω.now.reps.green
-          else                         replacementsLeft = Ω.now.reps.blue
+          if( turnColor === 'gre' ) replacementsLeft = Ω.now.reps.green
+          else                      replacementsLeft = Ω.now.reps.blue
 
           if( athleteColor === 'none'
-          && replacementsLeft > 0 )
+          && replacementsLeft === 0 )
           {
             Ω.info.blocked.push( zone )
           }
@@ -1094,12 +1099,10 @@
   },
 
   ////////////////////////////////////////////////////////////////////////////// G.updRpl
+  // Colorize replaced athletes
   //
   updRpl: function()
   {
-    //==========================================================================
-    // Colorize replaced athletes
-    //
     for( let $1 = 0; $1 < 20; $1 ++ )
     {
       if( Ω.now.athlete[ $1 ][ 2 ].substring( 3, 6 ) === 'Blk' )

@@ -354,6 +354,18 @@
             {
               Ω.now.selected = targeted
               Ω.now.displayed = targeted
+
+              Ω.info.marked = Ω.info.target[ 0 ]
+              Ω.now.lock = false
+            }
+
+            // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+            // Target is blocked and/or marked
+            //
+            else
+            {
+              Ω.info.marked = Ω.info.target[ 0 ]
+              Ω.now.lock = false
             }
           }
         }
@@ -491,9 +503,9 @@
         //......................................................................
         // Timeout 2 . Compensate for lack of process inputed at line 220
         //
-        if( Ω.now.pushed === 'none' )
+        setTimeout( function()
         {
-          setTimeout( function()
+          if( Ω.now.pushed === 'none' )
           {
             // If selected is in the roundabout
             //
@@ -507,9 +519,9 @@
             // This update had to happen right after the test above
             //
             Ω.game.updRdb() 
-          },
-          250 ) // To preserve z-index through motion
-        }
+          }
+        },
+        250 ) // To preserve z-index through motion
       }
     }
 

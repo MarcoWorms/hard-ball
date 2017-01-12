@@ -67,7 +67,7 @@
     Ω.game.updSel()
 
     //==========================================================================
-    // Avoiding unwanted parts of animations during first load and resets
+    // Avoid as much as possible "everything-travelling-from-point-0" bug
     //
     setTimeout( function()
     {
@@ -77,7 +77,31 @@
       } )
     }, 9 ) // beyond this value, animation on reset and reload is lost
 
+    //==========================================================================
+    // Avoid "replaced-not-showing-proper-colors" bug
+    //
     Ω.game.updRpl()
+
+    //==========================================================================
+    // Avoid "refresh-page-while-hovering-another-athlete" bug
+    //
+    setTimeout( function()
+    {
+      // If selected is an athlete and is playing
+      //
+      if( Ω.now.selected !== 'none' )
+      {
+        if( Ω.now.athlete[ Ω.now.selected ][ 2 ] === 'gre'
+        || Ω.now.athlete[ Ω.now.selected ][ 2 ] === 'blu' )
+        {
+          Ω.now.displayed = Ω.now.selected
+          Ω.game.updZonCdn( 'mtx', 'select', false )
+          Ω.game.updTar()
+          Ω.info.marked = Ω.info.target[ 0 ]
+        }
+      }
+    },
+    50 )
   },
 
   ////////////////////////////////////////////////////////////////////////////// G.update
@@ -121,6 +145,28 @@
     let y = Ω.now.ball[ 1 ]
 
     Ω.tool.translate( Ω.page.ball, x, y )
+
+    // If the ball wasn't moved yet
+    //
+    if( Ω.now.ball[ 0 ] === 457 )
+    {
+      Ω.now.athlete.forEach( function( $1, $2 )
+      {
+        let coordinate = Ω.tool.convert( [ $1[ 0 ] - 1, $1[ 1 ] - 1 ] )
+
+        // Timeout to avoid conflict with roundabouting
+        //
+        setTimeout( function()
+        {
+          if( Ω.info.arenaCenter.indexOf( coordinate ) !== -1
+          && Ω.now.rounding[ 0 ] === 'none' )
+          {
+            Ω.now.holder = $2
+          }
+        },
+        500 )
+      } )
+    }
   },
 
   ////////////////////////////////////////////////////////////////////////////// G.updZon1

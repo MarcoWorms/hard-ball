@@ -24,6 +24,11 @@
   target: [ [], [] ],
 
   //============================================================================
+  // The 4 cells that make up the arena's center
+  //
+  arenaCenter: [ 'F09', 'F10', 'G09', 'G10' ],
+
+  //============================================================================
   // 'info.cell' is an array containing 13 arrays (arena rows)
   // Each of these arrays contain 20 arrays (row's cells coordinates)
   // Each of these arrays contain 1 cell's information as follows
@@ -162,7 +167,7 @@
   //
   lock: false,
 
-  //============================================================================
+  //............................................................................
   // Shows how many plays have happened
   //
   turn: 0,
@@ -177,7 +182,7 @@
   //
   keeper: { green: 'none', blue: 'none' },
 
-  //............................................................................
+  //============================================================================
   // How many replacements each player still has
   //
   reps: { green: 2, blue: 2 },
@@ -187,11 +192,10 @@
   //
   outed: [],
 
-  //............................................................................
+  //============================================================================
   // Shows which athletes are in the roundabout and which is currently moving
   //
   rounded: [],
-
   rounding: [ 'none', 0 ],
 
   //============================================================================
@@ -212,6 +216,12 @@
   // Shows which athlete is being pushed
   //
   pushed: 'none',
+
+  //============================================================================
+  // Shows which athlete is holding the ball, and if there is someone taking it
+  //
+  holder: 'none',
+  newHolder: 'none',
 
   //============================================================================
   // Position of the ball as follows

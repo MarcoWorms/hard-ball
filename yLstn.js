@@ -10,17 +10,13 @@
   //
   clicker: addEventListener( 'mousedown', function( $ )
   {
-    // Refreshing
-    //
-    Ω.info.marked = []
-
     ////////////////////////////////////////////////////////////////////////////
     // 00 . START resetting the game
     //
     if( $.target.id === 'reset' )
     {
       Ω.page.reset.innerHTML = 'REALLY ?'
-      Ω.page.reset.style.width = '12.5%'
+      Ω.page.reset.style.width = '15%'
       Ω.tool.chgCls( Ω.page.reset, '-', 'btn' )
       Ω.tool.chgCls( Ω.page.reset, '+', 'dsp' )
 
@@ -85,6 +81,12 @@
       //
       if( Ω.now.rounding[ 0 ] === 'none' )
       {
+        // Refreshing
+        //
+        Ω.info.marked = []
+
+        // Start process
+        //
         let newAthlete = Number( $.target.id.substring( 4, 6 ) ) // 0 to 19
 
         // If the athlete wasn't replaced this match
@@ -239,7 +241,11 @@
 
                 // If selected isn't roundabouting, reset selected
                 //
-                if( Ω.now.rounding[ 0 ] === 'none' ) Ω.now.selected = 'none'
+                if( Ω.now.rounding[ 0 ] === 'none' )
+                {
+                  Ω.now.selected = 'none'
+                  Ω.now.displayed = Ω.now.selected
+                }
 
                 // This update had to happen right after the test above
                 //
@@ -343,14 +349,15 @@
             }
 
             // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-            // If targeted athlete isn't marked nor in a blocked zone
+            // If it isn't the athlete's turn
             //
-            else if( Ω.info.marked.indexOf( targeted ) === -1
-            && Ω.info.blocked.indexOf( zone ) === -1
+            else if( athleteColor !== Ω.now.currentPlayer
             //
-            // Or simply if it isn't the athlete's turn
+            // Or if the targeted athlete isn't marked nor in a blocked zone to
+            // safeguard against "fast-hovering" bugs
             //
-            || Ω.now.athlete[ Ω.now.selected ][ 2 ] !== Ω.now.currentPlayer )
+            || Ω.info.marked.indexOf( targeted ) === -1
+            && Ω.info.blocked.indexOf( zone ) === -1 )
             {
               Ω.now.selected = targeted
               Ω.now.displayed = targeted
@@ -437,6 +444,13 @@
             changeTurn = true
           }
 
+          // If an empty zone was clicked off the athlete's turn
+          //
+          else
+          {
+            Ω.now.lock = false
+          }
+
           //....................................................................
           // Set who's the first player of the match
           //
@@ -484,6 +498,7 @@
             Ω.now.turn ++
 
             Ω.now.selected = 'none'
+            Ω.now.displayed = Ω.now.selected
 
             // Preserve animation
             //
@@ -597,7 +612,7 @@
       let digit = Number( $.target.id.substring( 4, 6 ) ) // athlete's number
 
       if( Ω.info.target[ 0 ].indexOf( digit ) === -1 // and it isn't a target
-      && Ω.info.marked.indexOf( digit ) === -1 ) // nor it's marked
+      && Ω.info.marked.indexOf( digit ) === -1 ) // nor marked
       {
         Ω.now.hovered = digit // 'none' or 0 to 19
         Ω.now.displayed = Ω.now.hovered
@@ -688,6 +703,12 @@
       let zone = Number( $.target.id.substring( 3, 5 ) )
       let zoneIndex = Ω.info.target[ 1 ].indexOf( zone )
 
+      //========================================================================
+      // Avoid "fast-hover-changes-displayed-slowly" bug
+      //
+      if( Ω.now.selected !== 'none' ) Ω.now.displayed = Ω.now.selected
+      else                            Ω.now.displayed = Ω.now.hovered
+
       if( zoneIndex !== -1 ) // zone is targeting
       {
         let zoneTarget = Ω.info.target[ 0 ][ zoneIndex ]
@@ -759,14 +780,8 @@
       //========================================================================
       // Hovering nothing is tricky and must be safeguarded by this condition
       //
-      if( Ω.now.selected !== 'none' ) // could be any athlete or the ball
-      {
-        Ω.now.displayed = Ω.now.selected
-      }
-      else
-      {
-        Ω.now.displayed = Ω.now.hovered
-      }
+      if( Ω.now.selected !== 'none' ) Ω.now.displayed = Ω.now.selected
+      else                            Ω.now.displayed = Ω.now.hovered
     }
 
   //////////////////////////////////////////////////////////////////////////////

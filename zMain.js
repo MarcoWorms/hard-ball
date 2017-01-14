@@ -120,6 +120,8 @@
     Ω.game.updBlk()
     Ω.game.updInd()
 
+    Ω.game.updHol() // does nothing so far
+
     // having both 'game.updZon1' and 'game.updZon2' after 'game.updInd' makes
     // the hover effect non-existant after any athlete gets selected
   },
@@ -159,9 +161,12 @@
         setTimeout( function()
         {
           if( Ω.info.arenaCenter.indexOf( coordinate ) !== -1
-          && Ω.now.rounding[ 0 ] === 'none' )
+          && Ω.now.rounding[ 0 ] === 'none'
+          && Ω.now.newHolder === 'none' )
           {
-            Ω.now.holder = $2
+            console.log( Ω.now.newHolder )
+            Ω.now.newHolder = $2
+            console.log( Ω.now.newHolder )
           }
         },
         500 )
@@ -196,7 +201,10 @@
     //
     if( Ω.now.hovered === 'ball' )
     {
-      // tbd
+      if( Ω.now.ball[ 0 ] === 457 )
+      {
+        Ω.game.updZonCdn( 'cnt', 'hover', false )
+      }
     }
 
     //==========================================================================
@@ -240,7 +248,10 @@
     //
     else if( Ω.now.selected === 'ball' )
     {
-      // tbd
+      if( Ω.now.ball[ 0 ] === 457 )
+      {
+        Ω.game.updZonCdn( 'cnt', 'hover', false )
+      }
     }
 
     //==========================================================================
@@ -295,7 +306,14 @@
     //
     if( Ω.now.hovered === 'ball' )
     {
-      // tbd
+      //........................................................................
+      // The ball hasn't moved yet
+      //
+      if( Ω.now.ball[ 0 ] === 457 )
+      {
+        value = 0.66
+        key = false
+      }
     }
 
     //==========================================================================
@@ -328,7 +346,14 @@
     //
     else if( Ω.now.selected === 'ball' )
     {
-      // tbd
+      //........................................................................
+      // The ball hasn't moved yet
+      //
+      if( Ω.now.ball[ 0 ] === 457 )
+      {
+        value = 0.66
+        key = false
+      }
     }
 
     //==========================================================================
@@ -765,6 +790,22 @@
     }
 
     //==========================================================================
+    // By center (ball's initial state only)
+    //
+    else if( behavior === 'cnt' )
+    {
+      Ω.info.arenaCenter.forEach( function( $1, $2 )
+      {
+        let coordinate = Ω.tool.convert( $1 )
+
+        Ω.info.zone[ $2 ][ 0 ] = coordinate[ 0 ]
+        Ω.info.zone[ $2 ][ 1 ] = coordinate[ 1 ]
+      } )
+
+      value = 4
+    }
+
+    //==========================================================================
     // Display zones accordingly
     //
     for( let $ = 0; $ < 16; $ ++ )
@@ -1095,14 +1136,23 @@
   //
   updInd: function()
   {
+    //==========================================================================
+    // Update athletes' indexes
+    //
     Array.from( Ω.page.athlete ).forEach( function( $1, $2 )
     {
-      let value = 1
+      let value = '1'
 
-      if( Ω.now.selected === $2 || Ω.now.pushed === $2 ) value = 3
+      if( Ω.now.selected === $2 || Ω.now.pushed === $2 ) value = '3'
 
-      $1.style.zIndex = String( value )
+      $1.style.zIndex = value
     } )
+
+    //==========================================================================
+    // Update the ball's index
+    //
+    if( Ω.now.ball[ 0 ] === 457 ) Ω.page.ball.style.zIndex = '3'
+    else                          Ω.page.ball.style.zIndex = '1'
   },
 
   ////////////////////////////////////////////////////////////////////////////// G.updSel
@@ -1182,6 +1232,14 @@
         Ω.now.rounded.push( $ )
       }
     }
+  },
+
+  ////////////////////////////////////////////////////////////////////////////// G.updHol
+  // Controls the activity of certain aspects of ball holding
+  //
+  updHol: function()
+  {
+    // tbd
   },
 }
 

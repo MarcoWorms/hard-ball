@@ -362,7 +362,14 @@
               Ω.now.selected = targeted
               Ω.now.displayed = targeted
 
-              Ω.info.marked = Ω.info.target[ 0 ]
+              // To avoid a form of "fast-hover" bug after selecting an athlete
+              // in sequence to selecting yet other athlete
+              //
+              setTimeout( function()
+              {
+                Ω.info.marked = Ω.info.target[ 0 ]
+              }, 250 )
+
               Ω.now.lock = false
             }
 
@@ -371,7 +378,14 @@
             //
             else
             {
-              Ω.info.marked = Ω.info.target[ 0 ]
+              // To avoid a form of "fast-hover" bug after selecting an athlete
+              // in sequence to selecting yet other athlete
+              //
+              setTimeout( function()
+              {
+                Ω.info.marked = Ω.info.target[ 0 ]
+              }, 250 )
+
               Ω.now.lock = false
             }
           }
@@ -444,6 +458,7 @@
             changeTurn = true
           }
 
+          // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
           // If an empty zone was clicked off the athlete's turn
           //
           else
@@ -780,8 +795,27 @@
       //========================================================================
       // Hovering nothing is tricky and must be safeguarded by this condition
       //
-      if( Ω.now.selected !== 'none' ) Ω.now.displayed = Ω.now.selected
-      else                            Ω.now.displayed = Ω.now.hovered
+      if( Ω.now.selected !== 'none' )
+      {
+        Ω.now.displayed = Ω.now.selected
+
+        // To avoid a form of "fast-hover" bug after selecting an athlete
+        // in sequence to selecting yet other athlete
+        //
+        setTimeout( function()
+        {
+          Ω.info.marked = Ω.info.target[ 0 ]
+        }, 250 )
+      }
+
+      else
+      {
+        Ω.now.displayed = Ω.now.hovered
+
+        // Avoid "non-hoverable-pre-marked-athlete"
+        //
+        Ω.info.marked = []
+      }
     }
 
   //////////////////////////////////////////////////////////////////////////////

@@ -146,7 +146,7 @@
 
       // Check what the target, if any, is
       //
-      let zoneTarget = Ω.info.target[ 0 ][ zoneIndex ] // 'ball' or 0 to 19
+      let targeted = Ω.info.target[ 0 ][ zoneIndex ] // 'ball' or 0 to 19
 
       // Check the zone's coordinate
       //
@@ -155,27 +155,35 @@
 
       let coordinate = Ω.tool.convert( [ zoneX, zoneY ] )
 
-      // Preserve the athlete's old coordinates
-      //
-      let oldAthleteX = Ω.now.athlete[ Ω.now.selected ][ 0 ]
-      let oldAthleteY = Ω.now.athlete[ Ω.now.selected ][ 1 ]
-
       //========================================================================
       // Has a target
       //
       if( zoneIndex !== -1 )
       {
         //......................................................................
+        // Ball is selected
+        //
+        if( Ω.now.selected === 'ball' )
+        {
+          Ω.now.lock = false
+        }
+
+        //......................................................................
         // Athlete is selected
         //
-        if( Ω.now.selected !== 'ball' )
+        else
         {
+          // Preserve the athlete's old coordinates
+          //
+          let oldAthleteX = Ω.now.athlete[ Ω.now.selected ][ 0 ]
+          let oldAthleteY = Ω.now.athlete[ Ω.now.selected ][ 1 ]
+
           //....................................................................
           // Targeted ball was clicked
           //
-          if( zoneTarget === 'ball' )
+          if( targeted === 'ball' )
           {
-            // tbd
+            Ω.now.lock = false
           }
 
           //....................................................................
@@ -183,9 +191,6 @@
           //
           else
           {
-            let targetIndex = Ω.info.target[ 1 ].indexOf( zone )
-            let targeted = Ω.info.target[ 0 ][ targetIndex ]
-
             let athleteColor = Ω.now.athlete[ Ω.now.selected ][ 2 ]
 
             // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
@@ -204,7 +209,7 @@
             {
               // Check where it might land
               //
-              let newCoord = Ω.tool.tackle( targetIndex )
+              let newCoord = Ω.tool.tackle( zoneIndex )
 
               // Move to push
               //
@@ -275,7 +280,7 @@
             {
               //   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .
               //
-              let newCoord = Ω.tool.tackle( targetIndex )
+              let newCoord = Ω.tool.tackle( zoneIndex )
 
               // Arena
               //
@@ -402,7 +407,7 @@
         //
         if( Ω.now.selected === 'ball' )
         {
-          // tbd (ball goes to 1 of the 8 cells around its player)
+          Ω.now.lock = false
         }
 
         //......................................................................
@@ -474,9 +479,7 @@
           //....................................................................
           // Set initial standards
           //
-          if( Ω.now.turn === 0
-          //
-          || Ω.now.turn < 8
+          if( Ω.now.turn < 8
           && Ω.now.currentPlayer === color
           && Ω.now.athlete[ Ω.now.selected ][ 2 ] === 'none' )
           {
@@ -556,7 +559,7 @@
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // 06 . Select nothing
+    // 06 . Select nothing or selected zone
     //
     else
     {
@@ -566,11 +569,11 @@
       {
         Ω.now.selected = 'none'
         Ω.now.displayed = Ω.now.selected
-
-        // Unlock game
-        //
-        Ω.now.lock = false
       }
+
+      // Unlock game
+      //
+      Ω.now.lock = false
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -726,18 +729,18 @@
 
       if( zoneIndex !== -1 ) // zone is targeting
       {
-        let zoneTarget = Ω.info.target[ 0 ][ zoneIndex ]
+        let targeted = Ω.info.target[ 0 ][ zoneIndex ]
 
         //======================================================================
         // Hover color effects . Part 5 . Get whatever is below the zone
         //
-        if( zoneTarget === 'ball' )
+        if( targeted === 'ball' )
         {
           Ω.page.ball.style.backgroundColor = 'rgb(143,111,79)'
         }
         else // athlete
         {
-          let color = Ω.now.athlete[ zoneTarget ][ 2 ]
+          let color = Ω.now.athlete[ targeted ][ 2 ]
           let lighterColor
 
           if( color === 'none' ) lighterColor = 'rgb(191,191,191)'
@@ -754,7 +757,7 @@
             lighterColor = 'rgb(111,79,207)'
           }
 
-          Ω.page.athlete[ zoneTarget ].style.backgroundColor = lighterColor
+          Ω.page.athlete[ targeted ].style.backgroundColor = lighterColor
         }
       }
     }

@@ -87,11 +87,18 @@
     //
     setTimeout( function()
     {
-      // If selected is an athlete and is playing
-      //
       if( Ω.now.selected !== 'none' )
       {
-        if( Ω.now.athlete[ Ω.now.selected ][ 2 ] === 'gre'
+        // If selected is the ball
+        //
+        if( Ω.now.selected === 'ball' )
+        {
+          // tbd
+        }
+
+        // If selected is an athlete
+        //
+        else if( Ω.now.athlete[ Ω.now.selected ][ 2 ] === 'gre'
         || Ω.now.athlete[ Ω.now.selected ][ 2 ] === 'blu' )
         {
           Ω.now.displayed = Ω.now.selected
@@ -1239,7 +1246,21 @@
   //
   updHol: function()
   {
-    // tbd
+    //==========================================================================
+    // If the ball changed hands
+    //
+    if( Ω.now.newHolder !== 'none' )
+    {
+      //........................................................................
+      //
+      let athlete = Ω.now.athlete[ Ω.now.selected ]
+
+      Ω.now.ball[ 0 ] = athlete[ 0 ]
+      Ω.now.ball[ 1 ] = athlete[ 1 ]
+
+      Ω.now.selected = 'ball'
+      Ω.now.displayed = Ω.now.selected
+    }
   },
 }
 

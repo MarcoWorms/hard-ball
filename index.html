@@ -2,7 +2,8 @@
 <!DOCTYPE html>
 <html lang='en' class='wfl hfl m00'>
 
-<!--//////////////////////////////////////////////////////////////////////////// HEAD
+<!--////////////////////////////////////////////////////////////////////////////
+HEAD
 
 This is a
 . turn-based
@@ -15,6 +16,16 @@ developed, complex and powerful gaming experience.
 
 This standard form is called TORUS and this iteration is meant to be it!
 
+To do list:
+
+a . Refresh bug ?
+b . Take and place the ball
+c . Shoot and pass the ball
+d . Goal
+e . Move limit
+f . End
+g . Intro
+
 -->
 <head>
   <meta charset='UTF-8'>
@@ -23,7 +34,8 @@ This standard form is called TORUS and this iteration is meant to be it!
   <link type='image/png' rel='shortcut icon' href='images/favicon.png'/>
 </head>
 
-<!--//////////////////////////////////////////////////////////////////////////// BODY
+<!--////////////////////////////////////////////////////////////////////////////
+BODY
 -->
 <body class='wfl hfl m00 cnt' oncontextmenu='return false'>
 
@@ -562,23 +574,6 @@ This standard form is called TORUS and this iteration is meant to be it!
     <div id='zon15' class='abs zon rnd ani2'></div>
 
     <!--========================================================================
-    GHOSTS
-    -->
-    <div id='gho00' class=''></div>
-    <div id='gho01' class=''></div>
-    <div id='gho02' class=''></div>
-    <div id='gho03' class=''></div>
-    <div id='gho04' class=''></div>
-    <div id='gho05' class=''></div>
-    <div id='gho06' class=''></div>
-    <div id='gho07' class=''></div>
-
-    <!--========================================================================
-    TRIGGER
-    -->
-    <div id='trigger' class=''></div>
-
-    <!--========================================================================
     CONSOLE
     -->
     <div id='space2' class='wfl flt spc'></div>
@@ -599,14 +594,15 @@ This standard form is called TORUS and this iteration is meant to be it!
 
 </body>
 
-<!--//////////////////////////////////////////////////////////////////////////// SCRIPTS
+<!--////////////////////////////////////////////////////////////////////////////
+SCRIPTS
 -->
 <script>
-  const Ω = {} // Only global
+  const Ω = { _: {} } // '_' houses disposable data
 </script>
 
-<script type='text/javascript' src='vTool.js'></script>
-<script type='text/javascript' src='wPage.js'></script>
+<script type='text/javascript' src='vPage.js'></script>
+<script type='text/javascript' src='wTool.js'></script>
 <script type='text/javascript' src='xData.js'></script>
 <script type='text/javascript' src='yLstn.js'></script>
 <script type='text/javascript' src='zMain.js'></script>

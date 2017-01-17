@@ -1,12 +1,12 @@
 
 'use strict'
 
-//////////////////////////////////////////////////////////////////////////////// LISTEN
+////////////////////////////////////////////////////////////////////////////////
 // Tracks actions in the game
 //
 Ω.listen =
 {
-  ////////////////////////////////////////////////////////////////////////////// L.clicker
+  //////////////////////////////////////////////////////////////////////////////
   //
   clicker: addEventListener( 'mousedown', function( $ )
   {
@@ -47,14 +47,18 @@
       } )
 
       //========================================================================
-      // Actual RESET
-      //
-      Ω.now = JSON.parse( localStorage.getItem( 'first' ) )
       // Only way to recover the original state
+      //
+      Ω.state = JSON.parse( localStorage.getItem( 'first' ) )
 
-      localStorage.removeItem( 'last' )
+      //========================================================================
       // So it does not trigger load below
+      //
+      localStorage.removeItem( 'last' )
 
+      //========================================================================
+      // Reload page
+      //
       location.reload()
     }
 
@@ -73,49 +77,28 @@
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // 03 . Select an athlete
-    //
-    else if( $.target.id.substring( 0, 3 ) === 'min' )
-    {
-      // Because nothing is selectable during roundabouting
-      //
-      if( Ω.now.rounding[ 0 ] === 'none' )
-      {
-        // Refreshing
-        //
-        Ω.info.marked = []
-
-        // Start process
-        //
-        let newAthlete = Number( $.target.id.substring( 4, 6 ) ) // 0 to 19
-
-        // If the athlete wasn't replaced this match
-        //
-        if( Ω.now.outed.indexOf( newAthlete ) === -1 )
-        {
-          // Say it is selected and displayed
-          //
-          Ω.now.selected = newAthlete
-          Ω.now.displayed = Ω.now.selected
-
-          // Make a list of which athletes cannot be hovered nor selected
-          //
-          Ω.info.marked = Ω.info.target[ 0 ]
-        }
-      }
-    }
-
-    ////////////////////////////////////////////////////////////////////////////
-    // 04 . Select the ball
+    // 03 . Select the ball
     //
     else if( $.target.id === 'ball' )
     {
-      // Because nothing is selectable during roundabouting
+      Ω.state.selected = 'ball'
+      Ω.state.displayed = Ω.state.selected
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // 04 . Select an athlete
+    //
+    else if( $.target.id.substring( 0, 3 ) === 'min' )
+    {
+      Ω._.athlete = Number( $.target.id.substring( 4, 6 ) )
+
+      //========================================================================
+      // If athlete is not marked
       //
-      if( Ω.now.rounding[ 0 ] === 'none' )
+      if( Ω.state.marked.indexOf( Ω._.athlete ) === -1 )
       {
-        Ω.now.selected = 'ball'
-        Ω.now.displayed = Ω.now.selected
+        Ω.state.selected = Ω._.athlete
+        Ω.state.displayed = Ω.state.selected
       }
     }
 
@@ -125,553 +108,136 @@
     // It's important to note that its only possible to click a zone when the
     // ball or some athlete is selected
     //
-    else if( $.target.id.substring( 0, 3 ) === 'zon' // target is a zone
-    && !Ω.now.lock ) // game is not locked
+    else if( $.target.id.substring( 0, 3 ) === 'zon' )
     {
-      // Lock the game
-      //
-      Ω.now.lock = true
-
-      // Don't change turns just yet
-      //
-      let changeTurn = false
-
-      // Check which is the zone clicked
-      //
-      let zone = Number( $.target.id.substring( 3, 5 ) )
-
-      // Check where and if the zone is targeting something
-      //
-      let zoneIndex = Ω.info.target[ 1 ].indexOf( zone )
-
-      // Check what the target, if any, is
-      //
-      let targeted = Ω.info.target[ 0 ][ zoneIndex ] // 'ball' or 0 to 19
-
-      // Check the zone's coordinate
-      //
-      let zoneX = Ω.info.zone[ zone ][ 0 ]
-      let zoneY = Ω.info.zone[ zone ][ 1 ]
-
-      let coordinate = Ω.tool.convert( [ zoneX, zoneY ] )
-
-      //========================================================================
-      // Has a target
-      //
-      if( zoneIndex !== -1 )
-      {
-        //......................................................................
-        // Ball is selected
-        //
-        if( Ω.now.selected === 'ball' )
-        {
-          Ω.now.lock = false
-        }
-
-        //......................................................................
-        // Athlete is selected
-        //
-        else
-        {
-          // Preserve the athlete's old coordinates
-          //
-          let oldAthleteX = Ω.now.athlete[ Ω.now.selected ][ 0 ]
-          let oldAthleteY = Ω.now.athlete[ Ω.now.selected ][ 1 ]
-
-          //....................................................................
-          // Targeted ball was clicked
-          //
-          if( targeted === 'ball' )
-          {
-            Ω.now.lock = false
-          }
-
-          //....................................................................
-          // Targeted athlete was clicked
-          //
-          else
-          {
-            let athleteColor = Ω.now.athlete[ Ω.now.selected ][ 2 ]
-
-            // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-            // Check the amount of replacements available to the current team
-            //
-            let reps
-
-            if( Ω.now.currentPlayer === 'gre' ) reps = Ω.now.reps.green
-            else                                reps = Ω.now.reps.blue
-
-            // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-            // Actually push another athlete
-            //
-            if( Ω.info.blocked.indexOf( zone ) === -1 // not blocked
-            && athleteColor === Ω.now.currentPlayer ) // athlete's turn
-            {
-              // Check where it might land
-              //
-              let newCoord = Ω.tool.tackle( zoneIndex )
-
-              // Move to push
-              //
-              Ω.now.athlete[ Ω.now.selected ][ 0 ] = zoneX + 1
-              Ω.now.athlete[ Ω.now.selected ][ 1 ] = zoneY + 1
-
-              // Push
-              //
-              Ω.now.pushed = targeted
-
-              //   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .
-              // Timeout 1 . Pushed athlete's move
-              //
-              setTimeout( function()
-              {
-                Ω.now.athlete[ targeted ][ 0 ] = newCoord[ 0 ] + 1
-                Ω.now.athlete[ targeted ][ 1 ] = newCoord[ 1 ] + 1
-              },
-              newCoord[ 2 ] )
-
-              //   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .
-              // Timeout 2 . Complete pushing event
-              //
-              setTimeout( function()
-              {
-                // If selected is in the roudabout
-                //
-                if( Ω.now.rounded.indexOf( Ω.now.selected ) !== -1 )
-                {
-                  // Say it's roundabouting
-                  //
-                  Ω.now.rounding[ 0 ] = Ω.now.selected // on exit
-                }
-
-                // If selected isn't roundabouting, reset selected
-                //
-                if( Ω.now.rounding[ 0 ] === 'none' )
-                {
-                  Ω.now.selected = 'none'
-                  Ω.now.displayed = Ω.now.selected
-                }
-
-                // This update had to happen right after the test above
-                //
-                Ω.game.updRdb()
-
-                // Reset pushed (to avoid z-index problems)
-                //
-                Ω.now.pushed = 'none'
-
-                // Preserve animation
-                //
-                Ω.game.updSel()
-              },
-              250 ) // To preserve z-index through motion
-
-              //   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .
-              // Move on
-              //
-              changeTurn = true
-            }
-
-            // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-            // Replace an athlete if there are replacements available
-            //
-            else if( athleteColor === 'none'
-            && reps > 0 )
-            {
-              //   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .
-              //
-              let newCoord = Ω.tool.tackle( zoneIndex )
-
-              // Arena
-              //
-              let x1 = Ω.now.athlete[ targeted ][ 0 ]
-              let y1 = Ω.now.athlete[ targeted ][ 1 ]
-
-              // Bench
-              //
-              let x2 = Ω.info.cell[ 12 ][ targeted ][ 0 ] + 1
-              let y2 = Ω.info.cell[ 12 ][ targeted ][ 1 ] + 1
-
-              //   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .
-              // Benched (but not replaced) athlete moves onto the arena
-              //
-              Ω.now.athlete[ Ω.now.selected ][ 0 ] = x1
-              Ω.now.athlete[ Ω.now.selected ][ 1 ] = y1
-
-              //   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .
-              // It gains its team's color
-              //
-              Ω.now.athlete[ Ω.now.selected ][ 2 ] = Ω.now.currentPlayer
-
-              //   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .
-              // Change the team's setup
-              //
-              if( Ω.now.currentPlayer === 'gre' )
-              {
-                Ω.tool.remove( targeted, Ω.now.team.green )
-                Ω.now.team.green.push( Ω.now.selected )
-              }
-
-              else
-              {
-                Ω.tool.remove( targeted, Ω.now.team.blue )
-                Ω.now.team.blue.push( Ω.now.selected )
-              }
-
-              Ω.now.pushed = targeted
-
-              //   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .
-              // Timeout 1 . Playing athlete is sent to the bench
-              //
-              setTimeout( function()
-              {
-                Ω.now.athlete[ targeted ][ 0 ] = x2
-                Ω.now.athlete[ targeted ][ 1 ] = y2
-                Ω.now.athlete[ targeted ][ 2 ] = Ω.now.currentPlayer + 'Blk'
-
-                Ω.now.outed.push( targeted )
-              },
-              newCoord[ 2 ] ) // To start when the benched arrives
-
-              //   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .   .
-              // Timeout 2 . Refresh selected and pushed
-              //
-              setTimeout( function()
-              {
-                Ω.now.pushed = 'none'
-                Ω.now.lock = false
-
-                Ω.game.updRdb()
-                Ω.game.updSel()
-                Ω.game.updRpl()
-              },
-              newCoord[ 2 ] + 10 ) // To preserve z-index through motion
-
-              // Finish process
-              //
-              if( Ω.now.currentPlayer === 'gre' ) Ω.now.reps.green --
-              else                                Ω.now.reps.blue --
-            }
-
-            // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-            // If it isn't the athlete's turn
-            //
-            else if( athleteColor !== Ω.now.currentPlayer
-            //
-            // Or if the targeted athlete isn't marked nor in a blocked zone to
-            // safeguard against "fast-hovering" bugs
-            //
-            || Ω.info.marked.indexOf( targeted ) === -1
-            && Ω.info.blocked.indexOf( zone ) === -1 )
-            {
-              Ω.now.selected = targeted
-              Ω.now.displayed = targeted
-
-              // To avoid a form of "fast-hover" bug after selecting an athlete
-              // in sequence to selecting yet other athlete
-              //
-              setTimeout( function()
-              {
-                Ω.info.marked = Ω.info.target[ 0 ]
-              }, 250 )
-
-              Ω.now.lock = false
-            }
-
-            // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-            // Target is blocked and/or marked
-            //
-            else
-            {
-              // To avoid a form of "fast-hover" bug after selecting an athlete
-              // in sequence to selecting yet other athlete
-              //
-              setTimeout( function()
-              {
-                Ω.info.marked = Ω.info.target[ 0 ]
-              }, 250 )
-
-              Ω.now.lock = false
-            }
-          }
-        }
-      }
-
-      //========================================================================
-      // Hasn't a target
-      //
-      else
-      {
-        //......................................................................
-        // Ball is selected
-        //
-        if( Ω.now.selected === 'ball' )
-        {
-          Ω.now.lock = false
-        }
-
-        //......................................................................
-        // Athlete is selected
-        //
-        else
-        {
-          //....................................................................
-          // Setting variables
-          //
-          let color
-          let team
-          let spawn
-
-          //....................................................................
-          // Zone is green
-          //
-           if( Ω.now.spawn.green.indexOf( coordinate ) !== -1 )
-          {
-            color = 'gre'
-            team = Ω.now.team.green
-            spawn = Ω.now.spawn.green
-          }
-
-          // Zone is blue
-          //
-          else if( Ω.now.spawn.blue.indexOf( coordinate ) !== -1 )
-          {
-            color = 'blu'
-            team = Ω.now.team.blue
-            spawn = Ω.now.spawn.blue
-          }
-
-          //....................................................................
-          // Set the new athlete's new position
-          //
-          if( Ω.now.turn === 0
-          //
-          || Ω.now.turn < 8
-          && Ω.now.currentPlayer === color
-          && Ω.now.athlete[ Ω.now.selected ][ 2 ] === 'none'
-          //
-          || Ω.now.turn > 7
-          && Ω.now.currentPlayer === Ω.now.athlete[ Ω.now.selected ][ 2 ] ) 
-          {
-            // Change the selected athlete's X and Y values
-            //
-            Ω.now.athlete[ Ω.now.selected ][ 0 ] = zoneX + 1
-            Ω.now.athlete[ Ω.now.selected ][ 1 ] = zoneY + 1
-
-            // Move on
-            //
-            changeTurn = true
-          }
-
-          // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-          // If an empty zone was clicked off the athlete's turn
-          //
-          else
-          {
-            Ω.now.lock = false
-          }
-
-          //....................................................................
-          // Set who's the first player of the match
-          //
-          if( Ω.now.turn === 0 ) Ω.now.firstPlayer = color
-
-          //....................................................................
-          // Set initial standards
-          //
-          if( Ω.now.turn < 8
-          && Ω.now.currentPlayer === color
-          && Ω.now.athlete[ Ω.now.selected ][ 2 ] === 'none' )
-          {
-            // Assign athlete to a team
-            //
-            Ω.now.athlete[ Ω.now.selected ][ 2 ] = color
-
-            // Remove this from the array of vacant initial cells
-            //
-            Ω.tool.remove( coordinate, spawn )
-
-            // Update the team's formation array
-            //
-            team.push( Ω.now.selected )
-          }
-        }
-      }
-
-      //========================================================================
-      // Ending 
-      //
-      if( changeTurn )
-      {
-        //......................................................................
-        // Timeout 1 . Actually change turn
-        //
-        setTimeout( function()
-        {
-          if( Ω.now.rounding[ 1 ] > 0 ) Ω.now.rounding[ 0 ] = 'none'
-          else                          Ω.now.rounding[ 1 ] ++
-
-          if( Ω.now.rounding[ 0 ] === 'none' )
-          {
-            Ω.now.turn ++
-
-            Ω.now.selected = 'none'
-            Ω.now.displayed = Ω.now.selected
-
-            // Preserve animation
-            //
-            Ω.game.updSel()
-
-            // Refreshing roundabouting counter
-            //
-            Ω.now.rounding[ 1 ] = 0
-          }
-
-          // Unlock game
-          //
-          Ω.now.lock = false
-        },
-        300 ) // To properly determine who, if anyone, is roundabouting
-
-        //......................................................................
-        // Timeout 2 . Compensate for lack of process inputed at line 220
-        //
-        setTimeout( function()
-        {
-          if( Ω.now.pushed === 'none' )
-          {
-            // If selected is in the roundabout
-            //
-            if( Ω.now.rounded.indexOf( Ω.now.selected ) !== -1 )
-            {
-              // Say it's roundabouting
-              //
-              Ω.now.rounding[ 0 ] = Ω.now.selected // on exit
-            }
-
-            // This update had to happen right after the test above
-            //
-            Ω.game.updRdb() 
-          }
-        },
-        250 ) // To preserve z-index through motion
-      }
+      // tbd
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // 06 . Select nothing or selected zone
+    // 06 . Select the selection zone or nothing
     //
     else
     {
-      // Because nothing is selectable during roundabouting
-      //
-      if( Ω.now.rounding[ 0 ] === 'none' )
-      {
-        Ω.now.selected = 'none'
-        Ω.now.displayed = Ω.now.selected
-      }
-
-      // Unlock game
-      //
-      Ω.now.lock = false
+      Ω.state.selected = 'none'
+      Ω.state.displayed = Ω.state.selected
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // EXTRA . Updating the position of the selection zone
+    // Updating selection zone here to preserve animation
     //
-    Ω.game.updSel() // Updated here to preserve animation
+    Ω.game.updSel()
 
   //////////////////////////////////////////////////////////////////////////////
   // END of 'listen.clicker'
   //
   }, false ),
 
-  ////////////////////////////////////////////////////////////////////////////// L.hoverer
+  //////////////////////////////////////////////////////////////////////////////
   //
   hoverer: addEventListener( 'mouseover', function( $ )
   {
-    // Refreshing
+    ////////////////////////////////////////////////////////////////////////////
+    // Refresh hovered
     //
-    Ω.now.hovered = 'none'
+    Ω.state.hovered = 'none'
 
     ////////////////////////////////////////////////////////////////////////////
-    // Hover color effects . Part 1 . Refresh everything
+    // Hover color . Part 1 . Refresh everything
     //
     Ω.page.ball.style.backgroundColor = 'rgb(111,79,47)'
 
     for( let $ = 0; $ < 20; $ ++ )
     {
-      let athlete = Ω.now.athlete[ $ ]
-      let newColor = Ω.now.athlete[ $ ][ 2 ]
-      let darkerColor
-
-      if( newColor === 'none' ) darkerColor = 'rgb(143,143,143)'
-
-      else if( newColor === 'gre'
-      || newColor === 'greBlk' )
-      {
-        darkerColor = 'rgb(127,175,47)'
-      }
-
-      else if( newColor === 'blu'
-      || newColor === 'bluBlk' )
-      {
-        darkerColor = 'rgb(95,63,191)'
-      }
-
-      Ω.page.athlete[ $ ].style.backgroundColor = darkerColor
-    }
-
-    ////////////////////////////////////////////////////////////////////////////
-    // 00 . Hover some athlete that is not targeted nor marked
-    //
-    if( $.target.id.substring( 0, 3 ) === 'min' ) // if target is an athlete
-    {
-      let digit = Number( $.target.id.substring( 4, 6 ) ) // athlete's number
-
-      if( Ω.info.target[ 0 ].indexOf( digit ) === -1 // and it isn't a target
-      && Ω.info.marked.indexOf( digit ) === -1 ) // nor marked
-      {
-        Ω.now.hovered = digit // 'none' or 0 to 19
-        Ω.now.displayed = Ω.now.hovered
-      }
+      Ω._.athlete = Ω.state.athlete[ $ ]
+      Ω._.athleteColor = Ω.state.athlete[ $ ][ 2 ]
 
       //========================================================================
-      // Hover color effects . Part 2 . Change the color of hovered athlete
+      // Teamless athlete
       //
-      let color =  Ω.now.athlete[ digit ][ 2 ]
-
-      let lighterColor
-
-      if( color === 'none' ) lighterColor = 'rgb(191,191,191)'
-
-      else if( color === 'gre'
-      || color === 'greBlk' )
+      if( Ω._.athleteColor === 'none' )
       {
-        lighterColor = 'rgb(143,191,63)'
+        Ω._.darkerColor = 'rgb(143,143,143)'
       }
 
-      else if( color === 'blu'
-      || color === 'bluBlk' )
+      //........................................................................
+      // Athlete is playing or was benched this match (green team)
+      //
+      else if( Ω._.athleteColor === 'gre' || Ω._.athleteColor === 'greBlk' )
       {
-        lighterColor = 'rgb(111,79,207)'
+        Ω._.darkerColor = 'rgb(127,175,47)'
       }
 
-      Ω.page.athlete[ digit ].style.backgroundColor = lighterColor
+      //........................................................................
+      // Athlete is playing or was benched this match (blue team)
+      //
+      else if( Ω._.athleteColor === 'blu' || Ω._.athleteColor === 'bluBlk' )
+      {
+        Ω._.darkerColor = 'rgb(95,63,191)'
+      }
+
+      //========================================================================
+      // Set the athlete's color
+      //
+      Ω.page.athlete[ $ ].style.backgroundColor = Ω._.darkerColor
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // 01 . Hover the ball
+    // 00 . Hover the ball
     //
-    else if( $.target.id === 'ball' )
+    if( $.target.id === 'ball' )
     {
-      Ω.now.hovered = 'ball'
-      Ω.now.displayed = Ω.now.hovered
+      Ω.state.hovered = 'ball'
+      Ω.state.displayed = Ω.state.hovered
 
       //========================================================================
-      // Hover color effects . Part 3 . Change the color of hovered ball
+      // Hover color . Part 2. Change the hovered ball's color
       //
       Ω.page.ball.style.backgroundColor = 'rgb(143,111,79)'
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // 01 . Hover some athlete
+    //
+    else if( $.target.id.substring( 0, 3 ) === 'min' )
+    {
+      Ω._.athlete = Number( $.target.id.substring( 4, 6 ) )
+      Ω._.athleteColor = Ω.state.athlete[ Ω._.athlete ][ 2 ]
+
+      //========================================================================
+      // If athlete is not marked
+      //
+      if( Ω.state.marked.indexOf( Ω._.athlete ) === -1 )
+      {
+        Ω.state.hovered = Ω._.athlete
+        Ω.state.displayed = Ω.state.hovered
+      }
+
+      //========================================================================
+      // Hover color effects . Part 3 . Change the hovered athlete's color
+      //========================================================================
+      // Teamless athlete
+      //
+      if( Ω._.athleteColor === 'none' ) Ω._.lighterColor = 'rgb(191,191,191)'
+
+      //........................................................................
+      // Athlete is playing or was benched this match
+      //
+      else if( Ω._.athleteColor === 'gre' || Ω._.athleteColor === 'greBlk' )
+      {
+        Ω._.lighterColor = 'rgb(143,191,63)'
+      }
+
+      //........................................................................
+      //
+      else if( Ω._.athleteColor === 'blu' || Ω._.athleteColor === 'bluBlk' )
+      {
+        Ω._.lighterColor = 'rgb(111,79,207)'
+      }
+
+      //========================================================================
+      // Set the athlete's color
+      //
+      Ω.page.athlete[ Ω._.athlete ].style.backgroundColor = Ω._.lighterColor
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -679,37 +245,48 @@
     //
     else if( $.target.id === 'selection' )
     {
-      Ω.now.hovered = Ω.now.selected
-      Ω.now.displayed = Ω.now.hovered
-
       //========================================================================
-      // Hover color effects . Part 4 . Get whatever is below the selection zone
+      // Hover color . Part 4 . Hover whatever is below the selection zone
+      //========================================================================
+      // If the ball is displayed
       //
-      if( Ω.now.displayed === 'ball' )
+      if( Ω.state.displayed === 'ball' )
       {
         Ω.page.ball.style.backgroundColor = 'rgb(143,111,79)'
       }
-      else if( Ω.now.displayed !== 'none' ) // athlete
+
+      //========================================================================
+      // If an athlete is displayed
+      //
+      else if( Ω.state.displayed !== 'none' )
       {
-        let current = Ω.now.displayed
-        let color = Ω.now.athlete[ current ][ 2 ]
-        let lighterColor
+        Ω._.athlete = Ω.state.displayed
+        Ω._.athleteColor = Ω.state.athlete[ Ω._.athlete ][ 2 ]
 
-        if( color === 'none' ) lighterColor = 'rgb(191,191,191)'
+        //......................................................................
+        // Teamless athlete
+        //
+        if( Ω._.athleteColor === 'none' ) Ω._.lighterColor = 'rgb(191,191,191)'
 
-        else if( color === 'gre'
-        || color === 'greBlk' )
+        // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+        // Athlete is playing or was benched this match
+        //
+        else if( Ω._.athleteColor === 'gre' || Ω._.athleteColor === 'greBlk' )
         {
-          lighterColor = 'rgb(143,191,63)'
+          Ω._.lighterColor = 'rgb(143,191,63)'
         }
 
-        else if( color === 'blu'
-        || color === 'bluBlk' )
+        // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+        //
+        else if( Ω._.athleteColor === 'blu' || Ω._.athleteColor === 'bluBlk' )
         {
-          lighterColor = 'rgb(111,79,207)'
+          Ω._.lighterColor = 'rgb(111,79,207)'
         }
 
-        Ω.page.athlete[ current ].style.backgroundColor = lighterColor
+        //......................................................................
+        // Set the athlete's color
+        //
+        Ω.page.athlete[ Ω._.athlete ].style.backgroundColor = Ω._.lighterColor
       }
     }
 
@@ -718,107 +295,106 @@
     //
     else if( $.target.id.substring( 0, 3 ) === 'zon' )
     {
-      let zone = Number( $.target.id.substring( 3, 5 ) )
-      let zoneIndex = Ω.info.target[ 1 ].indexOf( zone )
+      Ω._.targetedZone = Number( $.target.id.substring( 3, 5 ) )
+      Ω._.targetedZoneIndex = Ω.state.target[ 0 ].indexOf( Ω._.targetedZone )
 
       //========================================================================
-      // Avoid "fast-hover-changes-displayed-slowly" bug
+      // Has a target
       //
-      if( Ω.now.selected !== 'none' ) Ω.now.displayed = Ω.now.selected
-      else                            Ω.now.displayed = Ω.now.hovered
-
-      if( zoneIndex !== -1 ) // zone is targeting
+      if( Ω._.targetedZoneIndex !== -1 ) // zone is targeting
       {
-        let targeted = Ω.info.target[ 0 ][ zoneIndex ]
+        Ω._.targetedAthlete = Ω.state.target[ 1 ][ zoneIndex ]
+        Ω._.athleteColor = Ω.state.athlete[ targetedAthlete ][ 2 ]
 
-        //======================================================================
-        // Hover color effects . Part 5 . Get whatever is below the zone
+        //......................................................................
+        // Hover color . Part 5 . Get whatever is below the zone
+        //......................................................................
+        // If the ball is being targeted
         //
-        if( targeted === 'ball' )
+        if( targetedAthlete === 'ball' )
         {
           Ω.page.ball.style.backgroundColor = 'rgb(143,111,79)'
         }
-        else // athlete
+
+        //......................................................................
+        // If an athlete is being targeted
+        //
+        else
         {
-          let color = Ω.now.athlete[ targeted ][ 2 ]
-          let lighterColor
+          // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+          // Teamless athlete
+          //
+          if( athleteColor === 'none' ) Ω._.lighterColor = 'rgb(191,191,191)'
 
-          if( color === 'none' ) lighterColor = 'rgb(191,191,191)'
-
-          else if( color === 'gre'
-          || color === 'greBlk' )
+          //  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  
+          // Athlete is playing or was benched this match
+          //
+          else if( athleteColor === 'gre' || athleteColor === 'greBlk' )
           {
-            lighterColor = 'rgb(143,191,63)'
+            Ω._.lighterColor = 'rgb(143,191,63)'
           }
 
-          else if( color === 'blu'
-          || color === 'bluBlk' )
+          //  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  
+          //
+          else if( athleteColor === 'blu' || athleteColor === 'bluBlk' )
           {
-            lighterColor = 'rgb(111,79,207)'
+            Ω._.lighterColor = 'rgb(111,79,207)'
           }
 
-          Ω.page.athlete[ targeted ].style.backgroundColor = lighterColor
+          // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+          // Set the athlete's color
+          //
+          Ω.page.athlete[ targetedAthlete ].style.backgroundColor = lighterColor
         }
       }
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // 04 . Hover nothing
+    // 04 . Hover anything else
     //
     else
     {
-      Ω.now.hovered = 'none'
-
       //========================================================================
-      // Hover color effects . Part 6 . Refresh everything again
+      // Hover color . Part 6 . Refresh everything again
       //
       Ω.page.ball.style.backgroundColor = 'rgb(111,79,47)'
 
       for( let $ = 0; $ < 20; $ ++ )
       {
-        let athlete = Ω.now.athlete[ $ ]
-        let newColor = Ω.now.athlete[ $ ][ 2 ]
-        let darkerColor
+        Ω._.athlete = Ω.state.athlete[ $ ]
+        Ω._.athleteColor = Ω.state.athlete[ $ ][ 2 ]
 
-        if( newColor === 'none' ) darkerColor = 'rgb(143,143,143)'
-        else if( newColor === 'gre'
-        || newColor === 'greBlk' )
+        //......................................................................
+        // Teamless athlete
+        //
+        if( Ω._.athleteColor === 'none' ) Ω._.darkerColor = 'rgb(143,143,143)'
+
+        // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+        // Athlete is playing or was benched this match
+        //
+        else if( Ω._.athleteColor === 'gre' || Ω._.athleteColor === 'greBlk' )
         {
-          darkerColor = 'rgb(127,175,47)'
-        }
-        else if( newColor === 'blu'
-        || newColor === 'bluBlk' )
-        {
-          darkerColor = 'rgb(95,63,191)'
+          Ω._.darkerColor = 'rgb(127,175,47)'
         }
 
-        Ω.page.athlete[ $ ].style.backgroundColor = darkerColor
+        // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+        //
+        else if( Ω._.athleteColor === 'blu' || Ω._.athleteColor === 'bluBlk' )
+        {
+          Ω._.darkerColor = 'rgb(95,63,191)'
+        }
+
+        //......................................................................
+        // Set the athlete's color
+        //
+        Ω.page.athlete[ $ ].style.backgroundColor = Ω._.darkerColor
       }
 
       //========================================================================
       // Hovering nothing is tricky and must be safeguarded by this condition
       //
-      if( Ω.now.selected !== 'none' )
-      {
-        Ω.now.displayed = Ω.now.selected
-
-        // To avoid a form of "fast-hover" bug after selecting an athlete
-        // in sequence to selecting yet other athlete
-        //
-        setTimeout( function()
-        {
-          Ω.info.marked = Ω.info.target[ 0 ]
-        }, 250 )
-      }
-
-      else
-      {
-        Ω.now.displayed = Ω.now.hovered
-
-        // Avoid "non-hoverable-pre-marked-athlete"
-        //
-        Ω.info.marked = []
-      }
+      if( Ω.state.selected !== 'none' ) Ω.state.displayed = Ω.state.selected
+      else                              Ω.state.displayed = Ω.state.hovered
     }
 
   //////////////////////////////////////////////////////////////////////////////

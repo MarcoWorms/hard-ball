@@ -1,49 +1,40 @@
 
 'use strict'
 
-//////////////////////////////////////////////////////////////////////////////// SAVE
-// Keeps the game saved in the browser's LOCAL STORAGE
-//
-Ω.save =
-{
-  ////////////////////////////////////////////////////////////////////////////// S.create
-  //
-  create: function()
-  {
-    localStorage.setItem( 'first', JSON.stringify( Ω.now ) ) // create backup
-
-    if( 'last' in localStorage ) // if there is a saved file
-    {
-      Ω.now = JSON.parse( localStorage.getItem( 'last' ) ) // load it
-    }
-  },
-
-  ////////////////////////////////////////////////////////////////////////////// S.update
-  //
-  update: function()
-  {
-    localStorage.setItem( 'last', JSON.stringify( Ω.now ) ) // save file
-  },
-}
-
-//////////////////////////////////////////////////////////////////////////////// GAME
+////////////////////////////////////////////////////////////////////////////////
 // Gameplay functions
 //
 Ω.game =
 {
-  ////////////////////////////////////////////////////////////////////////////// G.create
+  //////////////////////////////////////////////////////////////////////////////
   //
   create: function()
   {
+    Ω.game.updSel()
+    Ω.game.updRpl()
+
+    //==========================================================================
+    // Avoid as much as possible "everything-travelling-from-point-0" bug
+    //
+    setTimeout( function()
+    {
+      Array.from( Ω.page.animate1 ).forEach( function( $ )
+      {
+        $.style.transition = 'all 0.25s ease-in-out'
+      } )
+    }, 9 ) // beyond this value, animation on reset and reload is lost
+  },
+
+  //////////////////////////////////////////////////////////////////////////////
+  //
+  updAtl: function()
+  {
+    //==========================================================================
+    // First round
+    //
     if( Ω.now.turn === 0 )
     {
-      //========================================================================
-      // Ball initial position
-      //
-      Ω.now.ball[ 0 ] = 457
-      Ω.now.ball[ 1 ] = 265
-
-      //========================================================================
+      //........................................................................
       // Athletes' initial positions
       //
       for( let $ = 0; $ < 20; $ ++ )
@@ -57,131 +48,43 @@
     }
 
     //==========================================================================
-    // Avoids 'fast-hover' bug right after reloading with a selected athlete
+    // Every other round
     //
-    Ω.now.marked = Ω.info.target[ 0 ]
-
-    //==========================================================================
-    // Preserving the selection zone's appearance on loads
-    //
-    Ω.game.updSel()
-
-    //==========================================================================
-    // Avoid as much as possible "everything-travelling-from-point-0" bug
-    //
-    setTimeout( function()
+    else
     {
-      Array.from( Ω.page.animate1 ).forEach( function( $ )
+      for( let $ = 0; $ < 20; $ ++ )
       {
-        $.style.transition = 'all 0.25s ease-in-out'
-      } )
-    }, 9 ) // beyond this value, animation on reset and reload is lost
+        Ω._.x = Ω.now.athlete[ $ ][ 0 ]
+        Ω._.y = Ω.now.athlete[ $ ][ 1 ]
 
-    //==========================================================================
-    // Avoid "replaced-not-showing-proper-colors" bug
-    //
-    Ω.game.updRpl()
-
-    //==========================================================================
-    // Avoid "refresh-page-while-hovering-another-athlete" bug
-    //
-    setTimeout( function()
-    {
-      if( Ω.now.selected !== 'none' )
-      {
-        // If selected is the ball
-        //
-        if( Ω.now.selected === 'ball' )
-        {
-          // tbd
-        }
-
-        // If selected is an athlete
-        //
-        else if( Ω.now.athlete[ Ω.now.selected ][ 2 ] === 'gre'
-        || Ω.now.athlete[ Ω.now.selected ][ 2 ] === 'blu' )
-        {
-          Ω.now.displayed = Ω.now.selected
-          Ω.game.updZonCdn( 'mtx', 'select', false )
-          Ω.game.updTar()
-          Ω.info.marked = Ω.info.target[ 0 ]
-        }
+        Ω.tool.translate( Ω.page.athlete[ $ ], Ω._.x, Ω._.y )
       }
-    },
-    50 )
-  },
-
-  ////////////////////////////////////////////////////////////////////////////// G.update
-  //
-  update: function()
-  {
-    Ω.game.updAtl()
-    Ω.game.updBal()
-
-    Ω.game.updZon1()
-    Ω.game.updZon2()
-
-    Ω.game.updCur()
-    Ω.game.updTar()
-    Ω.game.updKee()
-    Ω.game.updBlk()
-    Ω.game.updInd()
-
-    Ω.game.updHol() // does nothing so far
-
-    // having both 'game.updZon1' and 'game.updZon2' after 'game.updInd' makes
-    // the hover effect non-existant after any athlete gets selected
-  },
-
-  ////////////////////////////////////////////////////////////////////////////// G.updAtl
-  //
-  updAtl: function()
-  {
-    for( let $ = 0; $ < 20; $ ++ )
-    {
-      let x = Ω.now.athlete[ $ ][ 0 ]
-      let y = Ω.now.athlete[ $ ][ 1 ]
-
-      Ω.tool.translate( Ω.page.athlete[ $ ], x, y )
     }
   },
 
-  ////////////////////////////////////////////////////////////////////////////// G.updBal
+  //////////////////////////////////////////////////////////////////////////////
   //
   updBal: function()
   {
-    let x = Ω.now.ball[ 0 ]
-    let y = Ω.now.ball[ 1 ]
-
-    Ω.tool.translate( Ω.page.ball, x, y )
-
-    // If the ball wasn't moved yet
+    //==========================================================================
+    // First round
     //
-    if( Ω.now.ball[ 0 ] === 457 )
+    if( Ω.now.turn === 0 )
     {
-      Ω.now.athlete.forEach( function( $1, $2 )
-      {
-        let coordinate = Ω.tool.convert( [ $1[ 0 ] - 1, $1[ 1 ] - 1 ] )
-
-        // Timeout to avoid conflict with roundabouting
-        //
-        setTimeout( function()
-        {
-          if( Ω.info.arenaCenter.indexOf( coordinate ) !== -1
-          && Ω.now.rounding[ 0 ] === 'none'
-          && Ω.now.newHolder === 'none' )
-          {
-            console.log( Ω.now.newHolder )
-            Ω.now.newHolder = $2
-            console.log( Ω.now.newHolder )
-          }
-        },
-        500 )
-      } )
+      //........................................................................
+      // Ball initial position
+      //
+      Ω.now.ball[ 0 ] = 457
+      Ω.now.ball[ 1 ] = 265
     }
+
+    //==========================================================================
+    // Every other round
+    //
+    else Ω.tool.translate( Ω.page.ball, Ω.now.ball[ 0 ], Ω.now.ball[ 1 ] )
   },
 
-  ////////////////////////////////////////////////////////////////////////////// G.updZon1
+  //////////////////////////////////////////////////////////////////////////////
   // Calls 'game.updZonCdn' differently depending on the situation
   //
   updZon1: function()
@@ -193,60 +96,61 @@
 
     //..........................................................................
     //
-    Ω.info.zone =
+    Ω.now.zone =
     (
       function()
       {
-        let array = []
-        for( let $ = 0; $ < 16; $ ++ ) array.push( [ 'none', 'none' ] )
-        return array
+        Ω._.array = []
+        for( let $ = 0; $ < 16; $ ++ ) Ω._.array.push( [ 'none', 'none' ] )
+        return Ω._.array
       }()
     )
 
     //==========================================================================
-    // Ball is hovered
+    // If ball is hovered
     //
     if( Ω.now.hovered === 'ball' )
     {
-      if( Ω.now.ball[ 0 ] === 457 )
-      {
-        Ω.game.updZonCdn( 'cnt', 'hover', false )
-      }
+      //........................................................................
+      // Ball's initial state
+      //
+      if( Ω.now.ball[ 0 ] === 457 ) Ω.game.updZonCdn( 'cnt', 'hover', false )
     }
 
     //==========================================================================
-    // Athlete is hovered and is not a target and is not marked
+    // If an athlete is hovered and it is unmarked
     //
     else if( Ω.now.hovered !== 'none'
-    && Ω.info.target[ 0 ].indexOf( Ω.now.hovered ) === -1
-    && Ω.info.marked.indexOf( Ω.now.hovered ) === -1 )
+    && Ω.now.marked.indexOf( Ω.now.hovered ) === -1 )
     {
-      let athleteColor = Ω.now.athlete[ Ω.now.hovered ][ 2 ]
+      Ω._.athleteColor = Ω.now.athlete[ Ω.now.hovered ][ 2 ]
 
       //........................................................................
-      // Hovered and non-targeted athlete is ready to play
+      // Hovered and unmarked athlete is ready to play
       //
-      if( athleteColor === 'none' )
+      if( Ω._.athleteColor === 'none' )
       {
         if( Ω.now.turn < 8 ) Ω.game.updZonCdn( 'stt', 'select', false )
         else                 Ω.game.updZonCdn( 'rep', 'select', false )
       }
 
       //........................................................................
-      // Hovered and non-targeted athlete is playing
+      // Hovered and unmarked athlete is playing
       //
-      else if( athleteColor.substring( 3, 6 ) !== 'Blk' )
+      else if( Ω._.athleteColor.substring( 3, 6 ) !== 'Blk' )
       {
-        if( Ω.now.hovered !== 'none'
-        && Ω.now.hovered === Ω.now.rounding[ 0 ] )
+        // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+        // Roundabouting
+        //
+        if( Ω.now.hovered === Ω.now.rounding[ 0 ] )
         {
           Ω.game.updZonCdn( 'mtx', 'hover', true )
         }
 
-        else
-        {
-          Ω.game.updZonCdn( 'mtx', 'hover', false )
-        }
+        // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+        // Not roundabouting
+        //
+        else Ω.game.updZonCdn( 'mtx', 'hover', false )
       }
     }
 
@@ -255,10 +159,10 @@
     //
     else if( Ω.now.selected === 'ball' )
     {
-      if( Ω.now.ball[ 0 ] === 457 )
-      {
-        Ω.game.updZonCdn( 'cnt', 'hover', false )
-      }
+      //........................................................................
+      // Ball's initial state
+      //
+      if( Ω.now.ball[ 0 ] === 457 ) Ω.game.updZonCdn( 'cnt', 'hover', false )
     }
 
     //==========================================================================
@@ -297,7 +201,7 @@
     }
   },
 
-  ////////////////////////////////////////////////////////////////////////////// G.updZon2
+  //////////////////////////////////////////////////////////////////////////////
   // Updates the appearance of zones depending on the situation
   //
   updZon2: function()
@@ -405,7 +309,7 @@
     } )
   },
 
-  ////////////////////////////////////////////////////////////////////////////// G.updZonCdn
+  //////////////////////////////////////////////////////////////////////////////
   // Updating zones coordinates
   //
   updZonCdn: function( behavior, guide, round )
@@ -830,7 +734,7 @@
     }
   },
 
-  ////////////////////////////////////////////////////////////////////////////// G.updCur
+  //////////////////////////////////////////////////////////////////////////////
   // Updates whose turn it is (plus athlete's art and area cell's name glow)
   //
   updCur: function()
@@ -939,7 +843,7 @@
     }
   },
 
-  ////////////////////////////////////////////////////////////////////////////// G.updTar
+  //////////////////////////////////////////////////////////////////////////////
   // Updates an array containing currently targeted athletes
   //
   updTar: function()
@@ -1138,7 +1042,7 @@
     }
   },
 
-  ////////////////////////////////////////////////////////////////////////////// G.updInd
+  //////////////////////////////////////////////////////////////////////////////
   // Display moving objects above everything else in the arena
   //
   updInd: function()
@@ -1162,7 +1066,7 @@
     else                          Ω.page.ball.style.zIndex = '1'
   },
 
-  ////////////////////////////////////////////////////////////////////////////// G.updSel
+  //////////////////////////////////////////////////////////////////////////////
   // Cannot update selection zone every tick! It's updated at 'listen.clicker'
   //
   updSel: function()
@@ -1201,7 +1105,7 @@
     }
   },
 
-  ////////////////////////////////////////////////////////////////////////////// G.updRpl
+  //////////////////////////////////////////////////////////////////////////////
   // Colorize replaced athletes
   //
   updRpl: function()
@@ -1220,7 +1124,7 @@
     }
   },
 
-  ////////////////////////////////////////////////////////////////////////////// G.updRdb
+  //////////////////////////////////////////////////////////////////////////////
   // Updates an array containing the numbers of the athletes in the roundabout
   //
   updRdb: function()
@@ -1241,7 +1145,7 @@
     }
   },
 
-  ////////////////////////////////////////////////////////////////////////////// G.updHol
+  //////////////////////////////////////////////////////////////////////////////
   // Controls the activity of certain aspects of ball holding
   //
   updHol: function()
@@ -1264,32 +1168,7 @@
   },
 }
 
-//////////////////////////////////////////////////////////////////////////////// ENGINE
-// Takes care of initializing and updating the game
-//
-Ω.engine =
-{
-  ////////////////////////////////////////////////////////////////////////////// E.create
-  //
-  create: function()
-  {
-    Ω.save.create()
-    Ω.game.create()
-  },
-
-  ////////////////////////////////////////////////////////////////////////////// E.update
-  //
-  update: function()
-  {
-    Ω.save.update()
-    Ω.game.update()
-
-    window.requestAnimationFrame( Ω.engine.update )
-  },
-}
-
-//////////////////////////////////////////////////////////////////////////////// CALL
+////////////////////////////////////////////////////////////////////////////////
 // Initializing the game
 //
-Ω.engine.create()
-Ω.engine.update()
+// Ω.game.create()

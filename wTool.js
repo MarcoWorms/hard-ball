@@ -7,22 +7,31 @@
 Ω.tool =
 {
   //////////////////////////////////////////////////////////////////////////////
-  // save the game
+  // Save the game
   //
-  save: function()
+  save: function( create )
   {
     //==========================================================================
-    // Create a backup
     //
-    localStorage.setItem( 'first', JSON.stringify( Ω.state ) )
+    if( create )
+    {
+      //........................................................................
+      // Create a backup
+      //
+      localStorage.setItem( 'first', JSON.stringify( Ω.state ) )
+
+      //........................................................................
+      // Load a saved file if there is any
+      //
+      if( 'last' in localStorage )
+      {
+        Ω.state = JSON.parse( localStorage.getItem( 'last' ) )
+      }
+    }
 
     //==========================================================================
-    // Load a saved file if there is any
     //
-    if( 'last' in localStorage )
-    {
-      Ω.state = JSON.parse( localStorage.getItem( 'last' ) )
-    }
+    else localStorage.setItem( 'last', JSON.stringify( Ω.state ) )
   },
 
   //////////////////////////////////////////////////////////////////////////////
@@ -43,7 +52,7 @@
     //==========================================================================
     // It must have the class so it can be removed
     //
-    if( !Ω.tool.hasCls( entity, klass )
+    if( Ω.tool.hasCls( entity, klass ) === false
     && action === "+" )
     {
       entity.classList.add( klass )
@@ -52,7 +61,7 @@
     //==========================================================================
     // It mustn't have the class so it can be added
     //
-    else if( Ω.tool.hasCls( entity, klass )
+    else if( Ω.tool.hasCls( entity, klass ) === true
     && action === "-" )
     {
       entity.classList.remove( klass )
@@ -108,7 +117,7 @@
   //////////////////////////////////////////////////////////////////////////////
   // Is intended to regulate which zone is displayed and which is not
   //
-  isZone: function( digit, counter, x, y )
+  isZone: function( counter, x, y )
   {
     //==========================================================================
     // Change disposable data relative to the athlete's color
@@ -130,12 +139,11 @@
     }
 
     //==========================================================================
-    //
+    // If the athlete is the keeper, it's the one
     //
     if( Ω._.keeper === Ω.state.displayed ) Ω._.one = true
 
     //==========================================================================
-    //  
     //
     Ω._.coordinate = Ω.tool.convert( [ x, y ] ) // zone's cell name
     Ω._.kee = true // display the zone
@@ -201,17 +209,17 @@
       //........................................................................
       // Discover 'x'
       //
-      for( let $ = 0; $ < 20; $ ++ )
+      for( Ω.$ = 0; Ω.$ < 20; Ω.$ ++ )
       {
-        if( Ω._.digit === $ ) Ω._.x = $ * 48
+        if( Ω._.digit === Ω.$ ) Ω._.x = Ω.$ * 48
       }
 
       //........................................................................
       // Discover 'y'
       //
-      for( let $ = 0; $ < 12; $ ++ )
+      for( Ω.$ = 0; Ω.$ < 12; Ω.$ ++ )
       {
-        if( Ω._.letter === Ω.info.aToL[ $ ] ) Ω._.y = $ * 48
+        if( Ω._.letter === Ω.info.aToL[ Ω.$ ] ) Ω._.y = Ω.$ * 48
       }
 
       //........................................................................
@@ -234,19 +242,19 @@
       //........................................................................
       // Discover the letter
       //
-      for( let $ = 0; $ < 12; $ ++ )
+      for( Ω.$ = 0; Ω.$ < 12; Ω.$ ++ )
       {
-        if( Ω._.y / 48 === $ ) Ω._.name = Ω.info.aToL[ $ ]
+        if( Ω._.y / 48 === Ω.$ ) Ω._.name = Ω.info.aToL[ Ω.$ ]
       }
 
       //........................................................................
       // Discover the digit
       //
-      for( let $ = 0; $ < 20; $ ++ )
+      for( Ω.$ = 0; Ω.$ < 20; Ω.$ ++ )
       {
-        if( Ω._.x / 48 === $ )
+        if( Ω._.x / 48 === Ω.$ )
         {
-          if( $ < 10 ) Ω._.name += '0'
+          if( Ω.$ < 10 ) Ω._.name += '0'
 
           Ω._.name += $
         }

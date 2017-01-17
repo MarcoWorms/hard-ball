@@ -40,10 +40,10 @@
       //========================================================================
       // Preparation to avoid visual strange behavior
       //
-      Array.from( Ω.page.animate1 ).forEach( function( $ )
+      Array.from( Ω.page.animate1 ).forEach( function( $1 )
       {
-        $.style.transition = ''
-        $.style.display = 'none'
+        $1.style.transition = ''
+        $1.style.display = 'none'
       } )
 
       //========================================================================
@@ -146,10 +146,10 @@
     //
     Ω.page.ball.style.backgroundColor = 'rgb(111,79,47)'
 
-    for( let $ = 0; $ < 20; $ ++ )
+    for( Ω.$1 = 0; Ω.$1 < 20; Ω.$1 ++ )
     {
-      Ω._.athlete = Ω.state.athlete[ $ ]
-      Ω._.athleteColor = Ω.state.athlete[ $ ][ 2 ]
+      Ω._.athlete = Ω.state.athlete[ Ω.$1 ]
+      Ω._.athleteColor = Ω.state.athlete[ Ω.$1 ][ 2 ]
 
       //========================================================================
       // Teamless athlete
@@ -178,7 +178,7 @@
       //========================================================================
       // Set the athlete's color
       //
-      Ω.page.athlete[ $ ].style.backgroundColor = Ω._.darkerColor
+      Ω.page.athlete[ Ω.$1 ].style.backgroundColor = Ω._.darkerColor
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -359,10 +359,10 @@
       //
       Ω.page.ball.style.backgroundColor = 'rgb(111,79,47)'
 
-      for( let $ = 0; $ < 20; $ ++ )
+      for( Ω.$1 = 0; Ω.$1 < 20; Ω.$1 ++ )
       {
-        Ω._.athlete = Ω.state.athlete[ $ ]
-        Ω._.athleteColor = Ω.state.athlete[ $ ][ 2 ]
+        Ω._.athlete = Ω.state.athlete[ Ω.$1 ]
+        Ω._.athleteColor = Ω.state.athlete[ Ω.$1 ][ 2 ]
 
         //......................................................................
         // Teamless athlete
@@ -387,7 +387,7 @@
         //......................................................................
         // Set the athlete's color
         //
-        Ω.page.athlete[ $ ].style.backgroundColor = Ω._.darkerColor
+        Ω.page.athlete[ Ω.$1 ].style.backgroundColor = Ω._.darkerColor
       }
 
       //========================================================================

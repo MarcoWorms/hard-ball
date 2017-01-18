@@ -11,35 +11,13 @@
   updAtl: function()
   {
     //==========================================================================
-    // First round
     //
-    if( Ω.state.turn === 0 )
+    for( let $ = 0; $ < 20; $ ++ )
     {
-      //........................................................................
-      // Athletes' initial positions
-      //
-      for( let $ = 0; $ < 20; $ ++ )
-      {
-        if( Ω.state.turn === 0 )
-        {
-          Ω.state.athlete[ $ ][ 0 ] = Ω.info.cell[ 12 ][ $ ][ 0 ] + 1
-          Ω.state.athlete[ $ ][ 1 ] = Ω.info.cell[ 12 ][ 0 ][ 1 ] + 1
-        }
-      }
-    }
+      Ω._.x = Ω.state.athlete[ $ ][ 0 ]
+      Ω._.y = Ω.state.athlete[ $ ][ 1 ]
 
-    //==========================================================================
-    // Every other round
-    //
-    else
-    {
-      for( let $ = 0; $ < 20; $ ++ )
-      {
-        Ω._.x = Ω.state.athlete[ $ ][ 0 ]
-        Ω._.y = Ω.state.athlete[ $ ][ 1 ]
-
-        Ω.tool.translate( Ω.page.athlete[ $ ], Ω._.x, Ω._.y )
-      }
+      Ω.tool.translate( Ω.page.athlete[ $ ], Ω._.x, Ω._.y )
     }
   },
 
@@ -48,21 +26,8 @@
   updBal: function()
   {
     //==========================================================================
-    // First round
     //
-    if( Ω.state.turn === 0 )
-    {
-      //........................................................................
-      // Ball initial position
-      //
-      Ω.state.ball[ 0 ] = 457
-      Ω.state.ball[ 1 ] = 265
-    }
-
-    //==========================================================================
-    // Every other round
-    //
-    else Ω.tool.translate( Ω.page.ball, Ω.state.ball[ 0 ], Ω.state.ball[ 1 ] )
+    Ω.tool.translate( Ω.page.ball, Ω.state.ball[ 0 ], Ω.state.ball[ 1 ] )
   },
 
   //////////////////////////////////////////////////////////////////////////////
@@ -71,9 +36,9 @@
   updZon1: function()
   {
     //==========================================================================
-    // Undisplay every zone and refresh 'info.zone'
+    // Undisplay every zone and refresh 'state.zone'
     //
-    for( Ω.$ = 0; Ω.$ < 16; Ω.$ ++ ) Ω.page.zone[ Ω.$ ].style.display = 'none'
+    for( let $ = 0; $ < 16; $ ++ ) Ω.page.zone[ $ ].style.display = 'none'
 
     //..........................................................................
     //
@@ -82,13 +47,13 @@
       function()
       {
         Ω._.array = []
-        for( Ω.$ = 0; Ω.$ < 16; Ω.$ ++ ) Ω._.array.push( [ 'none', 'none' ] )
+        for( let $ = 0; $ < 16; $ ++ ) Ω._.array.push( [ 'none', 'none' ] )
         return Ω._.array
       }()
     )
 
     //==========================================================================
-    // Ball is hovered
+    // Ball is displayed
     //
     if( Ω.state.displayed === 'ball' )
     {
@@ -103,7 +68,7 @@
     //
     else if( Ω.state.displayed !== 'none' )
     {
-      Ω._.athleteColor = Ω.state.athlete[ Ω.state.hovered ][ 2 ]
+      Ω._.athleteColor = Ω.state.athlete[ Ω.state.displayed ][ 2 ]
 
       //........................................................................
       // Displayed and unmarked athlete is ready to play
@@ -122,7 +87,7 @@
         // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
         // Roundabouting
         //
-        if( Ω.state.hovered === Ω.state.rounding[ 0 ] )
+        if( Ω.state.displayed === Ω.state.rounding[ 0 ] )
         {
           Ω.game.updZonCdn( 'mtx', true )
         }
@@ -144,7 +109,7 @@
     // Determining how are zones to be shown
     //
     Ω._.value = 1
-    Ω._.key = true
+    Ω._.kee = true
 
     //==========================================================================
     // Ball is displayed
@@ -157,7 +122,7 @@
       if( Ω.state.ball[ 0 ] === 457 )
       {
         Ω._.value = 0.66
-        Ω._.key = false
+        Ω._.kee = false
       }
     }
 
@@ -165,20 +130,20 @@
     // Displayed athlete is unmarked
     //
     else if( Ω.state.displayed !== 'none'
-    && Ω.info.marked.indexOf( Ω.state.displayed ) === -1 )
+    && Ω.state.marked.indexOf( Ω.state.displayed ) === -1 )
     {
       //........................................................................
       // If team-selection time is still going on
       // And displayed athlete is ready to play
       //
-      if Ω.state.turn < 8
+      if( Ω.state.turn < 8
       && Ω.state.athlete[ Ω.state.displayed ][ 2 ] !== 'none'
       //
       // Or if team-selection time is over
       // And athlete isn't the same color as the turn
       //
       || Ω.state.turn > 7
-      &&( Ω.state.athlete[ Ω.state.displayed ][ 2 ] !== Ω.state.currentPlayer
+      && Ω.state.athlete[ Ω.state.displayed ][ 2 ] !== Ω.state.currentPlayer
       //
       // Or if there is someone roundabouting
       // And the athlete isn't the one doing it
@@ -188,8 +153,10 @@
       {
         Ω._.value = 0.66
 
-        if( Ω.state.athlete[ Ω.state.hovered ][ 2 ] === 'none' ) Ω._.key = true
-        else                                                     Ω._.key = false
+        Ω._.athleteColor = Ω.state.athlete[ Ω.state.displayed ][ 2 ]
+
+        if( Ω._.athleteColor === 'none' ) Ω._.kee = true
+        else                              Ω._.kee = false
       }
     }
 
@@ -198,12 +165,12 @@
     //
     Array.from( Ω.page.zone ).forEach( function( $1, $2 )
     {
-      if( Ω.info.blocked.indexOf( $2 ) !== -1 ) Ω._.color = '0,0,0'
-      else                                      Ω._.color = '255,255,255'
+      if( Ω.state.blocked.indexOf( $2 ) !== -1 ) Ω._.color = '0,0,0'
+      else                                       Ω._.color = '255,255,255'
 
       $1.style.borderColor = 'rgba(' + Ω._.color + ',' + Ω._.value + ')'
 
-      if( Ω._.key ) $1.style.boxShadow = '0 0 0 3px rgba(' + Ω._.color + ',0.5)'
+      if( Ω._.kee ) $1.style.boxShadow = '0 0 0 3px rgba(' + Ω._.color + ',0.5)'
       else          $1.style.boxShadow = ''
     } )
   },
@@ -213,18 +180,28 @@
   //
   updZonCdn: function( behavior, round )
   {
-    if( round ) Ω._.origin = 18
-    else        Ω._.origin = Ω.state.displayed
+    //==========================================================================
+    //
+    Ω._.value = 0
 
     //==========================================================================
-    // Fill 'info.zone'
+    // Fill 'state.zone'
     //==========================================================================
     // By matrix
     //
     if( behavior === 'mtx' )
     {
+      //........................................................................
+      //
       Ω._.counter = 0
 
+      //........................................................................
+      //
+      if( round ) Ω._.origin = 18
+      else        Ω._.origin = Ω.state.displayed
+
+      //........................................................................
+      //
       Ω._.athleteX = Ω.state.athlete[ Ω.state.displayed ][ 0 ]
       Ω._.athleteX = Ω.state.athlete[ Ω.state.displayed ][ 1 ]
 
@@ -235,11 +212,11 @@
       {
         Ω._.x = Ω.tool.bend( Ω._.athleteX + 47, 'x' )
         Ω._.y = Ω.tool.bend( Ω._.athleteY - 1, 'y' )
-        Ω._.counter += Ω.tool.isZone(Ω._.counter, Ω._.x, Ω._.y )
+        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
 
         Ω._.x = Ω.tool.bend( Ω._.athleteX - 49, 'x' )
         Ω._.y = Ω.tool.bend( Ω._.athleteY - 1, 'y' )
-        Ω._.counter += Ω.tool.isZone(Ω._.counter, Ω._.x, Ω._.y )
+        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
 
         Ω._.x = Ω.tool.bend( Ω._.athleteX - 1, 'x' )
         Ω._.y = Ω.tool.bend( Ω._.athleteY + 47, 'y' )
@@ -257,11 +234,11 @@
       {
         Ω._.x = Ω.tool.bend( Ω._.athleteX + 95, 'x' )
         Ω._.y = Ω.tool.bend( Ω._.athleteY - 1, 'y' )
-        Ω._.counter += Ω.tool.isZone(Ω._.counter, Ω._.x, Ω._.y )
+        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
 
         Ω._.x = Ω.tool.bend( Ω._.athleteX - 97, 'x' )
         Ω._.y = Ω.tool.bend( Ω._.athleteY - 1, 'y' )
-        Ω._.counter += Ω.tool.isZone(Ω._.counter, Ω._.x, Ω._.y )
+        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
 
         Ω._.x = Ω.tool.bend( Ω._.athleteX - 1, 'x' )
         Ω._.y = Ω.tool.bend( Ω._.athleteY + 95, 'y' )
@@ -279,11 +256,11 @@
       {
         Ω._.x = Ω.tool.bend( Ω._.athleteX + 143, 'x' )
         Ω._.y = Ω.tool.bend( Ω._.athleteY - 1, 'y' )
-        Ω._.counter += Ω.tool.isZone(Ω._.counter, Ω._.x, Ω._.y )
+        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
 
         Ω._.x = Ω.tool.bend( Ω._.athleteX - 145, 'x' )
         Ω._.y = Ω.tool.bend( Ω._.athleteY - 1, 'y' )
-        Ω._.counter += Ω.tool.isZone(Ω._.counter, Ω._.x, Ω._.y )
+        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
 
         Ω._.x = Ω.tool.bend( Ω._.athleteX - 1, 'x' )
         Ω._.y = Ω.tool.bend( Ω._.athleteY + 143, 'y' )
@@ -489,15 +466,17 @@
       //
       if( Ω.state.turn === 0 )
       {
-        for( Ω.$ = 0; Ω.$ < 8; Ω.$ ++ )
+        for( let $ = 0; $ < 8; $ ++ )
         {
           // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
           // Show every green spawn point
           //
-          if( Ω.$ < 4 )
+          if( $ < 4 )
           {
-            Ω._.x = Ω.tool.convert( Ω.state.spawn.green[ Ω.$ ] )[ 0 ]
-            Ω._.y = Ω.tool.convert( Ω.state.spawn.green[ Ω.$ ] )[ 1 ]
+            Ω._.coordinate = Ω.tool.convert( Ω.state.spawn.green[ $ ] )
+
+            Ω._.x = Ω._.coordinate[ 0 ]
+            Ω._.y = Ω._.coordinate[ 1 ]
           }
 
           // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
@@ -505,15 +484,17 @@
           //
           else
           {
-            Ω._.x = Ω.tool.convert( Ω.state.spawn.blue[ Ω.$ - 4 ] )[ 0 ]
-            Ω._.y = Ω.tool.convert( Ω.state.spawn.blue[ Ω.$ - 4 ] )[ 1 ]
+            Ω._.coordinate = Ω.tool.convert( Ω.state.spawn.blue[ $ - 4 ] )
+
+            Ω._.x = Ω._.coordinate[ 0 ]
+            Ω._.y = Ω._.coordinate[ 1 ]
           }
 
           // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
           // Apply coordinates accordingly
           //
-          Ω.info.zone[ Ω.$ ][ 0 ] = Ω._.x
-          Ω.info.zone[ Ω.$ ][ 1 ] = Ω._.y
+          Ω.state.zone[ $ ][ 0 ] = Ω._.x
+          Ω.state.zone[ $ ][ 1 ] = Ω._.y
         }
 
         Ω._.value = 8 // always 8 zones in turn 0
@@ -533,13 +514,12 @@
         //......................................................................
         // And only as many as there are
         //
-        for( Ω.$ = 0; Ω.$ < Ω._.spawn.length; Ω.$ ++ )
+        for( let $ = 0; $ < Ω._.spawn.length; $ ++ )
         {
-          Ω._.x = Ω.tool.convert( Ω._.spawn[ Ω.$ ] )[ 0 ]
-          Ω._.y = Ω.tool.convert( Ω._.spawn[ Ω.$ ] )[ 1 ]
+          Ω._.coordinate = Ω.tool.convert( Ω._.spawn[ $ ] )
 
-          Ω.info.zone[ Ω.$ ][ 0 ] = Ω._.x
-          Ω.info.zone[ Ω.$ ][ 1 ] = Ω._.y
+          Ω.state.zone[ $ ][ 0 ] = Ω._.coordinate[ 0 ]
+          Ω.state.zone[ $ ][ 1 ] = Ω._.coordinate[ 1 ]
         }
 
         //......................................................................
@@ -561,12 +541,12 @@
 
       //........................................................................
       //
-      for( Ω.$ = 0; Ω.$ < 4; Ω.$ ++ )
+      for( let $ = 0; $ < 4; $ ++ )
       {
-        Ω._.playingAthlete = Ω.state.athlete[ Ω._.team[ Ω.$ ] ]
+        Ω._.playingAthlete = Ω.state.athlete[ Ω._.team[ $ ] ]
 
-        Ω.info.zone[ Ω.$ ][ 0 ] = Ω._.playingAthlete[ 0 ] - 1
-        Ω.info.zone[ Ω.$ ][ 1 ] = Ω._.playingAthlete[ 1 ] - 1
+        Ω.state.zone[ $ ][ 0 ] = Ω._.playingAthlete[ 0 ] - 1
+        Ω.state.zone[ $ ][ 1 ] = Ω._.playingAthlete[ 1 ] - 1
       }
 
       //........................................................................
@@ -585,8 +565,8 @@
       {
         Ω._.coordinate = Ω.tool.convert( $1 )
 
-        Ω.info.zone[ $2 ][ 0 ] = Ω._.coordinate[ 0 ]
-        Ω.info.zone[ $2 ][ 1 ] = Ω._.coordinate[ 1 ]
+        Ω.state.zone[ $2 ][ 0 ] = Ω._.coordinate[ 0 ]
+        Ω.state.zone[ $2 ][ 1 ] = Ω._.coordinate[ 1 ]
       } )
 
       //........................................................................
@@ -597,17 +577,17 @@
     //==========================================================================
     // Display zones accordingly
     //
-    for( Ω.$ = 0; Ω.$ < 16; Ω.$ ++ )
+    for( let $ = 0; $ < 16; $ ++ )
     {
-      if( Ω.$ < Ω._.value )
+      if( $ < Ω._.value )
       {
-        Ω._.x = Ω.info.zone[ Ω.$ ][ 0 ] + 3
-        Ω._.y = Ω.info.zone[ Ω.$ ][ 1 ] + 3
+        Ω._.x = Ω.state.zone[ $ ][ 0 ] + 3
+        Ω._.y = Ω.state.zone[ $ ][ 1 ] + 3
 
-        Ω.tool.translate( Ω.page.zone[ Ω.$ ], Ω._.x, Ω._.y )
-        Ω.tool.rotate( Ω.page.zone[ Ω.$ ], 1 )
+        Ω.tool.translate( Ω.page.zone[ $ ], Ω._.x, Ω._.y )
+        Ω.tool.rotate( Ω.page.zone[ $ ], 1 )
 
-        Ω.page.zone[ Ω.$ ].style.display = 'flex'
+        Ω.page.zone[ $ ].style.display = 'flex'
       }
     }
   },
@@ -696,9 +676,9 @@
     {
       //........................................................................
       //
-      for( Ω.$ = 0; Ω.$ < Ω._.hideGlow.length; Ω.$ ++ )
+      for( let $ = 0; $ < Ω._.hideGlow.length; $ ++ )
       {
-        Array.from( Ω.page.glow[ Ω._.hideGlow[ Ω.$ ] ] ).forEach( function( $ )
+        Array.from( Ω.page.glow[ Ω._.hideGlow[ $ ] ] ).forEach( function( $ )
         {
           $.style.fill = 'rgba(255,255,255,0.75)'
         } )
@@ -706,9 +686,9 @@
 
       //........................................................................
       //
-      for( Ω.$ = 0; Ω.$ < Ω._.showGlow.length; Ω.$ ++ )
+      for( let $ = 0; $ < Ω._.showGlow.length; $ ++ )
       {
-        Array.from( Ω.page.glow[ Ω._.showGlow[ Ω.$ ] ] ).forEach( function( $ )
+        Array.from( Ω.page.glow[ Ω._.showGlow[ $ ] ] ).forEach( function( $ )
         {
           Ω._.value = ( Ω.changer.glow[ 0 ] - Ω.changer.glow[ 0 ] / 8 )
 
@@ -723,33 +703,35 @@
   //
   updTar: function()
   {
+    //==========================================================================
+    //
     Ω.info.target = [ [], [] ] // refresh the array (targets & zones)
 
-    for( Ω.$1 = 0; Ω.$1 < 16; Ω.$1 ++ )
+    //==========================================================================
+    //
+    for( let $1 = 0; $1 < 16; $1 ++ )
     {
-      //========================================================================
+      //........................................................................
       // Look for athletes
       //
-      for( Ω.$2 = 0; Ω.$2 < 20; Ω.$2 ++ )
+      for( let $2 = 0; $2 < 20; $2 ++ )
       {
-        //......................................................................
-        //
-        if( Ω.state.athlete[ Ω.$2 ][ 0 ] - 1 === Ω.info.zone[ Ω.$1 ][ 0 ]
-        && Ω.state.athlete[ Ω.$2 ][ 1 ] - 1 === Ω.info.zone[ Ω.$1 ][ 1 ] )
+        if( Ω.state.athlete[ $2 ][ 0 ] - 1 === Ω.state.zone[ $1 ][ 0 ]
+        && Ω.state.athlete[ $2 ][ 1 ] - 1 === Ω.state.zone[ $1 ][ 1 ] )
         {
-          Ω.info.target[ 0 ].push( Ω.$2 ) // targets
-          Ω.info.target[ 1 ].push( Ω.$1 ) // zones
+          Ω.info.target[ 0 ].push( $2 ) // targets
+          Ω.info.target[ 1 ].push( $1 ) // zones
         }
       }
 
-      //========================================================================
+      //........................................................................
       // Look for the ball
       //
-      if( Ω.state.ball[ 0 ] - 1 === Ω.info.zone[ Ω.$1 ][ 0 ]
-      && Ω.state.ball[ 1 ] - 1 === Ω.info.zone[ Ω.$1 ][ 1 ] )
+      if( Ω.state.ball[ 0 ] - 1 === Ω.state.zone[ $1 ][ 0 ]
+      && Ω.state.ball[ 1 ] - 1 === Ω.state.zone[ $1 ][ 1 ] )
       {
         Ω.info.target[ 0 ].push( 'ball' ) // ball
-        Ω.info.target[ 1 ].push( Ω.$1 ) // zone
+        Ω.info.target[ 1 ].push( $1 ) // zone
       }
     }
   },
@@ -766,34 +748,34 @@
     //
     if( Ω.state.turn > 7 ) // turns 8+ (so that each team is complete)
     {
-      for( Ω.$ = 0; Ω.$ < 4; Ω.$ ++ ) // test once per team athlete
+      for( let $ = 0; $ < 4; $ ++ ) // test once per team athlete
       {
         //======================================================================
         // Test for green athletes
         //
-        Ω._.x1 = Ω.state.athlete[ Ω.state.team.green[ Ω.$ ] ][ 0 ] - 1
-        Ω._.y1 = Ω.state.athlete[ Ω.state.team.green[ Ω.$ ] ][ 1 ] - 1
+        Ω._.x1 = Ω.state.athlete[ Ω.state.team.green[ $ ] ][ 0 ] - 1
+        Ω._.y1 = Ω.state.athlete[ Ω.state.team.green[ $ ] ][ 1 ] - 1
         Ω._.coordinate1 = Ω.tool.convert( [ Ω._.x1, Ω._.y1 ] )
 
         //......................................................................
         //
         if( Ω.info.area.green.indexOf( Ω._.coordinate1 ) !== -1 )
         {
-          Ω.state.keeper.green = Ω.state.team.green[ Ω.$ ]
+          Ω.state.keeper.green = Ω.state.team.green[ $ ]
         }
 
         //======================================================================
         // Test for blue athletes
         //
-        Ω._.x2 = Ω.state.athlete[ Ω.state.team.blue[ Ω.$ ] ][ 0 ] - 1
-        Ω._.y2 = Ω.state.athlete[ Ω.state.team.blue[ Ω.$ ] ][ 1 ] - 1
+        Ω._.x2 = Ω.state.athlete[ Ω.state.team.blue[ $ ] ][ 0 ] - 1
+        Ω._.y2 = Ω.state.athlete[ Ω.state.team.blue[ $ ] ][ 1 ] - 1
         Ω._.coordinate2 = Ω.tool.convert( [ Ω._.x2, Ω._.y2 ] )
 
         //......................................................................
         //
         if( Ω.info.area.blue.indexOf( Ω._.coordinate2 ) !== -1 )
         {
-          Ω.state.keeper.blue = Ω.state.team.blue[ Ω.$ ]
+          Ω.state.keeper.blue = Ω.state.team.blue[ $ ]
         }
       }
     }
@@ -807,7 +789,7 @@
     //==========================================================================
     // Refreshes which cell is blocked
     //
-    Ω.info.blocked = []
+    Ω.state.blocked = []
 
     //==========================================================================
     // If there are targets
@@ -816,13 +798,13 @@
 
     if( Ω._.targetLength !== 0 )
     {
-      for( Ω._.$1 = 0; Ω._.$1 < Ω._.targetLength; Ω._.$1 ++ )
+      for( let $1 = 0; $1 < Ω._.targetLength; $1 ++ )
       {
         //......................................................................
         // How far the zone/target is from the aiming athlete
         //
-        Ω._.aimed = Ω.info.target[ 0 ][ Ω._.$1 ]
-        Ω._.zone = Ω.info.target[ 1 ][ Ω._.$1 ]
+        Ω._.aimed = Ω.info.target[ 0 ][ $1 ]
+        Ω._.zone = Ω.info.target[ 1 ][ $1 ]
 
         Ω._.pusherX = Ω.state.athlete[ Ω.state.displayed ][ 0 ] - 1
         Ω._.pusherY = Ω.state.athlete[ Ω.state.displayed ][ 1 ] - 1
@@ -844,10 +826,10 @@
         //......................................................................
         // Testing if there are athletes impeding the push action
         //
-        for( Ω._.$2 = 0; Ω._.$2 < 20; Ω._.$2 ++ )
+        for( let $2 = 0; $2 < 20; $2 ++ )
         {
-          Ω._.athleteX = Ω.state.athlete[ Ω._.$2 ][ 0 ]
-          Ω._.athleteY = Ω.state.athlete[ Ω._.$2 ][ 1 ]
+          Ω._.athleteX = Ω.state.athlete[ $2 ][ 0 ]
+          Ω._.athleteY = Ω.state.athlete[ $2 ][ 1 ]
 
           // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
           // Avoid athletes from being pushed to its opponent's area
@@ -856,10 +838,7 @@
           {
             Ω._.area = Ω.info.area.blue
 
-            if( Ω.state.keeper.green !== 'none' )
-            {
-              Ω._.area += Ω.info.area.green
-            }
+            if( Ω.state.keeper.green !== 'none' ) Ω._.area += Ω.info.area.green
           }
 
           // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
@@ -868,10 +847,7 @@
           {
             Ω._.area = Ω.info.area.green
 
-            if( Ω.state.keeper.blue !== 'none' )
-            {
-              Ω._.area += Ω.info.area.blue
-            }
+            if( Ω.state.keeper.blue !== 'none' ) Ω._.area += Ω.info.area.blue
           }
 
           // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
@@ -882,7 +858,7 @@
           && Ω._.blockedX === Ω._.athleteX - 1
           && Ω._.blockedY === Ω._.athleteY - 1 )
           {
-            Ω.info.blocked.push( Ω._.zone )
+            Ω.state.blocked.push( Ω._.zone )
           }
 
           // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
@@ -890,7 +866,7 @@
           //
           else
           {
-            Ω.info.blocked.push( Ω._.zone )
+            Ω.state.blocked.push( Ω._.zone )
           }
 
           //////////////////////////////////////////////////////////////////////
@@ -907,7 +883,7 @@
           if( Ω._.athleteColor === 'none'
           && Ω._.replacesLeft === 0 )
           {
-            Ω.info.blocked.push( Ω._.zone )
+            Ω.state.blocked.push( Ω._.zone )
           }
         }
       }
@@ -960,7 +936,7 @@
     //..........................................................................
     // Athlete is selected
     //
-    else
+    else if( Ω.state.selected !== 'none' )
     {
       Ω._.x = Ω.state.athlete[ Ω.state.selected ][ 0 ] + 2
       Ω._.y = Ω.state.athlete[ Ω.state.selected ][ 1 ] + 2
@@ -981,15 +957,21 @@
   //
   updRpl: function()
   {
-    for( Ω.$1 = 0; Ω.$1 < 20; Ω.$1 ++ )
+    //==========================================================================
+    //
+    for( let $ = 0; $ < 20; $ ++ )
     {
-      if( Ω.state.athlete[ Ω.$1 ][ 2 ].substring( 3, 6 ) === 'Blk' )
+      if( Ω.state.athlete[ $ ][ 2 ].substring( 3, 6 ) === 'Blk' )
       {
-        Ω.page.athlete[ Ω.$1 ].style.borderColor = 'black'
+        //......................................................................
+        //
+        Ω.page.athlete[ $ ].style.borderColor = 'black'
 
-        Array.from( Ω.page.glow[ Ω.$1 ] ).forEach( function( $2 )
+        //......................................................................
+        //
+        Array.from( Ω.page.glow[ $ ] ).forEach( function( $ )
         {
-          $2.style.fill = 'rgba(255,255,255,0.5)'
+          $.style.fill = 'rgba(255,255,255,0.5)'
         } )
       }
     }
@@ -1000,15 +982,23 @@
   //
   updRdb: function()
   {
+    //==========================================================================
+    //
     Ω.state.rounded = []
 
-    for( Ω.$ = 0; Ω.$ < 20; Ω.$ ++ )
+    //==========================================================================
+    //
+    for( let $ = 0; $ < 20; $ ++ )
     {
-      Ω._.athleteY = Ω.state.athlete[ Ω.$ ][ 1 ]
+      //........................................................................
+      //
+      Ω._.athleteY = Ω.state.athlete[ $ ][ 1 ]
 
+      //........................................................................
+      //
       if( Ω._.athleteY < 50 || Ω._.athleteY > 480 && Ω._.athleteY < 584)
       {
-        Ω.state.rounded.push( Ω.$ )
+        Ω.state.rounded.push( $ )
       }
     }
   },
@@ -1030,6 +1020,8 @@
       Ω.state.ball[ 0 ] = Ω._.athlete[ 0 ]
       Ω.state.ball[ 1 ] = Ω._.athlete[ 1 ]
 
+      //........................................................................
+      //
       Ω.state.selected = 'ball'
       Ω.state.displayed = Ω.state.selected
     }
@@ -1051,6 +1043,27 @@
     Ω.game.updRpl()
 
     //==========================================================================
+    // First round
+    //
+    if( Ω.state.turn === 0 )
+    {
+      //........................................................................
+      // Athletes' initial positions
+      //
+      for( let $ = 0; $ < 20; $ ++ )
+      {
+        Ω.state.athlete[ $ ][ 0 ] = Ω.info.cell[ 12 ][ $ ][ 0 ] + 1
+        Ω.state.athlete[ $ ][ 1 ] = Ω.info.cell[ 12 ][ 0 ][ 1 ] + 1
+      }
+
+      //........................................................................
+      // Ball initial position
+      //
+      Ω.state.ball[ 0 ] = 457
+      Ω.state.ball[ 1 ] = 265
+    }
+
+    //==========================================================================
     // Avoid as much as possible "everything-travelling-from-point-0" bug
     //
     setTimeout( function()
@@ -1066,6 +1079,14 @@
   //
   update: function()
   {
+    Ω.game.updAtl()
+    Ω.game.updBal()
+
+    Ω.game.updZon1()
+    Ω.game.updZon2()
+
+    Ω.game.updInd()
+
     window.requestAnimationFrame( Ω.engine.update )
   },
 }
@@ -1073,5 +1094,5 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Initializing the game
 //
-// Ω.engine.create()
-// Ω.engine.update()
+Ω.engine.create()
+Ω.engine.update()

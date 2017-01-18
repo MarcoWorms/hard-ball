@@ -77,18 +77,20 @@
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // 03 . Select the ball
+    // 03 . Select the ball (if unlocked)
     //
-    else if( $.target.id === 'ball' )
+    else if( $.target.id === 'ball'
+    && Ω.state.lock === false )
     {
       Ω.state.selected = 'ball'
       Ω.state.displayed = Ω.state.selected
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // 04 . Select an athlete
+    // 04 . Select an athlete (if unlocked)
     //
-    else if( $.target.id.substring( 0, 3 ) === 'min' )
+    else if( $.target.id.substring( 0, 3 ) === 'min'
+    && Ω.state.lock === false )
     {
       Ω._.athlete = Number( $.target.id.substring( 4, 6 ) )
 
@@ -103,20 +105,25 @@
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // 05 . Click on a zone
+    // 05 . Click on a zone (if unlocked)
     //
     // It's important to note that its only possible to click a zone when the
     // ball or some athlete is selected
     //
-    else if( $.target.id.substring( 0, 3 ) === 'zon' )
+    else if( $.target.id.substring( 0, 3 ) === 'zon'
+    && Ω.state.lock === false )
     {
+      Ω.state.lock = true
+
       // tbd
+
+      Ω.state.lock = false
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // 06 . Select the selection zone or nothing
+    // 06 . Select the selection zone or nothing (if unlocked)
     //
-    else
+    else if( Ω.state.lock === false )
     {
       Ω.state.selected = 'none'
       Ω.state.displayed = Ω.state.selected
@@ -146,18 +153,15 @@
     //
     Ω.page.ball.style.backgroundColor = 'rgb(111,79,47)'
 
-    for( Ω.$1 = 0; Ω.$1 < 20; Ω.$1 ++ )
+    for( let $1 = 0; $1 < 20; $1 ++ )
     {
-      Ω._.athlete = Ω.state.athlete[ Ω.$1 ]
-      Ω._.athleteColor = Ω.state.athlete[ Ω.$1 ][ 2 ]
+      Ω._.athlete = Ω.state.athlete[ $1 ]
+      Ω._.athleteColor = Ω.state.athlete[ $1 ][ 2 ]
 
       //========================================================================
       // Teamless athlete
       //
-      if( Ω._.athleteColor === 'none' )
-      {
-        Ω._.darkerColor = 'rgb(143,143,143)'
-      }
+      if( Ω._.athleteColor === 'none' ) Ω._.darkerColor = 'rgb(143,143,143)'
 
       //........................................................................
       // Athlete is playing or was benched this match (green team)
@@ -178,13 +182,14 @@
       //========================================================================
       // Set the athlete's color
       //
-      Ω.page.athlete[ Ω.$1 ].style.backgroundColor = Ω._.darkerColor
+      Ω.page.athlete[ $1 ].style.backgroundColor = Ω._.darkerColor
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // 00 . Hover the ball
+    // 00 . Hover the ball (if unmarked)
     //
-    if( $.target.id === 'ball' )
+    if( $.target.id === 'ball'
+    && Ω.state.marked.indexOf( 'ball' ) === -1 )
     {
       Ω.state.hovered = 'ball'
       Ω.state.displayed = Ω.state.hovered
@@ -204,7 +209,7 @@
       Ω._.athleteColor = Ω.state.athlete[ Ω._.athlete ][ 2 ]
 
       //========================================================================
-      // If athlete is not marked
+      // (if unmarked)
       //
       if( Ω.state.marked.indexOf( Ω._.athlete ) === -1 )
       {
@@ -295,6 +300,8 @@
     //
     else if( $.target.id.substring( 0, 3 ) === 'zon' )
     {
+      if( Ω.state.selected === 'none' ) Ω.state.displayed = 'none'
+
       Ω._.targetedZone = Number( $.target.id.substring( 3, 5 ) )
       Ω._.targetedZoneIndex = Ω.state.target[ 0 ].indexOf( Ω._.targetedZone )
 
@@ -355,14 +362,21 @@
     else
     {
       //========================================================================
+      //
+      Ω.state.hovered = 'none'
+
+      if( Ω.state.selected !== 'none' ) Ω.state.displayed = Ω.state.selected
+      else                              Ω.state.displayed = Ω.state.hovered
+
+      //========================================================================
       // Hover color . Part 6 . Refresh everything again
       //
       Ω.page.ball.style.backgroundColor = 'rgb(111,79,47)'
 
-      for( Ω.$1 = 0; Ω.$1 < 20; Ω.$1 ++ )
+      for( let $1 = 0; $1 < 20; $1 ++ )
       {
-        Ω._.athlete = Ω.state.athlete[ Ω.$1 ]
-        Ω._.athleteColor = Ω.state.athlete[ Ω.$1 ][ 2 ]
+        Ω._.athlete = Ω.state.athlete[ $1 ]
+        Ω._.athleteColor = Ω.state.athlete[ $1 ][ 2 ]
 
         //......................................................................
         // Teamless athlete
@@ -387,14 +401,8 @@
         //......................................................................
         // Set the athlete's color
         //
-        Ω.page.athlete[ Ω.$1 ].style.backgroundColor = Ω._.darkerColor
+        Ω.page.athlete[ $1 ].style.backgroundColor = Ω._.darkerColor
       }
-
-      //========================================================================
-      // Hovering nothing is tricky and must be safeguarded by this condition
-      //
-      if( Ω.state.selected !== 'none' ) Ω.state.displayed = Ω.state.selected
-      else                              Ω.state.displayed = Ω.state.hovered
     }
 
   //////////////////////////////////////////////////////////////////////////////

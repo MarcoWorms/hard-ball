@@ -52,8 +52,7 @@
     //==========================================================================
     // It must have the class so it can be removed
     //
-    if( Ω.tool.hasCls( entity, klass ) === false
-    && action === "+" )
+    if( Ω.tool.hasCls( entity, klass ) === false && action === "+" )
     {
       entity.classList.add( klass )
     }
@@ -61,8 +60,7 @@
     //==========================================================================
     // It mustn't have the class so it can be added
     //
-    else if( Ω.tool.hasCls( entity, klass ) === true
-    && action === "-" )
+    else if( Ω.tool.hasCls( entity, klass ) === true && action === "-" )
     {
       entity.classList.remove( klass )
     }
@@ -120,55 +118,63 @@
   isZone: function( counter, x, y )
   {
     //==========================================================================
+    //
+    let athleteColor = Ω.state.athlete[ Ω.state.displayed ][ 2 ]
+
+    let area // athlete's area
+    let other // opponent's area
+    let keeper // athlete's own keeper
+
+    let isTheKeeper
+
+    //==========================================================================
     // Change disposable data relative to the athlete's color
     //
-    Ω._.color = Ω.state.athlete[ Ω.state.displayed ][ 2 ]
-
-    if( Ω._.color === 'gre' )
+    if( athleteColor === 'gre' )
     {
-      Ω._.area = Ω.info.area.green // athlete's area (aRea)
-      Ω._.aera = Ω.info.area.blue // opponent's area (aeRa)
-      Ω._.keeper = Ω.state.keeper.green // athlete's own keeper
+      area = Ω.info.area.green
+      other = Ω.info.area.blue
+      keeper = Ω.state.keeper.green
     }
 
-    else if( Ω._.color === 'blu' )
+    else if( athleteColor === 'blu' )
     {
-      Ω._.area = Ω.info.area.blue
-      Ω._.aera = Ω.info.area.green
-      Ω._.keeper = Ω.state.keeper.blue
+      area = Ω.info.area.blue
+      other = Ω.info.area.green
+      keeper = Ω.state.keeper.blue
     }
 
     //==========================================================================
     // If the athlete is the keeper, it's the one
     //
-    if( Ω._.keeper === Ω.state.displayed ) Ω._.one = true
+    if( keeper === Ω.state.displayed ) isTheKeeper = true
 
     //==========================================================================
     //
-    Ω._.coordinate = Ω.tool.convert( [ x, y ] ) // zone's cell name
-    Ω._.kee = true // display the zone
+    let zoneCoordinate = Ω.tool.convert( [ x, y ] )
+    let lock = false // display the zone
 
     //==========================================================================
     // If the zone is inside the athlete's area
     // And if there is a keeper
     // And the athlete is not the keeper
     //
-    if( Ω._.area.indexOf( Ω._.coordinate ) !== -1
-    && Ω._.keeper !== 'none'
-    && Ω._.one === false )
+    if( area.indexOf( zoneCoordinate ) !== -1
+    && keeper !== 'none'
+    && isTheKeeper === false )
     {
       //........................................................................
       // Ask to not display the zone
       //
-      Ω._.kee = false
+      lock = true
     }
 
     //==========================================================================
     // If zone is outside the opponent's area
     // And you're the keeper, if there's any
     //
-    if( Ω._.aera.indexOf( Ω._.coordinate ) === -1
-    && Ω._.kee )
+    if( other.indexOf( coordinate ) === -1
+    && lock === false )
     {
       //........................................................................
       // Change the zone's coordinate
@@ -203,15 +209,18 @@
       //........................................................................
       // Disposable data
       //
-      Ω._.letter = entity.substring( 0, 1 )
-      Ω._.digit = Number( entity.substring( 1, 3 ) )
+      let letter = entity.substring( 0, 1 )
+      let digit = Number( entity.substring( 1, 3 ) )
+
+      let x
+      let y
 
       //........................................................................
       // Discover 'x'
       //
       for( let $ = 0; $ < 20; $ ++ )
       {
-        if( Ω._.digit === $ ) Ω._.x = $ * 48
+        if( digit === $ ) x = $ * 48
       }
 
       //........................................................................
@@ -219,13 +228,13 @@
       //
       for( let $ = 0; $ < 12; $ ++ )
       {
-        if( Ω._.letter === Ω.info.aToL[ $ ] ) Ω._.y = $ * 48
+        if( letter === Ω.info.aToL[ $ ] ) y = $ * 48
       }
 
       //........................................................................
       // Return the coordinates
       //
-      return [ Ω._.x, Ω._.y ]
+      return [ x, y ]
     }
 
     //==========================================================================
@@ -236,15 +245,15 @@
       //........................................................................
       // Disposable data
       //
-      Ω._.x = entity[ 0 ]
-      Ω._.y = entity[ 1 ]
+      x = entity[ 0 ]
+      y = entity[ 1 ]
 
       //........................................................................
       // Discover the letter
       //
       for( let $ = 0; $ < 12; $ ++ )
       {
-        if( Ω._.y / 48 === $ ) Ω._.name = Ω.info.aToL[ $ ]
+        if( y / 48 === $ ) name = Ω.info.aToL[ $ ]
       }
 
       //........................................................................
@@ -252,18 +261,18 @@
       //
       for( let $ = 0; $ < 20; $ ++ )
       {
-        if( Ω._.x / 48 === $ )
+        if( x / 48 === $ )
         {
-          if( $ < 10 ) Ω._.name += '0'
+          if( $ < 10 ) name += '0'
 
-          Ω._.name += $
+          name += $
         }
       }
 
       //........................................................................
       // Return the name
       //
-      return Ω._.name
+      return name
     }
   },
 
@@ -283,36 +292,38 @@
   {
     //==========================================================================
     //
-    Ω._.aimed = Ω.now.target[ 0 ][ entity ]
+    let aimed = Ω.now.target[ 0 ][ entity ]
 
     //==========================================================================
     //
-    Ω._.pusherX = Ω.state.athlete[ Ω.state.selected ][ 0 ] - 1
-    Ω._.pusherY = Ω.state.athlete[ Ω.state.selected ][ 1 ] - 1
+    let pusherX = Ω.state.athlete[ Ω.state.selected ][ 0 ] - 1
+    let pusherY = Ω.state.athlete[ Ω.state.selected ][ 1 ] - 1
 
-    Ω._.aimedX = Ω.state.athlete[ Ω._.aimed ][ 0 ] - 1
-    Ω._.aimedY = Ω.state.athlete[ Ω._.aimed ][ 1 ] - 1
+    let aimedX = Ω.state.athlete[ aimed ][ 0 ] - 1
+    let aimedY = Ω.state.athlete[ aimed ][ 1 ] - 1
 
-    Ω._.distanceX = Ω._.pusherX - Ω._.aimedX
-    Ω._.distanceY = Ω._.pusherY - Ω._.aimedY
+    let distanceX = pusherX - aimedX
+    let distanceY = pusherY - aimedY
 
-    Ω._.newX = Ω._.aimedX - Ω._.distanceX
-    Ω._.newY = Ω._.aimedY - Ω._.distanceY
+    let newX = aimedX - distanceX
+    let newY = aimedY - distanceY
 
-    Ω._.blockedX = Ω.tool.bend( Ω._.newX, 'x' )
-    Ω._.blockedY = Ω.tool.bend( Ω._.newY, 'y' )
+    let blockedX = Ω.tool.bend( newX, 'x' )
+    let blockedY = Ω.tool.bend( newY, 'y' )
 
-    //==========================================================================
-    //
-    if( Ω._.distanceX < 0 ) Ω._.distanceX = -Ω._.distanceX
-    if( Ω._.distanceY < 0 ) Ω._.distanceY = -Ω._.distanceY
-
-    if( Ω._.distanceX >= Ω._.distanceY )     Ω._.animationTime = Ω._.distanceX
-    else if( Ω._.distanceX < Ω._.distanceY ) Ω._.animationTime = Ω._.distanceY
+    let animationTime
 
     //==========================================================================
     //
-    return [ Ω._.blockedX, Ω._.blockedY, Ω._.animationTime ]
+    if( distanceX < 0 ) distanceX = -distanceX
+    if( distanceY < 0 ) distanceY = -distanceY
+
+    if( distanceX >= distanceY )     animationTime = distanceX
+    else if( distanceX < distanceY ) animationTime = distanceY
+
+    //==========================================================================
+    //
+    return [ blockedX, blockedY, animationTime ]
   },
 }
 

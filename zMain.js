@@ -14,10 +14,10 @@
     //
     for( let $ = 0; $ < 20; $ ++ )
     {
-      Ω._.x = Ω.state.athlete[ $ ][ 0 ]
-      Ω._.y = Ω.state.athlete[ $ ][ 1 ]
+      let x = Ω.state.athlete[ $ ][ 0 ]
+      let y = Ω.state.athlete[ $ ][ 1 ]
 
-      Ω.tool.translate( Ω.page.athlete[ $ ], Ω._.x, Ω._.y )
+      Ω.tool.translate( Ω.page.athlete[ $ ], x, y )
     }
   },
 
@@ -46,9 +46,11 @@
     (
       function()
       {
-        Ω._.array = []
-        for( let $ = 0; $ < 16; $ ++ ) Ω._.array.push( [ 'none', 'none' ] )
-        return Ω._.array
+        let array = []
+
+        for( let $ = 0; $ < 16; $ ++ ) array.push( [ 'none', 'none' ] )
+
+        return array
       }()
     )
 
@@ -68,12 +70,12 @@
     //
     else if( Ω.state.displayed !== 'none' )
     {
-      Ω._.athleteColor = Ω.state.athlete[ Ω.state.displayed ][ 2 ]
+      let athleteColor = Ω.state.athlete[ Ω.state.displayed ][ 2 ]
 
       //........................................................................
       // Displayed and unmarked athlete is ready to play
       //
-      if( Ω._.athleteColor === 'none' )
+      if( athleteColor === 'none' )
       {
         if( Ω.state.turn < 8 ) Ω.game.updZonCdn( 'stt', false )
         else                   Ω.game.updZonCdn( 'rep', false )
@@ -82,7 +84,7 @@
       //........................................................................
       // Displayed and unmarked athlete is playing
       //
-      else if( Ω._.athleteColor.substring( 3, 6 ) !== 'Blk' )
+      else if( athleteColor.substring( 3, 6 ) !== 'Blk' )
       {
         // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
         // Roundabouting
@@ -101,15 +103,15 @@
   },
 
   //////////////////////////////////////////////////////////////////////////////
-  // Updates the appearance of zones depending on the situation
+  // Updates the appearance of zones
   //
   updZon2: function()
   {
     //==========================================================================
     // Determining how are zones to be shown
     //
-    Ω._.value = 1
-    Ω._.kee = true
+    let value = 1
+    let lock = true
 
     //==========================================================================
     // Ball is displayed
@@ -121,8 +123,8 @@
       //
       if( Ω.state.ball[ 0 ] === 457 )
       {
-        Ω._.value = 0.66
-        Ω._.kee = false
+        value = 0.66
+        lock = false
       }
     }
 
@@ -151,12 +153,12 @@
       || Ω.state.rounding[ 0 ] !== 'none'
       && Ω.state.rounding[ 0 ] !== Ω.state.displayed )
       {
-        Ω._.value = 0.66
+        value = 0.66
 
-        Ω._.athleteColor = Ω.state.athlete[ Ω.state.displayed ][ 2 ]
+        let athleteColor = Ω.state.athlete[ Ω.state.displayed ][ 2 ]
 
-        if( Ω._.athleteColor === 'none' ) Ω._.kee = true
-        else                              Ω._.kee = false
+        if( athleteColor === 'none' ) lock = true
+        else                          lock = false
       }
     }
 
@@ -165,13 +167,15 @@
     //
     Array.from( Ω.page.zone ).forEach( function( $1, $2 )
     {
-      if( Ω.state.blocked.indexOf( $2 ) !== -1 ) Ω._.color = '0,0,0'
-      else                                       Ω._.color = '255,255,255'
+      let color
 
-      $1.style.borderColor = 'rgba(' + Ω._.color + ',' + Ω._.value + ')'
+      if( Ω.state.blocked.indexOf( $2 ) !== -1 ) color = '0,0,0'
+      else                                       color = '255,255,255'
 
-      if( Ω._.kee ) $1.style.boxShadow = '0 0 0 3px rgba(' + Ω._.color + ',0.5)'
-      else          $1.style.boxShadow = ''
+      $1.style.borderColor = 'rgba(' + color + ',' + value + ')'
+
+      if( lock ) $1.style.boxShadow = '0 0 0 3px rgba(' + color + ',0.5)'
+      else       $1.style.boxShadow = ''
     } )
   },
 
@@ -182,7 +186,10 @@
   {
     //==========================================================================
     //
-    Ω._.value = 0
+    let value = 0
+
+    let x
+    let y
 
     //==========================================================================
     // Fill 'state.zone'
@@ -193,12 +200,14 @@
     {
       //........................................................................
       //
-      Ω._.counter = 0
+      let counter = 0
+
+      let origin
 
       //........................................................................
       //
-      if( round ) Ω._.origin = 18
-      else        Ω._.origin = Ω.state.displayed
+      if( round ) origin = 18
+      else        origin = Ω.state.displayed
 
       //........................................................................
       //
@@ -208,252 +217,252 @@
       //........................................................................
       // Matrix 1
       //
-      if( Ω.info.move[ Ω._.origin ][ 1 ] === 1 )
+      if( Ω.info.move[ origin ][ 1 ] === 1 )
       {
-        Ω._.x = Ω.tool.bend( Ω._.athleteX + 47, 'x' )
-        Ω._.y = Ω.tool.bend( Ω._.athleteY - 1, 'y' )
-        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
+        x = Ω.tool.bend( Ω._.athleteX + 47, 'x' )
+        y = Ω.tool.bend( Ω._.athleteY - 1, 'y' )
+        counter += Ω.tool.isZone( counter, x, y )
 
-        Ω._.x = Ω.tool.bend( Ω._.athleteX - 49, 'x' )
-        Ω._.y = Ω.tool.bend( Ω._.athleteY - 1, 'y' )
-        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
+        x = Ω.tool.bend( Ω._.athleteX - 49, 'x' )
+        y = Ω.tool.bend( Ω._.athleteY - 1, 'y' )
+        counter += Ω.tool.isZone( counter, x, y )
 
-        Ω._.x = Ω.tool.bend( Ω._.athleteX - 1, 'x' )
-        Ω._.y = Ω.tool.bend( Ω._.athleteY + 47, 'y' )
-        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
+        x = Ω.tool.bend( Ω._.athleteX - 1, 'x' )
+        y = Ω.tool.bend( Ω._.athleteY + 47, 'y' )
+        counter += Ω.tool.isZone( counter, x, y )
 
-        Ω._.x = Ω.tool.bend( Ω._.athleteX - 1, 'x' )
-        Ω._.y = Ω.tool.bend( Ω._.athleteY - 49, 'y' )
-        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
+        x = Ω.tool.bend( Ω._.athleteX - 1, 'x' )
+        y = Ω.tool.bend( Ω._.athleteY - 49, 'y' )
+        counter += Ω.tool.isZone( counter, x, y )
       }
 
       //........................................................................
       // Matrix 2
       //
-      if( Ω.info.move[ Ω._.origin ][ 2 ] === 1 )
+      if( Ω.info.move[ origin ][ 2 ] === 1 )
       {
-        Ω._.x = Ω.tool.bend( Ω._.athleteX + 95, 'x' )
-        Ω._.y = Ω.tool.bend( Ω._.athleteY - 1, 'y' )
-        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
+        x = Ω.tool.bend( Ω._.athleteX + 95, 'x' )
+        y = Ω.tool.bend( Ω._.athleteY - 1, 'y' )
+        counter += Ω.tool.isZone( counter, x, y )
 
-        Ω._.x = Ω.tool.bend( Ω._.athleteX - 97, 'x' )
-        Ω._.y = Ω.tool.bend( Ω._.athleteY - 1, 'y' )
-        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
+        x = Ω.tool.bend( Ω._.athleteX - 97, 'x' )
+        y = Ω.tool.bend( Ω._.athleteY - 1, 'y' )
+        counter += Ω.tool.isZone( counter, x, y )
 
-        Ω._.x = Ω.tool.bend( Ω._.athleteX - 1, 'x' )
-        Ω._.y = Ω.tool.bend( Ω._.athleteY + 95, 'y' )
-        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
+        x = Ω.tool.bend( Ω._.athleteX - 1, 'x' )
+        y = Ω.tool.bend( Ω._.athleteY + 95, 'y' )
+        counter += Ω.tool.isZone( counter, x, y )
 
-        Ω._.x = Ω.tool.bend( Ω._.athleteX - 1, 'x' )
-        Ω._.y = Ω.tool.bend( Ω._.athleteY - 97, 'y' )
-        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
+        x = Ω.tool.bend( Ω._.athleteX - 1, 'x' )
+        y = Ω.tool.bend( Ω._.athleteY - 97, 'y' )
+        counter += Ω.tool.isZone( counter, x, y )
       }
 
       //........................................................................
       // Matrix 3
       //
-      if( Ω.info.move[ Ω._.origin ][ 3 ] === 1 )
+      if( Ω.info.move[ origin ][ 3 ] === 1 )
       {
-        Ω._.x = Ω.tool.bend( Ω._.athleteX + 143, 'x' )
-        Ω._.y = Ω.tool.bend( Ω._.athleteY - 1, 'y' )
-        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
+        x = Ω.tool.bend( Ω._.athleteX + 143, 'x' )
+        y = Ω.tool.bend( Ω._.athleteY - 1, 'y' )
+        counter += Ω.tool.isZone( counter, x, y )
 
-        Ω._.x = Ω.tool.bend( Ω._.athleteX - 145, 'x' )
-        Ω._.y = Ω.tool.bend( Ω._.athleteY - 1, 'y' )
-        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
+        x = Ω.tool.bend( Ω._.athleteX - 145, 'x' )
+        y = Ω.tool.bend( Ω._.athleteY - 1, 'y' )
+        counter += Ω.tool.isZone( counter, x, y )
 
-        Ω._.x = Ω.tool.bend( Ω._.athleteX - 1, 'x' )
-        Ω._.y = Ω.tool.bend( Ω._.athleteY + 143, 'y' )
-        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
+        x = Ω.tool.bend( Ω._.athleteX - 1, 'x' )
+        y = Ω.tool.bend( Ω._.athleteY + 143, 'y' )
+        counter += Ω.tool.isZone( counter, x, y )
 
-        Ω._.x = Ω.tool.bend( Ω._.athleteX - 1, 'x' )
-        Ω._.y = Ω.tool.bend( Ω._.athleteY - 145, 'y' )
-        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
+        x = Ω.tool.bend( Ω._.athleteX - 1, 'x' )
+        y = Ω.tool.bend( Ω._.athleteY - 145, 'y' )
+        counter += Ω.tool.isZone( counter, x, y )
       }
 
       //........................................................................
       // Matrix 4
       //
-      if( Ω.info.move[ Ω._.origin ][ 4 ] === 1 )
+      if( Ω.info.move[ origin ][ 4 ] === 1 )
       {
-        Ω._.x = Ω.tool.bend( Ω._.athleteX + 47, 'x' )
-        Ω._.y = Ω.tool.bend( Ω._.athleteY + 47, 'y' )
-        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
+        x = Ω.tool.bend( Ω._.athleteX + 47, 'x' )
+        y = Ω.tool.bend( Ω._.athleteY + 47, 'y' )
+        counter += Ω.tool.isZone( counter, x, y )
 
-        Ω._.x = Ω.tool.bend( Ω._.athleteX + 47, 'x' )
-        Ω._.y = Ω.tool.bend( Ω._.athleteY - 49, 'y' )
-        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
+        x = Ω.tool.bend( Ω._.athleteX + 47, 'x' )
+        y = Ω.tool.bend( Ω._.athleteY - 49, 'y' )
+        counter += Ω.tool.isZone( counter, x, y )
 
-        Ω._.x = Ω.tool.bend( Ω._.athleteX - 49, 'x' )
-        Ω._.y = Ω.tool.bend( Ω._.athleteY - 49, 'y' )
-        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
+        x = Ω.tool.bend( Ω._.athleteX - 49, 'x' )
+        y = Ω.tool.bend( Ω._.athleteY - 49, 'y' )
+        counter += Ω.tool.isZone( counter, x, y )
 
-        Ω._.x = Ω.tool.bend( Ω._.athleteX - 49, 'x' )
-        Ω._.y = Ω.tool.bend( Ω._.athleteY + 47, 'y' )
-        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
+        x = Ω.tool.bend( Ω._.athleteX - 49, 'x' )
+        y = Ω.tool.bend( Ω._.athleteY + 47, 'y' )
+        counter += Ω.tool.isZone( counter, x, y )
       }
 
       //........................................................................
       // Matrix 5
       //
-      if( Ω.info.move[ Ω._.origin ][ 5 ] === 1 )
+      if( Ω.info.move[ origin ][ 5 ] === 1 )
       {
-        Ω._.x = Ω.tool.bend( Ω._.athleteX + 47, 'x' )
-        Ω._.y = Ω.tool.bend( Ω._.athleteY + 95, 'y' )
-        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
+        x = Ω.tool.bend( Ω._.athleteX + 47, 'x' )
+        y = Ω.tool.bend( Ω._.athleteY + 95, 'y' )
+        counter += Ω.tool.isZone( counter, x, y )
 
-        Ω._.x = Ω.tool.bend( Ω._.athleteX - 49, 'x' )
-        Ω._.y = Ω.tool.bend( Ω._.athleteY + 95, 'y' )
-        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
+        x = Ω.tool.bend( Ω._.athleteX - 49, 'x' )
+        y = Ω.tool.bend( Ω._.athleteY + 95, 'y' )
+        counter += Ω.tool.isZone( counter, x, y )
 
-        Ω._.x = Ω.tool.bend( Ω._.athleteX - 97, 'x' )
-        Ω._.y = Ω.tool.bend( Ω._.athleteY + 47, 'y' )
-        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
+        x = Ω.tool.bend( Ω._.athleteX - 97, 'x' )
+        y = Ω.tool.bend( Ω._.athleteY + 47, 'y' )
+        counter += Ω.tool.isZone( counter, x, y )
 
-        Ω._.x = Ω.tool.bend( Ω._.athleteX - 97, 'x' )
-        Ω._.y = Ω.tool.bend( Ω._.athleteY - 49, 'y' )
-        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
+        x = Ω.tool.bend( Ω._.athleteX - 97, 'x' )
+        y = Ω.tool.bend( Ω._.athleteY - 49, 'y' )
+        counter += Ω.tool.isZone( counter, x, y )
 
-        Ω._.x = Ω.tool.bend( Ω._.athleteX - 49, 'x' )
-        Ω._.y = Ω.tool.bend( Ω._.athleteY - 97, 'y' )
-        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
+        x = Ω.tool.bend( Ω._.athleteX - 49, 'x' )
+        y = Ω.tool.bend( Ω._.athleteY - 97, 'y' )
+        counter += Ω.tool.isZone( counter, x, y )
 
-        Ω._.x = Ω.tool.bend( Ω._.athleteX + 47, 'x' )
-        Ω._.y = Ω.tool.bend( Ω._.athleteY - 97, 'y' )
-        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
+        x = Ω.tool.bend( Ω._.athleteX + 47, 'x' )
+        y = Ω.tool.bend( Ω._.athleteY - 97, 'y' )
+        counter += Ω.tool.isZone( counter, x, y )
 
-        Ω._.x = Ω.tool.bend( Ω._.athleteX + 95, 'x' )
-        Ω._.y = Ω.tool.bend( Ω._.athleteY - 49, 'y' )
-        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
+        x = Ω.tool.bend( Ω._.athleteX + 95, 'x' )
+        y = Ω.tool.bend( Ω._.athleteY - 49, 'y' )
+        counter += Ω.tool.isZone( counter, x, y )
 
-        Ω._.x = Ω.tool.bend( Ω._.athleteX + 95, 'x' )
-        Ω._.y = Ω.tool.bend( Ω._.athleteY + 47, 'y' )
-        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
+        x = Ω.tool.bend( Ω._.athleteX + 95, 'x' )
+        y = Ω.tool.bend( Ω._.athleteY + 47, 'y' )
+        counter += Ω.tool.isZone( counter, x, y )
       }
 
       //........................................................................
       // Matrix 6
       //
-      if( Ω.info.move[ Ω._.origin ][ 6 ] === 1 )
+      if( Ω.info.move[ origin ][ 6 ] === 1 )
       {
-        Ω._.x = Ω.tool.bend( Ω._.athleteX + 47, 'x' )
-        Ω._.y = Ω.tool.bend( Ω._.athleteY + 143, 'y' )
-        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
+        x = Ω.tool.bend( Ω._.athleteX + 47, 'x' )
+        y = Ω.tool.bend( Ω._.athleteY + 143, 'y' )
+        counter += Ω.tool.isZone( counter, x, y )
 
-        Ω._.x = Ω.tool.bend( Ω._.athleteX - 49, 'x' )
-        Ω._.y = Ω.tool.bend( Ω._.athleteY + 143, 'y' )
-        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
+        x = Ω.tool.bend( Ω._.athleteX - 49, 'x' )
+        y = Ω.tool.bend( Ω._.athleteY + 143, 'y' )
+        counter += Ω.tool.isZone( counter, x, y )
 
-        Ω._.x = Ω.tool.bend( Ω._.athleteX - 145, 'x' )
-        Ω._.y = Ω.tool.bend( Ω._.athleteY + 47, 'y' )
-        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
+        x = Ω.tool.bend( Ω._.athleteX - 145, 'x' )
+        y = Ω.tool.bend( Ω._.athleteY + 47, 'y' )
+        counter += Ω.tool.isZone( counter, x, y )
 
-        Ω._.x = Ω.tool.bend( Ω._.athleteX - 145, 'x' )
-        Ω._.y = Ω.tool.bend( Ω._.athleteY - 49, 'y' )
-        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
+        x = Ω.tool.bend( Ω._.athleteX - 145, 'x' )
+        y = Ω.tool.bend( Ω._.athleteY - 49, 'y' )
+        counter += Ω.tool.isZone( counter, x, y )
 
-        Ω._.x = Ω.tool.bend( Ω._.athleteX - 49, 'x' )
-        Ω._.y = Ω.tool.bend( Ω._.athleteY - 145, 'y' )
-        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
+        x = Ω.tool.bend( Ω._.athleteX - 49, 'x' )
+        y = Ω.tool.bend( Ω._.athleteY - 145, 'y' )
+        counter += Ω.tool.isZone( counter, x, y )
 
-        Ω._.x = Ω.tool.bend( Ω._.athleteX + 47, 'x' )
-        Ω._.y = Ω.tool.bend( Ω._.athleteY - 145, 'y' )
-        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
+        x = Ω.tool.bend( Ω._.athleteX + 47, 'x' )
+        y = Ω.tool.bend( Ω._.athleteY - 145, 'y' )
+        counter += Ω.tool.isZone( counter, x, y )
 
-        Ω._.x = Ω.tool.bend( Ω._.athleteX + 143, 'x' )
-        Ω._.y = Ω.tool.bend( Ω._.athleteY - 49, 'y' )
-        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
+        x = Ω.tool.bend( Ω._.athleteX + 143, 'x' )
+        y = Ω.tool.bend( Ω._.athleteY - 49, 'y' )
+        counter += Ω.tool.isZone( counter, x, y )
 
-        Ω._.x = Ω.tool.bend( Ω._.athleteX + 143, 'x' )
-        Ω._.y = Ω.tool.bend( Ω._.athleteY + 47, 'y' )
-        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
+        x = Ω.tool.bend( Ω._.athleteX + 143, 'x' )
+        y = Ω.tool.bend( Ω._.athleteY + 47, 'y' )
+        counter += Ω.tool.isZone( counter, x, y )
       }
 
       //........................................................................
       // Matrix 7
       //
-      if( Ω.info.move[ Ω._.origin ][ 7 ] === 1 )
+      if( Ω.info.move[ origin ][ 7 ] === 1 )
       {
-        Ω._.x = Ω.tool.bend( Ω._.athleteX + 95, 'x' )
-        Ω._.y = Ω.tool.bend( Ω._.athleteY + 95, 'y' )
-        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
+        x = Ω.tool.bend( Ω._.athleteX + 95, 'x' )
+        y = Ω.tool.bend( Ω._.athleteY + 95, 'y' )
+        counter += Ω.tool.isZone( counter, x, y )
 
-        Ω._.x = Ω.tool.bend( Ω._.athleteX + 95, 'x' )
-        Ω._.y = Ω.tool.bend( Ω._.athleteY - 97, 'y' )
-        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
+        x = Ω.tool.bend( Ω._.athleteX + 95, 'x' )
+        y = Ω.tool.bend( Ω._.athleteY - 97, 'y' )
+        counter += Ω.tool.isZone( counter, x, y )
 
-        Ω._.x = Ω.tool.bend( Ω._.athleteX - 97, 'x' )
-        Ω._.y = Ω.tool.bend( Ω._.athleteY - 97, 'y' )
-        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
+        x = Ω.tool.bend( Ω._.athleteX - 97, 'x' )
+        y = Ω.tool.bend( Ω._.athleteY - 97, 'y' )
+        counter += Ω.tool.isZone( counter, x, y )
 
-        Ω._.x = Ω.tool.bend( Ω._.athleteX - 97, 'x' )
-        Ω._.y = Ω.tool.bend( Ω._.athleteY + 95, 'y' )
-        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
+        x = Ω.tool.bend( Ω._.athleteX - 97, 'x' )
+        y = Ω.tool.bend( Ω._.athleteY + 95, 'y' )
+        counter += Ω.tool.isZone( counter, x, y )
       }
 
       //........................................................................
       // Matrix 8
       //
-      if( Ω.info.move[ Ω._.origin ][ 8 ] === 1 )
+      if( Ω.info.move[ origin ][ 8 ] === 1 )
       {
-        Ω._.x = Ω.tool.bend( Ω._.athleteX + 95, 'x' )
-        Ω._.y = Ω.tool.bend( Ω._.athleteY + 143, 'y' )
-        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
+        x = Ω.tool.bend( Ω._.athleteX + 95, 'x' )
+        y = Ω.tool.bend( Ω._.athleteY + 143, 'y' )
+        counter += Ω.tool.isZone( counter, x, y )
 
-        Ω._.x = Ω.tool.bend( Ω._.athleteX - 97, 'x' )
-        Ω._.y = Ω.tool.bend( Ω._.athleteY + 143, 'y' )
-        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
+        x = Ω.tool.bend( Ω._.athleteX - 97, 'x' )
+        y = Ω.tool.bend( Ω._.athleteY + 143, 'y' )
+        counter += Ω.tool.isZone( counter, x, y )
 
-        Ω._.x = Ω.tool.bend( Ω._.athleteX - 145, 'x' )
-        Ω._.y = Ω.tool.bend( Ω._.athleteY + 95, 'y' )
-        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
+        x = Ω.tool.bend( Ω._.athleteX - 145, 'x' )
+        y = Ω.tool.bend( Ω._.athleteY + 95, 'y' )
+        counter += Ω.tool.isZone( counter, x, y )
 
-        Ω._.x = Ω.tool.bend( Ω._.athleteX - 145, 'x' )
-        Ω._.y = Ω.tool.bend( Ω._.athleteY - 97, 'y' )
-        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
+        x = Ω.tool.bend( Ω._.athleteX - 145, 'x' )
+        y = Ω.tool.bend( Ω._.athleteY - 97, 'y' )
+        counter += Ω.tool.isZone( counter, x, y )
 
-        Ω._.x = Ω.tool.bend( Ω._.athleteX - 97, 'x' )
-        Ω._.y = Ω.tool.bend( Ω._.athleteY - 145, 'y' )
-        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
+        x = Ω.tool.bend( Ω._.athleteX - 97, 'x' )
+        y = Ω.tool.bend( Ω._.athleteY - 145, 'y' )
+        counter += Ω.tool.isZone( counter, x, y )
 
-        Ω._.x = Ω.tool.bend( Ω._.athleteX + 95, 'x' )
-        Ω._.y = Ω.tool.bend( Ω._.athleteY - 145, 'y' )
-        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
+        x = Ω.tool.bend( Ω._.athleteX + 95, 'x' )
+        y = Ω.tool.bend( Ω._.athleteY - 145, 'y' )
+        counter += Ω.tool.isZone( counter, x, y )
 
-        Ω._.x = Ω.tool.bend( Ω._.athleteX + 143, 'x' )
-        Ω._.y = Ω.tool.bend( Ω._.athleteY - 97, 'y' )
-        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
+        x = Ω.tool.bend( Ω._.athleteX + 143, 'x' )
+        y = Ω.tool.bend( Ω._.athleteY - 97, 'y' )
+        counter += Ω.tool.isZone( counter, x, y )
 
-        Ω._.x = Ω.tool.bend( Ω._.athleteX + 143, 'x' )
-        Ω._.y = Ω.tool.bend( Ω._.athleteY + 95, 'y' )
-        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
+        x = Ω.tool.bend( Ω._.athleteX + 143, 'x' )
+        y = Ω.tool.bend( Ω._.athleteY + 95, 'y' )
+        counter += Ω.tool.isZone( counter, x, y )
       }
 
       //........................................................................
       // Matrix 9
       //
-      if( Ω.info.move[ Ω._.origin ][ 9 ] === 1 )
+      if( Ω.info.move[ origin ][ 9 ] === 1 )
       {
-        Ω._.x = Ω.tool.bend( Ω._.athleteX + 143, 'x' )
-        Ω._.y = Ω.tool.bend( Ω._.athleteY + 143, 'y' )
-        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
+        x = Ω.tool.bend( Ω._.athleteX + 143, 'x' )
+        y = Ω.tool.bend( Ω._.athleteY + 143, 'y' )
+        counter += Ω.tool.isZone( counter, x, y )
 
-        Ω._.x = Ω.tool.bend( Ω._.athleteX + 143, 'x' )
-        Ω._.y = Ω.tool.bend( Ω._.athleteY - 145, 'y' )
-        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
+        x = Ω.tool.bend( Ω._.athleteX + 143, 'x' )
+        y = Ω.tool.bend( Ω._.athleteY - 145, 'y' )
+        counter += Ω.tool.isZone( counter, x, y )
 
-        Ω._.x = Ω.tool.bend( Ω._.athleteX - 145, 'x' )
-        Ω._.y = Ω.tool.bend( Ω._.athleteY - 145, 'y' )
-        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
+        x = Ω.tool.bend( Ω._.athleteX - 145, 'x' )
+        y = Ω.tool.bend( Ω._.athleteY - 145, 'y' )
+        counter += Ω.tool.isZone( counter, x, y )
 
-        Ω._.x = Ω.tool.bend( Ω._.athleteX - 145, 'x' )
-        Ω._.y = Ω.tool.bend( Ω._.athleteY + 143, 'y' )
-        Ω._.counter += Ω.tool.isZone( Ω._.counter, Ω._.x, Ω._.y )
+        x = Ω.tool.bend( Ω._.athleteX - 145, 'x' )
+        y = Ω.tool.bend( Ω._.athleteY + 143, 'y' )
+        counter += Ω.tool.isZone( counter, x, y )
       }
 
       //........................................................................
       //
-      Ω._.value = Ω._.counter
+      value = counter
     }
 
     //==========================================================================
@@ -473,10 +482,10 @@
           //
           if( $ < 4 )
           {
-            Ω._.coordinate = Ω.tool.convert( Ω.state.spawn.green[ $ ] )
+            let coordinate = Ω.tool.convert( Ω.state.spawn.green[ $ ] )
 
-            Ω._.x = Ω._.coordinate[ 0 ]
-            Ω._.y = Ω._.coordinate[ 1 ]
+            x = coordinate[ 0 ]
+            y = coordinate[ 1 ]
           }
 
           // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
@@ -484,20 +493,20 @@
           //
           else
           {
-            Ω._.coordinate = Ω.tool.convert( Ω.state.spawn.blue[ $ - 4 ] )
+            let coordinate = Ω.tool.convert( Ω.state.spawn.blue[ $ - 4 ] )
 
-            Ω._.x = Ω._.coordinate[ 0 ]
-            Ω._.y = Ω._.coordinate[ 1 ]
+            x = coordinate[ 0 ]
+            y = coordinate[ 1 ]
           }
 
           // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
           // Apply coordinates accordingly
           //
-          Ω.state.zone[ $ ][ 0 ] = Ω._.x
-          Ω.state.zone[ $ ][ 1 ] = Ω._.y
+          Ω.state.zone[ $ ][ 0 ] = x
+          Ω.state.zone[ $ ][ 1 ] = y
         }
 
-        Ω._.value = 8 // always 8 zones in turn 0
+        value = 8 // always 8 zones in turn 0
       }
 
       //////////////////////////////////////////////////////////////////////////
@@ -525,7 +534,7 @@
         //......................................................................
         // The number decreases each at athlete selection (team related)
         //
-        Ω._.value = Ω._.spawn.length
+        value = Ω._.spawn.length
       }
     }
 
@@ -536,22 +545,24 @@
     {
       //........................................................................
       //
-      if( Ω.state.currentPlayer === 'gre' ) Ω._.team = Ω.state.team.green
-      else                                  Ω._.team = Ω.state.team.blue
+      let team
+
+      if( Ω.state.currentPlayer === 'gre' ) team = Ω.state.team.green
+      else                                  team = Ω.state.team.blue
 
       //........................................................................
       //
       for( let $ = 0; $ < 4; $ ++ )
       {
-        Ω._.playingAthlete = Ω.state.athlete[ Ω._.team[ $ ] ]
+        let playingAthlete = Ω.state.athlete[ team[ $ ] ]
 
-        Ω.state.zone[ $ ][ 0 ] = Ω._.playingAthlete[ 0 ] - 1
-        Ω.state.zone[ $ ][ 1 ] = Ω._.playingAthlete[ 1 ] - 1
+        Ω.state.zone[ $ ][ 0 ] = playingAthlete[ 0 ] - 1
+        Ω.state.zone[ $ ][ 1 ] = playingAthlete[ 1 ] - 1
       }
 
       //........................................................................
       //
-      Ω._.value = 4
+      value = 4
     }
 
     //==========================================================================
@@ -563,15 +574,15 @@
       //
       Ω.info.arenaCenter.forEach( function( $1, $2 )
       {
-        Ω._.coordinate = Ω.tool.convert( $1 )
+        let coordinate = Ω.tool.convert( $1 )
 
-        Ω.state.zone[ $2 ][ 0 ] = Ω._.coordinate[ 0 ]
-        Ω.state.zone[ $2 ][ 1 ] = Ω._.coordinate[ 1 ]
+        Ω.state.zone[ $2 ][ 0 ] = coordinate[ 0 ]
+        Ω.state.zone[ $2 ][ 1 ] = coordinate[ 1 ]
       } )
 
       //........................................................................
       //
-      Ω._.value = 4
+      value = 4
     }
 
     //==========================================================================
@@ -579,12 +590,12 @@
     //
     for( let $ = 0; $ < 16; $ ++ )
     {
-      if( $ < Ω._.value )
+      if( $ < value )
       {
-        Ω._.x = Ω.state.zone[ $ ][ 0 ] + 3
-        Ω._.y = Ω.state.zone[ $ ][ 1 ] + 3
+        x = Ω.state.zone[ $ ][ 0 ] + 3
+        y = Ω.state.zone[ $ ][ 1 ] + 3
 
-        Ω.tool.translate( Ω.page.zone[ $ ], Ω._.x, Ω._.y )
+        Ω.tool.translate( Ω.page.zone[ $ ], x, y )
         Ω.tool.rotate( Ω.page.zone[ $ ], 1 )
 
         Ω.page.zone[ $ ].style.display = 'flex'
@@ -615,16 +626,19 @@
     //==========================================================================
     // Determining which cell text is to be shown with glow effect
     //
+    let hideText
+    let showText
+
     if( Ω.state.currentPlayer === 'gre' )
     {
-      Ω._.hideText = Array.from( Ω.page.textBlue )
-      Ω._.showText = Array.from( Ω.page.textGreen )
+      hideText = Array.from( Ω.page.textBlue )
+      showText = Array.from( Ω.page.textGreen )
     }
 
     else if( Ω.state.currentPlayer === 'blu' )
     {
-      Ω._.hideText = Array.from( Ω.page.textGreen )
-      Ω._.showText = Array.from( Ω.page.textBlue )
+      hideText = Array.from( Ω.page.textGreen )
+      showText = Array.from( Ω.page.textBlue )
     }
 
     //==========================================================================
@@ -634,7 +648,7 @@
     {
       //........................................................................
       //
-      Ω._.hideText.forEach( ( $ ) =>
+      hideText.forEach( ( $ ) =>
       {
         $.style.color = 'rgba(255,255,255,0.25)'
         $.style.textShadow = ''
@@ -642,43 +656,43 @@
 
       //........................................................................
       //
-      Ω._.showText.forEach( ( $ ) =>
+      showText.forEach( ( $ ) =>
       {
-        Ω._.value = Ω.changer.glow[ 0 ]
+        let value = Ω.changer.glow[ 0 ]
 
-        $.style.color = 'rgba(255,255,255,' + Ω._.value + ')'
-        $.style.textShadow = '0 0 4px rgba(255,255,255,' + Ω._.value + ')'
+        $.style.color = 'rgba(255,255,255,' + value + ')'
+        $.style.textShadow = '0 0 4px rgba(255,255,255,' + value + ')'
       } )
     }
 
     //==========================================================================
     // Determining which athlete art is to be shown with glow effect
     //
-    Ω._.hideGlow = 0
-    Ω._.showGlow = 0
+    let hideGlow
+    let showGlow
 
     if( Ω.state.currentPlayer === 'gre' )
     {
-      Ω._.hideGlow = Ω.state.team.blue
-      Ω._.showGlow = Ω.state.team.green
+      hideGlow = Ω.state.team.blue
+      showGlow = Ω.state.team.green
     }
 
     else if( Ω.state.currentPlayer === 'blu' )
     {
-      Ω._.hideGlow = Ω.state.team.green
-      Ω._.showGlow = Ω.state.team.blue
+      hideGlow = Ω.state.team.green
+      showGlow = Ω.state.team.blue
     }
 
     //==========================================================================
     // Making the selected arts glow
     //
-    if( Ω._.hideGlow !== 0 )
+    if( hideGlow !== undefined )
     {
       //........................................................................
       //
-      for( let $ = 0; $ < Ω._.hideGlow.length; $ ++ )
+      for( let $ = 0; $ < hideGlow.length; $ ++ )
       {
-        Array.from( Ω.page.glow[ Ω._.hideGlow[ $ ] ] ).forEach( function( $ )
+        Array.from( Ω.page.glow[ hideGlow[ $ ] ] ).forEach( function( $ )
         {
           $.style.fill = 'rgba(255,255,255,0.75)'
         } )
@@ -686,13 +700,13 @@
 
       //........................................................................
       //
-      for( let $ = 0; $ < Ω._.showGlow.length; $ ++ )
+      for( let $ = 0; $ < showGlow.length; $ ++ )
       {
-        Array.from( Ω.page.glow[ Ω._.showGlow[ $ ] ] ).forEach( function( $ )
+        Array.from( Ω.page.glow[ showGlow[ $ ] ] ).forEach( function( $ )
         {
-          Ω._.value = ( Ω.changer.glow[ 0 ] - Ω.changer.glow[ 0 ] / 8 )
+          let value = ( Ω.changer.glow[ 0 ] - Ω.changer.glow[ 0 ] / 8 )
 
-          $.style.fill = 'rgba(255,255,255,' + ( 1 - Ω._.value ) + ')'
+          $.style.fill = 'rgba(255,255,255,' + ( 1 - value ) + ')'
         } )
       }
     }
@@ -753,13 +767,13 @@
         //======================================================================
         // Test for green athletes
         //
-        Ω._.x1 = Ω.state.athlete[ Ω.state.team.green[ $ ] ][ 0 ] - 1
-        Ω._.y1 = Ω.state.athlete[ Ω.state.team.green[ $ ] ][ 1 ] - 1
-        Ω._.coordinate1 = Ω.tool.convert( [ Ω._.x1, Ω._.y1 ] )
+        let x1 = Ω.state.athlete[ Ω.state.team.green[ $ ] ][ 0 ] - 1
+        let y1 = Ω.state.athlete[ Ω.state.team.green[ $ ] ][ 1 ] - 1
+        let coordinate1 = Ω.tool.convert( [ x1, y1 ] )
 
         //......................................................................
         //
-        if( Ω.info.area.green.indexOf( Ω._.coordinate1 ) !== -1 )
+        if( Ω.info.area.green.indexOf( coordinate1 ) !== -1 )
         {
           Ω.state.keeper.green = Ω.state.team.green[ $ ]
         }
@@ -767,9 +781,9 @@
         //======================================================================
         // Test for blue athletes
         //
-        Ω._.x2 = Ω.state.athlete[ Ω.state.team.blue[ $ ] ][ 0 ] - 1
-        Ω._.y2 = Ω.state.athlete[ Ω.state.team.blue[ $ ] ][ 1 ] - 1
-        Ω._.coordinate2 = Ω.tool.convert( [ Ω._.x2, Ω._.y2 ] )
+        let x2 = Ω.state.athlete[ Ω.state.team.blue[ $ ] ][ 0 ] - 1
+        let y2 = Ω.state.athlete[ Ω.state.team.blue[ $ ] ][ 1 ] - 1
+        let coordinate2 = Ω.tool.convert( [ x2, y2 ] )
 
         //......................................................................
         //
@@ -794,71 +808,73 @@
     //==========================================================================
     // If there are targets
     //
-    Ω._.targetLength = Ω.info.target[ 0 ].length
+    let targetLength = Ω.info.target[ 0 ].length
 
-    if( Ω._.targetLength !== 0 )
+    if( targetLength !== 0 )
     {
-      for( let $1 = 0; $1 < Ω._.targetLength; $1 ++ )
+      for( let $1 = 0; $1 < targetLength; $1 ++ )
       {
         //......................................................................
         // How far the zone/target is from the aiming athlete
         //
-        Ω._.aimed = Ω.info.target[ 0 ][ $1 ]
-        Ω._.zone = Ω.info.target[ 1 ][ $1 ]
+        let aimed = Ω.info.target[ 0 ][ $1 ]
+        let zone = Ω.info.target[ 1 ][ $1 ]
 
-        Ω._.pusherX = Ω.state.athlete[ Ω.state.displayed ][ 0 ] - 1
-        Ω._.pusherY = Ω.state.athlete[ Ω.state.displayed ][ 1 ] - 1
+        let pusherX = Ω.state.athlete[ Ω.state.displayed ][ 0 ] - 1
+        let pusherY = Ω.state.athlete[ Ω.state.displayed ][ 1 ] - 1
 
-        Ω._.aimedX = Ω.state.athlete[ Ω._.aimed ][ 0 ] - 1
-        Ω._.aimedY = Ω.state.athlete[ Ω._.aimed ][ 1 ] - 1
+        let aimedX = Ω.state.athlete[ aimed ][ 0 ] - 1
+        let aimedY = Ω.state.athlete[ aimed ][ 1 ] - 1
 
-        Ω._.distanceX = Ω._.pusherX - Ω._.aimedX
-        Ω._.distanceY = Ω._.pusherY - Ω._.aimedY
+        let distanceX = pusherX - aimedX
+        let distanceY = pusherY - aimedY
 
-        Ω._.newX = Ω._.aimedX - Ω._.distanceX
-        Ω._.newY = Ω._.aimedY - Ω._.distanceY
+        let newX = aimedX - distanceX
+        let newY = aimedY - distanceY
 
-        Ω._.blockedX = Ω.tool.bend( Ω._.newX, 'x' )
-        Ω._.blockedY = Ω.tool.bend( Ω._.newY, 'y' )
+        let blockedX = Ω.tool.bend( newX, 'x' )
+        let blockedY = Ω.tool.bend( newY, 'y' )
 
-        Ω._.coordinate = Ω.tool.convert( [ Ω._.blockedX, Ω._.blockedY ] )
+        let newCoordinate = Ω.tool.convert( [ blockedX, blockedY ] )
 
         //......................................................................
         // Testing if there are athletes impeding the push action
         //
         for( let $2 = 0; $2 < 20; $2 ++ )
         {
-          Ω._.athleteX = Ω.state.athlete[ $2 ][ 0 ]
-          Ω._.athleteY = Ω.state.athlete[ $2 ][ 1 ]
+          let athleteX = Ω.state.athlete[ $2 ][ 0 ]
+          let athleteY = Ω.state.athlete[ $2 ][ 1 ]
+
+          let area
 
           // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
           // Avoid athletes from being pushed to its opponent's area
           //
           if( Ω.state.athlete[ aimed ][ 2 ] === 'gre' )
           {
-            Ω._.area = Ω.info.area.blue
+            area = Ω.info.area.blue
 
-            if( Ω.state.keeper.green !== 'none' ) Ω._.area += Ω.info.area.green
+            if( Ω.state.keeper.green !== 'none' ) area += Ω.info.area.green
           }
 
           // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
           //
           else
           {
-            Ω._.area = Ω.info.area.green
+            area = Ω.info.area.green
 
-            if( Ω.state.keeper.blue !== 'none' ) Ω._.area += Ω.info.area.blue
+            if( Ω.state.keeper.blue !== 'none' ) area += Ω.info.area.blue
           }
 
           // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
           // If coordinate isn't in the athletes area
           // And if there isn't any athlete impeding the route completion
           //
-          if( Ω._.area.indexOf( Ω._.coordinate ) === -1
-          && Ω._.blockedX === Ω._.athleteX - 1
-          && Ω._.blockedY === Ω._.athleteY - 1 )
+          if( area.indexOf( newCoordinate ) === -1
+          && blockedX === athleteX - 1
+          && blockedY === athleteY - 1 )
           {
-            Ω.state.blocked.push( Ω._.zone )
+            Ω.state.blocked.push( zone )
           }
 
           // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
@@ -866,7 +882,7 @@
           //
           else
           {
-            Ω.state.blocked.push( Ω._.zone )
+            Ω.state.blocked.push( zone )
           }
 
           //////////////////////////////////////////////////////////////////////
@@ -874,16 +890,18 @@
           //////////////////////////////////////////////////////////////////////
           // Shows that is not possible to further replace athletes
           //
-          Ω._.turnColor = Ω.state.currentPlayer
-          Ω._.athleteColor = Ω.state.athlete[ Ω.state.displayed ][ 2 ]
+          let turnColor = Ω.state.currentPlayer
+          let athleteColor = Ω.state.athlete[ Ω.state.displayed ][ 2 ]
 
-          if( Ω._.turnColor === 'gre' ) Ω._.replacesLeft = Ω.state.reps.green
-          else                          Ω._.replacesLeft = Ω.state.reps.blue
+          let replacementsLeft
 
-          if( Ω._.athleteColor === 'none'
-          && Ω._.replacesLeft === 0 )
+          if( turnColor === 'gre' ) replacementsLeft = Ω.state.reps.green
+          else                      replacementsLeft = Ω.state.reps.blue
+
+          if( athleteColor === 'none'
+          && replacementsLeft === 0 )
           {
-            Ω.state.blocked.push( Ω._.zone )
+            Ω.state.blocked.push( zone )
           }
         }
       }
@@ -900,11 +918,11 @@
     //
     Array.from( Ω.page.athlete ).forEach( function( $1, $2 )
     {
-      Ω._.value = '1'
+      let value = '1'
 
-      if( Ω.state.selected === $2 || Ω.state.pushed === $2 ) Ω._.value = '3'
+      if( Ω.state.selected === $2 || Ω.state.pushed === $2 ) value = '3'
 
-      $1.style.zIndex = Ω._.value
+      $1.style.zIndex = value
     } )
 
     //==========================================================================
@@ -924,32 +942,38 @@
     //
     Ω.page.selection.style.display = 'none'
 
-    //..........................................................................
-    // Ball is selected
-    //
-    if( Ω.state.selected === 'ball' )
+    if( Ω.state.selected !== 'none' )
     {
-      Ω._.x = Ω.state.ball[ 0 ] + 2
-      Ω._.y = Ω.state.ball[ 1 ] + 2
-    }
+      let x
+      let y
 
-    //..........................................................................
-    // Athlete is selected
-    //
-    else if( Ω.state.selected !== 'none' )
-    {
-      Ω._.x = Ω.state.athlete[ Ω.state.selected ][ 0 ] + 2
-      Ω._.y = Ω.state.athlete[ Ω.state.selected ][ 1 ] + 2
-    }
+      //........................................................................
+      // Ball is selected
+      //
+      if( Ω.state.selected === 'ball' )
+      {
+        x = Ω.state.ball[ 0 ] + 2
+        y = Ω.state.ball[ 1 ] + 2
+      }
 
-    //..........................................................................
-    // Add a little delay so animation can begin again
-    //
-    setTimeout( function()
-    {
-      Ω.page.selection.style.display = 'flex'
-      Ω.tool.translate( Ω.page.selection, Ω._.x, Ω._.y )
-    }, 1 )
+      //........................................................................
+      // Athlete is selected
+      //
+      else
+      {
+        x = Ω.state.athlete[ Ω.state.selected ][ 0 ] + 2
+        y = Ω.state.athlete[ Ω.state.selected ][ 1 ] + 2
+      }
+
+      //........................................................................
+      // Add a little delay so animation can begin again
+      //
+      setTimeout( function()
+      {
+        Ω.page.selection.style.display = 'flex'
+        Ω.tool.translate( Ω.page.selection, x, y )
+      }, 1 )
+    }
   },
 
   //////////////////////////////////////////////////////////////////////////////
@@ -992,11 +1016,11 @@
     {
       //........................................................................
       //
-      Ω._.athleteY = Ω.state.athlete[ $ ][ 1 ]
+      let athleteY = Ω.state.athlete[ $ ][ 1 ]
 
       //........................................................................
       //
-      if( Ω._.athleteY < 50 || Ω._.athleteY > 480 && Ω._.athleteY < 584)
+      if( athleteY < 50 || athleteY > 480 && athleteY < 584)
       {
         Ω.state.rounded.push( $ )
       }
@@ -1015,10 +1039,10 @@
     {
       //........................................................................
       //
-      Ω._.athlete = Ω.state.athlete[ Ω.state.selected ]
+      let athlete = Ω.state.athlete[ Ω.state.selected ]
 
-      Ω.state.ball[ 0 ] = Ω._.athlete[ 0 ]
-      Ω.state.ball[ 1 ] = Ω._.athlete[ 1 ]
+      Ω.state.ball[ 0 ] = athlete[ 0 ]
+      Ω.state.ball[ 1 ] = athlete[ 1 ]
 
       //........................................................................
       //

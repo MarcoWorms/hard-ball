@@ -92,14 +92,14 @@
     else if( $.target.id.substring( 0, 3 ) === 'min'
     && Ω.state.lock === false )
     {
-      Ω._.athlete = Number( $.target.id.substring( 4, 6 ) )
+      let athlete = Number( $.target.id.substring( 4, 6 ) )
 
       //========================================================================
-      // If athlete is not marked
+      // If athlete is unmarked
       //
-      if( Ω.state.marked.indexOf( Ω._.athlete ) === -1 )
+      if( Ω.state.marked.indexOf( athlete ) === -1 )
       {
-        Ω.state.selected = Ω._.athlete
+        Ω.state.selected = athlete
         Ω.state.displayed = Ω.state.selected
       }
     }
@@ -155,34 +155,34 @@
 
     for( let $1 = 0; $1 < 20; $1 ++ )
     {
-      Ω._.athlete = Ω.state.athlete[ $1 ]
-      Ω._.athleteColor = Ω.state.athlete[ $1 ][ 2 ]
+      let athleteColor = Ω.state.athlete[ $1 ][ 2 ]
+      let darkerColor
 
       //========================================================================
       // Teamless athlete
       //
-      if( Ω._.athleteColor === 'none' ) Ω._.darkerColor = 'rgb(143,143,143)'
+      if( athleteColor === 'none' ) darkerColor = 'rgb(143,143,143)'
 
       //........................................................................
       // Athlete is playing or was benched this match (green team)
       //
-      else if( Ω._.athleteColor === 'gre' || Ω._.athleteColor === 'greBlk' )
+      else if( athleteColor === 'gre' || athleteColor === 'greBlk' )
       {
-        Ω._.darkerColor = 'rgb(127,175,47)'
+        darkerColor = 'rgb(127,175,47)'
       }
 
       //........................................................................
       // Athlete is playing or was benched this match (blue team)
       //
-      else if( Ω._.athleteColor === 'blu' || Ω._.athleteColor === 'bluBlk' )
+      else if( athleteColor === 'blu' || athleteColor === 'bluBlk' )
       {
-        Ω._.darkerColor = 'rgb(95,63,191)'
+        darkerColor = 'rgb(95,63,191)'
       }
 
       //========================================================================
       // Set the athlete's color
       //
-      Ω.page.athlete[ $1 ].style.backgroundColor = Ω._.darkerColor
+      Ω.page.athlete[ $1 ].style.backgroundColor = darkerColor
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -205,15 +205,16 @@
     //
     else if( $.target.id.substring( 0, 3 ) === 'min' )
     {
-      Ω._.athlete = Number( $.target.id.substring( 4, 6 ) )
-      Ω._.athleteColor = Ω.state.athlete[ Ω._.athlete ][ 2 ]
+      let athlete = Number( $.target.id.substring( 4, 6 ) )
+      let athleteColor = Ω.state.athlete[ athlete ][ 2 ]
+      let lighterColor
 
       //========================================================================
       // (if unmarked)
       //
-      if( Ω.state.marked.indexOf( Ω._.athlete ) === -1 )
+      if( Ω.state.marked.indexOf( athlete ) === -1 )
       {
-        Ω.state.hovered = Ω._.athlete
+        Ω.state.hovered = athlete
         Ω.state.displayed = Ω.state.hovered
       }
 
@@ -222,27 +223,27 @@
       //========================================================================
       // Teamless athlete
       //
-      if( Ω._.athleteColor === 'none' ) Ω._.lighterColor = 'rgb(191,191,191)'
+      if( athleteColor === 'none' ) lighterColor = 'rgb(191,191,191)'
 
       //........................................................................
       // Athlete is playing or was benched this match
       //
-      else if( Ω._.athleteColor === 'gre' || Ω._.athleteColor === 'greBlk' )
+      else if( athleteColor === 'gre' || athleteColor === 'greBlk' )
       {
-        Ω._.lighterColor = 'rgb(143,191,63)'
+        lighterColor = 'rgb(143,191,63)'
       }
 
       //........................................................................
       //
-      else if( Ω._.athleteColor === 'blu' || Ω._.athleteColor === 'bluBlk' )
+      else if( athleteColor === 'blu' || athleteColor === 'bluBlk' )
       {
-        Ω._.lighterColor = 'rgb(111,79,207)'
+        lighterColor = 'rgb(111,79,207)'
       }
 
       //========================================================================
       // Set the athlete's color
       //
-      Ω.page.athlete[ Ω._.athlete ].style.backgroundColor = Ω._.lighterColor
+      Ω.page.athlete[ athlete ].style.backgroundColor = lighterColor
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -265,33 +266,34 @@
       //
       else if( Ω.state.displayed !== 'none' )
       {
-        Ω._.athlete = Ω.state.displayed
-        Ω._.athleteColor = Ω.state.athlete[ Ω._.athlete ][ 2 ]
+        let athlete = Ω.state.displayed
+        let athleteColor = Ω.state.athlete[ athlete ][ 2 ]
+        let lighterColor
 
         //......................................................................
         // Teamless athlete
         //
-        if( Ω._.athleteColor === 'none' ) Ω._.lighterColor = 'rgb(191,191,191)'
+        if( athleteColor === 'none' ) lighterColor = 'rgb(191,191,191)'
 
         // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
         // Athlete is playing or was benched this match
         //
-        else if( Ω._.athleteColor === 'gre' || Ω._.athleteColor === 'greBlk' )
+        else if( athleteColor === 'gre' || athleteColor === 'greBlk' )
         {
-          Ω._.lighterColor = 'rgb(143,191,63)'
+          lighterColor = 'rgb(143,191,63)'
         }
 
         // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
         //
-        else if( Ω._.athleteColor === 'blu' || Ω._.athleteColor === 'bluBlk' )
+        else if( athleteColor === 'blu' || athleteColor === 'bluBlk' )
         {
-          Ω._.lighterColor = 'rgb(111,79,207)'
+          lighterColor = 'rgb(111,79,207)'
         }
 
         //......................................................................
         // Set the athlete's color
         //
-        Ω.page.athlete[ Ω._.athlete ].style.backgroundColor = Ω._.lighterColor
+        Ω.page.athlete[ athlete ].style.backgroundColor = lighterColor
       }
     }
 
@@ -302,23 +304,22 @@
     {
       if( Ω.state.selected === 'none' ) Ω.state.displayed = 'none'
 
-      Ω._.targetedZone = Number( $.target.id.substring( 3, 5 ) )
-      Ω._.targetedZoneIndex = Ω.state.target[ 0 ].indexOf( Ω._.targetedZone )
+      let targetedZone = Number( $.target.id.substring( 3, 5 ) )
+      let targetedZoneIndex = Ω.state.target[ 0 ].indexOf( targetedZone )
 
       //========================================================================
       // Has a target
       //
-      if( Ω._.targetedZoneIndex !== -1 ) // zone is targeting
+      if( targetedZoneIndex !== -1 ) // zone is targeting
       {
-        Ω._.targetedAthlete = Ω.state.target[ 1 ][ zoneIndex ]
-        Ω._.athleteColor = Ω.state.athlete[ targetedAthlete ][ 2 ]
+        let targeted = Ω.state.target[ 1 ][ zoneIndex ]
 
         //......................................................................
         // Hover color . Part 5 . Get whatever is below the zone
         //......................................................................
         // If the ball is being targeted
         //
-        if( targetedAthlete === 'ball' )
+        if( targeted === 'ball' )
         {
           Ω.page.ball.style.backgroundColor = 'rgb(143,111,79)'
         }
@@ -328,30 +329,34 @@
         //
         else
         {
+          let athlete = targeted
+          let athleteColor = Ω.state.athlete[ targeted ][ 2 ]
+          let lighterColor
+
           // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
           // Teamless athlete
           //
-          if( athleteColor === 'none' ) Ω._.lighterColor = 'rgb(191,191,191)'
+          if( athleteColor === 'none' ) lighterColor = 'rgb(191,191,191)'
 
           //  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  
           // Athlete is playing or was benched this match
           //
           else if( athleteColor === 'gre' || athleteColor === 'greBlk' )
           {
-            Ω._.lighterColor = 'rgb(143,191,63)'
+            lighterColor = 'rgb(143,191,63)'
           }
 
           //  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  
           //
           else if( athleteColor === 'blu' || athleteColor === 'bluBlk' )
           {
-            Ω._.lighterColor = 'rgb(111,79,207)'
+            lighterColor = 'rgb(111,79,207)'
           }
 
           // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
           // Set the athlete's color
           //
-          Ω.page.athlete[ targetedAthlete ].style.backgroundColor = lighterColor
+          Ω.page.athlete[ athlete ].style.backgroundColor = lighterColor
         }
       }
     }
@@ -375,33 +380,34 @@
 
       for( let $1 = 0; $1 < 20; $1 ++ )
       {
-        Ω._.athlete = Ω.state.athlete[ $1 ]
-        Ω._.athleteColor = Ω.state.athlete[ $1 ][ 2 ]
+        let athlete = Ω.state.athlete[ $1 ]
+        let athleteColor = Ω.state.athlete[ $1 ][ 2 ]
+        let darkerColor
 
         //......................................................................
         // Teamless athlete
         //
-        if( Ω._.athleteColor === 'none' ) Ω._.darkerColor = 'rgb(143,143,143)'
+        if( athleteColor === 'none' ) darkerColor = 'rgb(143,143,143)'
 
         // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
         // Athlete is playing or was benched this match
         //
-        else if( Ω._.athleteColor === 'gre' || Ω._.athleteColor === 'greBlk' )
+        else if( athleteColor === 'gre' || athleteColor === 'greBlk' )
         {
-          Ω._.darkerColor = 'rgb(127,175,47)'
+          darkerColor = 'rgb(127,175,47)'
         }
 
         // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
         //
-        else if( Ω._.athleteColor === 'blu' || Ω._.athleteColor === 'bluBlk' )
+        else if( athleteColor === 'blu' || athleteColor === 'bluBlk' )
         {
-          Ω._.darkerColor = 'rgb(95,63,191)'
+          darkerColor = 'rgb(95,63,191)'
         }
 
         //......................................................................
         // Set the athlete's color
         //
-        Ω.page.athlete[ $1 ].style.backgroundColor = Ω._.darkerColor
+        Ω.page.athlete[ $1 ].style.backgroundColor = darkerColor
       }
     }
 

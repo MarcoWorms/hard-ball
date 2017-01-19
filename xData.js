@@ -101,9 +101,11 @@
   (
     function()
     {
-      Ω._.array = []
-      for( Ω.$ = 0; Ω.$ < 20; Ω.$ ++ ) Ω._.array.push( [ 0, 0, 'none' ] )
-      return Ω._.array
+      let array = []
+
+      for( let $ = 0; $ < 20; $ ++ ) array.push( [ 0, 0, 'none' ] )
+
+      return array
     }()
   ),
 
@@ -117,9 +119,11 @@
   (
     function()
     {
-      Ω._.array = []
-      for( Ω.$ = 0; Ω.$ < 16; Ω.$ ++ ) Ω._.array.push( [ 'none', 'none' ] )
-      return Ω._.array
+      let array = []
+
+      for( let $ = 0; $ < 16; $ ++ ) array.push( [ 'none', 'none' ] )
+
+      return array
     }()
   ),
 
@@ -206,15 +210,14 @@
     (
       function()
       {
-        Ω._.area = Ω.page.areaGreen
-        Ω._.array = []
+        let array = []
 
-        for( Ω.$ = 0; Ω.$ < Ω._.area.length; Ω.$ ++ )
+        for( let $ = 0; $ < Ω.page.areaGreen.length; $ ++ )
         {
-          Ω._.array.push( Ω._.area[ Ω.$ ].id )
+          array.push( Ω.page.areaGreen[ $ ].id )
         }
 
-        return Ω._.array
+        return array
       }()
     ),
 
@@ -224,15 +227,14 @@
     (
       function()
       {
-        Ω._.area = Ω.page.areaBlue
-        Ω._.array = []
+        let array = []
 
-        for( Ω.$ = 0; Ω.$ < Ω._.area.length; Ω.$ ++ )
+        for( let $ = 0; $ < Ω.page.areaBlue.length; $ ++ )
         {
-          Ω._.array.push( Ω._.area[ Ω.$ ].id )
+          array.push( Ω.page.areaBlue[ $ ].id )
         }
 
-        return Ω._.array
+        return array
       }()
     ),
   },
@@ -251,31 +253,31 @@
       //========================================================================
       // Insert 13 rows into arrayRows
       //
-      Ω._.arrayRows = []
+      let arrayRows = []
 
-      for( Ω.$1 = 0; Ω.$1 < 13; Ω.$1 ++ )
+      for( let $1 = 0; $1 < 13; $1 ++ )
       {
         //......................................................................
         // Insert 20 cells into arrayCells
         //
-        Ω._.arrayCells = []
+        let arrayCells = []
 
-        for( Ω.$2 = 0; Ω.$2 < 20; Ω.$2 ++ )
+        for( let $2 = 0; $2 < 20; $2 ++ )
         {
-          Ω._.x = Ω.$2 * 48
-          Ω._.y = Ω.$1 * 48
+          let x = $2 * 48
+          let y = $1 * 48
 
-          if( Ω.$1 === 12 ) Ω._.y += 7 // correction for the bench
+          if( $1 === 12 ) y += 7 // correction for the bench
 
-          Ω._.arrayCells.push( [ Ω._.x, Ω._.y ] )
+          arrayCells.push( [ x, y ] )
         }
 
-        Ω._.arrayRows.push( Ω._.arrayCells )
+        arrayRows.push( arrayCells )
       }
 
       //========================================================================
       //
-      return Ω._.arrayRows
+      return arrayRows
     }()
   ),
 }

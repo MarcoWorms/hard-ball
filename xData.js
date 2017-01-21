@@ -9,87 +9,87 @@
   //============================================================================
   // Prevents fast click exploit
   //
-  lock: false,
+  lock:false,
 
   //............................................................................
   // Shows how many plays have happened
   //
-  turn: 0,
+  turn:0,
 
   //============================================================================
   // Shows which players are in which team
   //
-  team: { green: [], blue: [] },
+  team:{ green: [], blue: [] },
 
   //............................................................................
   // Which, if any, is the current goalkeeper of each team
   //
-  keeper: { green: 'none', blue: 'none' },
+  keeper:{ green: 'none', blue: 'none' },
 
   //============================================================================
   // How many replacements each player still has
   //
-  reps: { green: 2, blue: 2 },
+  reps:{ green: 2, blue: 2 },
 
   //............................................................................
   // Shows which athletes have been replaced
   //
-  outed: [],
+  outed:[],
 
   //============================================================================
   // Shows which athletes are in the roundabout and which is currently moving
   //
-  rounded: [],
-  rounding: [ 'none', 0 ],
+  rounded:[],
+  rounding:[ 'none', 0 ],
 
   //============================================================================
   // Which player played first and which is to play now
   //
-  firstPlayer: '', // 'gre' or 'blu'
-  currentPlayer: '', // 'gre' or 'blu'
+  firstPlayer:'', // 'gre' or 'blu'
+  currentPlayer:'', // 'gre' or 'blu'
 
   //============================================================================
   // Shows which athlete is being displayed
   //
-  selected: 'none', // 'none', 'ball' or 0 to 19
-  hovered: 'none', // 'none', 'ball' or 0 to 19
+  selected:'none', // 'none', 'ball' or 0 to 19
+  hovered:'none', // 'none', 'ball' or 0 to 19
 
-  displayed: 'none', // 'none', 'ball' or 0 to 19
+  displayed:'none', // 'none', 'ball' or 0 to 19
 
   //============================================================================
   // Shows which athlete is being pushed
   //
-  pushed: 'none', // 'none' or 0 to 19
+  pushed:'none', // 'none' or 0 to 19
 
   //============================================================================
   // Shows which athlete is holding the ball, and if there is someone taking it
   //
-  holder: 'none', // 'none' or 0 to 19
-  newHolder: 'none', // 'none' or 0 to 19
+  holder:'none', // 'none' or 0 to 19
+  newHolder:'none', // 'none' or 0 to 19
 
   //============================================================================
   // Shows which zones are not pushable
   //
-  blocked: [],
+  blocked:[],
 
   //============================================================================
   // Shows which athletes may not be selected
   //
-  marked: [],
+  marked:[],
 
   //============================================================================
   // Defines which athletes (and/or the ball), if any, is under a zone
   //
   // [ [ zones ], [ athletes ] ]
   //
-  target: [ [], [] ],
+  target:[ [], [] ],
 
   //============================================================================
   // Position of the ball as follows
   //
   // [ numX, numY ]
   //
-  ball: [ 0, 0 ],
+  ball:{ x:0, y:0 },
 
   //============================================================================
   // 'now.athlete' is an array containing 20 arrays
@@ -103,7 +103,7 @@
     {
       let array = []
 
-      for( let $ = 0; $ < 20; $ ++ ) array.push( [ 0, 0, 'none' ] )
+      for( let $ = 0; $ < 20; $ ++ ) array.push( { x:0, y:0, color:'none' } )
 
       return array
     }()
@@ -121,7 +121,7 @@
     {
       let array = []
 
-      for( let $ = 0; $ < 16; $ ++ ) array.push( [ 'none', 'none' ] )
+      for( let $ = 0; $ < 16; $ ++ ) array.push( { x:'none', y:'none' } )
 
       return array
     }()
@@ -134,8 +134,8 @@
   //
   spawn:
   {
-    green: [ 'C02', 'D03', 'I03', 'J02' ],
-    blue: [ 'J17', 'I16', 'D16', 'C17' ],
+    green:[ 'C02', 'D03', 'I03', 'J02' ],
+    blue:[ 'J17', 'I16', 'D16', 'C17' ],
   },
 }
 
@@ -146,7 +146,7 @@
 {
   //============================================================================
   //
-  aToL: [ 'A','B','C','D','E','F','G','H','I','J','K','L' ],
+  aToL:[ 'A','B','C','D','E','F','G','H','I','J','K','L' ],
 
   //============================================================================
   // Matrix of how each athlete moves
@@ -197,7 +197,7 @@
   //============================================================================
   // The 4 cells that make up the arena's center
   //
-  arenaCenter: [ 'F09', 'F10', 'G09', 'G10' ],
+  arenaCenter:[ 'F09', 'F10', 'G09', 'G10' ],
 
   //============================================================================
   // Each is an array of cell names relative to the area
@@ -242,9 +242,7 @@
   //============================================================================
   // 'info.cell' is an array containing 13 arrays (arena rows)
   // Each of these arrays contain 20 arrays (row's cells coordinates)
-  // Each of these arrays contain 1 cell's information as follows
-  //
-  // [ numX, numY ]
+  // Each of these arrays contain 1 cell's information
   //
   cell:
   (
@@ -269,7 +267,7 @@
 
           if( $1 === 12 ) y += 7 // correction for the bench
 
-          arrayCells.push( [ x, y ] )
+          arrayCells.push( { x:x, y:y } )
         }
 
         arrayRows.push( arrayCells )

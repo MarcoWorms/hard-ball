@@ -155,7 +155,7 @@
 
     for( let $1 = 0; $1 < 20; $1 ++ )
     {
-      let athleteColor = Ω.state.athlete[ $1 ][ 2 ]
+      let athleteColor = Ω.state.athlete[ $1 ].color
       let darkerColor
 
       //========================================================================
@@ -206,7 +206,7 @@
     else if( $.target.id.substring( 0, 3 ) === 'min' )
     {
       let athlete = Number( $.target.id.substring( 4, 6 ) )
-      let athleteColor = Ω.state.athlete[ athlete ][ 2 ]
+      let athleteColor = Ω.state.athlete[ athlete ].color
       let lighterColor
 
       //========================================================================
@@ -267,7 +267,7 @@
       else if( Ω.state.displayed !== 'none' )
       {
         let athlete = Ω.state.displayed
-        let athleteColor = Ω.state.athlete[ athlete ][ 2 ]
+        let athleteColor = Ω.state.athlete[ athlete ].color
         let lighterColor
 
         //......................................................................
@@ -330,7 +330,7 @@
         else
         {
           let athlete = targeted
-          let athleteColor = Ω.state.athlete[ targeted ][ 2 ]
+          let athleteColor = Ω.state.athlete[ targeted ].color
           let lighterColor
 
           // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
@@ -381,7 +381,7 @@
       for( let $1 = 0; $1 < 20; $1 ++ )
       {
         let athlete = Ω.state.athlete[ $1 ]
-        let athleteColor = Ω.state.athlete[ $1 ][ 2 ]
+        let athleteColor = Ω.state.athlete[ $1 ].color
         let darkerColor
 
         //......................................................................

@@ -83,7 +83,7 @@
   {
     //==========================================================================
     //
-    entity.style.transform += ' rotate(' + Ω.changer.spin[ 0 ] * speed + 'deg)'
+    entity.style.transform += ' rotate(' + Ω.change.spin[ 0 ] * speed + 'deg)'
   },
 
   //////////////////////////////////////////////////////////////////////////////
@@ -119,7 +119,7 @@
   {
     //==========================================================================
     //
-    let athleteColor = Ω.state.athlete[ Ω.state.displayed ][ 2 ]
+    let athleteColor = Ω.state.athlete[ Ω.state.displayed ].color
 
     let area // athlete's area
     let other // opponent's area
@@ -234,7 +234,7 @@
       //........................................................................
       // Return the coordinates
       //
-      return [ x, y ]
+      return { x:x, y:y }
     }
 
     //==========================================================================
@@ -296,11 +296,11 @@
 
     //==========================================================================
     //
-    let pusherX = Ω.state.athlete[ Ω.state.selected ][ 0 ] - 1
-    let pusherY = Ω.state.athlete[ Ω.state.selected ][ 1 ] - 1
+    let pusherX = Ω.state.athlete[ Ω.state.selected ].x - 1
+    let pusherY = Ω.state.athlete[ Ω.state.selected ].y - 1
 
-    let aimedX = Ω.state.athlete[ aimed ][ 0 ] - 1
-    let aimedY = Ω.state.athlete[ aimed ][ 1 ] - 1
+    let aimedX = Ω.state.athlete[ aimed ].x - 1
+    let aimedY = Ω.state.athlete[ aimed ].y - 1
 
     let distanceX = pusherX - aimedX
     let distanceY = pusherY - aimedY
@@ -329,24 +329,43 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 //
-Ω.changer =
+Ω.change =
 {
   //============================================================================
   //
   spin: [ 0, setInterval( function()
     {
-      if( Ω.changer.spin[ 0 ] > 360 ) Ω.changer.spin[ 0 ] = 0
-      else                            Ω.changer.spin[ 0 ] ++
+      if( Ω.change.spin[ 0 ] > 360 ) Ω.change.spin[ 0 ] = 0
+      else                            Ω.change.spin[ 0 ] ++
     }, 10 ) ],
 
   //============================================================================
   //
   glow: [ 0.66, false, setInterval( function()
     {
-      if( Ω.changer.glow[ 1 ] === false )     Ω.changer.glow[ 0 ] += 0.03
-      else if( Ω.changer.glow[ 1 ] === true ) Ω.changer.glow[ 0 ] -= 0.03
+      if( Ω.change.glow[ 1 ] === false )     Ω.change.glow[ 0 ] += 0.03
+      else if( Ω.change.glow[ 1 ] === true ) Ω.change.glow[ 0 ] -= 0.03
 
-      if( Ω.changer.glow[ 0 ] > 0.66 )      Ω.changer.glow[ 1 ] = true
-      else if( Ω.changer.glow[ 0 ] < 0.33 ) Ω.changer.glow[ 1 ] = false
+      if( Ω.change.glow[ 0 ] > 0.66 )      Ω.change.glow[ 1 ] = true
+      else if( Ω.change.glow[ 0 ] < 0.33 ) Ω.change.glow[ 1 ] = false
     }, 40 ) ],
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//
+Ω.trigger =
+{
+  pull: function()
+  {
+    for( let $ = 0; $ < Ω.trigger.event.length; $ ++ )
+    {
+      if( Ω.trigger.event[ $ ].check() )
+      {
+        Ω.trigger.event[ $ ].act()
+        Ω.trigger.event.splice( $, 1 )
+      }
+    }
+  },
+
+  event: [],
 }

@@ -14,8 +14,8 @@
     //
     for( let $ = 0; $ < 20; $ ++ )
     {
-      let x = Ω.state.athlete[ $ ][ 0 ]
-      let y = Ω.state.athlete[ $ ][ 1 ]
+      let x = Ω.state.athlete[ $ ].x
+      let y = Ω.state.athlete[ $ ].y
 
       Ω.tool.translate( Ω.page.athlete[ $ ], x, y )
     }
@@ -27,7 +27,7 @@
   {
     //==========================================================================
     //
-    Ω.tool.translate( Ω.page.ball, Ω.state.ball[ 0 ], Ω.state.ball[ 1 ] )
+    Ω.tool.translate( Ω.page.ball, Ω.state.ball.x, Ω.state.ball.y )
   },
 
   //////////////////////////////////////////////////////////////////////////////
@@ -62,7 +62,7 @@
       //........................................................................
       // Ball's initial state
       //
-      if( Ω.state.ball[ 0 ] === 457 ) Ω.game.updZonCdn( 'cnt', false )
+      if( Ω.state.ball.x === 457 ) Ω.game.updZonCdn( 'cnt', false )
     }
 
     //==========================================================================
@@ -70,7 +70,7 @@
     //
     else if( Ω.state.displayed !== 'none' )
     {
-      let athleteColor = Ω.state.athlete[ Ω.state.displayed ][ 2 ]
+      let athleteColor = Ω.state.athlete[ Ω.state.displayed ].color
 
       //........................................................................
       // Displayed and unmarked athlete is ready to play
@@ -121,7 +121,7 @@
       //........................................................................
       // Ball wasn't moved yet
       //
-      if( Ω.state.ball[ 0 ] === 457 )
+      if( Ω.state.ball.x === 457 )
       {
         value = 0.66
         lock = false
@@ -134,18 +134,20 @@
     else if( Ω.state.displayed !== 'none'
     && Ω.state.marked.indexOf( Ω.state.displayed ) === -1 )
     {
+      let athleteColor = Ω.state.athlete[ Ω.state.displayed ].color
+
       //........................................................................
       // If team-selection time is still going on
       // And displayed athlete is ready to play
       //
       if( Ω.state.turn < 8
-      && Ω.state.athlete[ Ω.state.displayed ][ 2 ] !== 'none'
+      && athleteColor !== 'none'
       //
       // Or if team-selection time is over
       // And athlete isn't the same color as the turn
       //
       || Ω.state.turn > 7
-      && Ω.state.athlete[ Ω.state.displayed ][ 2 ] !== Ω.state.currentPlayer
+      && athleteColor !== Ω.state.currentPlayer
       //
       // Or if there is someone roundabouting
       // And the athlete isn't the one doing it
@@ -154,8 +156,6 @@
       && Ω.state.rounding[ 0 ] !== Ω.state.displayed )
       {
         value = 0.66
-
-        let athleteColor = Ω.state.athlete[ Ω.state.displayed ][ 2 ]
 
         if( athleteColor === 'none' ) lock = true
         else                          lock = false
@@ -211,8 +211,8 @@
 
       //........................................................................
       //
-      Ω._.athleteX = Ω.state.athlete[ Ω.state.displayed ][ 0 ]
-      Ω._.athleteX = Ω.state.athlete[ Ω.state.displayed ][ 1 ]
+      Ω._.athleteX = Ω.state.athlete[ Ω.state.displayed ].x
+      Ω._.athleteX = Ω.state.athlete[ Ω.state.displayed ].y
 
       //........................................................................
       // Matrix 1
@@ -484,8 +484,8 @@
           {
             let coordinate = Ω.tool.convert( Ω.state.spawn.green[ $ ] )
 
-            x = coordinate[ 0 ]
-            y = coordinate[ 1 ]
+            x = coordinate.x
+            y = coordinate.y
           }
 
           // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
@@ -495,15 +495,15 @@
           {
             let coordinate = Ω.tool.convert( Ω.state.spawn.blue[ $ - 4 ] )
 
-            x = coordinate[ 0 ]
-            y = coordinate[ 1 ]
+            x = coordinate.x
+            y = coordinate.y
           }
 
           // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
           // Apply coordinates accordingly
           //
-          Ω.state.zone[ $ ][ 0 ] = x
-          Ω.state.zone[ $ ][ 1 ] = y
+          Ω.state.zone[ $ ].x = x
+          Ω.state.zone[ $ ].y = y
         }
 
         value = 8 // always 8 zones in turn 0
@@ -527,8 +527,8 @@
         {
           Ω._.coordinate = Ω.tool.convert( Ω._.spawn[ $ ] )
 
-          Ω.state.zone[ $ ][ 0 ] = Ω._.coordinate[ 0 ]
-          Ω.state.zone[ $ ][ 1 ] = Ω._.coordinate[ 1 ]
+          Ω.state.zone[ $ ].x = Ω._.coordinate.x
+          Ω.state.zone[ $ ].y = Ω._.coordinate.y
         }
 
         //......................................................................
@@ -556,8 +556,8 @@
       {
         let playingAthlete = Ω.state.athlete[ team[ $ ] ]
 
-        Ω.state.zone[ $ ][ 0 ] = playingAthlete[ 0 ] - 1
-        Ω.state.zone[ $ ][ 1 ] = playingAthlete[ 1 ] - 1
+        Ω.state.zone[ $ ].x = playingAthlete.x - 1
+        Ω.state.zone[ $ ].y = playingAthlete.y - 1
       }
 
       //........................................................................
@@ -576,8 +576,8 @@
       {
         let coordinate = Ω.tool.convert( $1 )
 
-        Ω.state.zone[ $2 ][ 0 ] = coordinate[ 0 ]
-        Ω.state.zone[ $2 ][ 1 ] = coordinate[ 1 ]
+        Ω.state.zone[ $2 ].x = coordinate.x
+        Ω.state.zone[ $2 ].y = coordinate.y
       } )
 
       //........................................................................
@@ -592,8 +592,8 @@
     {
       if( $ < value )
       {
-        x = Ω.state.zone[ $ ][ 0 ] + 3
-        y = Ω.state.zone[ $ ][ 1 ] + 3
+        x = Ω.state.zone[ $ ].x + 3
+        y = Ω.state.zone[ $ ].y + 3
 
         Ω.tool.translate( Ω.page.zone[ $ ], x, y )
         Ω.tool.rotate( Ω.page.zone[ $ ], 1 )
@@ -658,7 +658,7 @@
       //
       showText.forEach( ( $ ) =>
       {
-        let value = Ω.changer.glow[ 0 ]
+        let value = Ω.change.glow[ 0 ]
 
         $.style.color = 'rgba(255,255,255,' + value + ')'
         $.style.textShadow = '0 0 4px rgba(255,255,255,' + value + ')'
@@ -704,7 +704,7 @@
       {
         Array.from( Ω.page.glow[ showGlow[ $ ] ] ).forEach( function( $ )
         {
-          let value = ( Ω.changer.glow[ 0 ] - Ω.changer.glow[ 0 ] / 8 )
+          let value = ( Ω.change.glow[ 0 ] - Ω.change.glow[ 0 ] / 8 )
 
           $.style.fill = 'rgba(255,255,255,' + ( 1 - value ) + ')'
         } )
@@ -719,7 +719,7 @@
   {
     //==========================================================================
     //
-    Ω.info.target = [ [], [] ] // refresh the array (targets & zones)
+    Ω.state.target = [ [], [] ] // refresh the array (targets & zones)
 
     //==========================================================================
     //
@@ -730,22 +730,22 @@
       //
       for( let $2 = 0; $2 < 20; $2 ++ )
       {
-        if( Ω.state.athlete[ $2 ][ 0 ] - 1 === Ω.state.zone[ $1 ][ 0 ]
-        && Ω.state.athlete[ $2 ][ 1 ] - 1 === Ω.state.zone[ $1 ][ 1 ] )
+        if( Ω.state.athlete[ $2 ].x - 1 === Ω.state.zone[ $1 ].x
+        && Ω.state.athlete[ $2 ].y - 1 === Ω.state.zone[ $1 ].y )
         {
-          Ω.info.target[ 0 ].push( $2 ) // targets
-          Ω.info.target[ 1 ].push( $1 ) // zones
+          Ω.state.target[ 0 ].push( $2 ) // targets
+          Ω.state.target[ 1 ].push( $1 ) // zones
         }
       }
 
       //........................................................................
       // Look for the ball
       //
-      if( Ω.state.ball[ 0 ] - 1 === Ω.state.zone[ $1 ][ 0 ]
-      && Ω.state.ball[ 1 ] - 1 === Ω.state.zone[ $1 ][ 1 ] )
+      if( Ω.state.ball.x - 1 === Ω.state.zone[ $1 ].x
+      && Ω.state.ball.y - 1 === Ω.state.zone[ $1 ].y )
       {
-        Ω.info.target[ 0 ].push( 'ball' ) // ball
-        Ω.info.target[ 1 ].push( $1 ) // zone
+        Ω.state.target[ 0 ].push( 'ball' ) // ball
+        Ω.state.target[ 1 ].push( $1 ) // zone
       }
     }
   },
@@ -767,8 +767,8 @@
         //======================================================================
         // Test for green athletes
         //
-        let x1 = Ω.state.athlete[ Ω.state.team.green[ $ ] ][ 0 ] - 1
-        let y1 = Ω.state.athlete[ Ω.state.team.green[ $ ] ][ 1 ] - 1
+        let x1 = Ω.state.athlete[ Ω.state.team.green[ $ ] ].x - 1
+        let y1 = Ω.state.athlete[ Ω.state.team.green[ $ ] ].y - 1
         let coordinate1 = Ω.tool.convert( [ x1, y1 ] )
 
         //......................................................................
@@ -781,8 +781,8 @@
         //======================================================================
         // Test for blue athletes
         //
-        let x2 = Ω.state.athlete[ Ω.state.team.blue[ $ ] ][ 0 ] - 1
-        let y2 = Ω.state.athlete[ Ω.state.team.blue[ $ ] ][ 1 ] - 1
+        let x2 = Ω.state.athlete[ Ω.state.team.blue[ $ ] ].x - 1
+        let y2 = Ω.state.athlete[ Ω.state.team.blue[ $ ] ].y - 1
         let coordinate2 = Ω.tool.convert( [ x2, y2 ] )
 
         //......................................................................
@@ -808,7 +808,7 @@
     //==========================================================================
     // If there are targets
     //
-    let targetLength = Ω.info.target[ 0 ].length
+    let targetLength = Ω.state.target[ 0 ].length
 
     if( targetLength !== 0 )
     {
@@ -817,14 +817,14 @@
         //......................................................................
         // How far the zone/target is from the aiming athlete
         //
-        let aimed = Ω.info.target[ 0 ][ $1 ]
-        let zone = Ω.info.target[ 1 ][ $1 ]
+        let aimed = Ω.state.target[ 0 ][ $1 ]
+        let zone = Ω.state.target[ 1 ][ $1 ]
 
-        let pusherX = Ω.state.athlete[ Ω.state.displayed ][ 0 ] - 1
-        let pusherY = Ω.state.athlete[ Ω.state.displayed ][ 1 ] - 1
+        let pusherX = Ω.state.athlete[ Ω.state.displayed ].x - 1
+        let pusherY = Ω.state.athlete[ Ω.state.displayed ].y - 1
 
-        let aimedX = Ω.state.athlete[ aimed ][ 0 ] - 1
-        let aimedY = Ω.state.athlete[ aimed ][ 1 ] - 1
+        let aimedX = Ω.state.athlete[ aimed ].x - 1
+        let aimedY = Ω.state.athlete[ aimed ].y - 1
 
         let distanceX = pusherX - aimedX
         let distanceY = pusherY - aimedY
@@ -842,15 +842,15 @@
         //
         for( let $2 = 0; $2 < 20; $2 ++ )
         {
-          let athleteX = Ω.state.athlete[ $2 ][ 0 ]
-          let athleteY = Ω.state.athlete[ $2 ][ 1 ]
+          let athleteX = Ω.state.athlete[ $2 ].x
+          let athleteY = Ω.state.athlete[ $2 ].y
 
           let area
 
           // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
           // Avoid athletes from being pushed to its opponent's area
           //
-          if( Ω.state.athlete[ aimed ][ 2 ] === 'gre' )
+          if( Ω.state.athlete[ aimed ].color === 'gre' )
           {
             area = Ω.info.area.blue
 
@@ -891,15 +891,14 @@
           // Shows that is not possible to further replace athletes
           //
           let turnColor = Ω.state.currentPlayer
-          let athleteColor = Ω.state.athlete[ Ω.state.displayed ][ 2 ]
+          let athleteColor = Ω.state.athlete[ Ω.state.displayed ].color
 
           let replacementsLeft
 
           if( turnColor === 'gre' ) replacementsLeft = Ω.state.reps.green
           else                      replacementsLeft = Ω.state.reps.blue
 
-          if( athleteColor === 'none'
-          && replacementsLeft === 0 )
+          if( athleteColor === 'none' && replacementsLeft === 0 )
           {
             Ω.state.blocked.push( zone )
           }
@@ -928,7 +927,7 @@
     //==========================================================================
     // Update the ball's index
     //
-    if( Ω.state.ball[ 0 ] === 457 ) Ω.page.ball.style.zIndex = '3'
+    if( Ω.state.ball.x === 457 ) Ω.page.ball.style.zIndex = '3'
     else                            Ω.page.ball.style.zIndex = '1'
   },
 
@@ -952,8 +951,8 @@
       //
       if( Ω.state.selected === 'ball' )
       {
-        x = Ω.state.ball[ 0 ] + 2
-        y = Ω.state.ball[ 1 ] + 2
+        x = Ω.state.ball.x + 2
+        y = Ω.state.ball.y + 2
       }
 
       //........................................................................
@@ -961,8 +960,8 @@
       //
       else
       {
-        x = Ω.state.athlete[ Ω.state.selected ][ 0 ] + 2
-        y = Ω.state.athlete[ Ω.state.selected ][ 1 ] + 2
+        x = Ω.state.athlete[ Ω.state.selected ].x + 2
+        y = Ω.state.athlete[ Ω.state.selected ].y + 2
       }
 
       //........................................................................
@@ -985,7 +984,7 @@
     //
     for( let $ = 0; $ < 20; $ ++ )
     {
-      if( Ω.state.athlete[ $ ][ 2 ].substring( 3, 6 ) === 'Blk' )
+      if( Ω.state.athlete[ $ ].color.substring( 3, 6 ) === 'Blk' )
       {
         //......................................................................
         //
@@ -1016,7 +1015,7 @@
     {
       //........................................................................
       //
-      let athleteY = Ω.state.athlete[ $ ][ 1 ]
+      let athleteY = Ω.state.athlete[ $ ].y
 
       //........................................................................
       //
@@ -1041,8 +1040,8 @@
       //
       let athlete = Ω.state.athlete[ Ω.state.selected ]
 
-      Ω.state.ball[ 0 ] = athlete[ 0 ]
-      Ω.state.ball[ 1 ] = athlete[ 1 ]
+      Ω.state.ball.x = athlete.x
+      Ω.state.ball.y = athlete.y
 
       //........................................................................
       //
@@ -1076,33 +1075,89 @@
       //
       for( let $ = 0; $ < 20; $ ++ )
       {
-        Ω.state.athlete[ $ ][ 0 ] = Ω.info.cell[ 12 ][ $ ][ 0 ] + 1
-        Ω.state.athlete[ $ ][ 1 ] = Ω.info.cell[ 12 ][ 0 ][ 1 ] + 1
+        Ω.state.athlete[ $ ].x = Ω.info.cell[ 12 ][ $ ].x + 1
+        Ω.state.athlete[ $ ].y = Ω.info.cell[ 12 ][ 0 ].y + 1
       }
 
       //........................................................................
       // Ball initial position
       //
-      Ω.state.ball[ 0 ] = 457
-      Ω.state.ball[ 1 ] = 265
+      Ω.state.ball.x = 457
+      Ω.state.ball.y = 265
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Hover color . Part 0 . Refresh everything
+    //
+    Ω.page.ball.style.backgroundColor = 'rgb(111,79,47)'
+
+    for( let $1 = 0; $1 < 20; $1 ++ )
+    {
+      let athleteColor = Ω.state.athlete[ $1 ].color
+      let darkerColor
+
+      //========================================================================
+      // Teamless athlete
+      //
+      if( athleteColor === 'none' ) darkerColor = 'rgb(143,143,143)'
+
+      //........................................................................
+      // Athlete is playing or was benched this match (green team)
+      //
+      else if( athleteColor === 'gre' || athleteColor === 'greBlk' )
+      {
+        darkerColor = 'rgb(127,175,47)'
+      }
+
+      //........................................................................
+      // Athlete is playing or was benched this match (blue team)
+      //
+      else if( athleteColor === 'blu' || athleteColor === 'bluBlk' )
+      {
+        darkerColor = 'rgb(95,63,191)'
+      }
+
+      //========================================================================
+      // Set the athlete's color
+      //
+      Ω.page.athlete[ $1 ].style.backgroundColor = darkerColor
     }
 
     //==========================================================================
-    // Avoid as much as possible "everything-travelling-from-point-0" bug
+    // Avoid "everything-travelling-from-point-0" bug
     //
-    setTimeout( function()
+    Ω.trigger.event.push(
     {
-      Array.from( Ω.page.animate1 ).forEach( function( $ )
+      //........................................................................
+      //
+      check: function()
       {
-        $.style.transition = 'all 0.25s ease-in-out'
-      } )
-    }, 9 ) // beyond this value, animation on reset and reload is lost
+        let dif = document.getElementById( 'A00' ).getBoundingClientRect().x
+
+        let a = Ω.page.ball.getBoundingClientRect().x - dif
+        let b = Ω.state.ball.x
+
+        return a === b
+      },
+
+      //........................................................................
+      //
+      act: function()
+      {
+        Array.from( Ω.page.animate1 ).forEach( function( $ )
+        {
+          $.style.transition = 'all 0.25s ease-in-out'
+        } )
+      }
+    } )
   },
 
   //////////////////////////////////////////////////////////////////////////////
   //
   update: function()
   {
+    Ω.trigger.pull()
+
     Ω.game.updAtl()
     Ω.game.updBal()
 

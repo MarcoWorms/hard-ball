@@ -19,7 +19,7 @@
   //============================================================================
   // Shows which players are in which team
   //
-  team:{ green: [], blue: [] },
+  team:{ green: [], blue: [], playing:[] },
 
   //............................................................................
   // Which, if any, is the current goalkeeper of each team
@@ -80,9 +80,7 @@
   //============================================================================
   // Defines which athletes (and/or the ball), if any, is under a zone
   //
-  // [ [ zones ], [ athletes ] ]
-  //
-  target:[ [], [] ],
+  target:{ zone:[], athlete:[] },
 
   //============================================================================
   // Position of the ball as follows

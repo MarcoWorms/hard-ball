@@ -95,7 +95,7 @@
     //
     if( axis === 'x' )
     {
-      if( entity < 0 ) entity = 960 - ( - entity )
+      if( entity < 0 )        entity = 960 - ( - entity )
       else if( entity > 912 ) entity = entity - 960
     }
 
@@ -103,7 +103,7 @@
     //
     else if( axis === 'y' )
     {
-      if( entity < 0 ) entity = 576 - ( - entity )
+      if( entity < 0 )        entity = 576 - ( - entity )
       else if( entity > 528 ) entity = entity - 576
     }
 
@@ -201,6 +201,9 @@
   //
   convert: function( entity )
   {
+    let x
+    let y
+
     //==========================================================================
     // If you want the coordinates
     //
@@ -211,9 +214,6 @@
       //
       let letter = entity.substring( 0, 1 )
       let digit = Number( entity.substring( 1, 3 ) )
-
-      let x
-      let y
 
       //........................................................................
       // Discover 'x'
@@ -288,42 +288,29 @@
 
   //////////////////////////////////////////////////////////////////////////////
   //
-  tackle: function( entity )
+  tackle: function( aimed )
   {
-    //==========================================================================
-    //
-    let aimed = Ω.now.target[ 0 ][ entity ]
-
     //==========================================================================
     //
     let pusherX = Ω.state.athlete[ Ω.state.selected ].x - 1
     let pusherY = Ω.state.athlete[ Ω.state.selected ].y - 1
 
+    //==========================================================================
+    //
     let aimedX = Ω.state.athlete[ aimed ].x - 1
     let aimedY = Ω.state.athlete[ aimed ].y - 1
 
-    let distanceX = pusherX - aimedX
-    let distanceY = pusherY - aimedY
+    //==========================================================================
+    //
+    let distanceX = ( pusherX - aimedX )
+    let distanceY = ( pusherY - aimedY )
 
-    let newX = aimedX - distanceX
-    let newY = aimedY - distanceY
-
-    let blockedX = Ω.tool.bend( newX, 'x' )
-    let blockedY = Ω.tool.bend( newY, 'y' )
-
-    let animationTime
+    let newX = Ω.tool.bend( aimedX - distanceX, 'x' )
+    let newY = Ω.tool.bend( aimedY - distanceY, 'y' )
 
     //==========================================================================
     //
-    if( distanceX < 0 ) distanceX = -distanceX
-    if( distanceY < 0 ) distanceY = -distanceY
-
-    if( distanceX >= distanceY )     animationTime = distanceX
-    else if( distanceX < distanceY ) animationTime = distanceY
-
-    //==========================================================================
-    //
-    return [ blockedX, blockedY, animationTime ]
+    return{ x:newX, y:newY }
   },
 }
 
@@ -336,7 +323,7 @@
   spin: [ 0, setInterval( function()
     {
       if( Ω.change.spin[ 0 ] > 360 ) Ω.change.spin[ 0 ] = 0
-      else                            Ω.change.spin[ 0 ] ++
+      else                           Ω.change.spin[ 0 ] ++
     }, 10 ) ],
 
   //============================================================================
@@ -355,6 +342,8 @@
 //
 Ω.trigger =
 {
+  //============================================================================
+  //
   pull: function()
   {
     for( let $ = 0; $ < Ω.trigger.event.length; $ ++ )
@@ -367,5 +356,7 @@
     }
   },
 
+  //============================================================================
+  //
   event: [],
 }

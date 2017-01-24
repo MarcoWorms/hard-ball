@@ -113,15 +113,114 @@
     else if( $.target.id.substring( 0, 3 ) === 'zon'
     && Ω.state.lock === false )
     {
+      //========================================================================
+      //
       Ω.state.lock = true
 
-      // tbd
+      //========================================================================
+      //
+      let zone = Number( $.target.id.substring( 3, 5 ) ) // 0 to 15
+      let zoneIndex = Ω.state.target.zone.indexOf( zone )
 
+      let targeted = Ω.state.target.athlete[ zoneIndex ] // 'ball' or 0 to 19
+
+      //========================================================================
+      // Ball is selected and was already moved
+      //
+      if( Ω.state.selected === 'ball'
+      && Ω.state.ball.x !== 457 )
+      {
+        ////////////////////////////////////////////////////////////////////////
+        // HAS target (can only be an athlete)
+        //
+        if( zoneIndex !== -1 )
+        {
+          // tbd
+        }
+
+        ////////////////////////////////////////////////////////////////////////
+        // Has NO target
+        //
+        else
+        {
+          // tbd
+        }
+      }
+
+      //========================================================================
+      // Athlete is selected
+      //
+      else
+      {
+        let athlete = Ω.state.selected
+
+        let move = false
+
+        ////////////////////////////////////////////////////////////////////////
+        // Athlete is ready to play
+        //
+        if( Ω.state.team.playing.indexOf( athlete ) === -1 )
+        {
+          //====================================================================
+          // Athlete selection phase
+          //
+          if( Ω.state.turn < 8 )
+          {
+            move = true
+          }
+
+          //====================================================================
+          // Replacing some athlete
+          //
+          else
+          {
+            // tbd
+          }
+        }
+
+        ////////////////////////////////////////////////////////////////////////
+        // Athlete is playing
+        //
+        else if( Ω.state.turn > 7 )
+        {
+          if( Ω.state.athlete[ athlete ].color === Ω.state.currentPlayer
+          && Ω.state.blocked.indexOf( zone ) === -1 )
+          {
+            //==================================================================
+            // HAS target
+            //
+            if( zoneIndex !== -1 )
+            {
+              // tbd
+            }
+
+            //==================================================================
+            // Has NO target
+            //
+            else
+            {
+              move = true
+            }
+          }
+        }
+
+        ////////////////////////////////////////////////////////////////////////
+        // Ending process
+        //
+        if( move )
+        {
+          Ω.state.athlete[ athlete ].x = Ω.state.zone[ zone ].x + 1
+          Ω.state.athlete[ athlete ].y = Ω.state.zone[ zone ].y + 1
+        }
+      }
+
+      //========================================================================
+      //
       Ω.state.lock = false
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    // 06 . Select the selection zone or nothing (if unlocked)
+    // 06 . Click the selection zone or nothing (if unlocked)
     //
     else if( Ω.state.lock === false )
     {
@@ -164,16 +263,13 @@
       if( athleteColor === 'none' ) darkerColor = 'rgb(143,143,143)'
 
       //........................................................................
-      // Athlete is playing or was benched this match (green team)
+      // Athlete is playing or was benched this match
       //
       else if( athleteColor === 'gre' || athleteColor === 'greBlk' )
       {
         darkerColor = 'rgb(127,175,47)'
       }
 
-      //........................................................................
-      // Athlete is playing or was benched this match (blue team)
-      //
       else if( athleteColor === 'blu' || athleteColor === 'bluBlk' )
       {
         darkerColor = 'rgb(95,63,191)'
@@ -233,8 +329,6 @@
         lighterColor = 'rgb(143,191,63)'
       }
 
-      //........................................................................
-      //
       else if( athleteColor === 'blu' || athleteColor === 'bluBlk' )
       {
         lighterColor = 'rgb(111,79,207)'
@@ -304,15 +398,15 @@
     {
       if( Ω.state.selected === 'none' ) Ω.state.displayed = 'none'
 
-      let targetedZone = Number( $.target.id.substring( 3, 5 ) )
-      let targetedZoneIndex = Ω.state.target[ 0 ].indexOf( targetedZone )
+      let zone = Number( $.target.id.substring( 3, 5 ) )
+      let zoneIndex = Ω.state.target.zone.indexOf( zone )
 
       //========================================================================
-      // Has a target
+      // HAS target
       //
-      if( targetedZoneIndex !== -1 ) // zone is targeting
+      if( zoneIndex !== -1 ) // zone is targeting
       {
-        let targeted = Ω.state.target[ 1 ][ zoneIndex ]
+        let targeted = Ω.state.target.athlete[ zoneIndex ]
 
         //......................................................................
         // Hover color . Part 5 . Get whatever is below the zone
@@ -334,6 +428,8 @@
           let lighterColor
 
           // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+          // Hover color . Part 6 . Colorize targeted
+          // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
           // Teamless athlete
           //
           if( athleteColor === 'none' ) lighterColor = 'rgb(191,191,191)'
@@ -346,8 +442,6 @@
             lighterColor = 'rgb(143,191,63)'
           }
 
-          //  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  
-          //
           else if( athleteColor === 'blu' || athleteColor === 'bluBlk' )
           {
             lighterColor = 'rgb(111,79,207)'
@@ -357,6 +451,54 @@
           // Set the athlete's color
           //
           Ω.page.athlete[ athlete ].style.backgroundColor = lighterColor
+        }
+      }
+
+      //========================================================================
+      // Has NO target
+      //
+      else
+      {
+        //......................................................................
+        //
+        Ω.state.hovered = 'none'
+
+        if( Ω.state.selected !== 'none' ) Ω.state.displayed = Ω.state.selected
+        else                              Ω.state.displayed = Ω.state.hovered
+
+        //......................................................................
+        // Hover color . Part 7a . Refresh everything again
+        //
+        Ω.page.ball.style.backgroundColor = 'rgb(111,79,47)'
+
+        for( let $1 = 0; $1 < 20; $1 ++ )
+        {
+          let athlete = Ω.state.athlete[ $1 ]
+          let athleteColor = Ω.state.athlete[ $1 ].color
+          let darkerColor
+
+          // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+          // Teamless athlete
+          //
+          if( athleteColor === 'none' ) darkerColor = 'rgb(143,143,143)'
+
+          // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+          // Athlete is playing or was benched this match
+          //
+          else if( athleteColor === 'gre' || athleteColor === 'greBlk' )
+          {
+            darkerColor = 'rgb(127,175,47)'
+          }
+
+          else if( athleteColor === 'blu' || athleteColor === 'bluBlk' )
+          {
+            darkerColor = 'rgb(95,63,191)'
+          }
+
+          // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+          // Set the athlete's color
+          //
+          Ω.page.athlete[ $1 ].style.backgroundColor = darkerColor
         }
       }
     }
@@ -374,7 +516,7 @@
       else                              Ω.state.displayed = Ω.state.hovered
 
       //========================================================================
-      // Hover color . Part 6 . Refresh everything again
+      // Hover color . Part 7b . Refresh everything again
       //
       Ω.page.ball.style.backgroundColor = 'rgb(111,79,47)'
 
@@ -397,8 +539,6 @@
           darkerColor = 'rgb(127,175,47)'
         }
 
-        // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-        //
         else if( athleteColor === 'blu' || athleteColor === 'bluBlk' )
         {
           darkerColor = 'rgb(95,63,191)'

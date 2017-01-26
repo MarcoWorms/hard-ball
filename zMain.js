@@ -1107,7 +1107,7 @@
     }
 
     //==========================================================================
-    // Avoid "everything-travelling-from-point-0" bug
+    // Avoid 'everything-travelling-from-point-0' bug
     //
     Ω.trigger.event.push(
     {

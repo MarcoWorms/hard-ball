@@ -122,24 +122,42 @@
       let zone = Number( $.target.id.substring( 3, 5 ) ) // 0 to 15
       let zoneIndex = Ω.state.target.zone.indexOf( zone )
 
-      let targeted = Ω.state.target.athlete[ zoneIndex ] // 'ball' or 0 to 19
+      let zoneX = Ω.state.zone[ zone ].x
+      let zoneY = Ω.state.zone[ zone ].y
+
+      let zoneCoordinate = Ω.tool.convert( [ zoneX, zoneY ] )
+
+      let aimed = Ω.state.target.aimed[ zoneIndex ] // 'ball' or 0 to 19
 
       //========================================================================
-      // Ball is selected and was already moved
+      // Ball is selected
       //
-      if( Ω.state.selected === 'ball'
-      && Ω.state.ball.x !== 457 )
+      if( Ω.state.selected === 'ball' )
       {
-        ////////////////////////////////////////////////////////////////////////
-        // HAS target (can only be an athlete)
+        //......................................................................
+        // Ball WAS moved already
         //
-        if( zoneIndex !== -1 )
+        if( Ω.state.ball.x !== 457 )
         {
-          // tbd
+          //////////////////////////////////////////////////////////////////////
+          // HAS target (can only be an athlete)
+          //
+          if( zoneIndex !== -1 )
+          {
+            // tbd
+          }
+
+          //////////////////////////////////////////////////////////////////////
+          // Has NO target
+          //
+          else
+          {
+            // tbd (probably nothing...)
+          }
         }
 
-        ////////////////////////////////////////////////////////////////////////
-        // Has NO target
+        //......................................................................
+        // Ball was NOT moved yet
         //
         else
         {
@@ -155,6 +173,7 @@
         let athlete = Ω.state.selected
 
         let move = false
+        let turn = false
 
         ////////////////////////////////////////////////////////////////////////
         // Athlete is ready to play
@@ -166,7 +185,36 @@
           //
           if( Ω.state.turn < 8 )
           {
+            //..................................................................
+            //
+            if( Ω.state.turn === 0 )
+            {
+              if( zone < 4 ) Ω.state.firstPlayer = 'gre'
+              else           Ω.state.firstPlayer = 'blu'
+            }
+
+            //..................................................................
+            //
+            if( Ω.state.spawn.green.indexOf( zoneCoordinate ) !== -1 )
+            {
+              Ω.tool.remove( zoneCoordinate, Ω.state.spawn.green )
+              Ω.state.athlete[ athlete ].color = 'gre'
+              Ω.state.team.green.push( athlete )
+              Ω.state.team.playing.push( athlete )
+            }
+
+            else
+            {
+              Ω.tool.remove( zoneCoordinate, Ω.state.spawn.blue )
+              Ω.state.athlete[ athlete ].color = 'blu'
+              Ω.state.team.blue.push( athlete )
+              Ω.state.team.playing.push( athlete )
+            }
+
+            //..................................................................
+            //
             move = true
+            turn = true
           }
 
           //====================================================================
@@ -211,6 +259,17 @@
         {
           Ω.state.athlete[ athlete ].x = Ω.state.zone[ zone ].x + 1
           Ω.state.athlete[ athlete ].y = Ω.state.zone[ zone ].y + 1
+        }
+
+        if( turn )
+        {
+          Ω.state.turn ++
+
+          setTimeout( function()
+          {
+            Ω.state.selected = 'none'
+            Ω.game.updSel()
+          }, 250 )
         }
       }
 
@@ -406,29 +465,29 @@
       //
       if( zoneIndex !== -1 ) // zone is targeting
       {
-        let targeted = Ω.state.target.athlete[ zoneIndex ]
+        let aimed = Ω.state.target.aimed[ zoneIndex ]
 
         //......................................................................
         // Hover color . Part 5 . Get whatever is below the zone
         //......................................................................
-        // If the ball is being targeted
+        // If the ball is being aimed
         //
-        if( targeted === 'ball' )
+        if( aimed === 'ball' )
         {
           Ω.page.ball.style.backgroundColor = 'rgb(143,111,79)'
         }
 
         //......................................................................
-        // If an athlete is being targeted
+        // If an athlete is being aimed
         //
         else
         {
-          let athlete = targeted
-          let athleteColor = Ω.state.athlete[ targeted ].color
+          let athlete = aimed
+          let athleteColor = Ω.state.athlete[ aimed ].color
           let lighterColor
 
           // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-          // Hover color . Part 6 . Colorize targeted
+          // Hover color . Part 6 . Colorize aimed
           // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
           // Teamless athlete
           //

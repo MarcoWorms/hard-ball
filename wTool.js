@@ -173,13 +173,13 @@
     // If zone is outside the opponent's area
     // And you're the keeper, if there's any
     //
-    if( other.indexOf( coordinate ) === -1
+    if( other.indexOf( zoneCoordinate ) === -1
     && lock === false )
     {
       //........................................................................
       // Change the zone's coordinate
       //
-      Ω.now.zone[ counter ] = [ x, y ]
+      Ω.state.zone[ counter ] = { x: x, y: y }
 
       //........................................................................
       // +1 zone to show
@@ -344,6 +344,10 @@
 {
   //============================================================================
   //
+  event: [],
+
+  //============================================================================
+  //
   pull: function()
   {
     for( let $ = 0; $ < Ω.trigger.event.length; $ ++ )
@@ -355,8 +359,4 @@
       }
     }
   },
-
-  //============================================================================
-  //
-  event: [],
 }

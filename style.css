@@ -93,7 +93,7 @@ BUTTON
   color:            var(--c14);
 }
 
-.btn: hover
+.btn:hover
 {
   background-color: var(--c10);
   color:            var(--c15);
@@ -262,7 +262,7 @@ SPECIAL CASE 1
 .ani2
 {
   transition
-  : 
+  :
     border-color 0.25s linear,
     box-shadow 0.5s linear,
   ;

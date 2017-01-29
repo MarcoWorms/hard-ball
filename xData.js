@@ -80,20 +80,15 @@
   //============================================================================
   // Defines which athletes (and/or the ball), if any, is under a zone
   //
-  target: { zone: [], athlete: [] },
+  target: { zone: [], aimed: [] },
 
   //============================================================================
-  // Position of the ball as follows
-  //
-  // [ numX, numY ]
+  // Ball's current position
   //
   ball: { x: 0, y: 0 },
 
   //============================================================================
-  // 'now.athlete' is an array containing 20 arrays
-  // Each of these arrays is 1 athlete's information as follows
-  //
-  // [ numX, numY, strColor ]
+  // Athletes' positions and colors
   //
   athlete:
   (
@@ -108,10 +103,7 @@
   ),
 
   //============================================================================
-  // 'info.zone' is an array containing 16 arrays (zone coordinates)
-  // each of these arrays contain 1 zone's coordinates as follows
-  //
-  // [ numX, numY ]
+  // Zones' positions
   //
   zone:
   (
@@ -126,7 +118,7 @@
   ),
 
   //============================================================================
-  // 'now.spawn' sets which cells are the initials
+  // Spawn points of each team
   //
   spawn:
   {
@@ -140,10 +132,6 @@
 //
 Ω.info =
 {
-  //============================================================================
-  //
-  aToL:[ 'A','B','C','D','E','F','G','H','I','J','K','L' ],
-
   //============================================================================
   // Matrix of how each athlete moves
   //
@@ -191,9 +179,13 @@
   ],
 
   //============================================================================
+  //
+  aToL: [ 'A','B','C','D','E','F','G','H','I','J','K','L' ],
+
+  //============================================================================
   // The 4 cells that make up the arena's center
   //
-  arenaCenter:[ 'F09', 'F10', 'G09', 'G10' ],
+  arenaCenter: [ 'F09', 'F10', 'G09', 'G10' ],
 
   //============================================================================
   // Each is an array of cell names relative to the area
@@ -238,7 +230,6 @@
   //============================================================================
   // 'info.cell' is an array containing 13 arrays (arena rows)
   // Each of these arrays contain 20 arrays (row's cells coordinates)
-  // Each of these arrays contain 1 cell's information
   //
   cell:
   (

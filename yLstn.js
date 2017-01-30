@@ -172,8 +172,8 @@
       {
         let athlete = Ω.state.selected
 
-        let move = false
-        let turn = false
+        let check = function(){}
+        let act = function(){}
 
         ////////////////////////////////////////////////////////////////////////
         // Athlete is ready to play
@@ -213,8 +213,28 @@
 
             //..................................................................
             //
-            move = true
-            turn = true
+            Ω.state.athlete[ athlete ].x = Ω.state.zone[ zone ].x + 1
+            Ω.state.athlete[ athlete ].y = Ω.state.zone[ zone ].y + 1
+
+            //..................................................................
+            //
+            check = function()
+            {
+              let a = Ω.page.athlete[ athlete ].getBoundingClientRect().x
+              a = a - Ω.state.screen
+
+              let b = Ω.state.athlete[ athlete ].x
+
+              return a === b
+            }
+
+            act = function()
+            {
+              Ω.state.turn ++
+
+              Ω.state.selected = 'none'
+              Ω.game.updSel()
+            }
           }
 
           //====================================================================
@@ -247,7 +267,7 @@
             //
             else
             {
-              move = true
+              // tbd
             }
           }
         }
@@ -255,22 +275,7 @@
         ////////////////////////////////////////////////////////////////////////
         // Ending process
         //
-        if( move )
-        {
-          Ω.state.athlete[ athlete ].x = Ω.state.zone[ zone ].x + 1
-          Ω.state.athlete[ athlete ].y = Ω.state.zone[ zone ].y + 1
-        }
-
-        if( turn )
-        {
-          Ω.state.turn ++
-
-          setTimeout( function()
-          {
-            Ω.state.selected = 'none'
-            Ω.game.updSel()
-          }, 250 )
-        }
+        Ω.trigger.event.push( { check: check, act: act } )
       }
 
       //========================================================================

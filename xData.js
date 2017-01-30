@@ -7,6 +7,11 @@
 Ω.state =
 {
   //============================================================================
+  // Distance between the edge of the screen and the arena
+  //
+  screen: 0,
+
+  //============================================================================
   // Prevents fast click exploit
   //
   lock: false,

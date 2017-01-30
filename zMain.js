@@ -8,7 +8,7 @@
 {
   //////////////////////////////////////////////////////////////////////////////
   //
-  updAtl: function() // ok
+  updAtl: function()
   {
     //==========================================================================
     //
@@ -23,7 +23,7 @@
 
   //////////////////////////////////////////////////////////////////////////////
   //
-  updBal: function() // ok
+  updBal: function()
   {
     //==========================================================================
     //
@@ -33,7 +33,7 @@
   //////////////////////////////////////////////////////////////////////////////
   // Calls 'game.updZonCdn' differently depending on the situation
   //
-  updZon1: function() // ok
+  updZon1: function()
   {
     //==========================================================================
     // Undisplay every zone and refresh 'state.zone'
@@ -105,7 +105,7 @@
   //////////////////////////////////////////////////////////////////////////////
   // Updates the appearance of zones
   //
-  updZon2: function() // ok
+  updZon2: function()
   {
     //==========================================================================
     // Determining how are zones to be shown
@@ -182,7 +182,7 @@
   //////////////////////////////////////////////////////////////////////////////
   // Updating zones coordinates
   //
-  updZonCdn: function( behavior, round ) // ok
+  updZonCdn: function( behavior, round )
   {
     //==========================================================================
     //
@@ -606,7 +606,7 @@
   //////////////////////////////////////////////////////////////////////////////
   // Updates whose turn it is (plus athlete's art and area cell's name glow)
   //
-  updCur: function() // ok
+  updCur: function()
   {
     //==========================================================================
     // Defining who is to play this turn
@@ -697,7 +697,7 @@
   //////////////////////////////////////////////////////////////////////////////
   // Display moving objects above everything else in the arena
   //
-  updInd: function() // ok
+  updInd: function()
   {
     //==========================================================================
     // Update athletes' indexes
@@ -872,7 +872,7 @@
   //////////////////////////////////////////////////////////////////////////////
   // Updates the position of the selection zone
   //
-  updSel: function() // ok
+  updSel: function()
   {
     //==========================================================================
     // Refresh display so animation can begin again
@@ -909,14 +909,14 @@
       {
         Ω.page.selection.style.display = 'flex'
         Ω.tool.translate( Ω.page.selection, x, y )
-      }, 1 )
+      }, 0 )
     }
   },
 
   //////////////////////////////////////////////////////////////////////////////
   // Colorize replaced athletes
   //
-  updRpl: function() // ok
+  updRpl: function()
   {
     //==========================================================================
     //
@@ -1032,6 +1032,16 @@
       Ω.state.displayed = Ω.state.selected
     }
   },
+
+  //////////////////////////////////////////////////////////////////////////////
+  // Controls the activity of certain aspects of ball holding
+  //
+  updScr: function()
+  {
+    //==========================================================================
+    //
+    Ω.state.screen = document.getElementById( 'A00' ).getBoundingClientRect().x
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1115,9 +1125,7 @@
       //
       check: function()
       {
-        let dif = document.getElementById( 'A00' ).getBoundingClientRect().x
-
-        let a = Ω.page.ball.getBoundingClientRect().x - dif
+        let a = Ω.page.ball.getBoundingClientRect().x - Ω.state.screen
         let b = Ω.state.ball.x
 
         return a === b
@@ -1139,6 +1147,8 @@
   //
   update: function()
   {
+    Ω.game.updScr()
+
     Ω.trigger.pull()
 
     Ω.game.updAtl()

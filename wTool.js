@@ -171,7 +171,7 @@
 
     //==========================================================================
     // If zone is outside the opponent's area
-    // And you're the keeper, if there's any
+    // And you're the keeper if there's any
     //
     if( other.indexOf( zoneCoordinate ) === -1
     && lock === false )
@@ -189,7 +189,7 @@
 
     //==========================================================================
     // If zone is inside the opponent's area
-    // Or you're not the keeper, if there's any
+    // Or you're not the keeper if there's any
     //
     else
     {

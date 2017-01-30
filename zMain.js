@@ -153,7 +153,8 @@
     //==========================================================================
     // Refresh targets
     //
-    Ω.state.target.zone = Ω.state.target.aimed = []
+    Ω.state.target.zone = []
+    Ω.state.target.aimed = []
 
     //==========================================================================
     //
@@ -164,22 +165,22 @@
       //
       for( let $2 = 0; $2 < 20; $2 ++ )
       {
-        if( Ω.state.athlete[ $2 ].x - 1 === Ω.state.zone[ $1 ].x
-        && Ω.state.athlete[ $2 ].y - 1 === Ω.state.zone[ $1 ].y )
+        if( Ω.state.zone[ $1 ].x === Ω.state.athlete[ $2 ].x - 1
+        && Ω.state.zone[ $1 ].y === Ω.state.athlete[ $2 ].y - 1 )
         {
-          Ω.state.target.zone.push( $2 ) // targets
-          Ω.state.target.aimed.push( $1 ) // zones
+          Ω.state.target.zone.push( $1 )
+          Ω.state.target.aimed.push( $2 )
         }
       }
 
       //........................................................................
       // Look for the ball
       //
-      if( Ω.state.ball.x - 1 === Ω.state.zone[ $1 ].x
-      && Ω.state.ball.y - 1 === Ω.state.zone[ $1 ].y )
+      if( Ω.state.zone[ $1 ].x === Ω.state.ball.x - 1
+      && Ω.state.zone[ $1 ].y === Ω.state.ball.y - 1 )
       {
-        Ω.state.target.zone.push( 'ball' ) // ball
-        Ω.state.target.aimed.push( $1 ) // zone
+        Ω.state.target.zone.push( $1 )
+        Ω.state.target.aimed.push( 'ball' )
       }
     }
   },
@@ -588,6 +589,8 @@
 
     Ω.game.updCur()
     Ω.game.updInd()
+    Ω.game.updTar()
+    Ω.game.updBlk()
 
     window.requestAnimationFrame( Ω.engine.update )
   },

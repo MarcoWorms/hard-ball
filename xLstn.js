@@ -84,6 +84,8 @@
     {
       Ω.state.selected = 'ball'
       Ω.state.displayed = Ω.state.selected
+
+      Ω.state.marked = Ω.state.target.aimed
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -101,6 +103,8 @@
       {
         Ω.state.selected = athlete
         Ω.state.displayed = Ω.state.selected
+
+        Ω.state.marked = Ω.state.target.aimed
       }
     }
 
@@ -189,6 +193,10 @@
           {
             //..................................................................
             //
+            regular = true
+
+            //..................................................................
+            //
             if( Ω.state.turn === 0 )
             {
               if( zone < 4 ) Ω.state.firstPlayer = 'gre'
@@ -212,8 +220,6 @@
               Ω.state.team.blue.push( athlete )
               Ω.state.team.playing.push( athlete )
             }
-
-            regular = true
           }
 
           //====================================================================
@@ -278,7 +284,11 @@
             Ω.state.turn ++
 
             Ω.state.selected = 'none'
+
+            Ω.state.marked = []
+
             Ω.game.updSel()
+
           }
         }
 
@@ -302,6 +312,8 @@
     {
       Ω.state.selected = 'none'
       Ω.state.displayed = Ω.state.selected
+
+      Ω.state.marked = []
     }
 
     ////////////////////////////////////////////////////////////////////////////

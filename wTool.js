@@ -7,6 +7,16 @@
 Ω.tool =
 {
   //////////////////////////////////////////////////////////////////////////////
+  // Controls the activity of certain aspects of ball holding
+  //
+  screen: function()
+  {
+    //==========================================================================
+    //
+    Ω.state.screen = document.getElementById( 'A00' ).getBoundingClientRect().x
+  },
+
+  //////////////////////////////////////////////////////////////////////////////
   // Save the game
   //
   save: function( create )
@@ -41,7 +51,7 @@
   {
     //==========================================================================
     //
-    return !!entity.className.match( klass )
+    return !! entity.className.match( klass )
   },
 
   //////////////////////////////////////////////////////////////////////////////

@@ -138,8 +138,6 @@
     let other // opponent's area
     let keeper // athlete's own keeper
 
-    let isTheKeeper
-
     //==========================================================================
     // Change disposable data relative to the athlete's color
     //
@@ -160,6 +158,8 @@
     //==========================================================================
     // If the athlete is the keeper, it's the one
     //
+    let isTheKeeper = false
+
     if( keeper === Ω.state.displayed ) isTheKeeper = true
 
     //==========================================================================

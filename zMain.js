@@ -613,6 +613,7 @@
     Ω.game.updInd()
     Ω.game.updTar()
     Ω.game.updBlk()
+    Ω.game.updKee()
 
     window.requestAnimationFrame( Ω.engine.update )
   },

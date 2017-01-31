@@ -131,7 +131,14 @@
 
       let zoneCoordinate = Ω.tool.convert( [ zoneX, zoneY ] )
 
+      let athlete = Ω.state.selected
       let aimed = Ω.state.target.aimed[ zoneIndex ] // 'ball' or 0 to 19
+
+      //........................................................................
+      // Controls how the play will end
+      //
+      let finish = ''
+      let toReturn = { check: function(){}, act: function(){} }
 
       //========================================================================
       // Ball is selected
@@ -174,12 +181,6 @@
       //
       else
       {
-        let athlete = Ω.state.selected
-
-        let toReturn = { check: function(){}, act: function(){} }
-
-        let finish = ''
-
         ////////////////////////////////////////////////////////////////////////
         // Athlete is ready to play
         //
@@ -226,7 +227,12 @@
           //
           else
           {
-            // tbd
+            let repsLeft
+
+            if( Ω.state.currentPlayer === 'gre' ) repsLeft = Ω.state.reps.green
+            else                                  repsLeft = Ω.state.reps.blue
+
+            if( repsLeft > 0 ) finish = 'replace'
           }
         }
 
@@ -243,7 +249,21 @@
             //
             if( zoneIndex !== -1 )
             {
-              // tbd
+              //................................................................
+              // Ball is under aim
+              //
+              if( aimed === 'ball' )
+              {
+                // tbd
+              }
+
+              //................................................................
+              // Athlete is under aim
+              //
+              else
+              {
+                if( Ω.state.blocked.indexOf( zone ) === -1 ) finish = 'tackle'
+              }
             }
 
             //==================================================================
@@ -255,48 +275,119 @@
             }
           }
         }
+      }
 
-        ////////////////////////////////////////////////////////////////////////
-        // Ending process
+      //////////////////////////////////////////////////////////////////////////
+      // Ending process
+      //
+      if( finish === 'regular' )
+      {
+        //......................................................................
         //
-        if( finish === 'regular' )
+        Ω.state.athlete[ athlete ].x = Ω.state.zone[ zone ].x + 1
+        Ω.state.athlete[ athlete ].y = Ω.state.zone[ zone ].y + 1
+
+        //......................................................................
+        //
+        toReturn.check = function()
         {
-          //..................................................................
-          //
-          Ω.state.athlete[ athlete ].x = Ω.state.zone[ zone ].x + 1
-          Ω.state.athlete[ athlete ].y = Ω.state.zone[ zone ].y + 1
+          let athleteToken = Ω.page.athlete[ athlete ].getBoundingClientRect()
 
-          //..................................................................
-          //
-          toReturn.check = function()
-          {
-            let entity = Ω.page.athlete[ athlete ].getBoundingClientRect()
+          let a = athleteToken.x - Ω.state.screen.x
+          let b = Ω.state.athlete[ athlete ].x
 
-            let a = entity.x - Ω.state.screen.x
-            let b = Ω.state.athlete[ athlete ].x
+          let c = athleteToken.y - Ω.state.screen.y
+          let d = Ω.state.athlete[ athlete ].y
 
-            let c = entity.y - Ω.state.screen.y
-            let d = Ω.state.athlete[ athlete ].y
-
-            return a === b && c === d
-          }
-
-          toReturn.act = function()
-          {
-            Ω.state.turn ++
-
-            Ω.state.selected = 'none'
-
-            Ω.state.marked = []
-
-            Ω.game.updSel()
-          }
+          return a === b && c === d
         }
 
-        ////////////////////////////////////////////////////////////////////////
-        //
-        if( toReturn.check() === false ) Ω.trigger.event.push( toReturn )
+        toReturn.act = function()
+        {
+          Ω.state.turn ++
+
+          Ω.state.selected = 'none'
+
+          Ω.state.marked = []
+
+          Ω.game.updSel()
+        }
       }
+
+      //////////////////////////////////////////////////////////////////////////
+      //
+      else if( finish === 'tackle' )
+      {
+        //......................................................................
+        //
+        Ω.state.pushed = aimed
+
+        //........................................................................
+        // Use the old coordinates before they change
+        //
+        let newCoordinate = Ω.tool.tackle()
+
+        //......................................................................
+        //
+        Ω.state.athlete[ athlete ].x = Ω.state.zone[ zone ].x + 1
+        Ω.state.athlete[ athlete ].y = Ω.state.zone[ zone ].y + 1
+
+        //......................................................................
+        //
+        toReturn.check = function()
+        {
+          let athleteToken = Ω.page.athlete[ athlete ].getBoundingClientRect()
+
+          let a = athleteToken.x - Ω.state.screen.x
+          let b = Ω.state.athlete[ athlete ].x
+
+          let c = athleteToken.y - Ω.state.screen.y
+          let d = Ω.state.athlete[ athlete ].y
+
+          return a === b && c === d
+        }
+
+        //......................................................................
+        //
+        toReturn.act = function()
+        {
+          Ω.state.athlete[ Ω.state.pushed ].x = newCoordinate.x + 1
+          Ω.state.athlete[ Ω.state.pushed ].y = newCoordinate.y + 1
+
+          Ω.trigger.event.push(
+          {
+            check: function()
+            {
+              let athleteToken = Ω.page.athlete[ Ω.state.pushed ]
+              athleteToken = athleteToken.getBoundingClientRect()
+
+              let a = athleteToken.x - Ω.state.screen.x
+              let b = Ω.state.athlete[ Ω.state.pushed ].x
+
+              let c = athleteToken.y - Ω.state.screen.y
+              let d = Ω.state.athlete[ Ω.state.pushed ].y
+
+              return a === b && c === d
+            },
+
+            act: function()
+            {
+              Ω.state.turn ++
+
+              Ω.state.selected = 'none'
+              Ω.state.pushed = 'none'
+
+              Ω.state.marked = []
+
+              Ω.game.updSel()
+            }
+          } )
+        }
+      }
+
+      //////////////////////////////////////////////////////////////////////////
+      //
+      if( toReturn.check() === false ) Ω.trigger.event.push( toReturn )
 
       //========================================================================
       //

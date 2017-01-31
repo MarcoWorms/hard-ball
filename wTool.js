@@ -301,7 +301,7 @@
 
   //////////////////////////////////////////////////////////////////////////////
   //
-  tackle: function( aimed )
+  tackle: function()
   {
     //==========================================================================
     //
@@ -310,16 +310,16 @@
 
     //==========================================================================
     //
-    let aimedX = Ω.state.athlete[ aimed ].x - 1
-    let aimedY = Ω.state.athlete[ aimed ].y - 1
+    let aimedX = Ω.state.athlete[ Ω.state.pushed ].x - 1
+    let aimedY = Ω.state.athlete[ Ω.state.pushed ].y - 1
 
     //==========================================================================
     //
-    let distanceX = ( pusherX - aimedX )
-    let distanceY = ( pusherY - aimedY )
+    let distanceX = aimedX - pusherX
+    let distanceY = aimedY - pusherY
 
-    let newX = Ω.tool.bend( aimedX - distanceX, 'x' )
-    let newY = Ω.tool.bend( aimedY - distanceY, 'y' )
+    let newX = Ω.tool.bend( aimedX + distanceX, 'x' )
+    let newY = Ω.tool.bend( aimedY + distanceY, 'y' )
 
     //==========================================================================
     //

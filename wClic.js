@@ -329,15 +329,6 @@
     else if( finish === 'tackle' || finish === 'replace' )
     {
       //........................................................................
-      // Use the athlete's coordinates before they change
-      //
-      let oldCoordinate =
-      {
-        x: Ω.state.athlete[ athlete ].x,
-        y: Ω.state.athlete[ athlete ].y,
-      }
-
-      //........................................................................
       //
       Ω.state.pushed = aimed
 
@@ -378,6 +369,8 @@
 
         else if( finish === 'replace' )
         {
+          let oldCoordinate = Ω.info.cell[ 12 ][ aimed ]
+
           Ω.state.athlete[ aimed ].x = oldCoordinate.x
           Ω.state.athlete[ aimed ].y = oldCoordinate.y
 

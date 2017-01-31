@@ -65,7 +65,7 @@
         // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
         // Roundabouting
         //
-        if( Ω.state.displayed === Ω.state.rounding[ 0 ] )
+        if( Ω.state.displayed === Ω.state.rounder )
         {
           Ω.zone.updZonCdn( 'mtx', true )
         }
@@ -128,8 +128,8 @@
       // Or if there is someone roundabouting
       // And the athlete isn't the one doing it
       //
-      || Ω.state.rounding[ 0 ] !== 'none'
-      && Ω.state.rounding[ 0 ] !== Ω.state.displayed )
+      || Ω.state.rounder !== 'none'
+      && Ω.state.rounder !== Ω.state.displayed )
       {
         value = 0.66
 

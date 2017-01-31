@@ -316,18 +316,27 @@
 
       //////////////////////////////////////////////////////////////////////////
       //
-      else if( finish === 'tackle' )
+      else if( finish === 'tackle' || finish === 'replace' )
       {
+        //......................................................................
+        // Use the athlete's coordinates before they change
+        //
+        let oldCoordinate =
+        {
+          x: Ω.state.athlete[ athlete ].x,
+          y: Ω.state.athlete[ athlete ].y,
+        }
+
         //......................................................................
         //
         Ω.state.pushed = aimed
 
-        //........................................................................
-        // Use the old coordinates before they change
-        //
-        let newCoordinate = Ω.tool.tackle()
+        let newCoordinate
+
+        if( Ω.state.pushed !== undefined ) newCoordinate = Ω.tool.tackle()
 
         //......................................................................
+        // Change the athlete's coordinates
         //
         Ω.state.athlete[ athlete ].x = Ω.state.zone[ zone ].x + 1
         Ω.state.athlete[ athlete ].y = Ω.state.zone[ zone ].y + 1
@@ -351,28 +360,59 @@
         //
         toReturn.act = function()
         {
-          Ω.state.athlete[ Ω.state.pushed ].x = newCoordinate.x + 1
-          Ω.state.athlete[ Ω.state.pushed ].y = newCoordinate.y + 1
+          if( finish === 'tackle' )
+          {
+            Ω.state.athlete[ aimed ].x = newCoordinate.x + 1
+            Ω.state.athlete[ aimed ].y = newCoordinate.y + 1
+          }
+
+          else if( finish === 'replace' )
+          {
+            Ω.state.athlete[ aimed ].x = oldCoordinate.x
+            Ω.state.athlete[ aimed ].y = oldCoordinate.y
+
+            Ω.state.athlete[ athlete ].color = Ω.state.currentPlayer
+            Ω.state.athlete[ aimed ].color = Ω.state.currentPlayer + 'Blk'
+
+            Ω.tool.remove( aimed, Ω.state.team.playing )
+            Ω.state.team.playing.push( athlete )
+
+            if( Ω.state.currentPlayer === 'gre' )
+            {
+              Ω.tool.remove( aimed, Ω.state.team.green )
+              Ω.state.team.green.push( athlete )
+              Ω.state.reps.green --
+            }
+
+            else if( Ω.state.currentPlayer === 'blu' )
+            {
+              Ω.tool.remove( aimed, Ω.state.team.blue )
+              Ω.state.team.blue.push( athlete )
+              Ω.state.reps.blue --
+            }
+
+            Ω.game.updRpl()
+          }
 
           Ω.trigger.event.push(
           {
             check: function()
             {
-              let athleteToken = Ω.page.athlete[ Ω.state.pushed ]
+              let athleteToken = Ω.page.athlete[ aimed ]
               athleteToken = athleteToken.getBoundingClientRect()
 
               let a = athleteToken.x - Ω.state.screen.x
-              let b = Ω.state.athlete[ Ω.state.pushed ].x
+              let b = Ω.state.athlete[ aimed ].x
 
               let c = athleteToken.y - Ω.state.screen.y
-              let d = Ω.state.athlete[ Ω.state.pushed ].y
+              let d = Ω.state.athlete[ aimed ].y
 
               return a === b && c === d
             },
 
             act: function()
             {
-              Ω.state.turn ++
+              if( finish === 'tackle' ) Ω.state.turn ++
 
               Ω.state.selected = 'none'
               Ω.state.pushed = 'none'

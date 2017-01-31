@@ -292,11 +292,11 @@
   //////////////////////////////////////////////////////////////////////////////
   // Removes an item from its array
   //
-  remove: function( indexer, entity )
+  remove: function( deleteThis, fromThis )
   {
     //==========================================================================
     //
-    entity.splice( entity.indexOf( indexer ), 1 )
+    fromThis.splice( fromThis.indexOf( deleteThis ), 1 )
   },
 
   //////////////////////////////////////////////////////////////////////////////

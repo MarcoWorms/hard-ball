@@ -133,7 +133,8 @@
     {
       let value = '1'
 
-      if( Ω.state.selected === $2 || Ω.state.pushed === $2 ) value = '3'
+      if( Ω.state.selected === $2 )    value = '4'
+      else if( Ω.state.pushed === $2 ) value = '3'
 
       $1.style.zIndex = value
     } )
@@ -369,6 +370,16 @@
         {
           $.style.fill = 'rgba(255,255,255,0.5)'
         } )
+      }
+
+      else if( Ω.state.athlete[ $ ].color === 'gre' )
+      {
+        Ω.page.athlete[ $ ].style.backgroundColor = 'rgb(127,175,47)'
+      }
+
+      else if( Ω.state.athlete[ $ ].color === 'blu' )
+      {
+        Ω.page.athlete[ $ ].style.backgroundColor = 'rgb(95,63,191)'
       }
     }
   },

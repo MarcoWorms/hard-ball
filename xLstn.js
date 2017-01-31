@@ -156,6 +156,8 @@
           if( zoneIndex !== -1 )
           {
             // tbd
+
+            Ω.state.lock = false
           }
 
           //////////////////////////////////////////////////////////////////////
@@ -163,7 +165,9 @@
           //
           else
           {
-            // tbd (probably nothing...)
+            // tbd
+
+            Ω.state.lock = false
           }
         }
 
@@ -173,6 +177,8 @@
         else
         {
           // tbd
+
+          Ω.state.lock = false
         }
       }
 
@@ -233,6 +239,7 @@
             else                                  repsLeft = Ω.state.reps.blue
 
             if( repsLeft > 0 ) finish = 'replace'
+            else               Ω.state.lock = false
           }
         }
 
@@ -255,6 +262,8 @@
               if( aimed === 'ball' )
               {
                 // tbd
+
+                Ω.state.lock = false
               }
 
               //................................................................
@@ -262,7 +271,10 @@
               //
               else
               {
-                if( Ω.state.blocked.indexOf( zone ) === -1 ) finish = 'tackle'
+                let isBlocked = Ω.state.blocked.indexOf( zone )
+
+                if( isBlocked === -1 ) finish = 'tackle'
+                else                   Ω.state.lock = false
               }
             }
 
@@ -311,6 +323,8 @@
           Ω.state.marked = []
 
           Ω.game.updSel()
+
+          Ω.state.lock = false
         }
       }
 
@@ -420,6 +434,8 @@
               Ω.state.marked = []
 
               Ω.game.updSel()
+
+              Ω.state.lock = false
             }
           } )
         }
@@ -428,10 +444,6 @@
       //////////////////////////////////////////////////////////////////////////
       //
       if( toReturn.check() === false ) Ω.trigger.event.push( toReturn )
-
-      //========================================================================
-      //
-      Ω.state.lock = false
     }
 
     ////////////////////////////////////////////////////////////////////////////

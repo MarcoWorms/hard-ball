@@ -9,7 +9,7 @@
   //============================================================================
   // Distance between the edge of the screen and the arena
   //
-  screen: 0,
+  screen: { x: 0, y: 0 },
 
   //============================================================================
   // Prevents fast click exploit

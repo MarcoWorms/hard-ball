@@ -190,107 +190,114 @@
   //
   updBlk: function()
   {
-    //==========================================================================
-    // Refreshes which cell is blocked
-    //
     Ω.state.blocked = []
 
-    //==========================================================================
-    // If there are targets
-    //
     let targetLength = Ω.state.target.zone.length
 
     if( targetLength !== 0 )
     {
-      for( let $ = 0; $ < targetLength; $ ++ )
+      //========================================================================
+      // Ball is selected
+      //
+      if( Ω.state.displayed === 'ball' )
       {
-        //......................................................................
-        // How far the zone/target is from the aiming athlete
-        //
-        let aimed = Ω.state.target.zone[ $ ]
-        let zone = Ω.state.target.aimed[ $ ]
+        // tbd
+      }
 
-        let pusherX = Ω.state.athlete[ Ω.state.displayed ].x - 1
-        let pusherY = Ω.state.athlete[ Ω.state.displayed ].y - 1
-
-        let aimedX = Ω.state.athlete[ aimed ].x - 1
-        let aimedY = Ω.state.athlete[ aimed ].y - 1
-
-        let distanceX = pusherX - aimedX
-        let distanceY = pusherY - aimedY
-
-        let newX = aimedX - distanceX
-        let newY = aimedY - distanceY
-
-        let blockedX = Ω.tool.bend( newX, 'x' )
-        let blockedY = Ω.tool.bend( newY, 'y' )
-
-        let newCoordinate = Ω.tool.convert( [ blockedX, blockedY ] )
-
-        //......................................................................
-        // Testing if there are athletes impeding the push action
-        //
-        for( let $ = 0; $ < 20; $ ++ )
+      //========================================================================
+      // Athlete is selected
+      //
+      else if( Ω.state.displayed !== 'none' )
+      {
+        for( let $1 = 0; $1 < targetLength; $1 ++ )
         {
-          let athleteX = Ω.state.athlete[ $ ].x
-          let athleteY = Ω.state.athlete[ $ ].y
+          //....................................................................
+          // How far the zone/target is from the aiming athlete
+          //
+          let zone = Ω.state.target.zone[ $1 ]
+          let aimed = Ω.state.target.aimed[ $1 ]
+
+          let pusherX = Ω.state.athlete[ Ω.state.displayed ].x - 1
+          let pusherY = Ω.state.athlete[ Ω.state.displayed ].y - 1
+
+          let aimedX = Ω.state.athlete[ aimed ].x - 1
+          let aimedY = Ω.state.athlete[ aimed ].y - 1
+
+          let distanceX = aimedX - pusherX
+          let distanceY = aimedY - pusherY
+
+          let newX = aimedX + distanceX
+          let newY = aimedY + distanceY
+
+          let blockedX = Ω.tool.bend( newX, 'x' )
+          let blockedY = Ω.tool.bend( newY, 'y' )
+
+          let newCoordinate = Ω.tool.convert( [ blockedX, blockedY ] )
 
           let area
 
-          // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+          //....................................................................
           // Avoid athletes from being pushed to its opponent's area
+          // Or their own area if it isn't the keeper
           //
           if( Ω.state.athlete[ aimed ].color === 'gre' )
           {
             area = Ω.info.area.blue
-
             if( Ω.state.keeper.green !== 'none' ) area += Ω.info.area.green
           }
 
-          // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-          //
           else
           {
             area = Ω.info.area.green
-
             if( Ω.state.keeper.blue !== 'none' ) area += Ω.info.area.blue
           }
 
-          // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-          // If coordinate isn't in the athletes area
-          // And if there isn't any athlete impeding the route completion
+          //....................................................................
+          // Testing if there are athletes impeding the push action
           //
-          if( area.indexOf( newCoordinate ) === -1
-          && blockedX === athleteX - 1
-          && blockedY === athleteY - 1 )
+          for( let $2 = 0; $2 < 20; $2 ++ )
           {
-            Ω.state.blocked.push( zone )
-          }
+            let athleteX = Ω.state.athlete[ $2 ].x
+            let athleteY = Ω.state.athlete[ $2 ].y
 
-          // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-          // If zone is part of the opponent's area
-          //
-          else
-          {
-            Ω.state.blocked.push( zone )
-          }
 
-          //////////////////////////////////////////////////////////////////////
-          // UNRELATED TO ACTUAL BLOCKED-CELL TRACKING (code above)
-          //////////////////////////////////////////////////////////////////////
-          // Shows that is not possible to further replace athletes
-          //
-          let turnColor = Ω.state.currentPlayer
-          let athleteColor = Ω.state.athlete[ Ω.state.displayed ].color
+            // Checking if it's possible to push or not
+            //
+            if( area.indexOf( newCoordinate ) === -1 )
+            {
+              if( blockedX === athleteX - 1 )
+              {
+                if( blockedY === athleteY - 1 )
+                {
+                  Ω.state.blocked.push( zone )
+                }
+              }
+            }
 
-          let replacementsLeft
+            // Part of opponent's area
+            //
+            else
+            {
+              Ω.state.blocked.push( zone )
+            }
 
-          if( turnColor === 'gre' ) replacementsLeft = Ω.state.reps.green
-          else                      replacementsLeft = Ω.state.reps.blue
+            //==================================================================
+            // UNRELATED TO ACTUAL BLOCKED-CELL TRACKING (code above)
+            //
+            // Shows that is not possible to further replace athletes
+            //
+            let turnColor = Ω.state.currentPlayer
+            let athleteColor = Ω.state.athlete[ Ω.state.displayed ].color
+            let replacementsLeft
 
-          if( athleteColor === 'none' && replacementsLeft === 0 )
-          {
-            Ω.state.blocked.push( zone )
+            if( turnColor === 'gre' ) replacementsLeft = Ω.state.reps.green
+            else                      replacementsLeft = Ω.state.reps.blue
+
+            if( athleteColor === 'none'
+            && replacementsLeft === 0 )
+            {
+              Ω.state.blocked.push( zone )
+            }
           }
         }
       }
@@ -460,7 +467,6 @@
       Ω.state.displayed = Ω.state.selected
     }
   },
-
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -544,10 +550,15 @@
       //
       check: function()
       {
-        let a = Ω.page.ball.getBoundingClientRect().x - Ω.state.screen
+        let entity = Ω.page.ball.getBoundingClientRect()
+
+        let a = entity.x - Ω.state.screen.x
         let b = Ω.state.ball.x
 
-        return a === b
+        let c = entity.y - Ω.state.screen.y
+        let d = Ω.state.ball.y
+
+        return a === b && c === d
       },
 
       //........................................................................

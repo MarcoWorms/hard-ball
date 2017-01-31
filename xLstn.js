@@ -176,10 +176,9 @@
       {
         let athlete = Ω.state.selected
 
-        let check = function(){}
-        let act = function(){}
+        let toReturn = { check: function(){}, act: function(){} }
 
-        let regular = false
+        let finish = ''
 
         ////////////////////////////////////////////////////////////////////////
         // Athlete is ready to play
@@ -193,7 +192,7 @@
           {
             //..................................................................
             //
-            regular = true
+            finish = 'regular'
 
             //..................................................................
             //
@@ -252,7 +251,7 @@
             //
             else
             {
-              regular = true
+              finish = 'regular'
             }
           }
         }
@@ -260,7 +259,7 @@
         ////////////////////////////////////////////////////////////////////////
         // Ending process
         //
-        if( regular )
+        if( finish === 'regular' )
         {
           //..................................................................
           //
@@ -269,17 +268,20 @@
 
           //..................................................................
           //
-          check = function()
+          toReturn.check = function()
           {
-            let a = Ω.page.athlete[ athlete ].getBoundingClientRect().x
-            a = a - Ω.state.screen
+            let entity = Ω.page.athlete[ athlete ].getBoundingClientRect()
 
+            let a = entity.x - Ω.state.screen.x
             let b = Ω.state.athlete[ athlete ].x
 
-            return a === b
+            let c = entity.y - Ω.state.screen.y
+            let d = Ω.state.athlete[ athlete ].y
+
+            return a === b && c === d
           }
 
-          act = function()
+          toReturn.act = function()
           {
             Ω.state.turn ++
 
@@ -288,16 +290,12 @@
             Ω.state.marked = []
 
             Ω.game.updSel()
-
           }
         }
 
         ////////////////////////////////////////////////////////////////////////
         //
-        if( check() === false )
-        {
-          Ω.trigger.event.push( { check: check, act: act } )
-        }
+        if( toReturn.check() === false ) Ω.trigger.event.push( toReturn )
       }
 
       //========================================================================

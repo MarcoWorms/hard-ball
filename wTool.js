@@ -13,7 +13,10 @@
   {
     //==========================================================================
     //
-    Ω.state.screen = document.getElementById( 'A00' ).getBoundingClientRect().x
+    let firstCell = document.getElementById( 'A00' )
+
+    Ω.state.screen.x = firstCell.getBoundingClientRect().x
+    Ω.state.screen.y = firstCell.getBoundingClientRect().y
   },
 
   //////////////////////////////////////////////////////////////////////////////

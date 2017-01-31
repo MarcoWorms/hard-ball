@@ -261,11 +261,9 @@ SPECIAL CASE 1
 */
 .ani2
 {
-  transition
-  :
+  transition:
     border-color 0.25s linear,
-    box-shadow 0.5s linear,
-  ;
+    box-shadow 0.5s linear;
 }
 
 /*==============================================================================

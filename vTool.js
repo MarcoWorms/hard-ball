@@ -1,22 +1,63 @@
 
 'use strict'
 
-//////////////////////////////////////////////////////////////////////////////// TOOL
+////////////////////////////////////////////////////////////////////////////////
 // General functions
 //
 Ω.tool =
 {
-  ////////////////////////////////////////////////////////////////////////////// T.hasCls
+  //////////////////////////////////////////////////////////////////////////////
+  // Controls the activity of certain aspects of ball holding
+  //
+  screen: function()
+  {
+    //==========================================================================
+    //
+    let firstCell = document.getElementById( 'A00' )
+
+    Ω.state.screen.x = firstCell.getBoundingClientRect().x
+    Ω.state.screen.y = firstCell.getBoundingClientRect().y
+  },
+
+  //////////////////////////////////////////////////////////////////////////////
+  // Save the game
+  //
+  save: function( create )
+  {
+    //==========================================================================
+    //
+    if( create )
+    {
+      //........................................................................
+      // Create a backup
+      //
+      localStorage.setItem( 'first', JSON.stringify( Ω.state ) )
+
+      //........................................................................
+      // Load a saved file if there is any
+      //
+      if( 'last' in localStorage )
+      {
+        Ω.state = JSON.parse( localStorage.getItem( 'last' ) )
+      }
+    }
+
+    //==========================================================================
+    //
+    else localStorage.setItem( 'last', JSON.stringify( Ω.state ) )
+  },
+
+  //////////////////////////////////////////////////////////////////////////////
   // Check for a class in any HTML object (returns 'true' or 'false')
   //
   hasCls: function( entity, klass )
   {
     //==========================================================================
     //
-    return !!entity.className.match( klass )
+    return !! entity.className.match( klass )
   },
 
-  ////////////////////////////////////////////////////////////////////////////// T.chgCls
+  //////////////////////////////////////////////////////////////////////////////
   // Adds or removes a class in any HTML object
   //
   chgCls: function( entity, action, klass )
@@ -24,8 +65,7 @@
     //==========================================================================
     // It must have the class so it can be removed
     //
-    if( !Ω.tool.hasCls( entity, klass )
-    && action === "+" )
+    if( Ω.tool.hasCls( entity, klass ) === false && action === "+" )
     {
       entity.classList.add( klass )
     }
@@ -33,15 +73,14 @@
     //==========================================================================
     // It mustn't have the class so it can be added
     //
-    else if( Ω.tool.hasCls( entity, klass )
-    && action === "-" )
+    else if( Ω.tool.hasCls( entity, klass ) === true && action === "-" )
     {
       entity.classList.remove( klass )
     }
   },
 
-  ////////////////////////////////////////////////////////////////////////////// T.translate
-  // Just a shortener of a JS/CSS line
+  //////////////////////////////////////////////////////////////////////////////
+  // Just a shortener of a CSS line
   //
   translate: function( entity, x, y )
   {
@@ -50,17 +89,17 @@
     entity.style.transform = 'translate(' + x + 'px,' + y + 'px)'
   },
 
-  ////////////////////////////////////////////////////////////////////////////// T.rotate
-  // Just a shortener of a JS/CSS line
+  //////////////////////////////////////////////////////////////////////////////
+  // Just a shortener of a CSS line
   //
   rotate: function( entity, speed )
   {
     //==========================================================================
     //
-    entity.style.transform += ' rotate(' + Ω.changer.spin[ 0 ] * speed + 'deg)'
+    entity.style.transform += ' rotate(' + Ω.change.spin[ 0 ] * speed + 'deg)'
   },
 
-  ////////////////////////////////////////////////////////////////////////////// T.bend
+  //////////////////////////////////////////////////////////////////////////////
   // Gives the desired torus (donut shape) effect to the display of zones
   //
   bend: function( entity, axis )
@@ -69,7 +108,7 @@
     //
     if( axis === 'x' )
     {
-      if( entity < 0 ) entity = 960 - ( - entity )
+      if( entity < 0 )        entity = 960 - ( - entity )
       else if( entity > 912 ) entity = entity - 960
     }
 
@@ -77,7 +116,7 @@
     //
     else if( axis === 'y' )
     {
-      if( entity < 0 ) entity = 576 - ( - entity )
+      if( entity < 0 )        entity = 576 - ( - entity )
       else if( entity > 528 ) entity = entity - 576
     }
 
@@ -86,60 +125,84 @@
     return entity
   },
 
-  ////////////////////////////////////////////////////////////////////////////// T.isZone
+  //////////////////////////////////////////////////////////////////////////////
   // Is intended to regulate which zone is displayed and which is not
   //
-  isZone: function( digit, counter, x, y )
+  isZone: function( counter, x, y )
   {
-    let color = Ω.now.athlete[ digit ][ 2 ] // athlete's color
+    //==========================================================================
+    //
+    let athleteColor = Ω.state.athlete[ Ω.state.displayed ].color
 
-    let area // the athlete's own area
-    let aera // the opponent's area
-    let keeper // 'none' or the number of the athlete (0 to 19)
+    let area // athlete's area
+    let other // opponent's area
+    let keeper // athlete's own keeper
 
-    if( color === 'gre' )
+    //==========================================================================
+    // Change disposable data relative to the athlete's color
+    //
+    if( athleteColor === 'gre' )
     {
       area = Ω.info.area.green
-      aera = Ω.info.area.blue
-      keeper = Ω.now.keeper.green
+      other = Ω.info.area.blue
+      keeper = Ω.state.keeper.green
     }
 
-    else if( color === 'blu' )
+    else if( athleteColor === 'blu' )
     {
       area = Ω.info.area.blue
-      aera = Ω.info.area.green
-      keeper = Ω.now.keeper.blue
+      other = Ω.info.area.green
+      keeper = Ω.state.keeper.blue
     }
 
     //==========================================================================
+    // If the athlete is the keeper, it's the one
     //
-    let one = false // the displayed (maybe an athlete) isn't the keeper
+    let isTheKeeper = false
 
-    if( keeper === Ω.now.displayed ) one = true // it's the keeper
+    if( keeper === Ω.state.displayed ) isTheKeeper = true
 
     //==========================================================================
     //
-    let coordinate = Ω.tool.convert( [ x, y ] ) // zone's cell name
+    let zoneCoordinate = Ω.tool.convert( [ x, y ] )
+    let lock = false // display the zone
 
-    let kee = true // display the zone
-
-    if( area.indexOf( coordinate ) !== -1 // but if the zone is inside 'AREA'!
-    && keeper !== 'none' // and there is a keeper
-    && !one ) // and the displayed (maybe an athlete) isn't the keeper
+    //==========================================================================
+    // If the zone is inside the athlete's area
+    // And if there is a keeper
+    // And the athlete is not the keeper
+    //
+    if( area.indexOf( zoneCoordinate ) !== -1
+    && keeper !== 'none'
+    && isTheKeeper === false )
     {
-      kee = false // don't display the zone
+      //........................................................................
+      // Ask to not display the zone
+      //
+      lock = true
     }
 
     //==========================================================================
+    // If zone is outside the opponent's area
+    // And you're the keeper if there's any
     //
-    if( aera.indexOf( coordinate ) === -1 // if the zone isn't inside 'AERA'!
-    && kee ) // and there isn't a keeper which the athlete isn't, display zone
+    if( other.indexOf( zoneCoordinate ) === -1
+    && lock === false )
     {
-      Ω.info.zone[ counter ] = [ x, y ] // change master coordinates
-      return 1 // (+1 zone to show)
+      //........................................................................
+      // Change the zone's coordinate
+      //
+      Ω.state.zone[ counter ] = { x: x, y: y }
+
+      //........................................................................
+      // +1 zone to show
+      //
+      return 1
     }
 
     //==========================================================================
+    // If zone is inside the opponent's area
+    // Or you're not the keeper if there's any
     //
     else
     {
@@ -147,14 +210,10 @@
     }
   },
 
-  ////////////////////////////////////////////////////////////////////////////// T.convert
+  //////////////////////////////////////////////////////////////////////////////
   //
   convert: function( entity )
   {
-    //==========================================================================
-    //
-    let aToL = [ 'A','B','C','D','E','F','G','H','I','J','K','L' ]
-
     let x
     let y
 
@@ -163,13 +222,32 @@
     //
     if( typeof( entity ) === 'string' )
     {
+      //........................................................................
+      // Disposable data
+      //
       let letter = entity.substring( 0, 1 )
       let digit = Number( entity.substring( 1, 3 ) )
 
-      for( let $ = 0; $ < 12; $ ++ ) if( letter === aToL[ $ ] ) y = $ * 48
-      for( let $ = 0; $ < 20; $ ++ ) if( digit === $ ) x = $ * 48
+      //........................................................................
+      // Discover 'x'
+      //
+      for( let $ = 0; $ < 20; $ ++ )
+      {
+        if( digit === $ ) x = $ * 48
+      }
 
-      return [ x, y ]
+      //........................................................................
+      // Discover 'y'
+      //
+      for( let $ = 0; $ < 12; $ ++ )
+      {
+        if( letter === Ω.info.aToL[ $ ] ) y = $ * 48
+      }
+
+      //........................................................................
+      // Return the coordinates
+      //
+      return { x: x, y: y }
     }
 
     //==========================================================================
@@ -177,103 +255,121 @@
     //
     else if( typeof( entity ) === 'object' )
     {
-      let name
-
+      //........................................................................
+      // Disposable data
+      //
       x = entity[ 0 ]
       y = entity[ 1 ]
 
-      for( let $ = 0; $ < 12; $ ++ ) if( y / 48 === $ ) name = aToL[ $ ]
+      //........................................................................
+      // Discover the letter
+      //
+      for( let $ = 0; $ < 12; $ ++ )
+      {
+        if( y / 48 === $ ) name = Ω.info.aToL[ $ ]
+      }
+
+      //........................................................................
+      // Discover the digit
+      //
       for( let $ = 0; $ < 20; $ ++ )
       {
         if( x / 48 === $ )
         {
           if( $ < 10 ) name += '0'
+
           name += $
         }
       }
 
+      //........................................................................
+      // Return the name
+      //
       return name
     }
   },
 
-  ////////////////////////////////////////////////////////////////////////////// T.remove
+  //////////////////////////////////////////////////////////////////////////////
   // Removes an item from its array
   //
-  remove: function( entity, target )
+  remove: function( deleteThis, fromThis )
   {
-    let index = target.indexOf( entity )
-    target.splice( index, 1 )
+    //==========================================================================
+    //
+    fromThis.splice( fromThis.indexOf( deleteThis ), 1 )
   },
 
-  ////////////////////////////////////////////////////////////////////////////// T.tackle
+  //////////////////////////////////////////////////////////////////////////////
   //
-  tackle: function( targeted )
+  tackle: function()
   {
-      //========================================================================
-      //
-      let aimed = Ω.info.target[ 0 ][ targeted ]
+    //==========================================================================
+    //
+    let pusherX = Ω.state.athlete[ Ω.state.selected ].x - 1
+    let pusherY = Ω.state.athlete[ Ω.state.selected ].y - 1
 
-      //========================================================================
-      //
-      let pusherX = Ω.now.athlete[ Ω.now.selected ][ 0 ] - 1
-      let pusherY = Ω.now.athlete[ Ω.now.selected ][ 1 ] - 1
+    //==========================================================================
+    //
+    let aimedX = Ω.state.athlete[ Ω.state.pushed ].x - 1
+    let aimedY = Ω.state.athlete[ Ω.state.pushed ].y - 1
 
-      let aimedX = Ω.now.athlete[ aimed ][ 0 ] - 1
-      let aimedY = Ω.now.athlete[ aimed ][ 1 ] - 1
+    //==========================================================================
+    //
+    let distanceX = aimedX - pusherX
+    let distanceY = aimedY - pusherY
 
-      let distanceX = pusherX - aimedX
-      let distanceY = pusherY - aimedY
+    let newX = Ω.tool.bend( aimedX + distanceX, 'x' )
+    let newY = Ω.tool.bend( aimedY + distanceY, 'y' )
 
-      let newX = aimedX - distanceX
-      let newY = aimedY - distanceY
-
-      let blockedX = Ω.tool.bend( newX, 'x' )
-      let blockedY = Ω.tool.bend( newY, 'y' )
-
-      //========================================================================
-      //
-      let animationTime
-
-      if( distanceX < 0 ) distanceX = -distanceX
-      if( distanceY < 0 ) distanceY = -distanceY
-
-      if( distanceX > distanceY )      animationTime = distanceX
-      else if( distanceX < distanceY ) animationTime = distanceY
-      else                             animationTime = distanceX
-
-      //========================================================================
-      //
-      let info = [ blockedX, blockedY, animationTime ]
-
-      // console.log( 'pusher ' + Ω.tool.convert( [ pusherX, pusherY ] ) )
-      // console.log( 'aimed ' + Ω.tool.convert( [ aimedX, aimedY ] ) )
-      // console.log( 'blocked ' + Ω.tool.convert( [ blockedX, blockedY ] ) )
-      // console.log()
-
-      return info
+    //==========================================================================
+    //
+    return{ x: newX, y: newY }
   },
 }
 
-//////////////////////////////////////////////////////////////////////////////// CHANGER
+////////////////////////////////////////////////////////////////////////////////
 //
-Ω.changer =
+Ω.change =
 {
   //============================================================================
   //
   spin: [ 0, setInterval( function()
     {
-      if( Ω.changer.spin[ 0 ] > 360 ) Ω.changer.spin[ 0 ] = 0
-      else                            Ω.changer.spin[ 0 ] ++
+      if( Ω.change.spin[ 0 ] > 360 ) Ω.change.spin[ 0 ] = 0
+      else                           Ω.change.spin[ 0 ] ++
     }, 10 ) ],
 
   //============================================================================
   //
   glow: [ 0.66, false, setInterval( function()
     {
-      if( Ω.changer.glow[ 1 ] === false ) Ω.changer.glow[ 0 ] += 0.03
-      else if( Ω.changer.glow[ 1 ] === true ) Ω.changer.glow[ 0 ] -= 0.03
+      if( Ω.change.glow[ 1 ] === false )     Ω.change.glow[ 0 ] += 0.03
+      else if( Ω.change.glow[ 1 ] === true ) Ω.change.glow[ 0 ] -= 0.03
 
-      if( Ω.changer.glow[ 0 ] > 0.66 ) Ω.changer.glow[ 1 ] = true
-      else if( Ω.changer.glow[ 0 ] < 0.33 ) Ω.changer.glow[ 1 ] = false
+      if( Ω.change.glow[ 0 ] > 0.66 )      Ω.change.glow[ 1 ] = true
+      else if( Ω.change.glow[ 0 ] < 0.33 ) Ω.change.glow[ 1 ] = false
     }, 40 ) ],
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//
+Ω.trigger =
+{
+  //============================================================================
+  //
+  event: [],
+
+  //============================================================================
+  //
+  pull: function()
+  {
+    for( let $ = 0; $ < Ω.trigger.event.length; $ ++ )
+    {
+      if( Ω.trigger.event[ $ ].check() )
+      {
+        Ω.trigger.event[ $ ].act()
+        Ω.trigger.event.splice( $, 1 )
+      }
+    }
+  },
 }

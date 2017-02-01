@@ -76,7 +76,8 @@
   // 03 . Select the ball (if unlocked)
   //
   else if( $.target.id === 'ball'
-  && Ω.state.lock === false )
+  && Ω.state.lock === false
+  && Ω.state.rounder === 'none' )
   {
     Ω.state.selected = 'ball'
     Ω.state.displayed = Ω.state.selected
@@ -88,7 +89,8 @@
   // 04 . Select an athlete (if unlocked)
   //
   else if( $.target.id.substring( 0, 3 ) === 'min'
-  && Ω.state.lock === false )
+  && Ω.state.lock === false
+  && Ω.state.rounder === 'none' )
   {
     let athlete = Number( $.target.id.substring( 4, 6 ) )
 
@@ -286,6 +288,21 @@
     }
 
     ////////////////////////////////////////////////////////////////////////////
+    //
+    Ω.game.updRdb()
+
+    if( Ω.state.rounding.indexOf( athlete ) !== -1 )
+    {
+      if( Ω.state.rounder === 'none' ) Ω.state.rounder = athlete
+      else                             Ω.state.rounder = 'none'
+    }
+
+    else if( Ω.state.rounder !== 'none' )
+    {
+      Ω.state.rounder = 'none'
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
     // Ending process
     //
     if( finish === 'regular' )
@@ -310,13 +327,21 @@
         return a === b && c === d
       }
 
+      //........................................................................
+      //
       toReturn.act = function()
       {
-        Ω.state.turn ++
+        if( Ω.state.rounder === 'none' )
+        {
+          Ω.state.turn ++
+          Ω.state.selected = 'none'
+          Ω.state.marked = []
+        }
 
-        Ω.state.selected = 'none'
-
-        Ω.state.marked = []
+        else
+        {
+          Ω.state.marked = Ω.state.target.aimed
+        }
 
         Ω.game.updSel()
 
@@ -399,6 +424,8 @@
 
         Ω.trigger.event.push(
         {
+          //....................................................................
+          //
           check: function()
           {
             let athleteToken = Ω.page.athlete[ aimed ]
@@ -413,14 +440,24 @@
             return a === b && c === d
           },
 
+          //....................................................................
+          //
           act: function()
           {
-            if( finish === 'tackle' ) Ω.state.turn ++
+            if( Ω.state.rounder === 'none' )
+            {
+              if( finish === 'tackle' ) Ω.state.turn ++
 
-            Ω.state.selected = 'none'
+              Ω.state.selected = 'none'
+              Ω.state.marked = []
+            }
+
+            else
+            {
+              Ω.state.marked = Ω.state.target.aimed
+            }
+
             Ω.state.pushed = 'none'
-
-            Ω.state.marked = []
 
             Ω.game.updSel()
 
@@ -439,7 +476,8 @@
   //////////////////////////////////////////////////////////////////////////////
   // 06 . Click the selection zone or nothing (if unlocked)
   //
-  else if( Ω.state.lock === false )
+  else if( Ω.state.lock === false
+  && Ω.state.rounder === 'none' )
   {
     Ω.state.selected = 'none'
     Ω.state.displayed = Ω.state.selected

@@ -185,8 +185,8 @@
       //
       let counter = 0
 
-      let athleteX = Ω.state.athlete[ origin ].x
-      let athleteY = Ω.state.athlete[ origin ].y
+      let athleteX = Ω.state.athlete[ Ω.state.displayed ].x
+      let athleteY = Ω.state.athlete[ Ω.state.displayed ].y
 
       //........................................................................
       // Matrix 1

@@ -136,7 +136,8 @@
     // Controls how the play will end
     //
     let finish = ''
-    let toReturn = { check: function(){}, act: function(){} }
+
+    let toReturn = { check: () => { return true }, act: () => { return true } }
 
     //==========================================================================
     // Ball is selected
@@ -154,8 +155,6 @@
         if( zoneIndex !== -1 )
         {
           // tbd
-
-          setTimeout( function(){ Ω.state.lock = false }, 100 )
         }
 
         ////////////////////////////////////////////////////////////////////////
@@ -164,8 +163,6 @@
         else
         {
           // tbd
-
-          setTimeout( function(){ Ω.state.lock = false }, 100 )
         }
       }
 
@@ -175,8 +172,6 @@
       else
       {
         // tbd
-
-        setTimeout( function(){ Ω.state.lock = false }, 100 )
       }
     }
 
@@ -237,7 +232,6 @@
           else                                  repsLeft = Ω.state.reps.blue
 
           if( repsLeft > 0 ) finish = 'replace'
-          else setTimeout( function(){ Ω.state.lock = false }, 100 )
         }
       }
 
@@ -250,6 +244,25 @@
         && Ω.state.blocked.indexOf( zone ) === -1 )
         {
           //====================================================================
+          //
+          Ω.game.updRdb()
+
+          //====================================================================
+          //
+          if( Ω.state.rounding.indexOf( athlete ) !== -1 )
+          {
+            if( Ω.state.rounder === 'none' ) Ω.state.rounder = athlete
+            else                             Ω.state.rounder = 'none'
+          }
+
+          //....................................................................
+          //
+          else if( Ω.state.rounder !== 'none' )
+          {
+            Ω.state.rounder = 'none'
+          }
+
+          //====================================================================
           // HAS target
           //
           if( zoneIndex !== -1 )
@@ -260,8 +273,6 @@
             if( aimed === 'ball' )
             {
               // tbd
-
-              setTimeout( function(){ Ω.state.lock = false }, 100 )
             }
 
             //..................................................................
@@ -272,7 +283,6 @@
               let isBlocked = Ω.state.blocked.indexOf( zone )
 
               if( isBlocked === -1 ) finish = 'tackle'
-              else setTimeout( function(){ Ω.state.lock = false }, 100 )
             }
           }
 
@@ -285,21 +295,6 @@
           }
         }
       }
-    }
-
-    ////////////////////////////////////////////////////////////////////////////
-    //
-    Ω.game.updRdb()
-
-    if( Ω.state.rounding.indexOf( athlete ) !== -1 )
-    {
-      if( Ω.state.rounder === 'none' ) Ω.state.rounder = athlete
-      else                             Ω.state.rounder = 'none'
-    }
-
-    else if( Ω.state.rounder !== 'none' )
-    {
-      Ω.state.rounder = 'none'
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -340,6 +335,13 @@
 
         else
         {
+          Ω.state.displayed = athlete
+
+          Ω.zone.updZon1()
+          Ω.zone.updZon2()
+
+          Ω.game.updTar()
+
           Ω.state.marked = Ω.state.target.aimed
         }
 
@@ -357,9 +359,7 @@
       //
       Ω.state.pushed = aimed
 
-      let newCoordinate
-
-      if( Ω.state.pushed !== undefined ) newCoordinate = Ω.tool.tackle()
+      let newCoordinate = Ω.tool.tackle()
 
       //........................................................................
       // Change the athlete's coordinates
@@ -454,6 +454,13 @@
 
             else
             {
+              Ω.state.displayed = athlete
+
+              Ω.zone.updZon1()
+              Ω.zone.updZon2()
+
+              Ω.game.updTar()
+
               Ω.state.marked = Ω.state.target.aimed
             }
 

@@ -77,7 +77,8 @@
   //
   else if( $.target.id === 'ball'
   && Ω.state.lock === false
-  && Ω.state.rounder === 'none' )
+  && Ω.state.rounder === 'none'
+  && Ω.state.newHolder === 'none' )
   {
     Ω.state.selected = 'ball'
     Ω.state.displayed = Ω.state.selected
@@ -90,7 +91,8 @@
   //
   else if( $.target.id.substring( 0, 3 ) === 'min'
   && Ω.state.lock === false
-  && Ω.state.rounder === 'none' )
+  && Ω.state.rounder === 'none'
+  && Ω.state.newHolder === 'none' )
   {
     let athlete = Number( $.target.id.substring( 4, 6 ) )
 
@@ -326,7 +328,8 @@
       //
       toReturn.act = function()
       {
-        if( Ω.state.rounder === 'none' )
+        if( Ω.state.rounder === 'none'
+        && Ω.state.newHolder === 'none' )
         {
           Ω.state.turn ++
           Ω.state.selected = 'none'
@@ -335,7 +338,7 @@
 
         else
         {
-          Ω.state.displayed = athlete
+          if( Ω.state.newHolder === 'none' ) Ω.state.displayed = athlete
 
           Ω.zone.updZon1()
           Ω.zone.updZon2()
@@ -343,6 +346,8 @@
           Ω.game.updTar()
 
           Ω.state.marked = Ω.state.target.aimed
+
+          if( Ω.state.newHolder !== 'none' ) Ω.state.marked.push( athlete )
         }
 
         Ω.game.updSel()
@@ -444,7 +449,8 @@
           //
           act: function()
           {
-            if( Ω.state.rounder === 'none' )
+            if( Ω.state.rounder === 'none'
+            && Ω.state.newHolder === 'none' )
             {
               if( finish === 'tackle' ) Ω.state.turn ++
 
@@ -454,7 +460,7 @@
 
             else
             {
-              Ω.state.displayed = athlete
+              if( Ω.state.newHolder === 'none' ) Ω.state.displayed = athlete
 
               Ω.zone.updZon1()
               Ω.zone.updZon2()
@@ -462,6 +468,8 @@
               Ω.game.updTar()
 
               Ω.state.marked = Ω.state.target.aimed
+
+              if( Ω.state.newHolder !== 'none' ) Ω.state.marked.push( athlete )
             }
 
             Ω.state.pushed = 'none'
@@ -484,7 +492,8 @@
   // 06 . Click the selection zone or nothing (if unlocked)
   //
   else if( Ω.state.lock === false
-  && Ω.state.rounder === 'none' )
+  && Ω.state.rounder === 'none'
+  && Ω.state.newHolder === 'none' )
   {
     Ω.state.selected = 'none'
     Ω.state.displayed = Ω.state.selected

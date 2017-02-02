@@ -1,5 +1,5 @@
 {
-  "name": "Hard Ball",
+  "name": "hard_ball",
   "version": "0.0.0",
   "description": "This is a browser based sport-board-game.",
   "main": "vTool.js",
@@ -24,6 +24,6 @@
   },
   "homepage": "https://github.com/flipog/hard-ball#readme",
   "dependencies": {
-    "gh-pages": "0.12.0" // "^1.12.0" would not update the version
+    "gh-pages": "0.12.0"
   }
 }

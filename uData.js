@@ -12,9 +12,10 @@
   screen: { x: 0, y: 0 },
 
   //============================================================================
-  // Prevents fast click exploit
+  // Prevents fast click exploit and code repetition
   //
   lock: false,
+  ballLock: false,
 
   //............................................................................
   // Shows how many plays have happened

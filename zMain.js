@@ -142,8 +142,8 @@
     //==========================================================================
     // Update the ball's index
     //
-    if( Ω.state.ball.x === 457 ) Ω.page.ball.style.zIndex = '3'
-    else                         Ω.page.ball.style.zIndex = '1'
+    if( Ω.state.selected === 'ball' ) Ω.page.ball.style.zIndex = '5'
+    else                              Ω.page.ball.style.zIndex = '3'
   },
 
   //////////////////////////////////////////////////////////////////////////////
@@ -194,6 +194,13 @@
     Ω.state.blocked = []
 
     let targetLength = Ω.state.target.zone.length
+
+    if( Ω.state.target.aimed.indexOf( 'ball' ) !== -1 )
+    {
+      Ω.tool.remove( 'ball', Ω.state.target.aimed )
+      Ω.state.target.aimed.push( 'ball' )
+      targetLength --
+    }
 
     if( targetLength !== 0 )
     {
@@ -461,21 +468,49 @@
   updHol: function()
   {
     //==========================================================================
+    // Initial grab
+    //
+    if( Ω.state.ball.x === 457 )
+    {
+      for( let $1 = 0;  $1 < 20; $1 ++ )
+      {
+        for( let $2 = 0;  $2 < 4; $2 ++ )
+        {
+          let athlete = Ω.state.athlete[ $1 ]
+          let cell = Ω.tool.convert( Ω.info.arenaCenter[ $2 ] )
+
+          if( athlete.x - 1 === cell.x )
+          {
+            if( athlete.y - 1 === cell.y )
+            {
+              Ω.state.newHolder = $1
+            }
+          }
+        }
+      }
+    }
+
+    //==========================================================================
     // If the ball changed hands
     //
-    if( Ω.state.newHolder !== 'none' )
+    if( Ω.state.newHolder !== 'none'
+    && Ω.state.ballLock === false )
     {
-      //........................................................................
-      //
-      let athlete = Ω.state.athlete[ Ω.state.selected ]
-
-      Ω.state.ball.x = athlete.x
-      Ω.state.ball.y = athlete.y
+      Ω.state.ballLock = true
 
       //........................................................................
       //
       Ω.state.selected = 'ball'
       Ω.state.displayed = Ω.state.selected
+
+      //........................................................................
+      //
+      let athlete = Ω.state.newHolder
+
+      Ω.state.ball.x = Ω.state.athlete[ athlete ].x
+      Ω.state.ball.y = Ω.state.athlete[ athlete ].y
+
+      Ω.page.ball.style.opacity = '0.75'
     }
   },
 }
@@ -614,6 +649,7 @@
     Ω.game.updTar()
     Ω.game.updBlk()
     Ω.game.updKee()
+    Ω.game.updHol()
 
     window.requestAnimationFrame( Ω.engine.update )
   },

@@ -195,13 +195,6 @@
 
     let targetLength = Ω.state.target.zone.length
 
-    if( Ω.state.target.aimed.indexOf( 'ball' ) !== -1 )
-    {
-      Ω.tool.remove( 'ball', Ω.state.target.aimed )
-      Ω.state.target.aimed.push( 'ball' )
-      targetLength --
-    }
-
     if( targetLength !== 0 )
     {
       //========================================================================
@@ -209,7 +202,20 @@
       //
       if( Ω.state.displayed === 'ball' )
       {
-        // tbd
+        for( let $ = 0; $ < targetLength; $ ++ )
+        {
+          let zone = Ω.state.target.zone[ $ ]
+          let aimed = Ω.state.athlete[ Ω.state.target.aimed[ $ ] ]
+          let holder = Ω.state.athlete[ Ω.state.holder ]
+
+          console.log( aimed.color )
+          console.log( holder.color )
+
+          if( aimed.color !== holder.color )
+          {
+            Ω.state.blocked.push( zone )
+          }
+        }
       }
 
       //========================================================================
@@ -217,6 +223,13 @@
       //
       else if( Ω.state.displayed !== 'none' )
       {
+        if( Ω.state.target.aimed.indexOf( 'ball' ) !== -1 )
+        {
+          Ω.tool.remove( 'ball', Ω.state.target.aimed )
+          Ω.state.target.aimed.push( 'ball' )
+          targetLength --
+        }
+
         for( let $1 = 0; $1 < targetLength; $1 ++ )
         {
           //....................................................................
@@ -484,6 +497,7 @@
             if( athlete.y - 1 === cell.y )
             {
               Ω.state.newHolder = $1
+              Ω.state.holder = $1
             }
           }
         }

@@ -132,81 +132,84 @@
   {
     //==========================================================================
     //
-    let athleteColor = Ω.state.athlete[ Ω.state.displayed ].color
-
-    let area // athlete's area
-    let other // opponent's area
-    let keeper // athlete's own keeper
-
-    //==========================================================================
-    // Change disposable data relative to the athlete's color
-    //
-    if( athleteColor === 'gre' )
+    if( Ω.state.displayed === 'ball' )
     {
-      area = Ω.info.area.green
-      other = Ω.info.area.blue
-      keeper = Ω.state.keeper.green
-    }
-
-    else if( athleteColor === 'blu' )
-    {
-      area = Ω.info.area.blue
-      other = Ω.info.area.green
-      keeper = Ω.state.keeper.blue
-    }
-
-    //==========================================================================
-    // If the athlete is the keeper, it's the one
-    //
-    let isTheKeeper = false
-
-    if( keeper === Ω.state.displayed ) isTheKeeper = true
-
-    //==========================================================================
-    //
-    let zoneCoordinate = Ω.tool.convert( [ x, y ] )
-    let lock = false // display the zone
-
-    //==========================================================================
-    // If the zone is inside the athlete's area
-    // And if there is a keeper
-    // And the athlete is not the keeper
-    //
-    if( area.indexOf( zoneCoordinate ) !== -1
-    && keeper !== 'none'
-    && isTheKeeper === false )
-    {
-      //........................................................................
-      // Ask to not display the zone
-      //
-      lock = true
-    }
-
-    //==========================================================================
-    // If zone is outside the opponent's area
-    // And you're the keeper if there's any
-    //
-    if( other.indexOf( zoneCoordinate ) === -1
-    && lock === false )
-    {
-      //........................................................................
-      // Change the zone's coordinate
-      //
       Ω.state.zone[ counter ] = { x: x, y: y }
-
-      //........................................................................
-      // +1 zone to show
-      //
       return 1
     }
 
     //==========================================================================
-    // If zone is inside the opponent's area
-    // Or you're not the keeper if there's any
     //
     else
     {
-      return 0
+      //........................................................................
+      //
+      let athleteColor = Ω.state.athlete[ Ω.state.displayed ].color
+
+      let area // athlete's area
+      let other // opponent's area
+      let keeper // athlete's own keeper
+
+      //........................................................................
+      // Change disposable data relative to the athlete's color
+      //
+      if( athleteColor === 'gre' )
+      {
+        area = Ω.info.area.green
+        other = Ω.info.area.blue
+        keeper = Ω.state.keeper.green
+      }
+
+      else if( athleteColor === 'blu' )
+      {
+        area = Ω.info.area.blue
+        other = Ω.info.area.green
+        keeper = Ω.state.keeper.blue
+      }
+
+      //........................................................................
+      // If the athlete is the keeper, it's the one
+      //
+      let isTheKeeper = false
+
+      if( keeper === Ω.state.displayed ) isTheKeeper = true
+
+      //........................................................................
+      //
+      let zoneCoordinate = Ω.tool.convert( [ x, y ] )
+      let lock = false // display the zone
+
+      //........................................................................
+      // If the zone is inside the athlete's area
+      // And if there is a keeper
+      // And the athlete is not the keeper
+      //
+      if( area.indexOf( zoneCoordinate ) !== -1
+      && keeper !== 'none'
+      && isTheKeeper === false )
+      {
+        lock = true
+      }
+
+      //........................................................................
+      // If zone is outside the opponent's area
+      // And you're the keeper if there's any
+      //
+      if( other.indexOf( zoneCoordinate ) === -1
+      && lock === false )
+      {
+        Ω.state.zone[ counter ] = { x: x, y: y }
+        return 1
+      }
+
+      //........................................................................
+      // If zone is inside the opponent's area
+      // Or you're not the keeper if there's any
+      //
+      else
+      {
+        return 0
+      }
     }
   },
 

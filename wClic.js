@@ -138,7 +138,6 @@
     // Controls how the play will end
     //
     let finish = ''
-
     let toReturn = { check: () => { return true }, act: () => { return true } }
 
     //==========================================================================
@@ -156,7 +155,15 @@
         //
         if( zoneIndex !== -1 )
         {
-          // tbd
+          let a = Ω.state.athlete[ Ω.state.holder ]
+          let b = Ω.state.athlete[ aimed ]
+
+          if( a.color === b.color )
+          {
+            Ω.state.newHolder = 'none'
+            Ω.state.ballLock = false
+            Ω.state.newHolder = aimed
+          }
         }
 
         ////////////////////////////////////////////////////////////////////////
@@ -164,16 +171,8 @@
         //
         else
         {
-          // tbd
+          finish = 'placeBall'
         }
-      }
-
-      //........................................................................
-      // Ball was NOT moved yet
-      //
-      else
-      {
-        // tbd
       }
     }
 
@@ -182,21 +181,21 @@
     //
     else
     {
-      ////////////////////////////////////////////////////////////////////////
+      //////////////////////////////////////////////////////////////////////////
       // Athlete is ready to play
       //
       if( Ω.state.team.playing.indexOf( athlete ) === -1 )
       {
-        //====================================================================
+        //======================================================================
         // Athlete selection phase
         //
         if( Ω.state.turn < 8 )
         {
-          //..................................................................
+          //....................................................................
           //
           finish = 'regular'
 
-          //..................................................................
+          //....................................................................
           //
           if( Ω.state.turn === 0 )
           {
@@ -204,7 +203,7 @@
             else           Ω.state.firstPlayer = 'blu'
           }
 
-          //..................................................................
+          //....................................................................
           //
           if( Ω.state.spawn.green.indexOf( zoneCoordinate ) !== -1 )
           {
@@ -223,7 +222,7 @@
           }
         }
 
-        //====================================================================
+        //======================================================================
         // Replacing some athlete
         //
         else
@@ -274,7 +273,7 @@
             //
             if( aimed === 'ball' )
             {
-              // tbd
+              finish = 'regular'
             }
 
             //..................................................................
@@ -306,8 +305,8 @@
     {
       //........................................................................
       //
-      Ω.state.athlete[ athlete ].x = Ω.state.zone[ zone ].x + 1
-      Ω.state.athlete[ athlete ].y = Ω.state.zone[ zone ].y + 1
+      Ω.state.athlete[ athlete ].x = zoneX + 1
+      Ω.state.athlete[ athlete ].y = zoneY + 1
 
       //........................................................................
       //
@@ -328,10 +327,25 @@
       //
       toReturn.act = function()
       {
+        if( Ω.state.rounder === 'none' )
+        {
+          Ω.state.turn ++
+
+          if( aimed === Ω.state.holder
+          || Ω.state.futureHolder
+          || aimed === 'ball' )
+          {
+            Ω.state.futureHolder = false
+
+            Ω.state.newHolder = 'none'
+            Ω.state.ballLock = false
+            Ω.state.newHolder = athlete
+          }
+        }
+
         if( Ω.state.rounder === 'none'
         && Ω.state.newHolder === 'none' )
         {
-          Ω.state.turn ++
           Ω.state.selected = 'none'
           Ω.state.marked = []
         }
@@ -346,11 +360,15 @@
           Ω.game.updTar()
 
           Ω.state.marked = Ω.state.target.aimed
-
-          if( Ω.state.newHolder !== 'none' ) Ω.state.marked.push( athlete )
         }
 
         Ω.game.updSel()
+
+        if( aimed === Ω.state.holder
+        || aimed === 'ball' )
+        {
+          Ω.state.futureHolder = true
+        }
 
         setTimeout( function(){ Ω.state.lock = false }, 100 )
       }
@@ -369,8 +387,8 @@
       //........................................................................
       // Change the athlete's coordinates
       //
-      Ω.state.athlete[ athlete ].x = Ω.state.zone[ zone ].x + 1
-      Ω.state.athlete[ athlete ].y = Ω.state.zone[ zone ].y + 1
+      Ω.state.athlete[ athlete ].x = zoneX + 1
+      Ω.state.athlete[ athlete ].y = zoneY + 1
 
       //........................................................................
       //
@@ -425,6 +443,13 @@
           }
 
           Ω.game.updRpl()
+
+          if( aimed === Ω.state.holder )
+          {
+            Ω.state.newHolder = 'none'
+            Ω.state.ballLock = false
+            Ω.state.newHolder = athlete
+          }
         }
 
         Ω.trigger.event.push(
@@ -449,11 +474,28 @@
           //
           act: function()
           {
+            if( Ω.state.rounder === 'none' )
+            {
+              if( finish === 'tackle' )
+              {
+                Ω.state.turn ++
+
+                if( aimed === Ω.state.holder
+                || Ω.state.futureHolder
+                || aimed === 'ball' )
+                {
+                  Ω.state.futureHolder = false
+
+                  Ω.state.newHolder = 'none'
+                  Ω.state.ballLock = false
+                  Ω.state.newHolder = athlete
+                }
+              }
+            }
+
             if( Ω.state.rounder === 'none'
             && Ω.state.newHolder === 'none' )
             {
-              if( finish === 'tackle' ) Ω.state.turn ++
-
               Ω.state.selected = 'none'
               Ω.state.marked = []
             }
@@ -469,7 +511,11 @@
 
               Ω.state.marked = Ω.state.target.aimed
 
-              if( Ω.state.newHolder !== 'none' ) Ω.state.marked.push( athlete )
+              if( aimed === Ω.state.holder
+              || aimed === 'ball' )
+              {
+                Ω.state.futureHolder = true
+              }
             }
 
             Ω.state.pushed = 'none'
@@ -484,8 +530,47 @@
 
     ////////////////////////////////////////////////////////////////////////////
     //
+    else if( finish === 'placeBall' )
+    {
+      Ω.state.ball.x = zoneX + 1
+      Ω.state.ball.y = zoneY + 1
+
+      //........................................................................
+      //
+      toReturn.check = function()
+      {
+        let ballToken = Ω.page.ball.getBoundingClientRect()
+
+        let a = ballToken.x - Ω.state.screen.x
+        let b = Ω.state.ball.x
+
+        let c = ballToken.y - Ω.state.screen.y
+        let d = Ω.state.ball.y
+
+        return a === b && c === d
+      }
+
+      //........................................................................
+      //
+      toReturn.act = function()
+      {
+        Ω.state.newHolder = 'none'
+        Ω.state.selected = 'none'
+        Ω.game.updSel()
+
+        Ω.state.marked = []
+
+        Ω.page.ball.style.opacity = '1'
+
+        Ω.state.ballLock = false
+        Ω.state.lock = false
+      }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    //
     if( toReturn.check() === false ) Ω.trigger.event.push( toReturn )
-    else setTimeout( function(){ Ω.state.lock = false }, 100 )
+    else                             Ω.state.lock = false
   }
 
   //////////////////////////////////////////////////////////////////////////////
@@ -500,7 +585,7 @@
 
     Ω.state.marked = []
 
-    setTimeout( function(){ Ω.state.lock = false }, 100 )
+    Ω.state.lock = false
   }
 
   //////////////////////////////////////////////////////////////////////////////

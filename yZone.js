@@ -186,8 +186,15 @@
       //
       let entity
 
-      if( Ω.state.displayed === 'ball' ) entity = Ω.state.ball
-      else entity = Ω.state.athlete[ Ω.state.displayed ]
+      if( Ω.state.displayed === 'ball' )
+      {
+        entity = Ω.state.athlete[ Ω.state.holder ]
+      }
+
+      else
+      {
+        entity = Ω.state.athlete[ Ω.state.displayed ]
+      }
 
       //........................................................................
       //

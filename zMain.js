@@ -142,8 +142,9 @@
     //==========================================================================
     // Update the ball's index
     //
-    if( Ω.state.selected === 'ball' ) Ω.page.ball.style.zIndex = '5'
-    else                              Ω.page.ball.style.zIndex = '3'
+    if( Ω.state.ball.x === 457 ) Ω.page.ball.style.zIndex = '3'
+    else if( Ω.state.selected === 'ball' ) Ω.page.ball.style.zIndex = '5'
+    else Ω.page.ball.style.zIndex = '1'
   },
 
   //////////////////////////////////////////////////////////////////////////////
@@ -207,9 +208,6 @@
           let zone = Ω.state.target.zone[ $ ]
           let aimed = Ω.state.athlete[ Ω.state.target.aimed[ $ ] ]
           let holder = Ω.state.athlete[ Ω.state.holder ]
-
-          console.log( aimed.color )
-          console.log( holder.color )
 
           if( aimed.color !== holder.color )
           {
@@ -497,7 +495,6 @@
             if( athlete.y - 1 === cell.y )
             {
               Ω.state.newHolder = $1
-              Ω.state.holder = $1
             }
           }
         }
@@ -512,10 +509,7 @@
     {
       Ω.state.ballLock = true
 
-      //........................................................................
-      //
-      Ω.state.selected = 'ball'
-      Ω.state.displayed = Ω.state.selected
+      Ω.state.holder = Ω.state.newHolder
 
       //........................................................................
       //
@@ -525,6 +519,21 @@
       Ω.state.ball.y = Ω.state.athlete[ athlete ].y
 
       Ω.page.ball.style.opacity = '0.75'
+
+      //........................................................................
+      //
+      Ω.state.selected = 'ball'
+      Ω.state.displayed = Ω.state.selected
+
+      Ω.game.updSel()
+
+      Ω.zone.updZon1()
+      Ω.zone.updZon2()
+
+      Ω.game.updTar()
+
+      Ω.state.marked = Ω.state.target.aimed
+      Ω.state.marked.push( athlete )
     }
   },
 }
@@ -542,6 +551,10 @@
 
     Ω.game.updSel()
     Ω.game.updRpl()
+
+    //==========================================================================
+    //
+    if( Ω.state.newHolder !== 'none' ) Ω.page.ball.style.opacity = '0.75'
 
     //==========================================================================
     // First turn

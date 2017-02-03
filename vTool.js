@@ -128,14 +128,19 @@
   //////////////////////////////////////////////////////////////////////////////
   // Is intended to regulate which zone is displayed and which is not
   //
-  isZone: function( counter, x, y )
+  isZone: function( zone, x, y )
   {
     //==========================================================================
     //
     if( Ω.state.displayed === 'ball' )
     {
-      Ω.state.zone[ counter ] = { x: x, y: y }
-      return 1
+      if( x === Ω.state.ball.x - 1 && y === Ω.state.ball.y - 1 ) return 0
+
+      else
+      {
+        Ω.state.zone[ zone ] = { x: x, y: y }
+        return 1
+      }
     }
 
     //==========================================================================
@@ -198,7 +203,7 @@
       if( other.indexOf( zoneCoordinate ) === -1
       && lock === false )
       {
-        Ω.state.zone[ counter ] = { x: x, y: y }
+        Ω.state.zone[ zone ] = { x: x, y: y }
         return 1
       }
 

@@ -196,6 +196,20 @@
 
     let targetLength = Ω.state.target.zone.length
 
+    if( Ω.state.target.aimed.indexOf( 'ball' ) !== -1 )
+    {
+      let indexOfBall = Ω.state.target.aimed.indexOf( 'ball' )
+      let lastZone = Ω.state.target.zone[ indexOfBall ]
+
+      Ω.tool.remove( 'ball', Ω.state.target.aimed )
+      Ω.tool.remove( lastZone, Ω.state.target.zone )
+
+      Ω.state.target.aimed.push( 'ball' )
+      Ω.state.target.zone.push( lastZone )
+
+      targetLength --
+    }
+
     if( targetLength !== 0 )
     {
       //========================================================================
@@ -221,13 +235,6 @@
       //
       else if( Ω.state.displayed !== 'none' )
       {
-        if( Ω.state.target.aimed.indexOf( 'ball' ) !== -1 )
-        {
-          Ω.tool.remove( 'ball', Ω.state.target.aimed )
-          Ω.state.target.aimed.push( 'ball' )
-          targetLength --
-        }
-
         for( let $1 = 0; $1 < targetLength; $1 ++ )
         {
           //....................................................................
@@ -513,7 +520,7 @@
 
       //........................................................................
       //
-      let athlete = Ω.state.newHolder
+      let athlete = Ω.state.holder
 
       Ω.state.ball.x = Ω.state.athlete[ athlete ].x
       Ω.state.ball.y = Ω.state.athlete[ athlete ].y
@@ -525,11 +532,10 @@
       Ω.state.selected = 'ball'
       Ω.state.displayed = Ω.state.selected
 
-      Ω.game.updSel()
-
       Ω.zone.updZon1()
       Ω.zone.updZon2()
 
+      Ω.game.updSel()
       Ω.game.updTar()
 
       Ω.state.marked = Ω.state.target.aimed

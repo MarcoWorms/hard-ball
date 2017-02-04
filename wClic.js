@@ -160,9 +160,8 @@
 
           if( a.color === b.color )
           {
-            Ω.state.newHolder = 'none'
-            Ω.state.ballLock = false
             Ω.state.newHolder = aimed
+            Ω.state.ballLock = false
           }
         }
 
@@ -245,23 +244,27 @@
         && Ω.state.blocked.indexOf( zone ) === -1 )
         {
           //====================================================================
+          // Test for ROUNDABOUTER
           //
-          Ω.game.updRdb()
-
-          //====================================================================
-          //
-          if( Ω.state.rounding.indexOf( athlete ) !== -1 )
+          ( function()
           {
-            if( Ω.state.rounder === 'none' ) Ω.state.rounder = athlete
-            else                             Ω.state.rounder = 'none'
-          }
+            Ω.game.updRdb()
 
-          //....................................................................
-          //
-          else if( Ω.state.rounder !== 'none' )
-          {
-            Ω.state.rounder = 'none'
-          }
+            //====================================================================
+            //
+            if( Ω.state.rounding.indexOf( athlete ) !== -1 )
+            {
+              if( Ω.state.rounder === 'none' ) Ω.state.rounder = athlete
+              else                             Ω.state.rounder = 'none'
+            }
+
+            //....................................................................
+            //
+            else if( Ω.state.rounder !== 'none' )
+            {
+              Ω.state.rounder = 'none'
+            }
+          }() )
 
           //====================================================================
           // HAS target
@@ -328,29 +331,17 @@
           Ω.state.turn ++
 
           if( Ω.state.futureHolder
-          || aimed === 'ball' )
+          || aimed === 'ball'
+          || athlete === Ω.state.holder )
           {
             Ω.state.futureHolder = false
-
-            Ω.state.ballLock = false
             Ω.state.newHolder = athlete
           }
 
           else
           {
-            if( athlete === Ω.state.holder )
-            {
-              Ω.state.futureHolder = false
-
-              Ω.state.ballLock = false
-              Ω.state.newHolder = athlete
-            }
-
-            else
-            {
-              Ω.state.selected = 'none'
-              Ω.state.marked = []
-            }
+            Ω.state.selected = 'none'
+            Ω.state.marked = []
           }
         }
 
@@ -371,6 +362,8 @@
 
           if( aimed === 'ball' ) Ω.state.futureHolder = true
         }
+
+        Ω.game.updSel()
 
         setTimeout( function(){ Ω.state.lock = false }, 100 )
       }
@@ -446,12 +439,7 @@
 
           Ω.game.updRpl()
 
-          if( aimed === Ω.state.holder )
-          {
-            Ω.state.newHolder = 'none'
-            Ω.state.ballLock = false
-            Ω.state.newHolder = athlete
-          }
+          if( aimed === Ω.state.holder ) Ω.state.newHolder = athlete
         }
 
         Ω.trigger.event.push(
@@ -487,29 +475,17 @@
 
                 if( aimed === Ω.state.holder
                 || Ω.state.futureHolder
-                || aimed === 'ball' )
+                || aimed === 'ball'
+                || athlete === Ω.state.holder )
                 {
                   Ω.state.futureHolder = false
-
-                  Ω.state.ballLock = false
                   Ω.state.newHolder = athlete
                 }
 
                 else
                 {
-                  if( athlete === Ω.state.holder )
-                  {
-                    Ω.state.futureHolder = false
-
-                    Ω.state.ballLock = false
-                    Ω.state.newHolder = athlete
-                  }
-
-                  else
-                  {
-                    Ω.state.selected = 'none'
-                    Ω.state.marked = []
-                  }
+                  Ω.state.selected = 'none'
+                  Ω.state.marked = []
                 }
               }
             }

@@ -271,10 +271,7 @@
             //..................................................................
             // Ball is under aim
             //
-            if( aimed === 'ball' )
-            {
-              finish = 'regular'
-            }
+            if( aimed === 'ball' ) finish = 'regular'
 
             //..................................................................
             // Athlete is under aim
@@ -282,7 +279,6 @@
             else
             {
               let isBlocked = Ω.state.blocked.indexOf( zone )
-
               if( isBlocked === -1 ) finish = 'tackle'
             }
           }
@@ -290,10 +286,7 @@
           //====================================================================
           // Has NO target
           //
-          else
-          {
-            finish = 'regular'
-          }
+          else finish = 'regular'
         }
       }
     }
@@ -327,32 +320,47 @@
       //
       toReturn.act = function()
       {
+        // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+        // NOT roundabouting
+        //
         if( Ω.state.rounder === 'none' )
         {
           Ω.state.turn ++
 
-          if( aimed === Ω.state.holder
-          || Ω.state.futureHolder
+          if( Ω.state.futureHolder
           || aimed === 'ball' )
           {
             Ω.state.futureHolder = false
 
-            Ω.state.newHolder = 'none'
             Ω.state.ballLock = false
             Ω.state.newHolder = athlete
           }
+
+          else
+          {
+            if( athlete === Ω.state.holder )
+            {
+              Ω.state.futureHolder = false
+
+              Ω.state.ballLock = false
+              Ω.state.newHolder = athlete
+            }
+
+            else
+            {
+              Ω.state.selected = 'none'
+              Ω.state.marked = []
+            }
+          }
         }
 
-        if( Ω.state.rounder === 'none'
-        && Ω.state.newHolder === 'none' )
-        {
-          Ω.state.selected = 'none'
-          Ω.state.marked = []
-        }
 
+        // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+        // Roundabouting
+        //
         else
         {
-          if( Ω.state.newHolder === 'none' ) Ω.state.displayed = athlete
+          Ω.state.displayed = athlete
 
           Ω.zone.updZon1()
           Ω.zone.updZon2()
@@ -360,14 +368,8 @@
           Ω.game.updTar()
 
           Ω.state.marked = Ω.state.target.aimed
-        }
 
-        Ω.game.updSel()
-
-        if( aimed === Ω.state.holder
-        || aimed === 'ball' )
-        {
-          Ω.state.futureHolder = true
+          if( aimed === 'ball' ) Ω.state.futureHolder = true
         }
 
         setTimeout( function(){ Ω.state.lock = false }, 100 )
@@ -474,6 +476,9 @@
           //
           act: function()
           {
+            // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+            // NOT roundabouting
+            //
             if( Ω.state.rounder === 'none' )
             {
               if( finish === 'tackle' )
@@ -486,23 +491,35 @@
                 {
                   Ω.state.futureHolder = false
 
-                  Ω.state.newHolder = 'none'
                   Ω.state.ballLock = false
                   Ω.state.newHolder = athlete
+                }
+
+                else
+                {
+                  if( athlete === Ω.state.holder )
+                  {
+                    Ω.state.futureHolder = false
+
+                    Ω.state.ballLock = false
+                    Ω.state.newHolder = athlete
+                  }
+
+                  else
+                  {
+                    Ω.state.selected = 'none'
+                    Ω.state.marked = []
+                  }
                 }
               }
             }
 
-            if( Ω.state.rounder === 'none'
-            && Ω.state.newHolder === 'none' )
-            {
-              Ω.state.selected = 'none'
-              Ω.state.marked = []
-            }
-
+            // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+            // Roundabouting
+            //
             else
             {
-              if( Ω.state.newHolder === 'none' ) Ω.state.displayed = athlete
+              Ω.state.displayed = athlete
 
               Ω.zone.updZon1()
               Ω.zone.updZon2()

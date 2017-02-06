@@ -141,38 +141,30 @@
     let toReturn = { check: () => { return true }, act: () => { return true } }
 
     //==========================================================================
-    // Ball is selected
+    // Ball is selected and was already moved
     //
-    if( Ω.state.selected === 'ball' )
+    if( Ω.state.selected === 'ball'
+    && Ω.state.ball.x !== 457 )
     {
-      //........................................................................
-      // Ball WAS moved already
+      //////////////////////////////////////////////////////////////////////////
+      // HAS target (can only be an athlete)
       //
-      if( Ω.state.ball.x !== 457 )
+      if( zoneIndex !== -1 )
       {
-        ////////////////////////////////////////////////////////////////////////
-        // HAS target (can only be an athlete)
-        //
-        if( zoneIndex !== -1 )
-        {
-          let a = Ω.state.athlete[ Ω.state.holder ]
-          let b = Ω.state.athlete[ aimed ]
+        let a = Ω.state.athlete[ Ω.state.holder ]
+        let b = Ω.state.athlete[ aimed ]
 
-          if( a.color === b.color )
-          {
-            Ω.state.newHolder = aimed
-            Ω.state.ballLock = false
-          }
-        }
-
-        ////////////////////////////////////////////////////////////////////////
-        // Has NO target
-        //
-        else
+        if( a.color === b.color )
         {
-          finish = 'placeBall'
+          Ω.state.newHolder = aimed
+          Ω.state.ballLock = false
         }
       }
+
+      //////////////////////////////////////////////////////////////////////////
+      // Has NO target
+      //
+      else finish = 'placeBall'
     }
 
     //==========================================================================
@@ -190,10 +182,6 @@
         //
         if( Ω.state.turn < 8 )
         {
-          //....................................................................
-          //
-          finish = 'regular'
-
           //....................................................................
           //
           if( Ω.state.turn === 0 )
@@ -219,6 +207,10 @@
             Ω.state.team.blue.push( athlete )
             Ω.state.team.playing.push( athlete )
           }
+
+          //....................................................................
+          //
+          finish = 'regular'
         }
 
         //======================================================================
@@ -250,7 +242,7 @@
           {
             Ω.game.updRdb()
 
-            //====================================================================
+            //..................................................................
             //
             if( Ω.state.rounding.indexOf( athlete ) !== -1 )
             {
@@ -258,12 +250,10 @@
               else                             Ω.state.rounder = 'none'
             }
 
-            //....................................................................
+            //..................................................................
             //
-            else if( Ω.state.rounder !== 'none' )
-            {
-              Ω.state.rounder = 'none'
-            }
+            else if( Ω.state.rounder !== 'none' ) Ω.state.rounder = 'none'
+
           }() )
 
           //====================================================================
@@ -473,10 +463,10 @@
               {
                 Ω.state.turn ++
 
-                if( aimed === Ω.state.holder
-                || Ω.state.futureHolder
-                || aimed === 'ball'
-                || athlete === Ω.state.holder )
+                if( aimed === 'ball'
+                || aimed === Ω.state.holder
+                || athlete === Ω.state.holder
+                || Ω.state.futureHolder )
                 {
                   Ω.state.futureHolder = false
                   Ω.state.newHolder = athlete
@@ -504,8 +494,8 @@
 
               Ω.state.marked = Ω.state.target.aimed
 
-              if( aimed === Ω.state.holder
-              || aimed === 'ball' )
+              if( aimed === 'ball'
+              || aimed === Ω.state.holder )
               {
                 Ω.state.futureHolder = true
               }

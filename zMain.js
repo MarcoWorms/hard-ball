@@ -541,6 +541,21 @@
       Ω.state.marked = Ω.state.target.aimed
       Ω.state.marked.push( athlete )
     }
+
+    //==========================================================================
+    // Shoot button behavior
+    //
+    if( Ω.state.displayed === 'ball'
+    && Ω.state.newHolder === 'none'
+    && Ω.state.ball.x !== 457 )
+    {
+      Ω.page.shoot.style.display = 'flex'
+    }
+
+    else
+    {
+      Ω.page.shoot.style.display = 'none'
+    }
   },
 }
 

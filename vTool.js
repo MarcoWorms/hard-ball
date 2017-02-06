@@ -134,7 +134,11 @@
     //
     if( Ω.state.displayed === 'ball' )
     {
-      if( x === Ω.state.ball.x - 1 && y === Ω.state.ball.y - 1 ) return 0
+      if( x === Ω.state.ball.x - 1
+      && y === Ω.state.ball.y - 1 )
+      {
+        return 0
+      }
 
       else
       {

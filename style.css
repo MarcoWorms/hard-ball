@@ -111,16 +111,6 @@ ZONE
 }
 
 /*==============================================================================
-ROUNDED (42 pixels)
-*/
-.r42
-{
-  width:      42px;
-  height:     42px;
-  box-sizing: border-box;
-}
-
-/*==============================================================================
 MASK
 */
 .msk{overflow: auto}
@@ -263,18 +253,35 @@ STANDARD SIZE
 }
 
 /*==============================================================================
-SPECIAL CASE 1
+SPECIAL CASES
 */
 .sc1{transform: translate(-1px,0)}
 
 /*==============================================================================
+ANIMATIONS
 */
+.ani1{} /* code exclusive */
+
 .ani2
 {
   transition:
     border-color 0.25s linear,
     box-shadow 0.5s linear;
 }
+
+/*==============================================================================
+SHOOT
+*/
+.sho
+{
+  border:     2px solid rgb(255,255,255);
+  box-sizing: border-box;
+}
+
+.sh0{width: 42px; height: 42px}
+.sh1{width: 32px; height: 32px}
+.sh2{width: 22px; height: 22px}
+.sh3{width: 12px; height: 12px}
 
 /*==============================================================================
 */
@@ -306,16 +313,6 @@ SPECIAL CASE 1
 {
   border:             4px solid rgba(255,255,255,0.5);
   animation-name:     ripple;
-  animation-duration: 0.25s;
-  z-index:            6;
-}
-
-/*==============================================================================
-*/
-#shoot
-{
-  border:             4px solid rgb(255,255,255);
-  animation-name:     poop;
   animation-duration: 0.25s;
   z-index:            6;
 }

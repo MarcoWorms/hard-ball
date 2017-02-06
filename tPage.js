@@ -46,7 +46,7 @@
   //============================================================================
   //
   selection: document.getElementById( 'selection' ),
-  shoot: document.getElementById( 'shoot' ),
+  shoot: document.getElementById( 'shoot0' ),
 
   zone:
   [

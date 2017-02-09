@@ -546,14 +546,14 @@
         Ω.page.ball.style.opacity = '1'
 
         Ω.state.ballLock = false
-        Ω.state.lock = false
+        setTimeout( function(){ Ω.state.lock = false }, 100 )
       }
     }
 
     ////////////////////////////////////////////////////////////////////////////
     //
     if( toReturn.check() === false ) Ω.trigger.event.push( toReturn )
-    else                             Ω.state.lock = false
+    else setTimeout( function(){ Ω.state.lock = false }, 100 )
   }
 
   //////////////////////////////////////////////////////////////////////////////
@@ -568,7 +568,7 @@
 
     Ω.state.marked = []
 
-    Ω.state.lock = false
+    setTimeout( function(){ Ω.state.lock = false }, 100 )
   }
 
   //////////////////////////////////////////////////////////////////////////////

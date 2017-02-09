@@ -361,6 +361,17 @@
       if( Ω.change.glow[ 0 ] > 0.66 )      Ω.change.glow[ 1 ] = true
       else if( Ω.change.glow[ 0 ] < 0.33 ) Ω.change.glow[ 1 ] = false
     }, 40 ) ],
+
+  //============================================================================
+  //
+  shine: [ 0.66, false, setInterval( function()
+    {
+      if( Ω.change.shine[ 1 ] === false )     Ω.change.shine[ 0 ] += 0.03
+      else if( Ω.change.shine[ 1 ] === true ) Ω.change.shine[ 0 ] -= 0.03
+
+      if( Ω.change.shine[ 0 ] > 0.66 )      Ω.change.shine[ 1 ] = true
+      else if( Ω.change.shine[ 0 ] < 0.33 ) Ω.change.shine[ 1 ] = false
+    }, 40 ) ],
 }
 
 ////////////////////////////////////////////////////////////////////////////////

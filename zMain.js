@@ -22,12 +22,17 @@
   },
 
   //////////////////////////////////////////////////////////////////////////////
+  // Ball's and Shoot's position
   //
   updBal: function()
   {
     //==========================================================================
     //
     Ω.tool.translate( Ω.page.ball, Ω.state.ball.x, Ω.state.ball.y )
+
+    //==========================================================================
+    //
+    Ω.tool.translate( Ω.page.shootMain, Ω.state.shoot.x, Ω.state.shoot.y )
   },
 
   //////////////////////////////////////////////////////////////////////////////
@@ -549,13 +554,27 @@
     && Ω.state.newHolder === 'none'
     && Ω.state.ball.x !== 457 )
     {
-      Ω.page.shoot.style.display = 'flex'
+      let holder = Ω.state.athlete[ Ω.state.holder ]
+      let dif =
+      {
+        x: Ω.state.ball.x - holder.x,
+        y: Ω.state.ball.y - holder.y,
+      }
+
+      // This bit should probably be more carefully thought (!)
+      //
+      if( dif.x !== undefined && dif.y !== undefined )
+      {
+        Ω.state.shoot.x = Ω.tool.bend( Ω.state.ball.x + dif.x - 1, 'x' ) + 2
+        Ω.state.shoot.y = Ω.tool.bend( Ω.state.ball.y + dif.y - 1, 'y' ) + 2
+
+        setTimeout( function(){ Ω.page.shootMain.style.display = 'flex' }, 0 )
+      }
     }
 
-    else
-    {
-      Ω.page.shoot.style.display = 'none'
-    }
+    //==========================================================================
+    //
+    else Ω.page.shootMain.style.display = 'none'
   },
 }
 
@@ -598,7 +617,7 @@
       Ω.state.ball.y = 265
     }
 
-    ////////////////////////////////////////////////////////////////////////////
+    //==========================================================================
     // Hover color . Part 0 . Refresh everything
     //
     Ω.page.ball.style.backgroundColor = 'rgb(111,79,47)'

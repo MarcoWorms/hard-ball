@@ -91,9 +91,10 @@
   target: { zone: [], aimed: [] },
 
   //============================================================================
-  // Ball's current position
+  // Ball's and Shoot's current position
   //
   ball: { x: 0, y: 0 },
+  shoot: { x: 0, y: 0 },
 
   //============================================================================
   // Athletes' positions and colors

@@ -145,6 +145,15 @@
     } )
 
     //==========================================================================
+    // Update the shoot's index
+    //
+    Array.from( Ω.page.shoot ).forEach( function( $1, $2 )
+    {
+      let ballZIndex = Number( Ω.page.ball.style.zIndex )
+      $1.style.zIndex = String( ballZIndex - 1 )
+    } )
+
+    //==========================================================================
     // Update the ball's index
     //
     if( Ω.state.ball.x === 457 ) Ω.page.ball.style.zIndex = '3'
@@ -546,7 +555,13 @@
       Ω.state.marked = Ω.state.target.aimed
       Ω.state.marked.push( athlete )
     }
+  },
 
+  //////////////////////////////////////////////////////////////////////////////
+  // Controls the SHOOT button behavior
+  //
+  updSho: function()
+  {
     //==========================================================================
     // Shoot button behavior
     //
@@ -723,6 +738,7 @@
     Ω.game.updBlk()
     Ω.game.updKee()
     Ω.game.updHol()
+    Ω.game.updSho()
 
     window.requestAnimationFrame( Ω.engine.update )
   },

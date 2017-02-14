@@ -145,7 +145,7 @@
     } )
 
     //==========================================================================
-    // Update the shoot's index
+    // PART I . Update the shoot's index
     //
     Array.from( Ω.page.shoot ).forEach( function( $1, $2 )
     {
@@ -159,6 +159,16 @@
     if( Ω.state.ball.x === 457 ) Ω.page.ball.style.zIndex = '3'
     else if( Ω.state.displayed === 'ball' ) Ω.page.ball.style.zIndex = '5'
     else Ω.page.ball.style.zIndex = '1'
+
+    //==========================================================================
+    // PART II . Update the shoot's index
+    //
+    Array.from( Ω.page.shoot ).forEach( function( $1, $2 )
+    {
+      let ballZIndex = Number( Ω.page.ball.style.zIndex )
+      $1.style.zIndex = String( ballZIndex - 1 )
+    } )
+
   },
 
   //////////////////////////////////////////////////////////////////////////////
@@ -582,8 +592,6 @@
       {
         Ω.state.shoot.x = Ω.tool.bend( Ω.state.ball.x + dif.x - 1, 'x' ) + 2
         Ω.state.shoot.y = Ω.tool.bend( Ω.state.ball.y + dif.y - 1, 'y' ) + 2
-
-        setTimeout( function(){ Ω.page.shootMain.style.display = 'flex' }, 0 )
       }
     }
 
@@ -593,8 +601,6 @@
     {
       Ω.state.shoot.x = Ω.state.ball.x + 1
       Ω.state.shoot.y = Ω.state.ball.y + 1
-
-      Ω.page.shootMain.style.display = 'none'
     }
   },
 }

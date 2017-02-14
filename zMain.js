@@ -148,7 +148,7 @@
     // Update the ball's index
     //
     if( Ω.state.ball.x === 457 ) Ω.page.ball.style.zIndex = '3'
-    else if( Ω.state.selected === 'ball' ) Ω.page.ball.style.zIndex = '5'
+    else if( Ω.state.displayed === 'ball' ) Ω.page.ball.style.zIndex = '5'
     else Ω.page.ball.style.zIndex = '1'
   },
 
@@ -574,7 +574,13 @@
 
     //==========================================================================
     //
-    else Ω.page.shootMain.style.display = 'none'
+    else
+    {
+      Ω.state.shoot.x = Ω.state.ball.x + 1
+      Ω.state.shoot.y = Ω.state.ball.y + 1
+
+      Ω.page.shootMain.style.display = 'none'
+    }
   },
 }
 

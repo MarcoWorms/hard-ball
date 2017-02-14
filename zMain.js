@@ -592,8 +592,6 @@
       {
         Ω.state.shoot.x = Ω.tool.bend( Ω.state.ball.x + dif.x - 1, 'x' ) + 2
         Ω.state.shoot.y = Ω.tool.bend( Ω.state.ball.y + dif.y - 1, 'y' ) + 2
-
-        setTimeout( function(){ Ω.page.shootMain.style.display = 'flex' }, 0 )
       }
     }
 

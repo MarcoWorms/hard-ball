@@ -145,13 +145,10 @@
     } )
 
     //==========================================================================
-    // PART I . Update the shoot's index
+    // Update the shoot's index
     //
-    Array.from( Ω.page.shoot ).forEach( function( $1, $2 )
-    {
-      let ballZIndex = Number( Ω.page.ball.style.zIndex )
-      $1.style.zIndex = String( ballZIndex - 1 )
-    } )
+    let ballZIndex = Number( Ω.page.ball.style.zIndex )
+    Ω.page.shootMain.style.zIndex = String( ballZIndex - 1 )
 
     //==========================================================================
     // Update the ball's index
@@ -161,14 +158,15 @@
     else Ω.page.ball.style.zIndex = '1'
 
     //==========================================================================
-    // PART II . Update the shoot's index
+    // Update the shoot's index again!
     //
-    Array.from( Ω.page.shoot ).forEach( function( $1, $2 )
-    {
-      let ballZIndex = Number( Ω.page.ball.style.zIndex )
-      $1.style.zIndex = String( ballZIndex - 1 )
-    } )
+    ballZIndex = Number( Ω.page.ball.style.zIndex )
+    Ω.page.shootMain.style.zIndex = String( ballZIndex - 1 )
 
+    if( Ω.state.newHolder !== 'none' )
+    {
+      Ω.page.shootMain.style.zIndex = String( ballZIndex - 5 )
+    }
   },
 
   //////////////////////////////////////////////////////////////////////////////

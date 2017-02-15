@@ -537,10 +537,14 @@
       toReturn.act = function()
       {
         Ω.state.newHolder = 'none'
-        Ω.state.selected = 'none'
-        Ω.game.updSel()
+        Ω.state.displayed = 'ball'
 
-        Ω.state.marked = []
+        Ω.zone.updZon1()
+        Ω.zone.updZon2()
+
+        Ω.game.updTar()
+
+        Ω.state.marked = Ω.state.target.aimed
 
         Ω.page.ball.style.opacity = '1'
 

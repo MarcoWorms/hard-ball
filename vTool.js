@@ -134,8 +134,17 @@
     //
     if( Ω.state.displayed === 'ball' )
     {
-      Ω.state.zone[ zone ] = { x: x, y: y }
-      return 1
+      if( x === Ω.state.ball.x - 1
+      && y === Ω.state.ball.y - 1 )
+      {
+        return 0
+      }
+
+      else
+      {
+        Ω.state.zone[ zone ] = { x: x, y: y }
+        return 1
+      }
     }
 
     //==========================================================================

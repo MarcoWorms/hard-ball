@@ -319,12 +319,14 @@
         {
           Ω.state.turn ++
 
-          if( Ω.state.futureHolder
+          if( Ω.state.futureHolder !== 'none'
           || aimed === 'ball'
           || athlete === Ω.state.holder )
           {
-            Ω.state.futureHolder = false
+            if( Ω.state.futureHolder !== 'none' ) athlete = Ω.state.futureHolder
+
             Ω.state.newHolder = athlete
+            Ω.state.futureHolder = 'none'
           }
 
           else
@@ -349,7 +351,7 @@
 
           Ω.state.marked = Ω.state.target.aimed
 
-          if( aimed === 'ball' ) Ω.state.futureHolder = true
+          if( aimed === 'ball' ) Ω.state.futureHolder = athlete
         }
 
         Ω.game.updSel()
@@ -454,6 +456,20 @@
           act: function()
           {
             // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+            //
+            let equal = false
+
+            let aimedX = Ω.state.athlete[ aimed ].x
+            let aimedY = Ω.state.athlete[ aimed ].y
+            let aimedCoordinate = Ω.tool.convert( [ aimedX, aimedY] )
+
+            let ballX = Ω.state.ball.x
+            let ballY = Ω.state.ball.y
+            let ballCoordinate = Ω.tool.convert( [ ballX, ballY] )
+
+            if( aimedCoordinate === ballCoordinate ) equal = true
+
+            // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
             // NOT roundabouting
             //
             if( Ω.state.rounder === 'none' )
@@ -463,12 +479,25 @@
                 Ω.state.turn ++
 
                 if( aimed === 'ball'
+                || aimed === Ω.state.futureHolder
                 || aimed === Ω.state.holder
                 || athlete === Ω.state.holder
-                || Ω.state.futureHolder )
+                || Ω.state.futureHolder !== 'none' )
                 {
-                  Ω.state.futureHolder = false
+                  if( Ω.state.futureHolder !== 'none'
+                  && Ω.state.futureHolder !== aimed )
+                  {
+                    athlete = Ω.state.futureHolder
+                  }
+
                   Ω.state.newHolder = athlete
+                  Ω.state.futureHolder = 'none'
+                }
+
+                else if( equal )
+                {
+                  Ω.state.newHolder = aimed
+                  Ω.state.futureHolder = 'none'
                 }
 
                 else
@@ -496,7 +525,12 @@
               if( aimed === 'ball'
               || aimed === Ω.state.holder )
               {
-                Ω.state.futureHolder = true
+                Ω.state.futureHolder = athlete
+              }
+
+              else if( equal )
+              {
+                Ω.state.futureHolder = aimed
               }
             }
 

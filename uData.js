@@ -73,7 +73,7 @@
   holder: 'none', // 'none' or 0 to 19
   newHolder: 'none', // 'none' or 0 to 19
 
-  futureHolder: false,
+  futureHolder: 'none',
 
   //============================================================================
   // Shows which zones are not pushable

@@ -319,13 +319,16 @@
         {
           Ω.state.turn ++
 
-          if( Ω.state.futureHolder !== 'none'
-          || aimed === 'ball'
+          if( aimed === 'ball'
           || athlete === Ω.state.holder )
           {
-            if( Ω.state.futureHolder !== 'none' ) athlete = Ω.state.futureHolder
-
             Ω.state.newHolder = athlete
+            Ω.state.futureHolder = 'none'
+          }
+
+          else if( Ω.state.futureHolder !== 'none' )
+          {
+            Ω.state.newHolder = Ω.state.futureHolder
             Ω.state.futureHolder = 'none'
           }
 
@@ -351,12 +354,15 @@
 
           Ω.state.marked = Ω.state.target.aimed
 
-          if( aimed === 'ball' ) Ω.state.futureHolder = athlete
+          if( aimed === 'ball' )
+          {
+            Ω.state.futureHolder = athlete
+          }
         }
 
         Ω.game.updSel()
 
-        setTimeout( function(){ Ω.state.lock = false }, 100 )
+        Ω.state.lock = false
       }
     }
 
@@ -395,13 +401,7 @@
       //
       toReturn.act = function()
       {
-        if( finish === 'tackle' )
-        {
-          Ω.state.athlete[ aimed ].x = newCoordinate.x + 1
-          Ω.state.athlete[ aimed ].y = newCoordinate.y + 1
-        }
-
-        else if( finish === 'replace' )
+        if( finish === 'replace' )
         {
           let oldCoordinate = Ω.info.cell[ 12 ][ aimed ]
 
@@ -433,71 +433,71 @@
           if( aimed === Ω.state.holder ) Ω.state.newHolder = athlete
         }
 
-        Ω.trigger.event.push(
+        else if( finish === 'tackle' )
         {
-          //....................................................................
-          //
-          check: function()
+          Ω.state.athlete[ aimed ].x = newCoordinate.x + 1
+          Ω.state.athlete[ aimed ].y = newCoordinate.y + 1
+
+          Ω.trigger.event.push(
           {
-            let athleteToken = Ω.page.athlete[ aimed ]
-            athleteToken = athleteToken.getBoundingClientRect()
-
-            let a = athleteToken.x - Ω.state.screen.x
-            let b = Ω.state.athlete[ aimed ].x
-
-            let c = athleteToken.y - Ω.state.screen.y
-            let d = Ω.state.athlete[ aimed ].y
-
-            return a === b && c === d
-          },
-
-          //....................................................................
-          //
-          act: function()
-          {
-            // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+            //..................................................................
             //
-            let equal = false
-
-            let aimedX = Ω.state.athlete[ aimed ].x
-            let aimedY = Ω.state.athlete[ aimed ].y
-            let aimedCoordinate = Ω.tool.convert( [ aimedX, aimedY] )
-
-            let ballX = Ω.state.ball.x
-            let ballY = Ω.state.ball.y
-            let ballCoordinate = Ω.tool.convert( [ ballX, ballY] )
-
-            if( aimedCoordinate === ballCoordinate ) equal = true
-
-            // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-            // NOT roundabouting
-            //
-            if( Ω.state.rounder === 'none' )
+            check: function()
             {
-              if( finish === 'tackle' )
+              let athleteToken = Ω.page.athlete[ aimed ]
+              athleteToken = athleteToken.getBoundingClientRect()
+
+              let a = athleteToken.x - Ω.state.screen.x
+              let b = Ω.state.athlete[ aimed ].x
+
+              let c = athleteToken.y - Ω.state.screen.y
+              let d = Ω.state.athlete[ aimed ].y
+
+              return a === b && c === d
+            },
+
+            //..................................................................
+            //
+            act: function()
+            {
+              // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+              //
+              let equal = false
+
+              let aimedX = Ω.state.athlete[ aimed ].x - 1
+              let aimedY = Ω.state.athlete[ aimed ].y - 1 
+              let aimedCoordinate = Ω.tool.convert( [ aimedX, aimedY ] )
+
+              let ballX = Ω.state.ball.x - 1
+              let ballY = Ω.state.ball.y - 1
+              let ballCoordinate = Ω.tool.convert( [ ballX, ballY ] )
+
+              if( aimedCoordinate === ballCoordinate ) equal = true
+
+              // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+              // NOT roundabouting
+              //
+              if( Ω.state.rounder === 'none' )
               {
                 Ω.state.turn ++
 
-                if( aimed === 'ball'
+                if( aimed === Ω.state.holder
                 || aimed === Ω.state.futureHolder
-                || aimed === Ω.state.holder
-                || athlete === Ω.state.holder
-                || Ω.state.futureHolder !== 'none' )
+                || athlete === Ω.state.holder )
                 {
-                  if( Ω.state.futureHolder !== 'none'
-                  && Ω.state.futureHolder !== aimed )
-                  {
-                    athlete = Ω.state.futureHolder
-                  }
-
                   Ω.state.newHolder = athlete
+                  Ω.state.futureHolder = 'none'
+                }
+
+                else if( Ω.state.futureHolder !== 'none' )
+                {
+                  Ω.state.newHolder = Ω.state.futureHolder
                   Ω.state.futureHolder = 'none'
                 }
 
                 else if( equal )
                 {
                   Ω.state.newHolder = aimed
-                  Ω.state.futureHolder = 'none'
                 }
 
                 else
@@ -506,41 +506,41 @@
                   Ω.state.marked = []
                 }
               }
-            }
 
-            // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-            // Roundabouting
-            //
-            else
-            {
-              Ω.state.displayed = athlete
-
-              Ω.zone.updZon1()
-              Ω.zone.updZon2()
-
-              Ω.game.updTar()
-
-              Ω.state.marked = Ω.state.target.aimed
-
-              if( aimed === 'ball'
-              || aimed === Ω.state.holder )
+              // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+              // Roundabouting
+              //
+              else
               {
-                Ω.state.futureHolder = athlete
+                Ω.state.displayed = athlete
+
+                Ω.zone.updZon1()
+                Ω.zone.updZon2()
+
+                Ω.game.updTar()
+
+                Ω.state.marked = Ω.state.target.aimed
+
+                if( aimed === 'ball'
+                || aimed === Ω.state.holder )
+                {
+                  Ω.state.futureHolder = athlete
+                }
+
+                else if( equal )
+                {
+                  Ω.state.futureHolder = aimed
+                }
               }
 
-              else if( equal )
-              {
-                Ω.state.futureHolder = aimed
-              }
+              Ω.state.pushed = 'none'
+
+              Ω.game.updSel()
+
+              Ω.state.lock = false
             }
-
-            Ω.state.pushed = 'none'
-
-            Ω.game.updSel()
-
-            setTimeout( function(){ Ω.state.lock = false }, 100 )
-          }
-        } )
+          } )
+        }
       }
     }
 
@@ -583,14 +583,14 @@
         Ω.page.ball.style.opacity = '1'
 
         Ω.state.ballLock = false
-        setTimeout( function(){ Ω.state.lock = false }, 100 )
+        Ω.state.lock = false
       }
     }
 
     ////////////////////////////////////////////////////////////////////////////
     //
     if( toReturn.check() === false ) Ω.trigger.event.push( toReturn )
-    else setTimeout( function(){ Ω.state.lock = false }, 100 )
+    else Ω.state.lock = false
   }
 
   //////////////////////////////////////////////////////////////////////////////
@@ -605,7 +605,7 @@
 
     Ω.state.marked = []
 
-    setTimeout( function(){ Ω.state.lock = false }, 100 )
+    Ω.state.lock = false
   }
 
   //////////////////////////////////////////////////////////////////////////////

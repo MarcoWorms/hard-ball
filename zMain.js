@@ -523,7 +523,7 @@
           {
             if( athlete.y - 1 === cell.y )
             {
-              Ω.state.newHolder = $1
+              if( Ω.state.rounder === 'none' ) Ω.state.newHolder = $1
             }
           }
         }

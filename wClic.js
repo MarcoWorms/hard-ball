@@ -495,7 +495,8 @@
                   Ω.state.futureHolder = 'none'
                 }
 
-                else if( equal )
+                else if( equal
+                && Ω.state.ball.x !== 457 )
                 {
                   Ω.state.newHolder = aimed
                 }

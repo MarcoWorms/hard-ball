@@ -155,7 +155,7 @@
     //
     if( Ω.state.ball.x === 457 ) Ω.page.ball.style.zIndex = '3'
     else if( Ω.state.displayed === 'ball' ) Ω.page.ball.style.zIndex = '5'
-    else Ω.page.ball.style.zIndex = '1'
+    else if( Ω.state.newHolder === 'none' ) Ω.page.ball.style.zIndex = '1'
 
     //==========================================================================
     // Update the shoot's index again!

@@ -431,6 +431,8 @@
           Ω.game.updRpl()
 
           if( aimed === Ω.state.holder ) Ω.state.newHolder = athlete
+
+          Ω.state.lock = false
         }
 
         else if( finish === 'tackle' )

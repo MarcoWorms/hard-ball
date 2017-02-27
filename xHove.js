@@ -14,7 +14,7 @@
   //////////////////////////////////////////////////////////////////////////////
   // Hover color . Part 1 . Refresh everything
   //
-  Ω.page.ball.style.backgroundColor = 'rgb(111,79,47)'
+  Ω.page.ball.style.backgroundColor = 'rgb(63,63,63)'
 
   for( let $1 = 0; $1 < 20; $1 ++ )
   {
@@ -57,7 +57,7 @@
     //==========================================================================
     // Hover color . Part 2. Change the hovered ball's color
     //
-    Ω.page.ball.style.backgroundColor = 'rgb(143,111,79)'
+    Ω.page.ball.style.backgroundColor = 'rgb(95,95,95)'
   }
 
   //////////////////////////////////////////////////////////////////////////////
@@ -116,7 +116,7 @@
     //
     if( Ω.state.displayed === 'ball' )
     {
-      Ω.page.ball.style.backgroundColor = 'rgb(143,111,79)'
+      Ω.page.ball.style.backgroundColor = 'rgb(95,95,95)'
     }
 
     //==========================================================================
@@ -179,7 +179,7 @@
       //
       if( aimed === 'ball' )
       {
-        Ω.page.ball.style.backgroundColor = 'rgb(143,111,79)'
+        Ω.page.ball.style.backgroundColor = 'rgb(95,95,95)'
       }
 
       //........................................................................
@@ -233,7 +233,7 @@
       //........................................................................
       // Hover color . Part 7a . Refresh everything again
       //
-      Ω.page.ball.style.backgroundColor = 'rgb(111,79,47)'
+      Ω.page.ball.style.backgroundColor = 'rgb(63,63,63)'
 
       for( let $1 = 0; $1 < 20; $1 ++ )
       {
@@ -282,7 +282,7 @@
     //==========================================================================
     // Hover color . Part 7b . Refresh everything again
     //
-    Ω.page.ball.style.backgroundColor = 'rgb(111,79,47)'
+    Ω.page.ball.style.backgroundColor = 'rgb(63,63,63)'
 
     for( let $1 = 0; $1 < 20; $1 ++ )
     {

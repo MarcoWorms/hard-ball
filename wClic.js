@@ -581,8 +581,6 @@
 
         Ω.state.marked = Ω.state.target.aimed
 
-        Ω.page.ball.style.opacity = '1'
-
         Ω.state.ballLock = false
         Ω.state.lock = false
       }

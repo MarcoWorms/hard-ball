@@ -547,8 +547,6 @@
       Ω.state.ball.x = Ω.state.athlete[ athlete ].x
       Ω.state.ball.y = Ω.state.athlete[ athlete ].y
 
-      Ω.page.ball.style.opacity = '0.75'
-
       //........................................................................
       //
       Ω.state.selected = 'ball'

@@ -143,28 +143,30 @@
     //==========================================================================
     // Ball is selected and was already moved
     //
-    if( Ω.state.selected === 'ball'
-    && Ω.state.ball.x !== 457 )
+    if( Ω.state.selected === 'ball' )
     {
-      //////////////////////////////////////////////////////////////////////////
-      // HAS target (can only be an athlete)
-      //
-      if( zoneIndex !== -1 )
+      if( Ω.state.ball.x !== 457 )
       {
-        let a = Ω.state.athlete[ Ω.state.holder ]
-        let b = Ω.state.athlete[ aimed ]
-
-        if( a.color === b.color )
+        ////////////////////////////////////////////////////////////////////////
+        // HAS target (can only be an athlete)
+        //
+        if( zoneIndex !== -1 )
         {
-          Ω.state.newHolder = aimed
-          Ω.state.ballLock = false
-        }
-      }
+          let a = Ω.state.athlete[ Ω.state.holder ]
+          let b = Ω.state.athlete[ aimed ]
 
-      //////////////////////////////////////////////////////////////////////////
-      // Has NO target
-      //
-      else finish = 'placeBall'
+          if( a.color === b.color )
+          {
+            Ω.state.newHolder = aimed
+            Ω.state.ballLock = false
+          }
+        }
+
+        ////////////////////////////////////////////////////////////////////////
+        // Has NO target
+        //
+        else finish = 'placeBall'
+      }
     }
 
     //==========================================================================

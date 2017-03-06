@@ -270,8 +270,9 @@ SHOOT
 EXCEPTIONS
 */
 .exc1{padding: 1px 0 0 1px}
-.exc2{padding: 1px 0 0 0}
+.exc2{padding: 1px 1px 0 0}
 .exc3{padding: 0 0 0 1px}
+.exc4{padding: 0 1px 0 0}
 
 /*//////////////////////////////////////////////////////////////////////////////
 ANIMATIONS

@@ -557,7 +557,7 @@
       Ω.state.ball.y = zoneY + 1
 
       //........................................................................
-      // 
+      //
       toReturn.check = function()
       {
         let ballToken = Ω.page.ball.getBoundingClientRect()
@@ -598,6 +598,52 @@
 
   //////////////////////////////////////////////////////////////////////////////
   // 06 . Click the selection zone or nothing (if unlocked)
+  //
+  else if( $.target.id.substring( 0, 5 ) === 'shoot'
+  && Ω.state.lock === false )
+  {
+    //==========================================================================
+    //
+    Ω.state.lock = true
+
+    Ω.state.selected = 'none'
+    Ω.page.ball.style.transition = ''
+    Ω.page.shootMain.style.display = 'none'
+    Ω.page.shootMain.style.transition = ''
+
+    //==========================================================================
+    //
+    let shooter = Ω.state.athlete[ Ω.state.holder ]
+    let ball = Ω.state.ball
+
+    let difX = ball.x - shooter.x
+    let difY = ball.y - shooter.y
+
+    //==========================================================================
+    //
+    let movement = setInterval( function()
+    {
+      Ω.state.ball.x = Ω.tool.bend( Ω.state.ball.x + difX / 3, 'x' )
+      Ω.state.ball.y = Ω.tool.bend( Ω.state.ball.y + difY / 3, 'y' )
+
+      if( Ω.tool.moveOn() === false )
+      {
+        clearInterval( movement )
+
+        Ω.state.lock = false
+        Ω.page.shootMain.style.display = 'flex'
+
+        setTimeout( function()
+        {
+          Ω.page.shootMain.style.transition = 'all 0.25s ease-in-out'
+          Ω.page.ball.style.transition = 'all 0.25s ease-in-out'
+        }, 100 )
+      }
+    }, 1 )
+  }
+
+  //////////////////////////////////////////////////////////////////////////////
+  // 07 . Click the selection zone or nothing (if unlocked)
   //
   else if( Ω.state.lock === false
   && Ω.state.rounder === 'none'

@@ -704,9 +704,9 @@
       //
       act: function()
       {
-        Array.from( Ω.page.animate1 ).forEach( function( $ )
+        Array.from( Ω.page.animate1 ).forEach( function( $1 )
         {
-          $.style.transition = 'all 0.25s ease-in-out'
+          $1.style.transition = 'all 0.25s ease-in-out'
         } )
       }
     } )

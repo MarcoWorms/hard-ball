@@ -359,6 +359,28 @@
     //
     return{ x: newX, y: newY }
   },
+
+  //////////////////////////////////////////////////////////////////////////////
+  //
+  moveOn: function()
+  {
+    let answer = true
+
+    for( let $ = 0; $ < 20; $ ++ )
+    {
+      let athlete = Ω.state.athlete[ $ ]
+      let ball = Ω.state.ball
+
+      if( athlete.x === ball.x
+      && athlete.y === ball.y )
+      {
+        Ω.state.newHolder = $
+        answer = false
+      }
+    }
+
+    return answer
+  },
 }
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -109,7 +109,7 @@
     if( axis === 'x' )
     {
       if( entity < 0 )        entity = 960 - ( - entity )
-      else if( entity > 912 ) entity = entity - 960
+      else if( entity > 913 ) entity = entity - 960
     }
 
     //==========================================================================
@@ -117,7 +117,7 @@
     else if( axis === 'y' )
     {
       if( entity < 0 )        entity = 576 - ( - entity )
-      else if( entity > 528 ) entity = entity - 576
+      else if( entity > 529 ) entity = entity - 576
     }
 
     //==========================================================================
@@ -364,21 +364,40 @@
   //
   moveOn: function()
   {
+    //==========================================================================
+    //
     let answer = true
+    let thereIsAnAthlete = false
+    let ball = Ω.state.ball
 
+    //==========================================================================
+    //
     for( let $ = 0; $ < 20; $ ++ )
     {
       let athlete = Ω.state.athlete[ $ ]
-      let ball = Ω.state.ball
 
       if( athlete.x === ball.x
       && athlete.y === ball.y )
       {
         Ω.state.newHolder = $
         answer = false
+        thereIsAnAthlete = true
       }
     }
 
+    //==========================================================================
+    //
+    let everyGoal = Ω.info.goal.green.concat( Ω.info.goal.blue )
+    let coordinate = Ω.tool.convert( [ ball.x - 1, ball.y - 1 ] )
+
+    if( everyGoal.indexOf( coordinate ) !== -1
+    && thereIsAnAthlete === false )
+    {
+      answer = false
+    }
+
+    //==========================================================================
+    //
     return answer
   },
 }

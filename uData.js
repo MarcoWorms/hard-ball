@@ -7,6 +7,11 @@
 Ω.state =
 {
   //============================================================================
+  // Shows a clear path from the ball's last flight
+  //
+  pathway: [],
+
+  //============================================================================
   // Distance between the edge of the screen and the arena
   //
   screen: { x: 0, y: 0 },

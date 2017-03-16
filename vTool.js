@@ -387,13 +387,26 @@
 
     //==========================================================================
     //
-    let everyGoal = Ω.info.goal.green.concat( Ω.info.goal.blue )
-    let coordinate = Ω.tool.convert( [ ball.x - 1, ball.y - 1 ] )
-
-    if( everyGoal.indexOf( coordinate ) !== -1
-    && thereIsAnAthlete === false )
+    if( String( ( ball.x - 1 ) / 48 ).indexOf( '.' ) === -1
+    && String( ( ball.y - 1 ) / 48 ).indexOf( '.' ) === -1 )
     {
-      answer = false
+      let everyGoal = Ω.info.goal.green.concat( Ω.info.goal.blue )
+      let coordinate = Ω.tool.convert( [ ball.x - 1, ball.y - 1 ] )
+
+      Ω.state.pathway.push( coordinate )
+
+      if( everyGoal.indexOf( coordinate ) !== -1
+      && thereIsAnAthlete === false )
+      {
+        answer = false
+      }
+    }
+
+    //==========================================================================
+    //
+    if( answer === false )
+    {
+      // insert a particle
     }
 
     //==========================================================================
@@ -446,5 +459,21 @@
         Ω.trigger.event.splice( $, 1 )
       }
     }
-  },
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//
+Ω.trail =
+{
+  //============================================================================
+  //
+  particle: [],
+
+  //============================================================================
+  //
+  shader: function()
+  {
+    // tbd
+  }
 }

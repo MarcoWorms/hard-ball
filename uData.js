@@ -36,6 +36,7 @@
   // Which, if any, is the current goalkeeper of each team
   //
   keeper: { green: 'none', blue: 'none' },
+  goalie: { green: false, blue: false },
 
   //============================================================================
   // How many replacements each player still has

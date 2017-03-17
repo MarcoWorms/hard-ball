@@ -439,38 +439,88 @@
     Ω.state.keeper.green = 'none'
     Ω.state.keeper.blue = 'none'
 
-    //==========================================================================
-    //
     if( Ω.state.turn > 7 ) // turns 8+ (so that each team is complete)
     {
+      //========================================================================
+      //
       for( let $ = 0; $ < 4; $ ++ ) // test once per team athlete
       {
-        //======================================================================
+        //......................................................................
         // Test for green athletes
         //
         let x1 = Ω.state.athlete[ Ω.state.team.green[ $ ] ].x - 1
         let y1 = Ω.state.athlete[ Ω.state.team.green[ $ ] ].y - 1
         let coordinate1 = Ω.tool.convert( [ x1, y1 ] )
 
-        //......................................................................
-        //
         if( Ω.info.area.green.indexOf( coordinate1 ) !== -1 )
         {
           Ω.state.keeper.green = Ω.state.team.green[ $ ]
         }
 
-        //======================================================================
+        //......................................................................
         // Test for blue athletes
         //
         let x2 = Ω.state.athlete[ Ω.state.team.blue[ $ ] ].x - 1
         let y2 = Ω.state.athlete[ Ω.state.team.blue[ $ ] ].y - 1
         let coordinate2 = Ω.tool.convert( [ x2, y2 ] )
 
-        //......................................................................
-        //
         if( Ω.info.area.blue.indexOf( coordinate2 ) !== -1 )
         {
           Ω.state.keeper.blue = Ω.state.team.blue[ $ ]
+        }
+      }
+
+      //========================================================================
+      //
+      for( let $ = 0; $ < 8; $ ++ )
+      {
+        let athlete
+        let coordinate
+
+        //......................................................................
+        //
+        if( Ω.state.keeper.green !== 'none' )
+        {
+          athlete = Ω.state.athlete[ Ω.state.keeper.green ]
+          coordinate = Ω.tool.convert( [ athlete.x - 1, athlete.y - 1 ] )
+
+          if( Ω.info.goal.green.indexOf( coordinate ) !== -1 )
+          {
+            Ω.state.goalie.green = true
+          }
+
+          else
+          {
+            Ω.state.goalie.green = false
+          }
+        }
+
+        else
+        {
+          Ω.state.goalie.green = false
+        }
+
+        //......................................................................
+        //
+        if( Ω.state.keeper.blue !== 'none' )
+        {
+          athlete = Ω.state.athlete[ Ω.state.keeper.blue ]
+          coordinate = Ω.tool.convert( [ athlete.x - 1, athlete.y - 1 ] )
+
+          if( Ω.info.goal.blue.indexOf( coordinate ) !== -1 )
+          {
+            Ω.state.goalie.blue = true
+          }
+
+          else
+          {
+            Ω.state.goalie.blue = false
+          }
+        }
+
+        else
+        {
+          Ω.state.goalie.blue = false
         }
       }
     }

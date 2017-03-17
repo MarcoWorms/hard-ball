@@ -135,6 +135,7 @@
     if( Ω.state.displayed === 'ball' )
     {
       let coordinate = Ω.tool.convert( [ x, y ] )
+      let otherGoal = false
       let ownGoal = false
       let ownArea
 
@@ -154,8 +155,30 @@
 
       //........................................................................
       //
+      if( Ω.state.athlete[ Ω.state.holder ].color === 'gre' )
+      {
+        if( Ω.state.goalie.green === true
+        && Ω.info.goal.blue.indexOf( coordinate ) !== -1 )
+        {
+          otherGoal = true
+        }
+      }
+
+      else
+      {
+        if( Ω.state.goalie.blue === true
+        && Ω.info.goal.green.indexOf( coordinate ) !== -1 )
+        {
+          otherGoal = true
+        }
+      }
+
+      //........................................................................
+      //
       if( x === Ω.state.ball.x - 1
       && y === Ω.state.ball.y - 1
+      //
+      || otherGoal === true
       //
       || ownGoal === true )
       {

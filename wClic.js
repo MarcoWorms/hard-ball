@@ -619,6 +619,13 @@
     let difX = ball.x - shooter.x
     let difY = ball.y - shooter.y
 
+    if( difX === -912 ) difX = 48
+    else if( difX === 912 ) difX = -48
+
+    if( difY === -528 ) difY = 48
+    else if( difY === 528 ) difY = -48
+
+
     //==========================================================================
     //
     Ω.state.pathway = []

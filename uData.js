@@ -7,6 +7,11 @@
 Ω.state =
 {
   //============================================================================
+  // Shows a clear path from the ball's last flight
+  //
+  pathway: [],
+
+  //============================================================================
   // Distance between the edge of the screen and the arena
   //
   screen: { x: 0, y: 0 },
@@ -31,6 +36,7 @@
   // Which, if any, is the current goalkeeper of each team
   //
   keeper: { green: 'none', blue: 'none' },
+  goalie: { green: false, blue: false },
 
   //============================================================================
   // How many replacements each player still has

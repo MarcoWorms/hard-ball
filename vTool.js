@@ -135,6 +135,7 @@
     if( Ω.state.displayed === 'ball' )
     {
       let coordinate = Ω.tool.convert( [ x, y ] )
+      let otherGoal = false
       let ownGoal = false
       let ownArea
 
@@ -154,8 +155,30 @@
 
       //........................................................................
       //
+      if( Ω.state.athlete[ Ω.state.holder ].color === 'gre' )
+      {
+        if( Ω.state.goalie.green === true
+        && Ω.info.goal.blue.indexOf( coordinate ) !== -1 )
+        {
+          otherGoal = true
+        }
+      }
+
+      else
+      {
+        if( Ω.state.goalie.blue === true
+        && Ω.info.goal.green.indexOf( coordinate ) !== -1 )
+        {
+          otherGoal = true
+        }
+      }
+
+      //........................................................................
+      //
       if( x === Ω.state.ball.x - 1
       && y === Ω.state.ball.y - 1
+      //
+      || otherGoal === true
       //
       || ownGoal === true )
       {
@@ -387,13 +410,26 @@
 
     //==========================================================================
     //
-    let everyGoal = Ω.info.goal.green.concat( Ω.info.goal.blue )
-    let coordinate = Ω.tool.convert( [ ball.x - 1, ball.y - 1 ] )
-
-    if( everyGoal.indexOf( coordinate ) !== -1
-    && thereIsAnAthlete === false )
+    if( String( ( ball.x - 1 ) / 48 ).indexOf( '.' ) === -1
+    && String( ( ball.y - 1 ) / 48 ).indexOf( '.' ) === -1 )
     {
-      answer = false
+      let everyGoal = Ω.info.goal.green.concat( Ω.info.goal.blue )
+      let coordinate = Ω.tool.convert( [ ball.x - 1, ball.y - 1 ] )
+
+      Ω.state.pathway.push( coordinate )
+
+      if( everyGoal.indexOf( coordinate ) !== -1
+      && thereIsAnAthlete === false )
+      {
+        answer = false
+      }
+    }
+
+    //==========================================================================
+    //
+    if( answer === false )
+    {
+      // insert a particle
     }
 
     //==========================================================================
@@ -446,5 +482,21 @@
         Ω.trigger.event.splice( $, 1 )
       }
     }
-  },
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//
+Ω.trail =
+{
+  //============================================================================
+  //
+  particle: [],
+
+  //============================================================================
+  //
+  shader: function()
+  {
+    // tbd
+  }
 }

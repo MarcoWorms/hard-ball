@@ -597,7 +597,7 @@
   }
 
   //////////////////////////////////////////////////////////////////////////////
-  // 06 . Click the selection zone or nothing (if unlocked)
+  // 06 . Click the shoot button
   //
   else if( $.target.id.substring( 0, 5 ) === 'shoot'
   && Ω.state.lock === false )
@@ -619,8 +619,17 @@
     let difX = ball.x - shooter.x
     let difY = ball.y - shooter.y
 
+    if( difX === -912 ) difX = 48
+    else if( difX === 912 ) difX = -48
+
+    if( difY === -528 ) difY = 48
+    else if( difY === 528 ) difY = -48
+
+
     //==========================================================================
     //
+    Ω.state.pathway = []
+
     let movement = setInterval( function()
     {
       Ω.state.ball.x = Ω.tool.bend( Ω.state.ball.x + difX / 3, 'x' )

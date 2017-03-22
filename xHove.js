@@ -268,9 +268,29 @@
   }
 
   //////////////////////////////////////////////////////////////////////////////
-  // 04 . Hover anything else (except the shoot button)
+  // 04 . Hover the shoot button
   //
-  else if( $.target.id.substring( 0, 3 ) !== 'sho' )
+  else if( $.target.id.substring( 0, 3 ) === 'sho' )
+  {
+    if( Ω.state.selected !== 'ball' )
+    {
+      let ball = Ω.page.ball.getBoundingClientRect()
+      let shoot = Ω.page.shootMain.getBoundingClientRect()
+
+      if( shoot.x - ball.x - 1 === 48
+      || shoot.x - ball.x - 1 === -48
+      || shoot.y - ball.y - 1 === 48
+      || shoot.y - ball.y - 1 === -48 )
+      {
+        Ω.state.displayed = 'none'
+      }
+    }
+  }
+
+  //////////////////////////////////////////////////////////////////////////////
+  // 04 . Hover anything else
+  //
+  else
   {
     //==========================================================================
     //

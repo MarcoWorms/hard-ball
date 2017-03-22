@@ -638,6 +638,19 @@
       {
         Ω.state.shoot.x = Ω.tool.bend( Ω.state.ball.x + dif.x - 1, 'x' ) + 2
         Ω.state.shoot.y = Ω.tool.bend( Ω.state.ball.y + dif.y - 1, 'y' ) + 2
+
+        for( let $ = 0; $ < 20; $ ++ )
+        {
+          let athlete = Ω.state.athlete[ $ ]
+          let shoot = Ω.state.shoot
+
+          if( shoot.x - 1 === athlete.x
+          && shoot.y - 1 === athlete.y
+          && Ω.state.marked.indexOf( $ ) === -1 )
+          {
+            Ω.state.marked.push( $ )
+          }
+        }
       }
     }
 

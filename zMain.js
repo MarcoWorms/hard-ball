@@ -779,34 +779,24 @@
   //
   update: function()
   {
-    //..........................................................................
-    // The screen adaptation must happen before anything else
-    //
-    Ω.tool.screen()
+    if( Ω.state.moveLock === false )
+    {
+      Ω.tool.screen()
+      Ω.trigger.pull()
 
-    //..........................................................................
-    //
-    Ω.trigger.pull()
-    Ω.trail.shader()
+      Ω.zone.updZon1()
+      Ω.zone.updZon2()
 
-    //..........................................................................
-    // Calling ZONE functions
-    //
-    Ω.zone.updZon1()
-    Ω.zone.updZon2()
+      Ω.game.updAtl()
+      Ω.game.updCur()
+      Ω.game.updInd()
+      Ω.game.updTar()
+      Ω.game.updBlk()
+      Ω.game.updKee()
+      Ω.game.updHol()
+    }
 
-    //..........................................................................
-    // Calling GAME functions
-    //
-    Ω.game.updAtl()
     Ω.game.updBal()
-
-    Ω.game.updCur()
-    Ω.game.updInd()
-    Ω.game.updTar()
-    Ω.game.updBlk()
-    Ω.game.updKee()
-    Ω.game.updHol()
     Ω.game.updSho()
 
     window.requestAnimationFrame( Ω.engine.update )

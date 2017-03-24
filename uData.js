@@ -21,6 +21,7 @@
   //
   lock: false,
   ballLock: false,
+  moveLock: false,
 
   //............................................................................
   // Shows how many plays have happened

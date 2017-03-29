@@ -381,7 +381,7 @@ THREAT
 {
   box-sizing: border-box;
   border-style: dashed;
-  animation: threat 2s infinite;
+  animation: threat 4s infinite;
 }
 
 @keyframes threat

@@ -395,24 +395,26 @@
 
     //==========================================================================
     //
-    for( let $ = 0; $ < 20; $ ++ )
-    {
-      let athlete = Ω.state.athlete[ $ ]
-
-      if( athlete.x === ball.x
-      && athlete.y === ball.y )
-      {
-        Ω.state.newHolder = $
-        answer = false
-        thereIsAnAthlete = true
-      }
-    }
-
-    //==========================================================================
-    //
     if( String( ( ball.x - 1 ) / 48 ).indexOf( '.' ) === -1
     && String( ( ball.y - 1 ) / 48 ).indexOf( '.' ) === -1 )
     {
+      //........................................................................
+      //
+      for( let $ = 0; $ < 20; $ ++ )
+      {
+        let athlete = Ω.state.athlete[ $ ]
+
+        if( athlete.x === ball.x
+        && athlete.y === ball.y )
+        {
+          Ω.state.newHolder = $
+          answer = false
+          thereIsAnAthlete = true
+        }
+      }
+
+      //........................................................................
+      //
       let everyGoal = Ω.info.goal.green.concat( Ω.info.goal.blue )
       let coordinate = Ω.tool.convert( [ ball.x - 1, ball.y - 1 ] )
 
@@ -422,6 +424,23 @@
       && thereIsAnAthlete === false )
       {
         answer = false
+        if( Ω.info.goal.green.indexOf( coordinate ) !== -1 )
+        {
+          Ω.state.goalThreat = 'gre'
+        }
+
+        else
+        {
+          Ω.state.goalThreat = 'blu'
+        }
+
+        Array.from( Ω.state.pathway ).forEach( function( $ )
+        {
+          if( everyGoal.indexOf( $ ) === -1 )
+          {
+            document.getElementById( $ ).classList.add( 'tht' )
+          }
+        } )
       }
     }
 

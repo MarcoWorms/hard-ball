@@ -600,6 +600,7 @@
   // 06 . Click the shoot button
   //
   else if( $.target.id.substring( 0, 5 ) === 'shoot'
+  && Ω.state.selected === 'ball'
   && Ω.state.lock === false )
   {
     //==========================================================================
@@ -628,7 +629,8 @@
 
     //==========================================================================
     //
-    Ω.state.pathway = []
+    let homeCell = Ω.tool.convert( [ Ω.state.ball.x - 1, Ω.state.ball.y - 1 ] )
+    Ω.state.pathway = [ homeCell ]
 
     let movement = setInterval( function()
     {

@@ -614,7 +614,7 @@
   },
 
   //////////////////////////////////////////////////////////////////////////////
-  // Controls the SHOOT button behavior
+  // Controls the shoot button behavior
   //
   updSho: function()
   {
@@ -625,6 +625,8 @@
     && Ω.state.newHolder === 'none'
     && Ω.state.ball.x !== 457 )
     {
+      //........................................................................
+      //
       let holder = Ω.state.athlete[ Ω.state.holder ]
       let dif =
       {
@@ -632,7 +634,7 @@
         y: Ω.state.ball.y - holder.y,
       }
 
-      // This bit should probably be more carefully thought (!)
+      //........................................................................
       //
       if( dif.x !== undefined && dif.y !== undefined )
       {

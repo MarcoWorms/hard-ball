@@ -7,6 +7,11 @@
 Ω.state =
 {
   //============================================================================
+  // Which team has the goal threatened
+  //
+  goalThreat: 'none',
+
+  //============================================================================
   // Shows a clear path from the ball's last flight
   //
   pathway: [],
@@ -20,10 +25,18 @@
   // Prevents fast click exploit and code repetition
   //
   lock: false,
+
+  //============================================================================
+  // Essential gameplay feature
+  //
   ballLock: false,
+
+  //============================================================================
+  // Makes the ball move more fluidly
+  //
   moveLock: false,
 
-  //............................................................................
+  //============================================================================
   // Shows how many plays have happened
   //
   turn: 0,

@@ -373,3 +373,23 @@ ANIMATIONS
   90% {border-color: rgba(255,255,255,0.9); border-width: 6px}
   100%{border-color: rgba(255,255,255,0.6); border-width: 2px}
 }
+
+/*==============================================================================
+THREAT
+*/
+.tht
+{
+  box-sizing: border-box;
+  border-style: dashed;
+  animation: threat 1s infinite;
+}
+
+@keyframes threat
+{
+  0%  {border-width: 11px; border-radius: 66%; border-color: rgb(255,255,255)}
+  10% {border-width: 8px; border-radius: 33%; border-color: rgb(180,70,100)}
+  20% {border-width: 6px; border-radius: 0; border-color: rgb(160,10,40)}
+  80% {border-width: 6px; border-radius: 0; border-color: rgb(160,10,40)}
+  90% {border-width: 8px; border-radius: 33%; border-color: rgb(180,70,100)}
+  100%{border-width: 10px; border-radius: 66%; border-color: rgb(255,255,255)}
+}

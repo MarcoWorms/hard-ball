@@ -414,6 +414,8 @@
         if( athlete.x === ball.x
         && athlete.y === ball.y )
         {
+          Ω.state.lock = false
+          Ω.state.moveLock = false
           Ω.state.newHolder = $
           answer = false
           thereIsAnAthlete = true

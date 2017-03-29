@@ -393,6 +393,13 @@
     let thereIsAnAthlete = false
     let ball = Ω.state.ball
 
+    Ω.state.lock = true
+    Ω.state.moveLock = true
+
+    Ω.state.displayed = 'none'
+    Ω.zone.updZon1()
+    Ω.zone.updZon2()
+
     //==========================================================================
     //
     if( String( ( ball.x - 1 ) / 48 ).indexOf( '.' ) === -1
@@ -415,41 +422,49 @@
 
       //........................................................................
       //
-      let everyGoal = Ω.info.goal.green.concat( Ω.info.goal.blue )
       let coordinate = Ω.tool.convert( [ ball.x - 1, ball.y - 1 ] )
 
       Ω.state.pathway.push( coordinate )
 
+      //........................................................................
+      //
+      let everyGoal = Ω.info.goal.green.concat( Ω.info.goal.blue )
+
       if( everyGoal.indexOf( coordinate ) !== -1
       && thereIsAnAthlete === false )
       {
+        // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+        //
         answer = false
-        if( Ω.info.goal.green.indexOf( coordinate ) !== -1 )
-        {
-          Ω.state.goalThreat = 'gre'
-        }
 
-        else
-        {
-          Ω.state.goalThreat = 'blu'
-        }
+        // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+        //
+        let present = Ω.info.goal.green.indexOf( coordinate )
 
-        Array.from( Ω.state.pathway ).forEach( function( $ )
+        if( present !== -1 ) Ω.state.goalThreat = 'gre'
+        else                 Ω.state.goalThreat = 'blu'
+
+        // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+        //
+        let counter = 0
+        let wave = setInterval( function()
         {
-          if( everyGoal.indexOf( $ ) === -1 )
+          let cellName = Ω.state.pathway[ counter ]
+
+          if( everyGoal.indexOf( cellName ) === -1 )
           {
-            document.getElementById( $ ).classList.add( 'tht' )
+            document.getElementById( cellName ).classList.add( 'thr' )
+            counter ++
           }
-        } )
-      }
-    }
 
-    //==========================================================================
-    //
-    if( answer === true )
-    {
-      Ω.state.moveLock = true
-      setTimeout( () => { Ω.state.moveLock = false }, 100 )
+          if( counter === Ω.state.pathway.length - 1 )
+          {
+            clearInterval( wave )
+            Ω.state.lock = false
+            Ω.state.moveLock = false
+          }
+        }, 0 )
+      }
     }
 
     //==========================================================================

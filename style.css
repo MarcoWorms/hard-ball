@@ -388,9 +388,9 @@ THREAT
 {
 0%  {border-width:10px;border-radius:0;border-color:rgb(160,10,40)}
 90% {border-width:10px;border-radius:0;border-color:rgb(160,10,40)}
-92% {border-width:9px;border-radius:33%;border-color:rgb(206,133,148);opacity:1}
-94% {border-width:7px;border-radius:66%;border-color:rgb(255,255,255);opacity:0}
-96% {border-width:7px;border-radius:66%;border-color:rgb(255,255,255);opacity:0}
-98% {border-width:9px;border-radius:33%;border-color:rgb(206,133,148);opacity:1}
+92% {border-width:9px;border-radius:33%;border-color:rgb(206,133,148)}
+94% {border-width:7px;border-radius:66%;border-color:rgb(255,255,255)}
+96% {border-width:7px;border-radius:66%;border-color:rgb(255,255,255);opacity:1}
+98% {border-width:9px;border-radius:33%;border-color:rgb(206,133,148);opacity:0}
 100%{border-width:10px;border-radius:0;border-color:rgb(160,10,40)}
 }

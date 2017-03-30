@@ -438,6 +438,7 @@
         // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
         //
         answer = false
+        Ω.state.pathway.reverse()
 
         // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
         //
@@ -456,10 +457,11 @@
           if( everyGoal.indexOf( cellName ) === -1 )
           {
             document.getElementById( cellName ).classList.add( 'thr' )
-            counter ++
           }
 
-          if( counter === Ω.state.pathway.length - 1 )
+          counter ++
+
+          if( counter === Ω.state.pathway.length )
           {
             clearInterval( wave )
             Ω.state.lock = false

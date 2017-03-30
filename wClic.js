@@ -78,7 +78,9 @@
   else if( $.target.id === 'ball'
   && Ω.state.lock === false
   && Ω.state.rounder === 'none'
-  && Ω.state.newHolder === 'none' )
+  && Ω.state.newHolder === 'none'
+  && Ω.state.oldHolder === 'none'
+  && Ω.state.ball.x !== 457 )
   {
     Ω.state.selected = 'ball'
     Ω.state.displayed = Ω.state.selected
@@ -658,7 +660,8 @@
   //
   else if( Ω.state.lock === false
   && Ω.state.rounder === 'none'
-  && Ω.state.newHolder === 'none' )
+  && Ω.state.newHolder === 'none'
+  && $.target.id !== 'ball' )
   {
     Ω.state.selected = 'none'
     Ω.state.displayed = Ω.state.selected

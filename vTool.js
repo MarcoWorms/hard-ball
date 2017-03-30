@@ -438,6 +438,8 @@
         // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
         //
         answer = false
+        Ω.state.oldHolder = Ω.state.holder
+        Ω.state.holder = 'none'
         Ω.state.pathway.reverse()
 
         // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .

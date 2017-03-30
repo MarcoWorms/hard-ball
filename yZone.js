@@ -39,7 +39,7 @@
       // Ball's initial state
       //
       if( Ω.state.ball.x === 457 ) Ω.zone.updZonCdn( 'cnt', false )
-      else Ω.zone.updZonCdn( 'mtx', true )
+      else if( Ω.state.oldHolder === 'none' ) Ω.zone.updZonCdn( 'mtx', true )
     }
 
     //==========================================================================

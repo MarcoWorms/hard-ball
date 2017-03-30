@@ -91,9 +91,9 @@
   // Shows which athlete is holding the ball, and if there is someone taking it
   //
   holder: 'none', // 'none' or 0 to 19
+  oldHolder: 'none', // 'none' or 0 to 19
   newHolder: 'none', // 'none' or 0 to 19
-
-  futureHolder: 'none',
+  futureHolder: 'none', // 'none' or 0 to 19
 
   //============================================================================
   // Shows which zones are not pushable

@@ -623,6 +623,7 @@
     //
     if( Ω.state.displayed === 'ball'
     && Ω.state.newHolder === 'none'
+    && Ω.state.oldHolder === 'none'
     && Ω.state.ball.x !== 457 )
     {
       //........................................................................

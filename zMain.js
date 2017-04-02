@@ -562,9 +562,9 @@
     //
     if( Ω.state.ball.x === 457 )
     {
-      for( let $1 = 0;  $1 < 20; $1 ++ )
+      for( let $1 = 0; $1 < 20; $1 ++ )
       {
-        for( let $2 = 0;  $2 < 4; $2 ++ )
+        for( let $2 = 0; $2 < 4; $2 ++ )
         {
           let athlete = Ω.state.athlete[ $1 ]
           let cell = Ω.tool.convert( Ω.info.arenaCenter[ $2 ] )

@@ -577,15 +577,22 @@
       //
       toReturn.act = function()
       {
-        Ω.state.newHolder = 'none'
-        Ω.state.displayed = 'ball'
+        let everyGoal = Ω.info.goal.green.concat( Ω.info.goal.blue )
 
-        Ω.zone.updZon1()
-        Ω.zone.updZon2()
+        if( everyGoal.indexOf( zoneCoordinate ) !== -1 )
+        {
+          Ω.tool.moveOn()
+        }
 
-        Ω.game.updTar()
-
-        Ω.state.marked = Ω.state.target.aimed
+        else
+        {
+          Ω.state.newHolder = 'none'
+          Ω.state.displayed = 'ball'
+          Ω.zone.updZon1()
+          Ω.zone.updZon2()
+          Ω.game.updTar()
+          Ω.state.marked = Ω.state.target.aimed
+        }
 
         Ω.state.ballLock = false
         Ω.state.lock = false
@@ -636,8 +643,8 @@
 
     let movement = setInterval( function()
     {
-      Ω.state.ball.x = Ω.tool.bend( Ω.state.ball.x + difX / 3, 'x' )
-      Ω.state.ball.y = Ω.tool.bend( Ω.state.ball.y + difY / 3, 'y' )
+      Ω.state.ball.x = Ω.tool.bend( Ω.state.ball.x + difX / 6, 'x' )
+      Ω.state.ball.y = Ω.tool.bend( Ω.state.ball.y + difY / 6, 'y' )
 
       if( Ω.tool.moveOn() === false )
       {

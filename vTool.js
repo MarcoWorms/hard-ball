@@ -396,10 +396,6 @@
     Ω.state.lock = true
     Ω.state.moveLock = true
 
-    Ω.state.displayed = 'none'
-    Ω.zone.updZon1()
-    Ω.zone.updZon2()
-
     //==========================================================================
     //
     if( String( ( ball.x - 1 ) / 48 ).indexOf( '.' ) === -1

@@ -434,6 +434,7 @@
         // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
         //
         answer = false
+        Ω.page.ball.style.backgroundColor = 'rgb(160,10,40)'
         Ω.state.oldHolder = Ω.state.holder
         Ω.state.holder = 'none'
         Ω.state.pathway.reverse()
@@ -447,31 +448,58 @@
 
         // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
         //
-        let counter = 0
-        let wave = setInterval( function()
-        {
-          let cellName = Ω.state.pathway[ counter ]
-
-          if( everyGoal.indexOf( cellName ) === -1 )
-          {
-            document.getElementById( cellName ).classList.add( 'thr' )
-          }
-
-          counter ++
-
-          if( counter === Ω.state.pathway.length )
-          {
-            clearInterval( wave )
-            Ω.state.lock = false
-            Ω.state.moveLock = false
-          }
-        }, 0 )
+        Ω.tool.pathfind()
       }
     }
 
     //==========================================================================
     //
     return answer
+  },
+
+  //////////////////////////////////////////////////////////////////////////////
+  //
+  pathfind: function()
+  {
+    let everyGoal = Ω.info.goal.green.concat( Ω.info.goal.blue )
+    let counter = 0
+    let wave = setInterval( function()
+    {
+      let cellName = Ω.state.pathway[ counter ]
+
+      if( everyGoal.indexOf( cellName ) === -1 )
+      {
+        document.getElementById( cellName ).classList.add( 'thr' )
+      }
+
+      counter ++
+
+      if( counter === Ω.state.pathway.length )
+      {
+        clearInterval( wave )
+        Ω.state.lock = false
+        Ω.state.moveLock = false
+      }
+    }, 0 )
+  },
+
+  //////////////////////////////////////////////////////////////////////////////
+  //
+  endGame: function()
+  {
+    let color
+
+    if( Ω.state.goalThreat === 'gre' ) color = 'BLUE'
+    else                               color = 'GREEN'
+
+    Ω.state.displayed = 'none'
+    Ω.zone.updZon1()
+    Ω.zone.updZon2()
+
+    Ω.state.selected = 'none'
+    Ω.game.updSel()
+
+    alert( color + ' WINS\n' )
   },
 }
 

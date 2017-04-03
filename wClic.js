@@ -142,6 +142,8 @@
     let finish = ''
     let toReturn = { check: () => { return true }, act: () => { return true } }
 
+    let saveGoal = false
+
     //==========================================================================
     // Ball is selected and was already moved
     //
@@ -328,12 +330,28 @@
           {
             Ω.state.newHolder = athlete
             Ω.state.futureHolder = 'none'
+
+            if( aimed === 'ball'
+            && Ω.state.goalThreat === Ω.state.athlete[ athlete ].color )
+            {
+              saveGoal = true
+            }
+          }
+
+          else if( Ω.state.pathway.indexOf( zoneCoordinate ) !== -1
+          && Ω.state.goalThreat === Ω.state.athlete[ athlete ].color )
+          {
+            Ω.state.newHolder = athlete
+            Ω.state.futureHolder = 'none'
+            saveGoal = true
           }
 
           else if( Ω.state.futureHolder !== 'none' )
           {
             Ω.state.newHolder = Ω.state.futureHolder
             Ω.state.futureHolder = 'none'
+
+            if( Ω.state.goalThreat !== 'none' ) saveGoal = true
           }
 
           else
@@ -341,6 +359,11 @@
             Ω.state.selected = 'none'
             Ω.state.displayed = 'none'
             Ω.state.marked = []
+
+            if( Ω.state.goalThreat === Ω.state.athlete[ athlete ].color )
+            {
+              Ω.tool.endGame()
+            }
           }
         }
 
@@ -358,10 +381,25 @@
 
           Ω.state.marked = Ω.state.target.aimed
 
-          if( aimed === 'ball' )
+          if( aimed === 'ball'
+          || Ω.state.pathway.indexOf( zoneCoordinate ) !== -1
+          && Ω.state.goalThreat === Ω.state.athlete[ athlete ].color )
           {
             Ω.state.futureHolder = athlete
           }
+        }
+
+
+        // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+        //
+        if( saveGoal )
+        {
+          Ω.state.goalThreat = 'none'
+          Ω.state.oldHolder = 'none'
+          Array.from( Ω.page.everyCell ).forEach( function( $ )
+          {
+            $.classList.remove( 'thr' )
+          } )
         }
 
         Ω.game.updSel()

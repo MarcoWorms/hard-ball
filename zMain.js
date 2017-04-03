@@ -776,6 +776,21 @@
         } )
       }
     } )
+
+
+    //==========================================================================
+    // Show the pathway if necessary
+    //
+    if( Ω.state.goalThreat !== 'none' )
+    {
+      Ω.state.lock = true
+      Ω.state.moveLock = true
+
+      Ω.tool.pathfind()
+
+      Ω.state.lock = false
+      Ω.state.moveLock = false
+    }
   },
 
   //////////////////////////////////////////////////////////////////////////////

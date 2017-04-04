@@ -78,7 +78,9 @@
   else if( $.target.id === 'ball'
   && Ω.state.lock === false
   && Ω.state.rounder === 'none'
-  && Ω.state.newHolder === 'none' )
+  && Ω.state.newHolder === 'none'
+  && Ω.state.oldHolder === 'none'
+  && Ω.state.ball.x !== 457 )
   {
     Ω.state.selected = 'ball'
     Ω.state.displayed = Ω.state.selected
@@ -139,6 +141,8 @@
     //
     let finish = ''
     let toReturn = { check: () => { return true }, act: () => { return true } }
+
+    let saveGoal = false
 
     //==========================================================================
     // Ball is selected and was already moved
@@ -326,12 +330,28 @@
           {
             Ω.state.newHolder = athlete
             Ω.state.futureHolder = 'none'
+
+            if( aimed === 'ball'
+            && Ω.state.goalThreat === Ω.state.athlete[ athlete ].color )
+            {
+              saveGoal = true
+            }
+          }
+
+          else if( Ω.state.pathway.indexOf( zoneCoordinate ) !== -1
+          && Ω.state.goalThreat === Ω.state.athlete[ athlete ].color )
+          {
+            Ω.state.newHolder = athlete
+            Ω.state.futureHolder = 'none'
+            saveGoal = true
           }
 
           else if( Ω.state.futureHolder !== 'none' )
           {
             Ω.state.newHolder = Ω.state.futureHolder
             Ω.state.futureHolder = 'none'
+
+            if( Ω.state.goalThreat !== 'none' ) saveGoal = true
           }
 
           else
@@ -339,6 +359,11 @@
             Ω.state.selected = 'none'
             Ω.state.displayed = 'none'
             Ω.state.marked = []
+
+            if( Ω.state.goalThreat === Ω.state.athlete[ athlete ].color )
+            {
+              Ω.tool.endGame()
+            }
           }
         }
 
@@ -356,10 +381,25 @@
 
           Ω.state.marked = Ω.state.target.aimed
 
-          if( aimed === 'ball' )
+          if( aimed === 'ball'
+          || Ω.state.pathway.indexOf( zoneCoordinate ) !== -1
+          && Ω.state.goalThreat === Ω.state.athlete[ athlete ].color )
           {
             Ω.state.futureHolder = athlete
           }
+        }
+
+
+        // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+        //
+        if( saveGoal )
+        {
+          Ω.state.goalThreat = 'none'
+          Ω.state.oldHolder = 'none'
+          Array.from( Ω.page.everyCell ).forEach( function( $ )
+          {
+            $.classList.remove( 'thr' )
+          } )
         }
 
         Ω.game.updSel()
@@ -575,15 +615,22 @@
       //
       toReturn.act = function()
       {
-        Ω.state.newHolder = 'none'
-        Ω.state.displayed = 'ball'
+        let everyGoal = Ω.info.goal.green.concat( Ω.info.goal.blue )
 
-        Ω.zone.updZon1()
-        Ω.zone.updZon2()
+        if( everyGoal.indexOf( zoneCoordinate ) !== -1 )
+        {
+          Ω.tool.moveOn()
+        }
 
-        Ω.game.updTar()
-
-        Ω.state.marked = Ω.state.target.aimed
+        else
+        {
+          Ω.state.newHolder = 'none'
+          Ω.state.displayed = 'ball'
+          Ω.zone.updZon1()
+          Ω.zone.updZon2()
+          Ω.game.updTar()
+          Ω.state.marked = Ω.state.target.aimed
+        }
 
         Ω.state.ballLock = false
         Ω.state.lock = false
@@ -600,6 +647,7 @@
   // 06 . Click the shoot button
   //
   else if( $.target.id.substring( 0, 5 ) === 'shoot'
+  && Ω.state.selected === 'ball'
   && Ω.state.lock === false )
   {
     //==========================================================================
@@ -628,12 +676,13 @@
 
     //==========================================================================
     //
-    Ω.state.pathway = []
+    let homeCell = Ω.tool.convert( [ Ω.state.ball.x - 1, Ω.state.ball.y - 1 ] )
+    Ω.state.pathway = [ homeCell ]
 
     let movement = setInterval( function()
     {
-      Ω.state.ball.x = Ω.tool.bend( Ω.state.ball.x + difX / 3, 'x' )
-      Ω.state.ball.y = Ω.tool.bend( Ω.state.ball.y + difY / 3, 'y' )
+      Ω.state.ball.x = Ω.tool.bend( Ω.state.ball.x + difX / 6, 'x' )
+      Ω.state.ball.y = Ω.tool.bend( Ω.state.ball.y + difY / 6, 'y' )
 
       if( Ω.tool.moveOn() === false )
       {
@@ -656,7 +705,8 @@
   //
   else if( Ω.state.lock === false
   && Ω.state.rounder === 'none'
-  && Ω.state.newHolder === 'none' )
+  && Ω.state.newHolder === 'none'
+  && $.target.id !== 'ball' )
   {
     Ω.state.selected = 'none'
     Ω.state.displayed = Ω.state.selected

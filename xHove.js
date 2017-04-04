@@ -14,7 +14,15 @@
   //////////////////////////////////////////////////////////////////////////////
   // Hover color . Part 1 . Refresh everything
   //
-  Ω.page.ball.style.backgroundColor = 'rgb(63,63,63)'
+  if( Ω.state.goalThreat === 'none' )
+  {
+    Ω.page.ball.style.backgroundColor = 'rgb(63,63,63)'
+  }
+
+  else
+  {
+    Ω.page.ball.style.backgroundColor = 'rgb(128,0,12)'
+  }
 
   for( let $1 = 0; $1 < 20; $1 ++ )
   {
@@ -57,7 +65,15 @@
     //==========================================================================
     // Hover color . Part 2. Change the hovered ball's color
     //
-    Ω.page.ball.style.backgroundColor = 'rgb(95,95,95)'
+    if( Ω.state.goalThreat === 'none' )
+    {
+      Ω.page.ball.style.backgroundColor = 'rgb(95,95,95)'
+    }
+
+    else
+    {
+      Ω.page.ball.style.backgroundColor = 'rgb(160,10,40)'
+    }
   }
 
   //////////////////////////////////////////////////////////////////////////////
@@ -116,7 +132,15 @@
     //
     if( Ω.state.displayed === 'ball' )
     {
-      Ω.page.ball.style.backgroundColor = 'rgb(95,95,95)'
+      if( Ω.state.goalThreat === 'none' )
+      {
+        Ω.page.ball.style.backgroundColor = 'rgb(95,95,95)'
+      }
+
+      else
+      {
+        Ω.page.ball.style.backgroundColor = 'rgb(160,10,40)'
+      }
     }
 
     //==========================================================================
@@ -179,7 +203,15 @@
       //
       if( aimed === 'ball' )
       {
-        Ω.page.ball.style.backgroundColor = 'rgb(95,95,95)'
+        if( Ω.state.goalThreat === 'none' )
+        {
+          Ω.page.ball.style.backgroundColor = 'rgb(95,95,95)'
+        }
+
+        else
+        {
+          Ω.page.ball.style.backgroundColor = 'rgb(160,10,40)'
+        }
       }
 
       //........................................................................
@@ -233,7 +265,15 @@
       //........................................................................
       // Hover color . Part 7a . Refresh everything again
       //
-      Ω.page.ball.style.backgroundColor = 'rgb(63,63,63)'
+      if( Ω.state.goalThreat === 'none' )
+      {
+        Ω.page.ball.style.backgroundColor = 'rgb(63,63,63)'
+      }
+
+      else
+      {
+        Ω.page.ball.style.backgroundColor = 'rgb(128,0,12)'
+      }
 
       for( let $1 = 0; $1 < 20; $1 ++ )
       {
@@ -268,9 +308,29 @@
   }
 
   //////////////////////////////////////////////////////////////////////////////
-  // 04 . Hover anything else (except the shoot button)
+  // 04 . Hover the shoot button
   //
-  else if( $.target.id.substring( 0, 3 ) !== 'sho' )
+  else if( $.target.id.substring( 0, 3 ) === 'sho' )
+  {
+    if( Ω.state.selected !== 'ball' )
+    {
+      let ball = Ω.page.ball.getBoundingClientRect()
+      let shoot = Ω.page.shootMain.getBoundingClientRect()
+
+      if( shoot.x - ball.x - 1 === 48
+      || shoot.x - ball.x - 1 === -48
+      || shoot.y - ball.y - 1 === 48
+      || shoot.y - ball.y - 1 === -48 )
+      {
+        Ω.state.displayed = 'none'
+      }
+    }
+  }
+
+  //////////////////////////////////////////////////////////////////////////////
+  // 04 . Hover anything else
+  //
+  else
   {
     //==========================================================================
     //
@@ -282,7 +342,15 @@
     //==========================================================================
     // Hover color . Part 7b . Refresh everything again
     //
-    Ω.page.ball.style.backgroundColor = 'rgb(63,63,63)'
+    if( Ω.state.goalThreat === 'none' )
+    {
+      Ω.page.ball.style.backgroundColor = 'rgb(63,63,63)'
+    }
+
+    else
+    {
+      Ω.page.ball.style.backgroundColor = 'rgb(128,0,12)'
+    }
 
     for( let $1 = 0; $1 < 20; $1 ++ )
     {

@@ -562,9 +562,9 @@
     //
     if( Ω.state.ball.x === 457 )
     {
-      for( let $1 = 0;  $1 < 20; $1 ++ )
+      for( let $1 = 0; $1 < 20; $1 ++ )
       {
-        for( let $2 = 0;  $2 < 4; $2 ++ )
+        for( let $2 = 0; $2 < 4; $2 ++ )
         {
           let athlete = Ω.state.athlete[ $1 ]
           let cell = Ω.tool.convert( Ω.info.arenaCenter[ $2 ] )
@@ -614,7 +614,7 @@
   },
 
   //////////////////////////////////////////////////////////////////////////////
-  // Controls the SHOOT button behavior
+  // Controls the shoot button behavior
   //
   updSho: function()
   {
@@ -623,8 +623,11 @@
     //
     if( Ω.state.displayed === 'ball'
     && Ω.state.newHolder === 'none'
+    && Ω.state.oldHolder === 'none'
     && Ω.state.ball.x !== 457 )
     {
+      //........................................................................
+      //
       let holder = Ω.state.athlete[ Ω.state.holder ]
       let dif =
       {
@@ -632,12 +635,25 @@
         y: Ω.state.ball.y - holder.y,
       }
 
-      // This bit should probably be more carefully thought (!)
+      //........................................................................
       //
       if( dif.x !== undefined && dif.y !== undefined )
       {
         Ω.state.shoot.x = Ω.tool.bend( Ω.state.ball.x + dif.x - 1, 'x' ) + 2
         Ω.state.shoot.y = Ω.tool.bend( Ω.state.ball.y + dif.y - 1, 'y' ) + 2
+
+        for( let $ = 0; $ < 20; $ ++ )
+        {
+          let athlete = Ω.state.athlete[ $ ]
+          let shoot = Ω.state.shoot
+
+          if( shoot.x - 1 === athlete.x
+          && shoot.y - 1 === athlete.y
+          && Ω.state.marked.indexOf( $ ) === -1 )
+          {
+            Ω.state.marked.push( $ )
+          }
+        }
       }
     }
 
@@ -760,40 +776,45 @@
         } )
       }
     } )
+
+
+    //==========================================================================
+    // Show the pathway if necessary
+    //
+    if( Ω.state.goalThreat !== 'none' )
+    {
+      Ω.state.lock = true
+      Ω.state.moveLock = true
+
+      Ω.tool.pathfind()
+
+      Ω.state.lock = false
+      Ω.state.moveLock = false
+    }
   },
 
   //////////////////////////////////////////////////////////////////////////////
   //
   update: function()
   {
-    //..........................................................................
-    // The screen adaptation must happen before anything else
-    //
-    Ω.tool.screen()
+    if( Ω.state.moveLock === false )
+    {
+      Ω.tool.screen()
+      Ω.trigger.pull()
 
-    //..........................................................................
-    //
-    Ω.trigger.pull()
-    Ω.trail.shader()
+      Ω.zone.updZon1()
+      Ω.zone.updZon2()
 
-    //..........................................................................
-    // Calling ZONE functions
-    //
-    Ω.zone.updZon1()
-    Ω.zone.updZon2()
+      Ω.game.updAtl()
+      Ω.game.updCur()
+      Ω.game.updInd()
+      Ω.game.updTar()
+      Ω.game.updBlk()
+      Ω.game.updKee()
+      Ω.game.updHol()
+    }
 
-    //..........................................................................
-    // Calling GAME functions
-    //
-    Ω.game.updAtl()
     Ω.game.updBal()
-
-    Ω.game.updCur()
-    Ω.game.updInd()
-    Ω.game.updTar()
-    Ω.game.updBlk()
-    Ω.game.updKee()
-    Ω.game.updHol()
     Ω.game.updSho()
 
     window.requestAnimationFrame( Ω.engine.update )

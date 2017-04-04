@@ -712,7 +712,15 @@
     //==========================================================================
     // Hover color . Part 0 . Refresh everything
     //
-    Ω.page.ball.style.backgroundColor = 'rgb(111,79,47)'
+    if( Ω.state.goalThreat === 'none' )
+    {
+      Ω.page.ball.style.backgroundColor = 'rgb(63,63,63)'
+    }
+
+    else
+    {
+      Ω.page.ball.style.backgroundColor = 'rgb(128,0,12)'
+    }
 
     for( let $1 = 0; $1 < 20; $1 ++ )
     {
@@ -774,23 +782,16 @@
         {
           $1.style.transition = 'all 0.25s ease-in-out'
         } )
+
+        if( Ω.state.goalThreat !== 'none' )
+        {
+          Ω.state.lock = true
+          Ω.state.moveLock = true
+          Ω.state.displayed = 'none'
+          Ω.tool.pathfind()
+        }
       }
     } )
-
-
-    //==========================================================================
-    // Show the pathway if necessary
-    //
-    if( Ω.state.goalThreat !== 'none' )
-    {
-      Ω.state.lock = true
-      Ω.state.moveLock = true
-
-      Ω.tool.pathfind()
-
-      Ω.state.lock = false
-      Ω.state.moveLock = false
-    }
   },
 
   //////////////////////////////////////////////////////////////////////////////

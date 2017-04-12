@@ -552,7 +552,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 //
-Ω.debugger = addEventListener( 'keydown', function( event )
+Ω.save = addEventListener( 'keydown', function( event )
 {
   const number = Number( event.key )
   const word = String( number )
@@ -564,11 +564,24 @@
 
     if( file === undefined )
     {
-      localStorage.setItem( name, JSON.stringify( Ω.state ) )
+      const save = confirm( 'SAVE STATE ' + number + ' ?' )
+
+      if( save ) localStorage.setItem( name, JSON.stringify( Ω.state ) )
     }
     else
     {
-      Ω.state = JSON.parse( file )
+      const load = confirm( 'LOAD STATE ' + number + ' ?' )
+
+      if( load )
+      {
+        Ω.state = JSON.parse( file )
+      }
+      else
+      {
+        const save = confirm( 'SAVE STATE ' + number + ' ?' )
+
+        if( save ) localStorage.setItem( name, JSON.stringify( Ω.state ) )
+      }
     }
   }
 },

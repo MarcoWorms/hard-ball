@@ -549,3 +549,27 @@
     }
   }
 }
+
+////////////////////////////////////////////////////////////////////////////////
+//
+Ω.debugger = addEventListener( 'keydown', function( event )
+{
+  const number = Number( event.key )
+  const word = String( number )
+
+  if( typeof( number ) === 'number' && word !== 'NaN' )
+  {
+    const file = eval( 'localStorage.bug' + number )
+    const name = 'bug' + number
+
+    if( file === undefined )
+    {
+      localStorage.setItem( name, JSON.stringify( Ω.state ) )
+    }
+    else
+    {
+      Ω.state = JSON.parse( file )
+    }
+  }
+},
+false )

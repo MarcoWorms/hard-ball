@@ -1,0 +1,136 @@
+
+/*..............................................................................
+*/
+html, body
+{
+  margin:0;
+  width:100%;
+  height:100%;
+  background-color:#303030;
+}
+
+/*..............................................................................
+*/
+#arena
+{
+  width:960px;
+  height:692px; /* 576 + 10 + 48 + 10 + 48 */
+  background-color:#FFFFFF;
+  border:1px solid #FFFFFF;
+}
+
+#clock{ width:240px; height:48px }
+#ball{ background-color:rgba(127,127,127,0.75) }
+#center{ transform:translate(456px,263px); border-style:dashed }
+
+/*..............................................................................
+*/
+.cll{ color:rgba(255,255,255,0.25); font-family:sans-serif; font-size:14px }
+.cnt{ display:flex; align-items:center; justify-content:center }
+
+.rnd{ border-radius:50% }
+.brd{ border:1px solid #FFFFFF }
+.box{ box-sizing:border-box }
+.abs{ position:absolute }
+.flt{ float:left }
+
+.sqr{ width:48px; height:48px }
+.spc{ width:100%; height:10px }
+
+.trn{ background-color:#E0E0E0 } /* turn */
+.bnc{ background-color:#D0D0D0 } /* bench */
+
+.lrd{ background-color:#D01030 } /* light red */
+.drd{ background-color:#C00020 } /* dark red */
+.lgr{ background-color:#70A010 } /* light gree n*/
+.dgr{ background-color:#609000 } /* dark green */
+.lbl{ background-color:#6020A0 } /* light blue */
+.dbl{ background-color:#501090 } /* dark blue */
+
+/*..............................................................................
+*/
+.nnnn{ border:0 }
+
+.nsss{ border-top-width:0 }
+.sssn{ border-left-width:0 }
+.snss{ border-right-width:0 }
+.ssns{ border-bottom-width:0 }
+
+.nssd{ border-top-width:0; border-left-style:dashed }
+.ndss{ border-top-width:0; border-right-style:dashed }
+.ssnd{ border-bottom-width:0; border-left-style:dashed }
+.sdns{ border-bottom-width:0; border-right-style:dashed }
+
+.nnnd{ border-width:0 0 0 1px; border-left-style:dashed }
+.snnd{ border-width:1px 0 0 1px; border-left-style:dashed }
+.nsnd{ border-width:0 1px 0 1px; border-left-style:dashed }
+.nnsd{ border-width:0 0 1px 1px; border-left-style:dashed }
+.ndnn{ border-width:0 1px 0 0; border-right-style:dashed }
+.ndns{ border-width:0 1px 0 1px; border-right-style:dashed }
+.sdnn{ border-width:1px 1px 0 0; border-right-style:dashed }
+.ndsn{ border-width:0 1px 1px 0; border-right-style:dashed }
+
+.nnss{ border-width:0 0 1px 1px }
+.snns{ border-width:1px 0 0 1px }
+.ssnn{ border-width:1px 1px 0 0 }
+.nssn{ border-width:0 1px 1px 0 }
+.nnns{ border-width:0 0 0 1px }
+.snnn{ border-width:1px 0 0 0 }
+.nsnn{ border-width:0 1px 0 0 }
+.nnsn{ border-width:0 0 1px 0 }
+
+/*..............................................................................
+*/
+#selection{ border:4px solid rgba(255,255,255,0.5); animation:ripple 0.25s }
+
+@keyframes ripple
+{
+  0%  { border:4px solid rgba(255,255,255,0.5) }
+  50% { border:8px solid rgba(255,255,255,0.5) }
+  100%{ border:2px solid rgba(255,255,255,0.5) }
+}
+
+/*..............................................................................
+*/
+.shi{ border:2px solid #FFFFFF }
+
+.sh0{ width:48px; height:48px; animation:shineA 0.75s infinite }
+.sh1{ width:38px; height:38px; animation:shineB 0.75s infinite }
+.sh2{ width:28px; height:28px; animation:shineC 0.75s infinite }
+.sh3{ width:18px; height:18px; animation:shineD 0.75s infinite }
+
+@keyframes shineA
+{
+  9%  { border-color:rgba(255,255,255,0.3); border-width:2px }
+  79% { border-color:rgba(255,255,255,0.4); border-width:3px }
+  89% { border-color:rgba(255,255,255,0.5); border-width:5px }
+  99% { border-color:rgba(255,255,255,0.9); border-width:6px }
+  100%{ border-color:rgba(255,255,255,0.6); border-width:2px }
+}
+
+@keyframes shineB
+{
+  6%  { border-color:rgba(255,255,255,0.3); border-width:2px }
+  76% { border-color:rgba(255,255,255,0.4); border-width:3px }
+  86% { border-color:rgba(255,255,255,0.5); border-width:5px }
+  96% { border-color:rgba(255,255,255,0.9); border-width:6px }
+  100%{ border-color:rgba(255,255,255,0.6); border-width:2px }
+}
+
+@keyframes shineC
+{
+  3%  { border-color:rgba(255,255,255,0.3); border-width:2px }
+  73% { border-color:rgba(255,255,255,0.4); border-width:3px }
+  83% { border-color:rgba(255,255,255,0.5); border-width:5px }
+  93% { border-color:rgba(255,255,255,0.9); border-width:6px }
+  100%{ border-color:rgba(255,255,255,0.6); border-width:2px }
+}
+
+@keyframes shineD
+{
+  0%  { border-color:rgba(255,255,255,0.3); border-width:2px }
+  70% { border-color:rgba(255,255,255,0.4); border-width:3px }
+  80% { border-color:rgba(255,255,255,0.5); border-width:5px }
+  90% { border-color:rgba(255,255,255,0.9); border-width:6px }
+  100%{ border-color:rgba(255,255,255,0.6); border-width:2px }
+}

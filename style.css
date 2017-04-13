@@ -19,11 +19,9 @@ html, body
   border:1px solid #FFFFFF;
 }
 
-#clock
-{
-  width:240px;
-  height:48px;
-}
+#clock{ width:240px; height:48px }
+#ball{ background-color:rgba(127,127,127,0.75) }
+#center{ transform:translate(456px,263px); border-style:dashed }
 
 /*..............................................................................
 */
@@ -83,7 +81,18 @@ html, body
 
 /*..............................................................................
 */
-.shi{ border:2px solid rgb(255,255,255) }
+#selection{ border:4px solid rgba(255,255,255,0.5); animation:ripple 0.25s }
+
+@keyframes ripple
+{
+  0%  { border:4px solid rgba(255,255,255,0.5) }
+  50% { border:8px solid rgba(255,255,255,0.5) }
+  100%{ border:2px solid rgba(255,255,255,0.5) }
+}
+
+/*..............................................................................
+*/
+.shi{ border:2px solid #FFFFFF }
 
 .sh0{ width:48px; height:48px; animation:shineA 0.75s infinite }
 .sh1{ width:38px; height:38px; animation:shineB 0.75s infinite }

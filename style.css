@@ -11,14 +11,7 @@ html, body
 
 /*..............................................................................
 */
-#arena
-{
-  width:960px;
-  height:692px; /* 576 + 10 + 48 + 10 + 48 */
-  background-color:#FFFFFF;
-  border:1px solid #FFFFFF;
-}
-
+#arena{ width:960px; height:692px; background-color:#FFFFFF }
 #clock{ width:240px; height:48px }
 #ball{ background-color:rgba(127,127,127,0.75) }
 #center{ transform:translate(456px,263px); border-style:dashed }
@@ -29,10 +22,12 @@ html, body
 .cnt{ display:flex; align-items:center; justify-content:center }
 
 .rnd{ border-radius:50% }
-.brd{ border:1px solid #FFFFFF }
 .box{ box-sizing:border-box }
 .abs{ position:absolute }
 .flt{ float:left }
+
+.bd1{ border:1px solid #FFFFFF }
+.bd2{ border:2px solid #FFFFFF }
 
 .sqr{ width:48px; height:48px }
 .spc{ width:100%; height:10px }
@@ -85,15 +80,13 @@ html, body
 
 @keyframes ripple
 {
-  0%  { border:4px solid rgba(255,255,255,0.5) }
-  50% { border:8px solid rgba(255,255,255,0.5) }
-  100%{ border:2px solid rgba(255,255,255,0.5) }
+  0%  { border-width:4px }
+  50% { border-width:8px }
+  100%{ border-width:2px }
 }
 
 /*..............................................................................
 */
-.shi{ border:2px solid #FFFFFF }
-
 .sh0{ width:48px; height:48px; animation:shineA 0.75s infinite }
 .sh1{ width:38px; height:38px; animation:shineB 0.75s infinite }
 .sh2{ width:28px; height:28px; animation:shineC 0.75s infinite }

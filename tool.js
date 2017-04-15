@@ -29,7 +29,6 @@ o.tool =
 
       return( { x:x, y:y } )
     }
-
     else if( typeof( object ) === 'object' )
     {
       x = object[ 0 ]
@@ -37,19 +36,19 @@ o.tool =
 
       for( let count = 0; count < 12; count ++ )
       {
-        if( y / 48 === count ) name = Ω.info.aToL[ count ]
+        if( y / 48 === count ){ name = Ω.info.aToL[ count ] }
       }
 
       for( let count = 0; count < 20; count ++ )
       {
         if( x / 48 === count )
         {
-          if( count < 10 ) name += '0'
-
+          if( count < 10 ){ name += '0' }
           name += count
         }
       }
 
       return( name )
     }
-},}
+  }
+,}

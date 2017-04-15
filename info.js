@@ -17,14 +17,13 @@ o.info =
         let x = count_2 * 48
         let y = count_1 * 48
 
-        if( count_1 === 12 ) y += 7 // correction for the bench
-
-        arrayCells.push( { x: x, y: y } )
+        if( count_1 === 12 ){ y += 10 } // correction for the bench
+        arrayCells.push( { x:x, y:y } )
       }
 
       arrayRows.push( arrayCells )
     }
 
-    return arrayRows
+    return( arrayRows )
   } )(),
 }

@@ -50,5 +50,41 @@ o.tool =
 
       return( name )
     }
-  }
-,}
+  },
+  reset:( condition )=>
+  {
+    if( condition === undefined )
+    {
+      o.page.reset.classList.remove( "btn" )
+      o.page.yes.classList.remove( "dsp" )
+      o.page.no.classList.remove( "dsp" )
+      o.page.reset.classList.add( "dsp" )
+      o.page.yes.classList.add( "red" )
+      o.page.no.classList.add( "gre" )
+      o.page.reset.innerHTML = "REALLY"
+      o.page.yes.innerHTML = "!"
+      o.page.no.innerHTML = "?"
+    }
+    else
+    {
+      if( condition )
+      {
+        console.log( "yes" )
+      }
+      else if( !condition )
+      {
+        console.log( "no" )
+      }
+
+      o.page.reset.classList.remove( "dsp" )
+      o.page.yes.classList.remove( "red" )
+      o.page.no.classList.remove( "gre" )
+      o.page.reset.classList.add( "btn" )
+      o.page.yes.classList.add( "dsp" )
+      o.page.no.classList.add( "dsp" )
+      o.page.reset.innerHTML = "RESET"
+      o.page.yes.innerHTML = ""
+      o.page.no.innerHTML = ""
+    }
+  },
+}

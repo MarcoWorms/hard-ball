@@ -21,5 +21,6 @@ o.update =
   },
   index:()=>
   {
+    o.page.ball.style.zIndex = "1"
   },
 }

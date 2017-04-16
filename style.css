@@ -16,7 +16,7 @@ html, body
 #clock{ width:240px; height:48px }
 #ball{ background-color:rgba(127,127,127,0.75) }
 #console{ width:50%; height:48px }
-#reset{ width:25%; height:48px }
+#reset{ width:15%; height:48px; border-width:2px 0 2px 0 }
 #yes{ border-radius:24px 0 0 24px; padding-left:4px; border-right-width:0 }
 #no{ border-radius:0 24px 24px 0; padding-right:4px; border-left-width:0 }
 #arena
@@ -50,23 +50,29 @@ html, body
 .cll{ color:rgba(255,255,255,0.25); font-family:sans-serif; font-size:14px }
 .cnt{ display:flex; align-items:center; justify-content:center }
 .gol{ width:40px; height:40px; background-color:rgba(255,255,255,0.25) }
-.yon{ width:5%; height:48px; display:none }
+.yon{ width:5%; height:48px }
 
+.tra{ transition: all 0.25s ease-in-out }
 .fml{ font-family:sans-serif }
 .box{ box-sizing:border-box }
 .abs{ position:absolute }
 .flt{ float:left }
 
-.rn1{ border-radius:24px; font-size:16px; color:rgb(223,223,223) }
+.rn1{ border-radius:24px; font-size:16px }
 .rn2{ border-radius:50% }
 
 .bd1{ border:1px solid rgb(255,255,255) }
 .bd2{ border:2px solid rgb(255,255,255) }
 .bd3{ border:3px solid rgb(255,255,255) }
 
-.dsp{ background-color:rgb(63,63,63) }
-.btn{ background-color:rgb(127,127,127) }
-.btn:hover{ background-color:rgb(143,143,143); color:rgb(223,223,223) }
+.dsp{ background-color:rgb(63,63,63); color:rgb(207,207,207) }
+
+.btn{ background-color:rgb(127,127,127); color:rgb(207,207,207) }
+.gre{ background-color:rgb(95,143,0); color:rgb(255,255,255) }
+.red{ background-color:rgb(191,0,31); color:rgb(255,255,255) }
+.btn:hover{ background-color:rgb(143,143,143); cursor:pointer }
+.gre:hover{ background-color:rgb(111,159,15); cursor:pointer }
+.red:hover{ background-color:rgb(207,15,47); cursor:pointer }
 
 .sqr{ width:48px; height:48px }
 .spc{ width:100%; height:10px }

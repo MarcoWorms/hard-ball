@@ -15,11 +15,12 @@ o.engine =
   },
   update:()=>
   {
-    if( o.state.lock.game )
+    if( o.state.lock.main )
     {
       o.update.ball()
       o.update.trigger()
       o.update.athlete()
+      o.update.index()
     }
 
     window.requestAnimationFrame( o.engine.update )

@@ -12,24 +12,24 @@ o.tool =
     let x
     let y
 
-    if( typeof( object ) === 'string' )
+    if( typeof( object ) === "string" )
     {
       let letter = object.substring( 0, 1 )
       let digit = Number( object.substring( 1, 3 ) )
 
       for( let count = 0; count < 20; count ++ )
       {
-        if( digit === count ) x = count * 48
+        if( digit === count ){ x = count * 48 }
       }
 
       for( let count = 0; count < 12; count ++ )
       {
-        if( letter === Ω.info.aToL[ count ] ) y = count * 48
+        if( letter === Ω.info.aToL[ count ] ){ y = count * 48 }
       }
 
       return( { x:x, y:y } )
     }
-    else if( typeof( object ) === 'object' )
+    else if( typeof( object ) === "object" )
     {
       x = object[ 0 ]
       y = object[ 1 ]
@@ -43,7 +43,7 @@ o.tool =
       {
         if( x / 48 === count )
         {
-          if( count < 10 ){ name += '0' }
+          if( count < 10 ){ name += "0" }
           name += count
         }
       }

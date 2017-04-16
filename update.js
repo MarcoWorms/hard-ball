@@ -19,4 +19,7 @@ o.update =
       o.tool.translate( object, athlete.x, athlete.y )
     } )
   },
+  index:()=>
+  {
+  },
 }

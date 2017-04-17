@@ -22,7 +22,7 @@ o.update =
   index:()=>
   {
     o.page.ball.style.zIndex = "1"
-    o.page.selection.style.zIndex = "20"
+    o.page.selection.style.zIndex = "2"
   },
   zone:( object )=>
   {
@@ -50,8 +50,7 @@ o.update =
         const x = o.state.ball.x
         const y = o.state.ball.y
         o.tool.translate( o.page.selection, x, y )
-      },
-      0 )
+      } )
     }
     else if( typeof( object ) === "number" )
     {
@@ -62,8 +61,7 @@ o.update =
         const x = o.state.athlete[ object ].x
         const y = o.state.athlete[ object ].y
         o.tool.translate( o.page.selection, x, y )
-      },
-      0 )
+      } )
     }
     else
     {

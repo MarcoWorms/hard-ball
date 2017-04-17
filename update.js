@@ -22,6 +22,7 @@ o.update =
   index:()=>
   {
     o.page.ball.style.zIndex = "1"
+    o.page.selection.style.zIndex = "20"
   },
   zone:( object )=>
   {
@@ -36,6 +37,37 @@ o.update =
     else
     {
       Array.from( o.page.zone ).map( ( z )=>{ z.style.display = "none" } )
+    }
+  },
+  selection:( object )=>
+  {
+    if( object === "ball" )
+    {
+      o.page.selection.style.display = "none"
+      setTimeout( ()=>
+      {
+        o.page.selection.style.display = "flex"
+        const x = o.state.ball.x
+        const y = o.state.ball.y
+        o.tool.translate( o.page.selection, x, y )
+      },
+      0 )
+    }
+    else if( typeof( object ) === "number" )
+    {
+      o.page.selection.style.display = "none"
+      setTimeout( ()=>
+      {
+        o.page.selection.style.display = "flex"
+        const x = o.state.athlete[ object ].x
+        const y = o.state.athlete[ object ].y
+        o.tool.translate( o.page.selection, x, y )
+      },
+      0 )
+    }
+    else
+    {
+      o.page.selection.style.display = "none"
     }
   }
 }

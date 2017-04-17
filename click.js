@@ -27,6 +27,7 @@ o.click = addEventListener( "mousedown", ( event )=>
     else if( event.target.id === "ball" )
     {
       o.state.selected = "ball"
+      o.update.selection( "ball" )
       o.update.zone( "ball" )
     }
     else if( event.target.id === "trigger" )
@@ -37,11 +38,13 @@ o.click = addEventListener( "mousedown", ( event )=>
     {
       const number = Number( event.target.id.substring( 1, 3 ) )
       o.state.selected = number
+      o.update.selection( number )
       o.update.zone( number )
     }
     else
     {
       o.state.selected = null
+      o.update.selection( null )
       o.update.zone( null )
     }
   }

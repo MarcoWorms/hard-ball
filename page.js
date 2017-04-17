@@ -9,6 +9,7 @@ o.page =
   ball:document.getElementById( "ball" ),
   trigger:document.getElementById( "trigger" ),
   center:document.getElementById( "center" ),
+  selection:document.getElementById( "selection" ),
 
   zone:document.querySelectorAll( ".zon" ),
   athlete:document.querySelectorAll( ".ath" ),

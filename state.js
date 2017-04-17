@@ -3,7 +3,7 @@
 
 o.state =
 {
-  hovered:null,
+  selected:null,
   lock:{ main:true },
   ball:{ x:0, y:0 },
   athlete:( ()=>

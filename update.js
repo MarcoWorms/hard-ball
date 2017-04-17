@@ -23,4 +23,19 @@ o.update =
   {
     o.page.ball.style.zIndex = "1"
   },
+  zone:( object )=>
+  {
+    if( object === "ball" )
+    {
+      Array.from( o.page.zone ).map( ( z )=>{ z.style.display = "flex" } )
+    }
+    else if( typeof( object ) === "number" )
+    {
+      Array.from( o.page.zone ).map( ( z )=>{ z.style.display = "flex" } )
+    }
+    else
+    {
+      Array.from( o.page.zone ).map( ( z )=>{ z.style.display = "none" } )
+    }
+  }
 }

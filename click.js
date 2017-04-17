@@ -5,6 +5,8 @@ o.click = addEventListener( "mousedown", ( event )=>
 {
   if( o.state.lock.main )
   {
+    // PART 1
+    //
     if( event.target.id === "reset" )
     {
       o.tool.reset()
@@ -19,13 +21,28 @@ o.click = addEventListener( "mousedown", ( event )=>
     {
       o.tool.reset( false )
     }
+
+    // PART 2
+    //
     else if( event.target.id === "ball" )
     {
       o.state.selected = "ball"
+      o.update.zone( "ball" )
+    }
+    else if( event.target.id === "trigger" )
+    {
+      // tbd
     }
     else if( event.target.id.substring( 0, 1 ) === "T" )
     {
-      o.state.selected = Number( event.target.id.substring( 1, 3 ) )
+      const number = Number( event.target.id.substring( 1, 3 ) )
+      o.state.selected = number
+      o.update.zone( number )
+    }
+    else
+    {
+      o.state.selected = null
+      o.update.zone( null )
     }
   }
 },

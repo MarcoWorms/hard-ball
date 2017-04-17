@@ -15,12 +15,17 @@ o.engine =
       o.state.athlete[ count ].y = o.info.cell[ 12 ][ 0 ].y
     }
 
-    // SAFARI FIX
+    // SAFARI FIXES
     //
     if( navigator.userAgent.indexOf( "Safari" ) !== -1
     && navigator.userAgent.indexOf( "Chrome" ) === -1 )
     {
       o.page.center.style.transform = "translate(461px,268px) rotate(270deg)"
+
+      Array.from( o.page.safari_fix ).map( ( athlete_mask )=>
+      {
+        athlete_mask.style.margin = "-3px 0 0 -45px"
+      } )
     }
 
     // INITIAL UPDATES

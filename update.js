@@ -24,9 +24,25 @@ o.update =
     o.page.ball.style.zIndex = "1"
     o.page.selection.style.zIndex = "2"
   },
+  coord:( condition )=>
+  {
+    if( condition === "center" )
+    {
+      for( let count = 0; count < 4; count ++ )
+      {
+        const coord = o.tool.convert( o.info.center[ count ] )
+        o.state.zone[ count ] = { x:coord.x, y:coord.y }
+      }
+
+      o.update.zone( 4 )
+    }
+    else( condition === "start" )
+    {
+      // tbd
+    }
+  },
   zone:( amount )=>
   {
-    // tbd
     for( let count = 0; count < amount; count ++ )
     {
       o.page.zone[ count ].style.marginLeft = o.state.zone[ count ].x + "px"
@@ -42,13 +58,7 @@ o.update =
     {
       if( o.state.ball.x === 456 )
       {
-        for( let count = 0; count < 4; count ++ )
-        {
-          const coord = o.tool.convert( o.info.center[ count ] )
-          o.state.zone[ count ] = { x:coord.x, y:coord.y }
-        }
-
-        o.update.zone( 4 )
+        o.update.coord( "center" )
       }
       else if( o.state.holder )
       {

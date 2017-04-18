@@ -7,19 +7,19 @@ o.hover = addEventListener( "mouseover", ( event )=>
   {
     if( event.target.id === "ball" )
     {
-      o.update.origin( "ball" )
+      o.zone.origin( "ball" )
     }
     else if( event.target.id.substring( 0, 1 ) === "T" ) // athlete
     {
-      o.update.origin( Number( event.target.id.substring( 1, 3 ) ) )
+      o.zone.origin( Number( event.target.id.substring( 1, 3 ) ) )
     }
     else if( o.state.selected )
     {
-      o.update.origin( o.state.selected )
+      o.zone.origin( o.state.selected )
     }
     else
     {
-      o.update.origin( null )
+      o.zone.origin( null )
     }
   }
 },

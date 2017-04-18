@@ -138,15 +138,11 @@ html, body
 
 /*==============================================================================
 */
-.zon
-{
-  display:none;
-  border:3px dashed rgb(255,207,63);
-  animation:roll 4s infinite;
-  animation-timing-function:linear;
-}
+.bld{ border:3px dashed rgba(255,207,63,1) }
+.thi{ border:2px dashed rgba(255,207,63,0.75) }
+.zon{ display:none; animation:z 4s infinite; animation-timing-function:linear }
 
-@keyframes roll{ 100%{ transform:rotate(360deg) } }
+@keyframes z{ 100%{ transform:rotate(360deg) } }
 
 /*==============================================================================
 */

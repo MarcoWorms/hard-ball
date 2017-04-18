@@ -24,59 +24,6 @@ o.update =
     o.page.ball.style.zIndex = "1"
     o.page.selection.style.zIndex = "2"
   },
-  coord:( condition )=>
-  {
-    if( condition === "center" )
-    {
-      for( let count = 0; count < 4; count ++ )
-      {
-        const coord = o.tool.convert( o.info.center[ count ] )
-        o.state.zone[ count ] = { x:coord.x, y:coord.y }
-      }
-
-      o.update.zone( 4 )
-    }
-    else( condition === "start" )
-    {
-      // tbd
-    }
-  },
-  zone:( amount )=>
-  {
-    for( let count = 0; count < amount; count ++ )
-    {
-      o.page.zone[ count ].style.marginLeft = o.state.zone[ count ].x + "px"
-      o.page.zone[ count ].style.marginTop = o.state.zone[ count ].y + "px"
-      o.page.zone[ count ].style.display = "flex"
-    }
-  },
-  origin:( object )=>
-  {
-    Array.from( o.page.zone ).map( ( z )=>{ z.style.display = "none" } )
-
-    if( object === "ball" )
-    {
-      if( o.state.ball.x === 456 )
-      {
-        o.update.coord( "center" )
-      }
-      else if( o.state.holder )
-      {
-        // tbd
-      }
-    }
-    else if( typeof( object ) === "number" )
-    {
-      if( o.state.athlete[ object ].y === 586 )
-      {
-        // tbd
-      }
-      else
-      {
-        // tbd
-      }
-    }
-  },
   selection:( object )=>
   {
     o.page.selection.style.display = "none"

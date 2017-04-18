@@ -32,7 +32,7 @@ o.zone =
       }
     }
   },
-  step_1:( condition )=> // status is unused here
+  step_1:( condition )=>
   {
     if( condition === "center" )
     {

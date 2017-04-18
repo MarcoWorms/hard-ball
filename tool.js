@@ -7,10 +7,6 @@ o.tool =
   {
     object.style.transform = "translate(" + x + "px," + y + "px)"
   },
-  rotate:( object, deg )=>
-  {
-    object.style.transform += "rotate(" + deg + "deg)"
-  },
   convert:( object )=>
   {
     let x

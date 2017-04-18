@@ -44,7 +44,7 @@ html, body
 }
 #selection:hover
 {
-  background-color:rgba(255,255,255,0.20)
+  background-color:rgba(255,255,255,0.10)
 }
 
 @keyframes ripple
@@ -138,8 +138,8 @@ html, body
 
 /*==============================================================================
 */
-.bld{ border:3px dashed rgba(255,207,63,1) }
-.thi{ border:2px dashed rgba(255,207,63,0.75) }
+.bld{ border:3px dashed rgb(255,207,0); box-shadow:0 0 4px 2px rgb(255,191,0) }
+.thi{ border:2px dashed rgba(255,207,0,0.75) }
 .zon{ display:none; animation:z 4s infinite; animation-timing-function:linear }
 
 @keyframes z{ 100%{ transform:rotate(360deg) } }

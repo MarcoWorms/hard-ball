@@ -24,26 +24,55 @@ o.update =
     o.page.ball.style.zIndex = "1"
     o.page.selection.style.zIndex = "2"
   },
-  zone:( object )=>
+  zone:( amount )=>
   {
+    // tbd
+    for( let count = 0; count < amount; count ++ )
+    {
+      o.page.zone[ count ].style.marginLeft = o.state.zone[ count ].x + "px"
+      o.page.zone[ count ].style.marginTop = o.state.zone[ count ].y + "px"
+      o.page.zone[ count ].style.display = "flex"
+    }
+  },
+  origin:( object )=>
+  {
+    Array.from( o.page.zone ).map( ( z )=>{ z.style.display = "none" } )
+
     if( object === "ball" )
     {
-      Array.from( o.page.zone ).map( ( z )=>{ z.style.display = "flex" } )
+      if( o.state.ball.x === 456 )
+      {
+        for( let count = 0; count < 4; count ++ )
+        {
+          const coord = o.tool.convert( o.info.center[ count ] )
+          o.state.zone[ count ] = { x:coord.x, y:coord.y }
+        }
+
+        o.update.zone( 4 )
+      }
+      else if( o.state.holder )
+      {
+        // tbd
+      }
     }
     else if( typeof( object ) === "number" )
     {
-      Array.from( o.page.zone ).map( ( z )=>{ z.style.display = "flex" } )
-    }
-    else
-    {
-      Array.from( o.page.zone ).map( ( z )=>{ z.style.display = "none" } )
+      if( o.state.athlete[ object ].y === 586 )
+      {
+        // tbd
+      }
+      else
+      {
+        // tbd
+      }
     }
   },
   selection:( object )=>
   {
+    o.page.selection.style.display = "none"
+
     if( object === "ball" )
     {
-      o.page.selection.style.display = "none"
       setTimeout( ()=>
       {
         o.page.selection.style.display = "flex"
@@ -54,7 +83,6 @@ o.update =
     }
     else if( typeof( object ) === "number" )
     {
-      o.page.selection.style.display = "none"
       setTimeout( ()=>
       {
         o.page.selection.style.display = "flex"
@@ -62,10 +90,6 @@ o.update =
         const y = o.state.athlete[ object ].y
         o.tool.translate( o.page.selection, x, y )
       } )
-    }
-    else
-    {
-      o.page.selection.style.display = "none"
     }
   }
 }

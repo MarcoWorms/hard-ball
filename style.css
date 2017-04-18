@@ -14,7 +14,6 @@ html, body
 /*//////////////////////////////////////////////////////////////////////////////
 */
 #clock{ width:240px; height:48px }
-#ball{ background-color:rgba(127,127,127,0.75) }
 #console{ width:50%; height:48px }
 #reset{ width:15%; height:48px; border-width:1px 0 1px 0 }
 #yes{ border-radius:0 24px 24px 0; padding-right:6px; border-left-width:0 }
@@ -34,13 +33,18 @@ html, body
   height:38px;
 }
 
-/*//////////////////////////////////////////////////////////////////////////////
+/*==============================================================================
 */
 #selection
 {
   display:none;
+  cursor:pointer;
   border:8px solid rgba(255,255,255,0.5);
   animation:ripple 0.25s ease-in-out;
+}
+#selection:hover
+{
+  background-color:rgba(255,255,255,0.20)
 }
 
 @keyframes ripple
@@ -57,11 +61,13 @@ html, body
 .gol{ width:40px; height:40px; background-color:rgba(255,255,255,0.25) }
 .yon{ width:5%; height:48px; font-size:24px }
 
-.tra{ transition:all 0.25s ease-in-out }
 .fml{ font-family:sans-serif }
 .box{ box-sizing:border-box }
 .abs{ position:absolute }
 .flt{ float:left }
+
+.tr1{ transition:all 0.25s ease-in-out }
+.tr2{ transition:background-color 0.25s ease-in-out, border 0.1s ease-in-out }
 
 .rn1{ border-radius:24px }
 .rn2{ border-radius:50% }
@@ -80,6 +86,11 @@ html, body
 .red:hover{ background-color:rgb(207,15,47); cursor:pointer }
 .gre:hover{ background-color:rgb(111,159,15); cursor:pointer }
 .blu:hover{ background-color:rgb(95,31,159); cursor:pointer }
+
+.bal{ background-color:rgba(47,47,47,0.75); cursor:pointer }
+.dng{ background-color:rgba(175,0,0,0.5); cursor:pointer }
+.bal:hover{ background-color:rgba(95,95,95,0.75) }
+.dng:hover{ background-color:rgba(223,47,47,0.5) }
 
 .sqr{ width:48px; height:48px }
 .spc{ width:100%; height:10px }
@@ -125,12 +136,12 @@ html, body
 .nsnn{ border-width:0 1px 0 0 }
 .nnsn{ border-width:0 0 1px 0 }
 
-/*//////////////////////////////////////////////////////////////////////////////
+/*==============================================================================
 */
 .zon
 {
   display:none;
-  border:1px dashed rgb(255,255,255);
+  border:3px dashed rgb(255,207,63);
   animation:roll 4s infinite;
   animation-timing-function:linear;
 }

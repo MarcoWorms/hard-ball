@@ -7,6 +7,10 @@ o.tool =
   {
     object.style.transform = "translate(" + x + "px," + y + "px)"
   },
+  rotate:( object, deg )=>
+  {
+    object.style.transform += "rotate(" + deg + "deg)"
+  },
   convert:( object )=>
   {
     let x
@@ -24,7 +28,7 @@ o.tool =
 
       for( let count = 0; count < 12; count ++ )
       {
-        if( letter === Ω.info.aToL[ count ] ){ y = count * 48 }
+        if( letter === o.info.aToL[ count ] ){ y = count * 48 }
       }
 
       return( { x:x, y:y } )
@@ -36,7 +40,7 @@ o.tool =
 
       for( let count = 0; count < 12; count ++ )
       {
-        if( y / 48 === count ){ name = Ω.info.aToL[ count ] }
+        if( y / 48 === count ){ name = o.info.aToL[ count ] }
       }
 
       for( let count = 0; count < 20; count ++ )
@@ -53,7 +57,7 @@ o.tool =
   },
   reset:( condition )=>
   {
-    if( condition === undefined )
+    if( condition === null )
     {
       o.page.reset.classList.remove( "btn" )
       o.page.yes.classList.remove( "dsp" )

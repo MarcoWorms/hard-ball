@@ -13,31 +13,30 @@ o.press = addEventListener( "keydown", ( event )=>
 
     if( file === undefined )
     {
-      const save = confirm( 'SAVE STATE ' + number + ' ?' )
-      if( save ){ localStorage.setItem( name, JSON.stringify( o.state ) ) }
+      if( confirm( 'SAVE STATE ' + number + ' ?' ) )
+      {
+        localStorage.setItem( name, JSON.stringify( o.state ) )
+      }
     }
     else
     {
-      const load = confirm( 'LOAD STATE ' + number + ' ?' )
-
-      if( load )
+      if( confirm( 'LOAD STATE ' + number + ' ?' ) )
       {
         o.state = JSON.parse( file )
-
         o.update.load()
       }
       else
       {
-        const save = confirm( 'SAVE STATE ' + number + ' ?' )
-
-        if( save )
+        if( confirm( 'OVERWRITE STATE ' + number + ' ?' ) )
         {
           localStorage.setItem( name, JSON.stringify( o.state ) )
         }
         else
         {
-          const erase = confirm( 'ERASE STATE ' + number + ' ?' )
-          if( erase ){ localStorage.removeItem( name ) }
+          if( confirm( 'ERASE STATE ' + number + ' ?' ) )
+          {
+            localStorage.removeItem( name )
+          }
         }
       }
     }

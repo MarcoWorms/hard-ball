@@ -15,7 +15,7 @@ o.engine =
       o.state.athlete[ count ].y = o.info.cell[ 12 ][ 0 ].y
     }
 
-    // AVOID INITIAL DRAG
+    // AVOID INITIAL DRAG & CLICK BUG
     //
     o.handle.list.push(
     {
@@ -32,6 +32,8 @@ o.engine =
       },
       act:()=>
       {
+        setTimeout( ()=>{ o.state.pass.main = true }, 100 )
+
         Array.from( o.page.athlete ).map( ( athlete )=>
         {
           athlete.classList.add( "tr1" )

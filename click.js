@@ -3,7 +3,7 @@
 
 o.click = addEventListener( "mousedown", ( event )=>
 {
-  if( o.state.lock.main )
+  if( o.state.pass.main )
   {
     if( event.target.id === "reset" )
     {
@@ -62,11 +62,13 @@ o.click = addEventListener( "mousedown", ( event )=>
             {
               o.state.first = now = "gre"
               o.state.spawn.green.splice( zone_num, 1 )
+              o.state.team.green.push( o.state.selected )
             }
             else
             {
               o.state.first = now = "blu"
               o.state.spawn.blue.splice( zone_num + 4, 1 )
+              o.state.team.blue.push( o.state.selected )
             }
           }
           else
@@ -75,11 +77,13 @@ o.click = addEventListener( "mousedown", ( event )=>
             {
               const index = o.state.spawn.green.indexOf( zone_str )
               o.state.spawn.green.splice( index, 1 )
+              o.state.team.green.push( o.state.selected )
             }
             else if( now === "blu" )
             {
               const index = o.state.spawn.blue.indexOf( zone_str )
               o.state.spawn.blue.splice( index, 1 )
+              o.state.team.blue.push( o.state.selected )
             }
           }
 

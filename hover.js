@@ -3,7 +3,7 @@
 
 o.hover = addEventListener( "mouseover", ( event )=>
 {
-  if( o.state.lock.main )
+  if( o.state.pass.main )
   {
     if( event.target.id === "ball" )
     {

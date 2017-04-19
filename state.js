@@ -7,9 +7,10 @@ o.state =
   first:null,
   holder:null,
   selected:null,
-  lock:{ main:true },
+  pass:{ main:false },
   screen:{ x:0, y:0 },
   ball:{ x:0, y:0 },
+  team:{ green:[], blue:[] },
   athlete:( ()=>
   {
     let array = []

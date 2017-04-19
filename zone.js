@@ -79,8 +79,6 @@ o.zone =
         const coord = o.tool.convert( spawn[ count ] )
         o.state.zone[ count ] = { x:coord.x, y:coord.y }
       }
-
-      console.log( o.state.zone )
     }
     else if( condition === "place" )
     {

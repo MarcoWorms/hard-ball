@@ -71,7 +71,7 @@ o.update =
   },
   screen:()=>
   {
-    const firstCell = document.querySelector( '.cll' )
+    const firstCell = document.querySelector( ".cll" )
 
     o.state.screen.x = firstCell.getBoundingClientRect().x
     o.state.screen.y = firstCell.getBoundingClientRect().y

@@ -69,11 +69,9 @@ o.tool =
     {
       if( condition )
       {
-        console.log( "yes" )
-      }
-      else if( !condition )
-      {
-        console.log( "no" )
+        localStorage.removeItem( "HB_auto" )
+        o.state = JSON.parse( localStorage.getItem( "HB_backup" ) )
+        o.engine.create()
       }
 
       o.page.reset.classList.remove( "dsp" )

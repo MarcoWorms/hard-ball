@@ -3,8 +3,17 @@
 
 o.engine =
 {
+  load:()=>
+  {
+    o.state = JSON.parse( localStorage.getItem( "HB_auto" ) )
+    o.update.load()
+  },
   create:()=>
   {
+    // CREATE BACKUP
+    //
+    localStorage.setItem( "HB_backup", JSON.stringify( o.state ) )
+
     // INITIAL POSITIONING
     //
     o.state.ball = { x:456, y:264 }
@@ -13,6 +22,7 @@ o.engine =
     {
       o.state.athlete[ count ].x = o.info.cell[ 12 ][ count ].x
       o.state.athlete[ count ].y = o.info.cell[ 12 ][ 0 ].y
+      o.page.athlete[ count ].classList = "ath sqr rn2 bd3 box abs cnt btn"
     }
 
     // AVOID INITIAL DRAG & CLICK BUG
@@ -67,5 +77,7 @@ o.engine =
   },
 }
 
-o.engine.create()
+if( "HB_auto" in localStorage ){ o.engine.load() }
+else{ o.engine.create() }
+
 o.engine.update()

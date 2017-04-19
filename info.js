@@ -4,7 +4,7 @@
 o.info =
 {
   center:[ "F09", "F10", "G09", "G10" ],
-  aToL:[ 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L' ],
+  aToL:[ "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L" ],
   cell:( ()=>
   {
     let arrayRows = []

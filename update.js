@@ -3,6 +3,13 @@
 
 o.update =
 {
+  load:()=>
+  {
+    o.update.ball()
+    o.update.trigger()
+    o.update.athlete()
+    o.update.index()
+  },
   ball:()=>
   {
     o.tool.translate( o.page.ball, o.state.ball.x, o.state.ball.y )

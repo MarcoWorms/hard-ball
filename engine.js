@@ -56,10 +56,7 @@ o.engine =
 
     // INITIAL UPDATES
     //
-    o.update.ball()
-    o.update.trigger()
-    o.update.athlete()
-    o.update.index()
+    o.update.load()
   },
   update:()=>
   {

@@ -3,17 +3,8 @@
 
 o.engine =
 {
-  load:()=>
-  {
-    o.state = JSON.parse( localStorage.getItem( "HB_auto" ) )
-    o.update.load()
-  },
   create:()=>
   {
-    // CREATE BACKUP
-    //
-    localStorage.setItem( "HB_backup", JSON.stringify( o.state ) )
-
     // INITIAL POSITIONING
     //
     o.state.ball = { x:456, y:264 }
@@ -23,6 +14,23 @@ o.engine =
       o.state.athlete[ count ].x = o.info.cell[ 12 ][ count ].x
       o.state.athlete[ count ].y = o.info.cell[ 12 ][ 0 ].y
       o.page.athlete[ count ].classList = "ath sqr rn2 bd3 box abs cnt btn"
+    }
+
+    // CREATE BACKUP
+    //
+    localStorage.setItem( "HB_backup", JSON.stringify( o.state ) )
+
+    // SAFARI FIXES
+    //
+    if( navigator.userAgent.indexOf( "Safari" ) !== -1
+    && navigator.userAgent.indexOf( "Chrome" ) === -1 )
+    {
+      o.page.center.style.transform = "translate(461px,268px) rotate(270deg)"
+
+      Array.from( o.page.safari_fix ).map( ( athlete_mask )=>
+      {
+        athlete_mask.style.margin = "-3px 0 0 -45px"
+      } )
     }
 
     // AVOID INITIAL DRAG & CLICK BUG
@@ -51,33 +59,57 @@ o.engine =
       }
     } )
 
-    // SAFARI FIXES
-    //
-    if( navigator.userAgent.indexOf( "Safari" ) !== -1
-    && navigator.userAgent.indexOf( "Chrome" ) === -1 )
-    {
-      o.page.center.style.transform = "translate(461px,268px) rotate(270deg)"
-
-      Array.from( o.page.safari_fix ).map( ( athlete_mask )=>
-      {
-        athlete_mask.style.margin = "-3px 0 0 -45px"
-      } )
-    }
-
     // INITIAL UPDATES
     //
     o.update.load()
   },
-  update:()=>
+  loop:()=>
   {
     o.update.screen()
     o.handle.run()
 
-    window.requestAnimationFrame( o.engine.update )
+    window.requestAnimationFrame( o.engine.loop )
+  },
+  load:( file )=>
+  {
+    o.state = JSON.parse( file )
+    o.update.load()
+  },
+  reset:( condition )=>
+  {
+    if( condition === null )
+    {
+      o.page.reset.classList.remove( "btn" )
+      o.page.yes.classList.remove( "dsp" )
+      o.page.no.classList.remove( "dsp" )
+      o.page.reset.classList.add( "dsp" )
+      o.page.yes.classList.add( "red" )
+      o.page.no.classList.add( "gre" )
+      o.page.reset.innerHTML = "REALLY"
+      o.page.yes.innerHTML = "!"
+      o.page.no.innerHTML = "?"
+    }
+    else
+    {
+      if( condition )
+      {
+        localStorage.removeItem( "HB_auto" )
+        o.engine.load( localStorage.HB_backup )
+      }
+
+      o.page.reset.classList.remove( "dsp" )
+      o.page.yes.classList.remove( "red" )
+      o.page.no.classList.remove( "gre" )
+      o.page.reset.classList.add( "btn" )
+      o.page.yes.classList.add( "dsp" )
+      o.page.no.classList.add( "dsp" )
+      o.page.reset.innerHTML = "RESET"
+      o.page.yes.innerHTML = ""
+      o.page.no.innerHTML = ""
+    }
   },
 }
 
-if( "HB_auto" in localStorage ){ o.engine.load() }
-else{ o.engine.create() }
-
-o.engine.update()
+o.engine.create()
+if( "HB_auto" in localStorage ){ o.engine.load( localStorage.HB_auto ) }
+o.engine.loop()

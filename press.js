@@ -22,8 +22,7 @@ o.press = addEventListener( "keydown", ( event )=>
     {
       if( confirm( "LOAD STATE " + number + " ?" ) )
       {
-        o.state = JSON.parse( file )
-        o.update.load()
+        o.engine.load( file )
       }
       else
       {

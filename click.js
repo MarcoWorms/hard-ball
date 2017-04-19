@@ -7,17 +7,17 @@ o.click = addEventListener( "mousedown", ( event )=>
   {
     if( event.target.id === "reset" )
     {
-      o.tool.reset( null )
+      o.engine.reset( null )
     }
     else if( event.target.id === "yes"
     && o.page.yes.innerHTML === "!" )
     {
-      o.tool.reset( true )
+      o.engine.reset( true )
     }
     else if( event.target.id === "no"
     && o.page.no.innerHTML === "?" )
     {
-      o.tool.reset( false )
+      o.engine.reset( false )
     }
     else if( event.target.id === "ball" )
     {

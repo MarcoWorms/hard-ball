@@ -38,7 +38,7 @@ o.zone =
           }
           else
           {
-            const now = o.tool.now()
+            const now = o.update.now()
             let amount
 
             if( now === "gre" ){ amount = o.state.spawn.green.length }

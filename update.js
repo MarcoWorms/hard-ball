@@ -48,5 +48,25 @@ o.update =
         o.tool.translate( o.page.selection, x, y )
       } )
     }
-  }
+  },
+  now:()=>
+  {
+    if( o.state.turn % 2 === 0 )
+    {
+      if( o.state.first === "gre" ){ return( "gre" ) }
+      else if( o.state.first === "blu" ){ return( "blu" ) }
+    }
+    else
+    {
+      if( o.state.first === "gre" ){ return( "blu" ) }
+      else if( o.state.first === "blu" ){ return( "gre" ) }
+    }
+  },
+  screen:()=>
+  {
+    const firstCell = document.querySelector( '.cll' )
+
+    o.state.screen.x = firstCell.getBoundingClientRect().x
+    o.state.screen.y = firstCell.getBoundingClientRect().y
+  },
 }

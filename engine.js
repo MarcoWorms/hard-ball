@@ -15,6 +15,30 @@ o.engine =
       o.state.athlete[ count ].y = o.info.cell[ 12 ][ 0 ].y
     }
 
+    // AVOID INITIAL DRAG
+    //
+    o.handle.list.push(
+    {
+      test:()=>
+      {
+        const ballToken = o.page.ball.getBoundingClientRect()
+
+        const a = ballToken.x - o.state.screen.x
+        const b = o.state.ball.x
+        const c = ballToken.y - o.state.screen.y
+        const d = o.state.ball.y
+
+        return( a === b && c === d )
+      },
+      act:()=>
+      {
+        Array.from( o.page.athlete ).map( ( athlete )=>
+        {
+          athlete.classList.add( "tr1" )
+        } )
+      }
+    } )
+
     // SAFARI FIXES
     //
     if( navigator.userAgent.indexOf( "Safari" ) !== -1
@@ -37,6 +61,7 @@ o.engine =
   },
   update:()=>
   {
+    o.update.screen()
     o.handle.run()
 
     window.requestAnimationFrame( o.engine.update )

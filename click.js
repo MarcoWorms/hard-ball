@@ -46,7 +46,7 @@ o.click = addEventListener( "mousedown", ( event )=>
       const zone_coo = o.state.zone[ zone_num ]
       const zone_str = o.tool.convert( [ zone_coo.x, zone_coo.y ] )
 
-      let now = o.tool.now()
+      let now = o.update.now()
 
       if( o.state.selected === "ball" )
       {

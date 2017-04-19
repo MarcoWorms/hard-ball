@@ -8,6 +8,7 @@ o.state =
   holder:null,
   selected:null,
   lock:{ main:true },
+  screen:{ x:0, y:0 },
   ball:{ x:0, y:0 },
   athlete:( ()=>
   {

@@ -37,10 +37,7 @@ o.engine =
   },
   update:()=>
   {
-    if( o.state.lock.main )
-    {
-      // tbd
-    }
+    o.handle.run()
 
     window.requestAnimationFrame( o.engine.update )
   },

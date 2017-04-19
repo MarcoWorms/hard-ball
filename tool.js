@@ -87,4 +87,17 @@ o.tool =
       o.page.no.innerHTML = ""
     }
   },
+  now:()=>
+  {
+    if( o.state.turn % 2 === 0 )
+    {
+      if( o.state.first === "gre" ){ return( "gre" ) }
+      else if( o.state.first === "blu" ){ return( "blu" ) }
+    }
+    else
+    {
+      if( o.state.first === "gre" ){ return( "blu" ) }
+      else if( o.state.first === "blu" ){ return( "gre" ) }
+    }
+  },
 }

@@ -9,11 +9,11 @@ o.hover = addEventListener( "mouseover", ( event )=>
     {
       o.zone.origin( "ball" )
     }
-    else if( event.target.id.substring( 0, 1 ) === "T" ) // athlete
+    else if( event.target.id.substring( 0, 1 ) === "A" ) // athlete
     {
       o.zone.origin( Number( event.target.id.substring( 1, 3 ) ) )
     }
-    else if( o.state.selected )
+    else if( o.state.selected !== null )
     {
       o.zone.origin( o.state.selected )
     }

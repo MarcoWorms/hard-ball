@@ -101,8 +101,23 @@ o.engine =
     {
       if( condition )
       {
-        localStorage.removeItem( "HB_auto" )
-        location.reload()
+        let m = ""
+        if( navigator.userAgent.indexOf( "Firefox" ) !== -1 ){ m = "        " }
+        const message = m + "ARE YOU SURE ?!\n(unsaved progress will be lost)"
+
+        if( confirm( message ) )
+        {
+          localStorage.removeItem( "HB_auto" )
+          location.reload()
+        }
+        else
+        {
+          confirm( "USE NUMBERS TO SAVE OR LOAD" )
+        }
+      }
+      else
+      {
+        confirm( "USE NUMBERS TO SAVE OR LOAD" )
       }
 
       o.page.reset.classList.remove( "dsp" )

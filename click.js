@@ -54,46 +54,52 @@ o.click = addEventListener( "mousedown", ( event )=>
       }
       else if( o.state.selected !== null ) // athlete
       {
-        if( o.state.turn < 8
-        && o.state.athlete[ o.state.selected ].y === 586 )
+        if( o.state.athlete[ o.state.selected ].y === 586 ) // benched
         {
-          if( o.state.turn === 0 )
+          if( o.state.turn < 8 )
           {
-            if( zone_num < 4 )
+            if( o.state.turn === 0 )
             {
-              o.state.first = now = "gre"
-              o.state.spawn.green.splice( zone_num, 1 )
-              o.state.team.green.push( o.state.selected )
+              if( zone_num < 4 )
+              {
+                o.state.first = now = "gre"
+                o.state.spawn.green.splice( zone_num, 1 )
+                o.state.team.green.push( o.state.selected )
+              }
+              else
+              {
+                o.state.first = now = "blu"
+                o.state.spawn.blue.splice( zone_num + 4, 1 )
+                o.state.team.blue.push( o.state.selected )
+              }
             }
             else
             {
-              o.state.first = now = "blu"
-              o.state.spawn.blue.splice( zone_num + 4, 1 )
-              o.state.team.blue.push( o.state.selected )
+              if( now === "gre" )
+              {
+                const index = o.state.spawn.green.indexOf( zone_str )
+                o.state.spawn.green.splice( index, 1 )
+                o.state.team.green.push( o.state.selected )
+              }
+              else if( now === "blu" )
+              {
+                const index = o.state.spawn.blue.indexOf( zone_str )
+                o.state.spawn.blue.splice( index, 1 )
+                o.state.team.blue.push( o.state.selected )
+              }
             }
+
+            o.page.athlete[ o.state.selected ].classList.remove( "btn" )
+            o.page.athlete[ o.state.selected ].classList.add( now )
+
+            o.finish( "regular", zone_coo )
           }
           else
           {
-            if( now === "gre" )
-            {
-              const index = o.state.spawn.green.indexOf( zone_str )
-              o.state.spawn.green.splice( index, 1 )
-              o.state.team.green.push( o.state.selected )
-            }
-            else if( now === "blu" )
-            {
-              const index = o.state.spawn.blue.indexOf( zone_str )
-              o.state.spawn.blue.splice( index, 1 )
-              o.state.team.blue.push( o.state.selected )
-            }
+            // replace
           }
-
-          o.page.athlete[ o.state.selected ].classList.remove( "btn" )
-          o.page.athlete[ o.state.selected ].classList.add( now )
-
-          o.finish( "regular", zone_coo )
         }
-        else if( o.state.turn > 7 )
+        else // playing
         {
           const token_list = o.page.athlete[ o.state.selected ].classList
           const list = Array.from( token_list )

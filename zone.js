@@ -26,9 +26,9 @@ o.zone =
         // tbd
       }
     }
-    else if( typeof( object ) === "number" )
+    else if( typeof( object ) === "number" ) // athlete
     {
-      if( o.state.athlete[ object ].y === 586 )
+      if( o.state.athlete[ object ].y === 586 ) // benched
       {
         if( o.state.turn < 8 )
         {
@@ -55,7 +55,7 @@ o.zone =
           // replace
         }
       }
-      else
+      else // playing
       {
         o.zone.step_1( "matrix", object )
         o.zone.step_2( o.info.matrix[ object ][ 0 ] )
@@ -75,42 +75,42 @@ o.zone =
       }
     }
   },
-  step_1:( a, b, c )=>
+  step_1:( alfa, beta, gama )=>
   {
-    if( a === "center" )
+    if( alfa === "center" )
     {
-      for( let count = 0; count < b; count ++ )
+      for( let count = 0; count < beta; count ++ )
       {
         const coord = o.tool.convert( o.info.center[ count ] )
         o.state.zone[ count ] = { x:coord.x, y:coord.y }
       }
     }
-    else if( a === "start" )
+    else if( alfa === "start" )
     {
       const spawn = o.state.spawn.green.concat( o.state.spawn.blue )
 
-      for( let count = 0; count < b; count ++ )
+      for( let count = 0; count < beta; count ++ )
       {
         const coord = o.tool.convert( spawn[ count ] )
         o.state.zone[ count ] = { x:coord.x, y:coord.y }
       }
     }
-    else if( a === "place" )
+    else if( alfa === "place" )
     {
       let spawn
 
-      if( c === "gre" ){ spawn = o.state.spawn.green }
-      else if( c === "blu" ){ spawn = o.state.spawn.blue }
+      if( gama === "gre" ){ spawn = o.state.spawn.green }
+      else if( gama === "blu" ){ spawn = o.state.spawn.blue }
 
-      for( let count = 0; count < b; count ++ )
+      for( let count = 0; count < beta; count ++ )
       {
         const coord = o.tool.convert( spawn[ count ] )
         o.state.zone[ count ] = { x:coord.x, y:coord.y }
       }
     }
-    else if( a === "matrix" )
+    else if( alfa === "matrix" )
     {
-      const matrix = o.info.matrix[ b ]
+      const matrix = o.info.matrix[ beta ]
 
       // tbd
     }

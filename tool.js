@@ -51,4 +51,19 @@ o.tool =
       return( name )
     }
   },
+  bend:( number, axis )=>
+  {
+    if( axis === "hor" )
+    {
+      if( number < 0 ){ number = 960 - ( - number ) }
+      else if( number > 913 ){ number = number - 960 }
+    }
+    else if( axis === "ver" )
+    {
+      if( number < 0 ){ number = 576 - ( - number ) }
+      else if( number > 529 ){ number = number - 576 }
+    }
+
+    return number
+  },
 }

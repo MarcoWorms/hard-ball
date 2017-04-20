@@ -50,6 +50,8 @@ o.update =
   {
     o.page.ball.style.zIndex = "1"
     o.page.selection.style.zIndex = "2"
+
+    Array.from( o.page.zone ).map( ( z )=>{ z.style.zIndex = "2" } )
   },
   selection:()=>
   {

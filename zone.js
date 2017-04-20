@@ -127,91 +127,11 @@ o.zone =
       // gama = undefined
 
       const matrix = o.info.matrix[ beta ]
-      let count = 0
+      let c = 0
 
-      if( matrix[ 1 ] )
+      for( let c2 = 1; c2 < 10; c2 ++ )
       {
-        o.zone.calculate( count, beta, 0, 48 )
-        o.zone.calculate( count + 1, beta, 48, 0 )
-        o.zone.calculate( count + 2, beta, 0, -48 )
-        o.zone.calculate( count + 3, beta, -48, 0 )
-        count += 4
-      }
-      if( matrix[ 2 ] )
-      {
-        o.zone.calculate( count, beta, 0, -96 )
-        o.zone.calculate( count + 1, beta, 96, 0 )
-        o.zone.calculate( count + 2, beta, 0, 96 )
-        o.zone.calculate( count + 3, beta, -96, 0 )
-        count += 4
-      }
-      if( matrix[ 3 ] )
-      {
-        o.zone.calculate( count, beta, 0, 144 )
-        o.zone.calculate( count + 1, beta, 144, 0 )
-        o.zone.calculate( count + 2, beta, 0, -144 )
-        o.zone.calculate( count + 3, beta, -144, 0 )
-        count += 4
-      }
-      if( matrix[ 4 ] )
-      {
-        o.zone.calculate( count, beta, -48, -48 )
-        o.zone.calculate( count + 1, beta, 48, -48 )
-        o.zone.calculate( count + 2, beta, 48, 48 )
-        o.zone.calculate( count + 3, beta, -48, 48 )
-        count += 4
-      }
-      if( matrix[ 5 ] )
-      {
-        o.zone.calculate( count, beta, -48, -96 )
-        o.zone.calculate( count + 1, beta, 48, -96 )
-        o.zone.calculate( count + 2, beta, 96, -48 )
-        o.zone.calculate( count + 3, beta, 96, 48 )
-        o.zone.calculate( count + 4, beta, 48, 96 )
-        o.zone.calculate( count + 5, beta, -48, 96 )
-        o.zone.calculate( count + 6, beta, -96, 48 )
-        o.zone.calculate( count + 7, beta, -96, -48 )
-        count += 8
-      }
-      if( matrix[ 6 ] )
-      {
-        o.zone.calculate( count, beta, -48, -144 )
-        o.zone.calculate( count + 1, beta, 48, -144 )
-        o.zone.calculate( count + 2, beta, 144, -48 )
-        o.zone.calculate( count + 3, beta, 144, 48 )
-        o.zone.calculate( count + 4, beta, 48, 144 )
-        o.zone.calculate( count + 5, beta, -48, 144 )
-        o.zone.calculate( count + 6, beta, -144, 48 )
-        o.zone.calculate( count + 7, beta, -144, -48 )
-        count += 8
-      }
-      if( matrix[ 7 ] )
-      {
-        o.zone.calculate( count, beta, -96, -96 )
-        o.zone.calculate( count + 1, beta, 96, -96 )
-        o.zone.calculate( count + 2, beta, 96, 96 )
-        o.zone.calculate( count + 3, beta, -96, 96 )
-        count += 4
-      }
-      if( matrix[ 8 ] )
-      {
-        o.zone.calculate( count, beta, -96, -144 )
-        o.zone.calculate( count + 1, beta, 96, -144 )
-        o.zone.calculate( count + 2, beta, 144, -96 )
-        o.zone.calculate( count + 3, beta, 144, 96 )
-        o.zone.calculate( count + 4, beta, 96, 144 )
-        o.zone.calculate( count + 5, beta, -96, 144 )
-        o.zone.calculate( count + 6, beta, -144, 96 )
-        o.zone.calculate( count + 7, beta, -144, -96 )
-        count += 8
-      }
-      if( matrix[ 9 ] )
-      {
-        o.zone.calculate( count, beta, -144, -144 )
-        o.zone.calculate( count + 1, beta, 144, -144 )
-        o.zone.calculate( count + 2, beta, 144, 144 )
-        o.zone.calculate( count + 3, beta, -144, 144 )
-        count += 4
+        if( matrix[ c2 ] ){ c += o.zone.adjust( c, beta, o.info.guide[ c2 ] ) }
       }
     }
   },
@@ -241,11 +161,15 @@ o.zone =
       } )
     }
   },
-  place:()=>
+  adjust:( count, beta, list )=>
   {
-    // tbd
+    return( list.map( ( object, index )=>
+    {
+      o.zone.place( count + index, beta, object[ 0 ] * 48, object[ 1 ] * 48 )
+      if( index === list.length - 1 ){ return( index + 1 ) }
+    } )[ list.length - 1 ] )
   },
-  calculate:( count, beta, x, y )=>
+  place:( count, beta, x, y )=>
   {
     o.state.zone[ count ] =
     {

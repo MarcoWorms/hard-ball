@@ -26,6 +26,7 @@ o.click = addEventListener( "mousedown", ( event )=>
         o.state.selected = "ball"
         o.update.selection()
         o.zone.origin( "ball" )
+        localStorage.setItem( "HB_auto", JSON.stringify( o.state ) )
       }
     }
     else if( event.target.id.substring( 0, 1 ) === "A" ) // athlete
@@ -34,6 +35,7 @@ o.click = addEventListener( "mousedown", ( event )=>
       o.state.selected = number
       o.update.selection()
       o.zone.origin( number )
+      localStorage.setItem( "HB_auto", JSON.stringify( o.state ) )
     }
     else if( event.target.id === "selection" )
     {
@@ -120,6 +122,7 @@ o.click = addEventListener( "mousedown", ( event )=>
       o.state.selected = null
       o.update.selection()
       o.zone.origin( null )
+      localStorage.setItem( "HB_auto", JSON.stringify( o.state ) )
     }
   }
 },

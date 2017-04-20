@@ -34,21 +34,15 @@ o.update =
     {
       if( o.state.team.green.indexOf( count ) !== -1 )
       {
-        o.page.athlete[ count ].classList.remove( "btn" )
-        o.page.athlete[ count ].classList.remove( "blu" )
-        o.page.athlete[ count ].classList.add( "gre" )
+        o.page.athlete[ count ].classList = "ath sqr rn2 bd3 box abs cnt gre"
       }
       else if( o.state.team.blue.indexOf( count ) !== -1 )
       {
-        o.page.athlete[ count ].classList.remove( "btn" )
-        o.page.athlete[ count ].classList.remove( "gre" )
-        o.page.athlete[ count ].classList.add( "blu" )
+        o.page.athlete[ count ].classList = "ath sqr rn2 bd3 box abs cnt blu"
       }
       else
       {
-        o.page.athlete[ count ].classList.remove( "gre" )
-        o.page.athlete[ count ].classList.remove( "blu" )
-        o.page.athlete[ count ].classList.add( "btn" )
+        o.page.athlete[ count ].classList = "ath sqr rn2 bd3 box abs cnt btn"
       }
     }
   },

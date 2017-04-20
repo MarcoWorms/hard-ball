@@ -20,7 +20,7 @@ o.state =
   zone:( ()=>
   {
     let array = []
-    for( let count = 0; count < 16; count ++ ){ array.push( { x:0, y:0 } ) }
+    for( let c = 0; c < 16; c ++ ){ array.push( { x:null, y:null } ) }
     return( array )
   } )(),
   spawn:

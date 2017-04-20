@@ -12,11 +12,6 @@ o.finish=( condition, zone_coo )=>
 
     const index = o.state.selected
 
-    o.state.selected = null
-    o.update.selection()
-    o.update.athlete()
-    o.zone.origin()
-
     o.handle.list.push(
     {
       test:()=>
@@ -39,6 +34,10 @@ o.finish=( condition, zone_coo )=>
       },
       act:()=>
       {
+        o.state.selected = null
+        o.update.selection()
+        o.update.athlete()
+        o.zone.origin()
         o.state.turn ++
         localStorage.setItem( "HB_auto", JSON.stringify( o.state ) )
         o.state.pass.main = true

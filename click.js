@@ -24,7 +24,7 @@ o.click = addEventListener( "mousedown", ( event )=>
       if( o.state.ball.x !== 456 )
       {
         o.state.selected = "ball"
-        o.update.selection( "ball" )
+        o.update.selection()
         o.zone.origin( "ball" )
       }
     }
@@ -32,12 +32,12 @@ o.click = addEventListener( "mousedown", ( event )=>
     {
       const number = Number( event.target.id.substring( 1, 3 ) )
       o.state.selected = number
-      o.update.selection( number )
+      o.update.selection()
       o.zone.origin( number )
     }
     else if( event.target.id === "selection" )
     {
-      o.update.selection( o.state.selected )
+      o.update.selection()
       o.zone.origin( o.state.selected )
     }
     else if( event.target.id.substring( 0, 1 ) === "Z" ) // zone
@@ -105,7 +105,7 @@ o.click = addEventListener( "mousedown", ( event )=>
     else
     {
       o.state.selected = null
-      o.update.selection( null )
+      o.update.selection()
       o.zone.origin( null )
     }
   }

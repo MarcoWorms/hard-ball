@@ -6,7 +6,9 @@ o.press = addEventListener( "keydown", ( event )=>
   const number = Number( event.key )
   const word = String( number )
 
-  if( typeof( number ) === "number" && word !== "NaN" )
+  if( o.state.pass.main
+  && typeof( number ) === "number"
+  && word !== "NaN" )
   {
     const file = eval( "localStorage.HB_save_" + number )
     const name = "HB_save_" + number

@@ -16,10 +16,6 @@ o.engine =
       o.page.athlete[ count ].classList = "ath sqr rn2 bd3 box abs cnt btn"
     }
 
-    // CREATE BACKUP
-    //
-    localStorage.setItem( "HB_backup", JSON.stringify( o.state ) )
-
     // SAFARI FIXES
     //
     if( navigator.userAgent.indexOf( "Safari" ) !== -1
@@ -41,16 +37,28 @@ o.engine =
       {
         const ballToken = o.page.ball.getBoundingClientRect()
 
-        const a = ballToken.x - o.state.screen.x
-        const b = o.state.ball.x
-        const c = ballToken.y - o.state.screen.y
-        const d = o.state.ball.y
+        let dif = { x:0, y:0 }
+
+        if( navigator.userAgent.indexOf( "Safari" ) !== -1 )
+        {
+          dif = { x:-15, y:101.5 }
+        }
+
+        let a = ballToken.left + dif.x - o.state.screen.x
+        let b = o.state.ball.x
+        let c = ballToken.top + dif.y - o.state.screen.y
+        let d = o.state.ball.y
+
+        if( navigator.userAgent.indexOf( "Safari" ) !== -1 )
+        {
+          // tbd
+        }
 
         return( a === b && c === d )
       },
       act:()=>
       {
-        setTimeout( ()=>{ o.state.pass.main = true }, 100 )
+        o.state.pass.main = true
 
         Array.from( o.page.athlete ).map( ( athlete )=>
         {
@@ -61,7 +69,7 @@ o.engine =
 
     // INITIAL UPDATES
     //
-    o.update.load()
+    o.update.cluster()
   },
   loop:()=>
   {
@@ -73,7 +81,7 @@ o.engine =
   load:( file )=>
   {
     o.state = JSON.parse( file )
-    o.update.load()
+    o.update.cluster()
   },
   reset:( condition )=>
   {
@@ -94,7 +102,7 @@ o.engine =
       if( condition )
       {
         localStorage.removeItem( "HB_auto" )
-        o.engine.load( localStorage.HB_backup )
+        location.reload()
       }
 
       o.page.reset.classList.remove( "dsp" )

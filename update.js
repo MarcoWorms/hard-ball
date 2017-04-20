@@ -3,12 +3,14 @@
 
 o.update =
 {
-  load:()=>
+  cluster:()=>
   {
     o.update.ball()
     o.update.trigger()
     o.update.athlete()
+    o.update.team()
     o.update.index()
+    o.update.selection()
   },
   ball:()=>
   {
@@ -26,16 +28,40 @@ o.update =
       o.tool.translate( object, athlete.x, athlete.y )
     } )
   },
+  team:()=>
+  {
+    for( let count = 0; count < 20; count ++ )
+    {
+      if( o.state.team.green.indexOf( count ) !== -1 )
+      {
+        o.page.athlete[ count ].classList.remove( "btn" )
+        o.page.athlete[ count ].classList.remove( "blu" )
+        o.page.athlete[ count ].classList.add( "gre" )
+      }
+      else if( o.state.team.blue.indexOf( count ) !== -1 )
+      {
+        o.page.athlete[ count ].classList.remove( "btn" )
+        o.page.athlete[ count ].classList.remove( "gre" )
+        o.page.athlete[ count ].classList.add( "blu" )
+      }
+      else
+      {
+        o.page.athlete[ count ].classList.remove( "gre" )
+        o.page.athlete[ count ].classList.remove( "blu" )
+        o.page.athlete[ count ].classList.add( "btn" )
+      }
+    }
+  },
   index:()=>
   {
     o.page.ball.style.zIndex = "1"
     o.page.selection.style.zIndex = "2"
   },
-  selection:( object )=>
+  selection:()=>
   {
     o.page.selection.style.display = "none"
 
-    if( object === "ball" )
+    if( o.state.selected === "ball" )
     {
       setTimeout( ()=>
       {
@@ -45,13 +71,13 @@ o.update =
         o.tool.translate( o.page.selection, x, y )
       } )
     }
-    else if( typeof( object ) === "number" )
+    else if( typeof( o.state.selected ) === "number" )
     {
       setTimeout( ()=>
       {
         o.page.selection.style.display = "flex"
-        const x = o.state.athlete[ object ].x
-        const y = o.state.athlete[ object ].y
+        const x = o.state.athlete[ o.state.selected ].x
+        const y = o.state.athlete[ o.state.selected ].y
         o.tool.translate( o.page.selection, x, y )
       } )
     }
@@ -71,9 +97,16 @@ o.update =
   },
   screen:()=>
   {
-    const firstCell = document.querySelector( ".cll" )
+    const firstCell = document.querySelector( ".cll" ).getBoundingClientRect()
 
-    o.state.screen.x = firstCell.getBoundingClientRect().x
-    o.state.screen.y = firstCell.getBoundingClientRect().y
+    let dif = { x:0, y:0 }
+
+    if( navigator.userAgent.indexOf( "Safari" ) !== -1 )
+    {
+      dif = { x:-15, y:101.5 }
+    }
+
+    o.state.screen.x = firstCell.left + dif.x
+    o.state.screen.y = firstCell.top + dif.y
   },
 }

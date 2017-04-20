@@ -54,7 +54,8 @@ o.click = addEventListener( "mousedown", ( event )=>
       }
       else if( o.state.selected !== null ) // athlete
       {
-        if( o.state.turn < 8 )
+        if( o.state.turn < 8
+        && o.state.athlete[ o.state.selected ].y === 586 )
         {
           if( o.state.turn === 0 )
           {
@@ -92,9 +93,15 @@ o.click = addEventListener( "mousedown", ( event )=>
 
           o.finish( "regular", zone_coo )
         }
-        else
+        else if( o.state.turn > 7 )
         {
-          // normal gameplay
+          const token_list = o.page.athlete[ o.state.selected ].classList
+          const list = Array.from( token_list )
+
+          if( list.indexOf( now ) !== -1 )
+          {
+            // normal gameplay
+          }
         }
       }
     }

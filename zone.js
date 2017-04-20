@@ -5,6 +5,8 @@ o.zone =
 {
   origin:( object )=>
   {
+    const now = o.update.now()
+
     Array.from( o.page.zone ).map( ( zone, index )=>
     {
       zone.style.display = "none"
@@ -15,7 +17,7 @@ o.zone =
     {
       if( o.state.ball.x === 456 )
       {
-        o.zone.step_1( "center", 4, null )
+        o.zone.step_1( "center", 4 )
         o.zone.step_2( 4 )
         o.zone.step_3( "thin" )
       }
@@ -32,13 +34,11 @@ o.zone =
         {
           if( o.state.turn === 0 )
           {
-            o.zone.step_1( "start", 8, null )
+            o.zone.step_1( "start", 8 )
             o.zone.step_2( 8 )
-            o.zone.step_3( "bold" )
           }
           else
           {
-            const now = o.update.now()
             let amount
 
             if( now === "gre" ){ amount = o.state.spawn.green.length }
@@ -46,8 +46,9 @@ o.zone =
 
             o.zone.step_1( "place", amount, now )
             o.zone.step_2( amount )
-            o.zone.step_3( "bold" )
           }
+
+          o.zone.step_3( "bold" )
         }
         else
         {
@@ -56,42 +57,62 @@ o.zone =
       }
       else
       {
-        // playing
+        o.zone.step_1( "matrix", object )
+        o.zone.step_2( o.info.matrix[ object ][ 0 ] )
+
+        const token_list = o.page.athlete[ object ].classList
+        const list = Array.from( token_list )
+
+        if( list.indexOf( now ) !== -1
+        && o.state.turn > 7 )
+        {
+          o.zone.step_3( "bold" )
+        }
+        else
+        {
+          o.zone.step_3( "thin" )
+        }
       }
     }
   },
-  step_1:( condition, amount, now )=>
+  step_1:( a, b, c )=>
   {
-    if( condition === "center" )
+    if( a === "center" )
     {
-      for( let count = 0; count < amount; count ++ )
+      for( let count = 0; count < b; count ++ )
       {
         const coord = o.tool.convert( o.info.center[ count ] )
         o.state.zone[ count ] = { x:coord.x, y:coord.y }
       }
     }
-    else if( condition === "start" )
+    else if( a === "start" )
     {
       const spawn = o.state.spawn.green.concat( o.state.spawn.blue )
 
-      for( let count = 0; count < amount; count ++ )
+      for( let count = 0; count < b; count ++ )
       {
         const coord = o.tool.convert( spawn[ count ] )
         o.state.zone[ count ] = { x:coord.x, y:coord.y }
       }
     }
-    else if( condition === "place" )
+    else if( a === "place" )
     {
       let spawn
 
-      if( now === "gre" ){ spawn = o.state.spawn.green }
-      else if( now === "blu" ){ spawn = o.state.spawn.blue }
+      if( c === "gre" ){ spawn = o.state.spawn.green }
+      else if( c === "blu" ){ spawn = o.state.spawn.blue }
 
-      for( let count = 0; count < amount; count ++ )
+      for( let count = 0; count < b; count ++ )
       {
         const coord = o.tool.convert( spawn[ count ] )
         o.state.zone[ count ] = { x:coord.x, y:coord.y }
       }
+    }
+    else if( a === "matrix" )
+    {
+      const matrix = o.info.matrix[ b ]
+
+      // tbd
     }
   },
   step_2:( amount )=>
@@ -109,18 +130,14 @@ o.zone =
     {
       Array.from( o.page.zone ).map( ( zone )=>
       {
-        zone.classList.remove( "thi" )
-        zone.classList.add( "bld" )
-        zone.classList.add( "pnt" )
+        zone.classList = "zon sqr abs box rn2 tr2 bld pnt"
       } )
     }
     else if( condition === "thin" )
     {
       Array.from( o.page.zone ).map( ( zone )=>
       {
-        zone.classList.remove( "bld" )
-        zone.classList.remove( "pnt" )
-        zone.classList.add( "thi" )
+        zone.classList = "zon sqr abs box rn2 tr2 thi"
       } )
     }
   },

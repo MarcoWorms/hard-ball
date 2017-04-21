@@ -9,16 +9,16 @@ o.info =
   {
     let arrayRows = []
 
-    for( let count_1 = 0; count_1 < 13; count_1 ++ )
+    for( let $1 = 0; $1 < 13; $1 ++ )
     {
       let arrayCells = []
 
-      for( let count_2 = 0; count_2 < 20; count_2 ++ )
+      for( let $2 = 0; $2 < 20; $2 ++ )
       {
-        let x = count_2 * 48
-        let y = count_1 * 48
+        let x = $2 * 48
+        let y = $1 * 48
 
-        if( count_1 === 12 ){ y += 10 } // correction for the bench
+        if( $1 === 12 ){ y += 10 } // correction for the bench
         arrayCells.push( { x:x, y:y } )
       }
 

@@ -17,14 +17,14 @@ o.tool =
       let letter = object.substring( 0, 1 )
       let digit = Number( object.substring( 1, 3 ) )
 
-      for( let count = 0; count < 20; count ++ )
+      for( let $ = 0; $ < 20; $ ++ )
       {
-        if( digit === count ){ x = count * 48 }
+        if( digit === $ ){ x = $ * 48 }
       }
 
-      for( let count = 0; count < 12; count ++ )
+      for( let $ = 0; $ < 12; $ ++ )
       {
-        if( letter === o.info.aToL[ count ] ){ y = count * 48 }
+        if( letter === o.info.aToL[ $ ] ){ y = $ * 48 }
       }
 
       return( { x:x, y:y } )
@@ -34,17 +34,17 @@ o.tool =
       x = object[ 0 ]
       y = object[ 1 ]
 
-      for( let count = 0; count < 12; count ++ )
+      for( let $ = 0; $ < 12; $ ++ )
       {
-        if( y / 48 === count ){ name = o.info.aToL[ count ] }
+        if( y / 48 === $ ){ name = o.info.aToL[ $ ] }
       }
 
-      for( let count = 0; count < 20; count ++ )
+      for( let $ = 0; $ < 20; $ ++ )
       {
-        if( x / 48 === count )
+        if( x / 48 === $ )
         {
-          if( count < 10 ){ name += "0" }
-          name += count
+          if( $ < 10 ){ name += "0" }
+          name += $
         }
       }
 

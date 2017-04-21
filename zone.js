@@ -83,10 +83,10 @@ o.zone =
       // beta = amount
       // gama = undefined
 
-      for( let count = 0; count < beta; count ++ )
+      for( let $ = 0; $ < beta; $ ++ )
       {
-        const coord = o.tool.convert( o.info.center[ count ] )
-        o.state.zone[ count ] = { x:coord.x, y:coord.y }
+        const coord = o.tool.convert( o.info.center[ $ ] )
+        o.state.zone[ $ ] = { x:coord.x, y:coord.y }
       }
     }
     else if( alfa === "start" )
@@ -97,10 +97,10 @@ o.zone =
 
       const spawn = o.state.spawn.green.concat( o.state.spawn.blue )
 
-      for( let count = 0; count < beta; count ++ )
+      for( let $ = 0; $ < beta; $ ++ )
       {
-        const coord = o.tool.convert( spawn[ count ] )
-        o.state.zone[ count ] = { x:coord.x, y:coord.y }
+        const coord = o.tool.convert( spawn[ $ ] )
+        o.state.zone[ $ ] = { x:coord.x, y:coord.y }
       }
     }
     else if( alfa === "place" )
@@ -114,10 +114,10 @@ o.zone =
       if( gama === "gre" ){ spawn = o.state.spawn.green }
       else if( gama === "blu" ){ spawn = o.state.spawn.blue }
 
-      for( let count = 0; count < beta; count ++ )
+      for( let $ = 0; $ < beta; $ ++ )
       {
-        const coord = o.tool.convert( spawn[ count ] )
-        o.state.zone[ count ] = { x:coord.x, y:coord.y }
+        const coord = o.tool.convert( spawn[ $ ] )
+        o.state.zone[ $ ] = { x:coord.x, y:coord.y }
       }
     }
     else if( alfa === "matrix" )
@@ -127,21 +127,24 @@ o.zone =
       // gama = undefined
 
       const matrix = o.info.matrix[ beta ]
-      let c = 0
+      let $1 = 0
 
-      for( let c2 = 1; c2 < 10; c2 ++ )
+      for( let $2 = 1; $2 < 10; $2 ++ )
       {
-        if( matrix[ c2 ] ){ c += o.zone.adjust( c, beta, o.info.guide[ c2 ] ) }
+        if( matrix[ $2 ] )
+        {
+          $1 += o.zone.adjust( $1, beta, o.info.guide[ $2 ] )
+        }
       }
     }
   },
   step_2:( amount )=>
   {
-    for( let count = 0; count < amount; count ++ )
+    for( let $ = 0; $ < amount; $ ++ )
     {
-      o.page.zone[ count ].style.marginLeft = o.state.zone[ count ].x + "px"
-      o.page.zone[ count ].style.marginTop = o.state.zone[ count ].y + "px"
-      o.page.zone[ count ].style.display = "flex"
+      o.page.zone[ $ ].style.marginLeft = o.state.zone[ $ ].x + "px"
+      o.page.zone[ $ ].style.marginTop = o.state.zone[ $ ].y + "px"
+      o.page.zone[ $ ].style.display = "flex"
     }
   },
   step_3:( condition )=>
@@ -161,20 +164,20 @@ o.zone =
       } )
     }
   },
-  adjust:( count, beta, list )=>
+  adjust:( $, number, list )=>
   {
     return( list.map( ( object, index )=>
     {
-      o.zone.place( count + index, beta, object[ 0 ] * 48, object[ 1 ] * 48 )
+      o.zone.place( $ + index, number, object[ 0 ] * 48, object[ 1 ] * 48 )
       if( index === list.length - 1 ){ return( index + 1 ) }
     } )[ list.length - 1 ] )
   },
-  place:( count, beta, x, y )=>
+  place:( $, number, x, y )=>
   {
-    o.state.zone[ count ] =
+    o.state.zone[ $ ] =
     {
-      x:o.tool.bend( o.state.athlete[ beta ].x + x, "hor" ),
-      y:o.tool.bend( o.state.athlete[ beta ].y + y, "ver" ),
+      x:o.tool.bend( o.state.athlete[ number ].x + x, "hor" ),
+      y:o.tool.bend( o.state.athlete[ number ].y + y, "ver" ),
     }
   },
 }

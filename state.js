@@ -14,13 +14,13 @@ o.state =
   athlete:( ()=>
   {
     let array = []
-    for( let count = 0; count < 20; count ++ ){ array.push( { x:0, y:0 } ) }
+    for( let $ = 0; $ < 20; $ ++ ){ array.push( { x:0, y:0 } ) }
     return( array )
   } )(),
   zone:( ()=>
   {
     let array = []
-    for( let count = 0; count < 16; count ++ ){ array.push( { x:0, y:0 } ) }
+    for( let $ = 0; $ < 16; $ ++ ){ array.push( { x:0, y:0 } ) }
     return( array )
   } )(),
   spawn:

@@ -9,11 +9,11 @@ o.engine =
     //
     o.state.ball = { x:456, y:264 }
 
-    for( let count = 0; count < 20; count ++ )
+    for( let $ = 0; $ < 20; $ ++ )
     {
-      o.state.athlete[ count ].x = o.info.cell[ 12 ][ count ].x
-      o.state.athlete[ count ].y = o.info.cell[ 12 ][ 0 ].y
-      o.page.athlete[ count ].classList = "ath sqr rn2 bd3 box abs cnt btn"
+      o.state.athlete[ $ ].x = o.info.cell[ 12 ][ $ ].x
+      o.state.athlete[ $ ].y = o.info.cell[ 12 ][ 0 ].y
+      o.page.athlete[ $ ].classList = "ath sqr rn2 bd3 box abs cnt btn"
     }
 
     // SAFARI FIXES
@@ -98,9 +98,7 @@ o.engine =
     {
       if( condition )
       {
-        let m = ""
-        if( navigator.userAgent.indexOf( "Firefox" ) !== -1 ){ m = "        " }
-        const message = m + "ARE YOU SURE ?!\n(unsaved progress will be lost)"
+        const message = "ARE YOU SURE ?!\n(unsaved progress will be lost)"
 
         if( confirm( message ) )
         {

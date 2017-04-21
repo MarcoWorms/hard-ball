@@ -30,19 +30,19 @@ o.update =
   },
   team:()=>
   {
-    for( let count = 0; count < 20; count ++ )
+    for( let $ = 0; $ < 20; $ ++ )
     {
-      if( o.state.team.green.indexOf( count ) !== -1 )
+      if( o.state.team.green.indexOf( $ ) !== -1 )
       {
-        o.page.athlete[ count ].classList = "ath sqr rn2 bd3 box abs cnt gre"
+        o.page.athlete[ $ ].classList = "ath sqr rn2 bd3 box abs cnt gre"
       }
-      else if( o.state.team.blue.indexOf( count ) !== -1 )
+      else if( o.state.team.blue.indexOf( $ ) !== -1 )
       {
-        o.page.athlete[ count ].classList = "ath sqr rn2 bd3 box abs cnt blu"
+        o.page.athlete[ $ ].classList = "ath sqr rn2 bd3 box abs cnt blu"
       }
       else
       {
-        o.page.athlete[ count ].classList = "ath sqr rn2 bd3 box abs cnt btn"
+        o.page.athlete[ $ ].classList = "ath sqr rn2 bd3 box abs cnt btn"
       }
     }
   },
@@ -51,7 +51,7 @@ o.update =
     o.page.ball.style.zIndex = "1"
     o.page.selection.style.zIndex = "2"
 
-    Array.from( o.page.zone ).map( ( z )=>{ z.style.zIndex = "2" } )
+    Array.from( o.page.zone ).map( ( zone )=>{ zone.style.zIndex = "2" } )
   },
   selection:()=>
   {

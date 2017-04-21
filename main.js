@@ -77,6 +77,8 @@ o.engine =
   {
     o.state = JSON.parse( file )
     o.update.cluster()
+
+    if( o.state.selected !== null ){ o.zone.origin( o.state.selected ) }
   },
   reset:( condition )=>
   {

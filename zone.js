@@ -28,7 +28,9 @@ o.zone =
     }
     else if( typeof( object ) === "number" ) // athlete
     {
-      if( o.state.athlete[ object ].y === 586 ) // benched
+      const athlete = o.state.athlete[ object ]
+
+      if( athlete.y === 586 ) // benched
       {
         if( o.state.turn < 8 )
         {
@@ -60,10 +62,7 @@ o.zone =
         o.zone.step_1( "matrix", object )
         o.zone.step_2( o.info.matrix[ object ][ 0 ], object )
 
-        const token_list = o.page.athlete[ object ].classList
-        const list = Array.from( token_list )
-
-        if( list.indexOf( now ) !== -1
+        if( athlete.color === now
         && o.state.turn > 7 )
         {
           o.zone.step_3( "bold" )
@@ -196,12 +195,11 @@ o.zone =
     }
     else // athlete
     {
-      const athlete = o.state.athlete[ object ]
       let own_area
       let opp_area
       let keeper
 
-      if( athlete.color === "gre" )
+      if( o.state.athlete[ object ].color === "gre" )
       {
         own_area = o.info.area.green
         opp_area = o.info.area.blue
@@ -226,7 +224,5 @@ o.zone =
         return( true )
       }
     }
-
-    // tbd
   },
 }

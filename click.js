@@ -57,7 +57,9 @@ o.click = addEventListener( "mousedown", ( event )=>
       }
       else if( selected !== null ) // athlete
       {
-        if( o.state.athlete[ selected ].y === 586 ) // benched
+        const athlete = o.state.athlete[ selected ]
+
+        if( athlete.y === 586 ) // benched
         {
           if( o.state.turn < 8 )
           {
@@ -106,12 +108,9 @@ o.click = addEventListener( "mousedown", ( event )=>
         }
         else // playing
         {
-          const token_list = o.page.athlete[ selected ].classList
-          const list = Array.from( token_list )
-
-          if( list.indexOf( now ) !== -1 )
+          if( athlete.color === now )
           {
-            // normal gameplay
+            console.log( "pass" )
           }
         }
       }

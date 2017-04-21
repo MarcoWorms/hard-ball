@@ -14,7 +14,7 @@ o.state =
   athlete:( ()=>
   {
     let array = []
-    for( let $ = 0; $ < 20; $ ++ ){ array.push( { x:0, y:0 } ) }
+    for( let $ = 0; $ < 20; $ ++ ){ array.push( { x:0, y:0, color:null } ) }
     return( array )
   } )(),
   zone:( ()=>

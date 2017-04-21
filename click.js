@@ -47,16 +47,17 @@ o.click = addEventListener( "mousedown", ( event )=>
       const zone_num = Number( event.target.id.substring( 1, 3 ) )
       const zone_coo = o.state.zone[ zone_num ]
       const zone_str = o.tool.convert( [ zone_coo.x, zone_coo.y ] )
+      const selected = o.state.selected
 
       let now = o.update.now()
 
-      if( o.state.selected === "ball" )
+      if( selected === "ball" )
       {
         // tbd
       }
-      else if( o.state.selected !== null ) // athlete
+      else if( selected !== null ) // athlete
       {
-        if( o.state.athlete[ o.state.selected ].y === 586 ) // benched
+        if( o.state.athlete[ selected ].y === 586 ) // benched
         {
           if( o.state.turn < 8 )
           {
@@ -64,15 +65,15 @@ o.click = addEventListener( "mousedown", ( event )=>
             {
               if( zone_num < 4 )
               {
-                o.state.first = now = "gre"
+                o.state.first = o.state.athlete[ selected ].color = now = "gre"
                 o.state.spawn.green.splice( zone_num, 1 )
-                o.state.team.green.push( o.state.selected )
+                o.state.team.green.push( selected )
               }
               else
               {
-                o.state.first = now = "blu"
+                o.state.first = o.state.athlete[ selected ].color = now = "blu"
                 o.state.spawn.blue.splice( zone_num + 4, 1 )
-                o.state.team.blue.push( o.state.selected )
+                o.state.team.blue.push( selected )
               }
             }
             else
@@ -81,18 +82,20 @@ o.click = addEventListener( "mousedown", ( event )=>
               {
                 const index = o.state.spawn.green.indexOf( zone_str )
                 o.state.spawn.green.splice( index, 1 )
-                o.state.team.green.push( o.state.selected )
+                o.state.team.green.push( selected )
+                o.state.athlete[ selected ].color = "gre"
               }
               else if( now === "blu" )
               {
                 const index = o.state.spawn.blue.indexOf( zone_str )
                 o.state.spawn.blue.splice( index, 1 )
-                o.state.team.blue.push( o.state.selected )
+                o.state.team.blue.push( selected )
+                o.state.athlete[ selected ].color = "blu"
               }
             }
 
-            o.page.athlete[ o.state.selected ].classList.remove( "btn" )
-            o.page.athlete[ o.state.selected ].classList.add( now )
+            o.page.athlete[ selected ].classList.remove( "btn" )
+            o.page.athlete[ selected ].classList.add( now )
 
             o.finish( "regular", zone_coo )
           }
@@ -103,7 +106,7 @@ o.click = addEventListener( "mousedown", ( event )=>
         }
         else // playing
         {
-          const token_list = o.page.athlete[ o.state.selected ].classList
+          const token_list = o.page.athlete[ selected ].classList
           const list = Array.from( token_list )
 
           if( list.indexOf( now ) !== -1 )

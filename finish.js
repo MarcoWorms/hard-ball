@@ -7,7 +7,8 @@ o.finish=( condition, zone_coo )=>
 
   if( condition === "regular" )
   {
-    o.state.athlete[ o.state.selected ] = { x:zone_coo.x, y:zone_coo.y }
+    o.state.athlete[ o.state.selected ].x = zone_coo.x
+    o.state.athlete[ o.state.selected ].y = zone_coo.y
     o.update.athlete()
 
     const index = o.state.selected

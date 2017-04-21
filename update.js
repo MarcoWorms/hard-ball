@@ -48,10 +48,10 @@ o.update =
   },
   index:()=>
   {
-    o.page.ball.style.zIndex = "1"
-    o.page.selection.style.zIndex = "2"
+    o.page.ball.style.zIndex = "2"
+    o.page.selection.style.zIndex = "3"
 
-    Array.from( o.page.zone ).map( ( zone )=>{ zone.style.zIndex = "2" } )
+    Array.from( o.page.zone ).map( ( zone )=>{ zone.style.zIndex = "1" } )
   },
   selection:()=>
   {

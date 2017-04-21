@@ -11,6 +11,7 @@ o.state =
   screen:{ x:0, y:0 },
   ball:{ x:0, y:0 },
   team:{ green:[], blue:[] },
+  keeper:{ green:null, blue:null },
   athlete:( ()=>
   {
     let array = []

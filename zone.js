@@ -58,7 +58,7 @@ o.zone =
       else // playing
       {
         o.zone.step_1( "matrix", object )
-        o.zone.step_2( o.info.matrix[ object ][ 0 ] )
+        o.zone.step_2( o.info.matrix[ object ][ 0 ], object )
 
         const token_list = o.page.athlete[ object ].classList
         const list = Array.from( token_list )
@@ -138,13 +138,21 @@ o.zone =
       }
     }
   },
-  step_2:( amount )=>
+  step_2:( amount, number )=>
   {
     for( let $ = 0; $ < amount; $ ++ )
     {
-      o.page.zone[ $ ].style.marginLeft = o.state.zone[ $ ].x + "px"
-      o.page.zone[ $ ].style.marginTop = o.state.zone[ $ ].y + "px"
-      o.page.zone[ $ ].style.display = "flex"
+      const x = o.state.zone[ $ ].x
+      const y = o.state.zone[ $ ].y
+      const coord = o.tool.convert( [ x, y ] )
+
+      if( number === undefined
+      || o.zone.ok( number, coord ) )
+      {
+        o.page.zone[ $ ].style.marginLeft = x + "px"
+        o.page.zone[ $ ].style.marginTop = y + "px"
+        o.page.zone[ $ ].style.display = "flex"
+      }
     }
   },
   step_3:( condition )=>
@@ -179,5 +187,46 @@ o.zone =
       x:o.tool.bend( o.state.athlete[ number ].x + x, "hor" ),
       y:o.tool.bend( o.state.athlete[ number ].y + y, "ver" ),
     }
+  },
+  ok:( object, coord )=>
+  {
+    if( object === "ball" )
+    {
+      // tbd
+    }
+    else // athlete
+    {
+      const athlete = o.state.athlete[ object ]
+      let own_area
+      let opp_area
+      let keeper
+
+      if( athlete.color === "gre" )
+      {
+        own_area = o.info.area.green
+        opp_area = o.info.area.blue
+        keeper = o.state.keeper.green
+      }
+      else
+      {
+        own_area = o.info.area.blue
+        opp_area = o.info.area.green
+        keeper = o.state.keeper.blue
+      }
+
+      if( opp_area.indexOf( coord ) !== -1
+      || own_area.indexOf( coord ) !== -1
+      && keeper !== null
+      && keeper !== object )
+      {
+        return( false )
+      }
+      else
+      {
+        return( true )
+      }
+    }
+
+    // tbd
   },
 }

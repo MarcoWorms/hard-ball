@@ -48,8 +48,12 @@ o.click = addEventListener( "mousedown", ( event )=>
       const zone_coo = o.state.zone[ zone_num ]
       const zone_str = o.tool.convert( [ zone_coo.x, zone_coo.y ] )
       const selected = o.state.selected
+      const both_areas = o.info.area.green.concat( o.info.area.blue )
 
       let now = o.update.now()
+
+      o.update.aim()
+      o.update.roundabout()
 
       if( selected === "ball" )
       {
@@ -99,18 +103,61 @@ o.click = addEventListener( "mousedown", ( event )=>
             o.page.athlete[ selected ].classList.remove( "btn" )
             o.page.athlete[ selected ].classList.add( now )
 
-            o.finish( "regular", zone_coo )
+            o.finish.regular( zone_coo )
           }
           else
           {
             // replace
           }
         }
-        else // playing
+        else if( athlete.color === now
+        && o.state.blocked.indexOf( zone_num ) === -1 )
         {
-          if( athlete.color === now )
+          if( o.state.aim.zone.indexOf( zone_num ) === -1 )
           {
-            console.log( "pass" )
+            ////////////////////////////////////////////////////////////////////
+            // NOT targeting . NOT roundabouting
+            //
+            if( o.state.roundabout.indexOf( selected ) === -1 )
+            {
+              if( both_areas.indexOf( zone_str ) !== -1 )
+              {
+                if( o.state.team.green.indexOf( selected ) !== -1 )
+                {
+                  o.state.keeper.green = selected
+                }
+                else
+                {
+                  o.state.keeper.blue = selected
+                }
+              }
+
+              o.finish.regular( zone_coo )
+            }
+            ////////////////////////////////////////////////////////////////////
+            // NOT targeting . ROUNDABOUTING
+            //
+            else
+            {
+              // tbd
+            }
+          }
+          else
+          {
+            ////////////////////////////////////////////////////////////////////
+            // TARGETING . ROUNDABOUTING
+            //
+            if( o.state.roundabout.indexOf( selected ) === -1 )
+            {
+              // tbd
+            }
+            ////////////////////////////////////////////////////////////////////
+            // TARGETING . NOT roundabouting
+            //
+            else
+            {
+              // tbd
+            }
           }
         }
       }

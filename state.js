@@ -4,14 +4,19 @@
 o.state =
 {
   turn:0,
-  first:null,
-  holder:null,
-  selected:null,
+  first:null, // "gre" or "blu"
   pass:{ main:false },
+
+  selected:null, // athlete nº or ball
+  team:{ green:[], blue:[] }, // athlete nº
+  keeper:{ green:null, blue:null }, // athlete nº
+
+  blocked:[], // zone nº
+  roundabout:[], // athlete nº
+  aim:{ zone:[], target:[] },
+
   screen:{ x:0, y:0 },
   ball:{ x:0, y:0 },
-  team:{ green:[], blue:[] },
-  keeper:{ green:null, blue:null },
   athlete:( ()=>
   {
     let array = []

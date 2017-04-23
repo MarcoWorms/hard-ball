@@ -1,12 +1,11 @@
 
 "use strict"
 
-o.finish=( condition, zone_coo )=>
+o.finish =
 {
-  o.state.pass.main = false
-
-  if( condition === "regular" )
+  regular:( zone_coo )=>
   {
+    o.state.pass.main = false
     o.state.athlete[ o.state.selected ].x = zone_coo.x
     o.state.athlete[ o.state.selected ].y = zone_coo.y
     o.update.athlete()
@@ -44,5 +43,5 @@ o.finish=( condition, zone_coo )=>
         o.state.pass.main = true
       }
     } )
-  }
+  },
 }

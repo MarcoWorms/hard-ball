@@ -105,4 +105,54 @@ o.update =
     o.state.screen.x = firstCell.left + dif.x
     o.state.screen.y = firstCell.top + dif.y
   },
+  aim:()=>
+  {
+    o.state.aim = { zone:[], target:[] }
+
+    for( let $1 = 0; $1 < 16; $1 ++ )
+    {
+      const zone = o.state.zone[ $1 ]
+      const ball = o.state.ball
+
+      if( zone.x === ball.x
+      && zone.y === ball.y )
+      {
+        o.state.aim.zone.push( $1 )
+        o.state.aim.target.push( "ball" )
+      }
+
+      for( let $2 = 0; $2 < 20; $2 ++ )
+      {
+        const athlete = o.state.athlete[ $2 ]
+
+        if( zone.x === athlete.x
+        && zone.y === athlete.y )
+        {
+          o.state.aim.zone.push( $1 )
+          o.state.aim.target.push( $2 )
+        }
+      }
+    }
+  },
+  roundabout:()=>
+  {
+    o.state.roundabout = []
+
+    for( let $ = 0; $ < 20; $ ++ )
+    {
+      const athlete = o.state.athlete[ $ ]
+      const coord = o.tool.convert( [ athlete.x, athlete.y ] )
+
+      if( coord.length === 3 )
+      {
+        if( coord.substring( 0, 1 ) === "A"
+        && coord.substring( 0, 1 ) === "B"
+        && coord.substring( 0, 1 ) === "K"
+        && coord.substring( 0, 1 ) === "L" )
+        {
+          o.state.roundabout.push( $ )
+        }
+      }
+    }
+  },
 }

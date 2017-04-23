@@ -21,10 +21,6 @@ o.zone =
         o.zone.step_2( 4 )
         o.zone.step_3( "thin" )
       }
-      else if( o.state.holder )
-      {
-        // tbd
-      }
     }
     else if( typeof( object ) === "number" ) // athlete
     {
@@ -137,7 +133,7 @@ o.zone =
       }
     }
   },
-  step_2:( amount, number )=>
+  step_2:( amount, object )=>
   {
     for( let $ = 0; $ < amount; $ ++ )
     {
@@ -145,8 +141,8 @@ o.zone =
       const y = o.state.zone[ $ ].y
       const coord = o.tool.convert( [ x, y ] )
 
-      if( number === undefined
-      || o.zone.ok( number, coord ) )
+      if( object === undefined
+      || o.zone.ok( object, coord ) )
       {
         o.page.zone[ $ ].style.marginLeft = x + "px"
         o.page.zone[ $ ].style.marginTop = y + "px"

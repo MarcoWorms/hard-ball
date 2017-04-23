@@ -18,7 +18,7 @@ o.zone =
       if( o.state.ball.x === 456 )
       {
         o.zone.step_1( "center", 4 )
-        o.zone.step_2( 4 )
+        o.zone.step_2( 4, object )
         o.zone.step_3( "thin" )
       }
     }
@@ -33,7 +33,7 @@ o.zone =
           if( o.state.turn === 0 )
           {
             o.zone.step_1( "start", 8 )
-            o.zone.step_2( 8 )
+            o.zone.step_2( 8, object )
           }
           else
           {
@@ -43,7 +43,7 @@ o.zone =
             else if( now === "blu" ){ amount = o.state.spawn.blue.length }
 
             o.zone.step_1( "place", amount, now )
-            o.zone.step_2( amount )
+            o.zone.step_2( amount, object )
           }
 
           o.zone.step_3( "bold" )
@@ -141,14 +141,15 @@ o.zone =
       const y = o.state.zone[ $ ].y
       const coord = o.tool.convert( [ x, y ] )
 
-      if( object === undefined
-      || o.zone.ok( object, coord ) )
+      if( o.zone.ok( object, coord ) )
       {
         o.page.zone[ $ ].style.marginLeft = x + "px"
         o.page.zone[ $ ].style.marginTop = y + "px"
         o.page.zone[ $ ].style.display = "flex"
       }
     }
+
+    o.update.aim()
   },
   step_3:( condition )=>
   {
@@ -161,9 +162,16 @@ o.zone =
     }
     else if( condition === "thin" )
     {
-      Array.from( o.page.zone ).map( ( zone )=>
+      Array.from( o.page.zone ).map( ( zone, index )=>
       {
-        zone.classList = "zon sqr abs box rn2 tr2 thi"
+        if( o.state.aim.zone.indexOf( index ) === -1 )
+        {
+          zone.classList = "zon sqr abs box rn2 tr2 thi"
+        }
+        else
+        {
+          zone.classList = "zon sqr abs box rn2 tr2 fix"
+        }
       } )
     }
   },
@@ -187,7 +195,7 @@ o.zone =
   {
     if( object === "ball" )
     {
-      // tbd
+      return( true )
     }
     else // athlete
     {

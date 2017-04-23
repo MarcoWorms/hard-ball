@@ -52,15 +52,14 @@ o.click = addEventListener( "mousedown", ( event )=>
 
       let now = o.update.now()
 
-      o.update.aim()
-      o.update.roundabout()
-
       if( selected === "ball" )
       {
         // tbd
       }
       else if( selected !== null ) // athlete
       {
+        o.update.roundabout()
+
         const athlete = o.state.athlete[ selected ]
 
         if( athlete.y === 586 ) // benched

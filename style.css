@@ -149,7 +149,7 @@ html, body
 
 /*==============================================================================
 */
-.thi{ border:3px dotted rgba(255,207,0,0.75) }
+.thi{ border:2px dotted rgb(255,207,0) }
 .bld{ border:5px dotted rgb(255,207,0) }
 .bld:hover
 {

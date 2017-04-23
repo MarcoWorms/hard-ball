@@ -146,9 +146,9 @@ o.update =
       if( coord.length === 3 )
       {
         if( coord.substring( 0, 1 ) === "A"
-        && coord.substring( 0, 1 ) === "B"
-        && coord.substring( 0, 1 ) === "K"
-        && coord.substring( 0, 1 ) === "L" )
+        || coord.substring( 0, 1 ) === "B"
+        || coord.substring( 0, 1 ) === "K"
+        || coord.substring( 0, 1 ) === "L" )
         {
           o.state.roundabout.push( $ )
         }

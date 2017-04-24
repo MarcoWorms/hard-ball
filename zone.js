@@ -3,8 +3,10 @@
 
 o.zone =
 {
-  origin:( object )=>
+  origin:( object )=> // beginning of process + INDEX update
   {
+    o.update.index( object )
+
     const now = o.update.now()
 
     Array.from( o.page.zone ).map( ( zone, index )=>

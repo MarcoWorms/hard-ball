@@ -171,7 +171,13 @@ html, body
   border:5px solid rgb(0,0,0);
 }
 
-.zon{ display:none; animation:z 4s infinite; animation-timing-function:linear }
+.zon
+{
+  z-index:2;
+  display:none;
+  animation:z 4s infinite;
+  animation-timing-function:linear;
+}
 
 @keyframes z{ 100%{ transform:rotate(360deg) } }
 

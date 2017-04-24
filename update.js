@@ -46,12 +46,21 @@ o.update =
       }
     }
   },
-  index:()=>
+  index:( object )=>
   {
-    o.page.ball.style.zIndex = "2"
-    o.page.selection.style.zIndex = "3"
+    const value =
+    {
+      ball:"3",
+      selection:"1",
+    }
 
-    Array.from( o.page.zone ).map( ( zone )=>{ zone.style.zIndex = "1" } )
+    if( object !== undefined )
+    {
+      // tbd
+    }
+
+    o.page.ball.style.zIndex = value.ball
+    o.page.selection.style.zIndex = value.selection
   },
   selection:()=>
   {

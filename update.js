@@ -218,17 +218,11 @@ o.update =
             }
             else
             {
-              for( let $ = 0; $ < 20; $ ++ )
+              o.state.athlete.map( ( athlete, index )=>
               {
-                const maybe = o.state.athlete[ $ ]
-                const maybe_str = o.tool.convert( [ maybe.x, maybe.y ] )
-
-                if( maybe_str === future_str )
-                {
-                  o.state.blocked.push( zone_num )
-                  break
-                }
-              }
+                const str = o.tool.convert( [ athlete.x, athlete.y ] )
+                if( str === future_str ){ o.state.blocked.push( zone_num ) }
+              } )
             }
           }
         } )

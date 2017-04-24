@@ -182,8 +182,8 @@ o.update =
             }
             const future =
             {
-              x:o.tool.bend( zone.x + dif.x, "x" ),
-              y:o.tool.bend( zone.y + dif.y, "y" ),
+              x:o.tool.bend( zone.x + dif.x, "hor" ),
+              y:o.tool.bend( zone.y + dif.y, "ver" ),
             }
             const future_str = o.tool.convert( [ future.x, future.y ] )
 
@@ -218,7 +218,7 @@ o.update =
             }
             else
             {
-              o.state.athlete.map( ( athlete, index )=>
+              o.state.athlete.map( ( athlete )=>
               {
                 const str = o.tool.convert( [ athlete.x, athlete.y ] )
                 if( str === future_str ){ o.state.blocked.push( zone_num ) }

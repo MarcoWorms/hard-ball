@@ -66,6 +66,6 @@ o.tool =
       else if( number > 529 ){ number = number - 576 }
     }
 
-    return number
+    return( number )
   },
 }

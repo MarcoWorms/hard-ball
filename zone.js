@@ -17,8 +17,8 @@ o.zone =
     {
       if( o.state.ball.x === 456 )
       {
-        o.zone.step_1( "center", 4 )
-        o.zone.step_2( 4, object )
+        o.zone.step_1( "center" )
+        o.zone.step_2( object )
         o.zone.step_3( "thin" )
       }
     }
@@ -32,114 +32,113 @@ o.zone =
         {
           if( o.state.turn === 0 )
           {
-            o.zone.step_1( "start", 8 )
-            o.zone.step_2( 8, object )
+            o.zone.step_1( "start" )
+            o.zone.step_2( object )
           }
           else
           {
-            let amount
-
-            if( now === "gre" ){ amount = o.state.spawn.green.length }
-            else if( now === "blu" ){ amount = o.state.spawn.blue.length }
-
-            o.zone.step_1( "place", amount, now )
-            o.zone.step_2( amount, object )
+            o.zone.step_1( "place", now )
+            o.zone.step_2( object )
           }
 
           o.zone.step_3( "bold" )
         }
         else
         {
-          // replace
+          o.zone.step_1( "replace", now )
+          o.zone.step_2( object )
+          o.zone.step_3( "bold", object )
         }
       }
       else // playing
       {
         o.zone.step_1( "matrix", object )
-        o.zone.step_2( o.info.matrix[ object ][ 0 ], object )
+        o.zone.step_2( object )
 
         if( athlete.color === now
         && o.state.turn > 7 )
         {
-          o.zone.step_3( "bold" )
+          o.zone.step_3( "bold", object )
         }
         else
         {
-          o.zone.step_3( "thin" )
+          o.zone.step_3( "thin", object )
         }
       }
     }
   },
-  step_1:( alfa, beta, gama )=>
+  step_1:( condition, now )=> // where are the zones
   {
-    if( alfa === "center" )
+    // For the condition "matrix", "now" is the ATHLETE number
+    //
+    if( condition === "center" )
     {
-      // alfa = condition
-      // beta = amount
-      // gama = undefined
-
-      for( let $ = 0; $ < beta; $ ++ )
+      for( let $ = 0; $ < 4; $ ++ )
       {
         const coord = o.tool.convert( o.info.center[ $ ] )
         o.state.zone[ $ ] = { x:coord.x, y:coord.y }
       }
     }
-    else if( alfa === "start" )
+    else if( condition === "start" )
     {
-      // alfa = condition
-      // beta = amount
-      // gama = undefined
-
       const spawn = o.state.spawn.green.concat( o.state.spawn.blue )
 
-      for( let $ = 0; $ < beta; $ ++ )
+      for( let $ = 0; $ < 8; $ ++ )
       {
         const coord = o.tool.convert( spawn[ $ ] )
         o.state.zone[ $ ] = { x:coord.x, y:coord.y }
       }
     }
-    else if( alfa === "place" )
+    else if( condition === "place" )
     {
-      // alfa = condition
-      // beta = amount
-      // gama = now
-
       let spawn
 
-      if( gama === "gre" ){ spawn = o.state.spawn.green }
-      else if( gama === "blu" ){ spawn = o.state.spawn.blue }
+      if( now === "gre" ){ spawn = o.state.spawn.green }
+      else{ spawn = o.state.spawn.blue }
 
-      for( let $ = 0; $ < beta; $ ++ )
+      for( let $ = 0; $ < spawn.length; $ ++ )
       {
         const coord = o.tool.convert( spawn[ $ ] )
         o.state.zone[ $ ] = { x:coord.x, y:coord.y }
       }
     }
-    else if( alfa === "matrix" )
+    else if( condition === "replace" )
     {
-      // alfa = condition
-      // beta = object
-      // gama = undefined
+      let team
 
-      const matrix = o.info.matrix[ beta ]
+      if( now === "gre" ){ team = o.state.team.green }
+      else{ team = o.state.team.blue }
+
+      for( let $ = 0; $ < 4; $ ++ )
+      {
+        const coord = o.state.athlete[ team[ $ ] ]
+        o.state.zone[ $ ] = { x:coord.x, y:coord.y }
+      }
+    }
+    else if( condition === "matrix" )
+    {
+      const athlete = now
+      const matrix = o.info.matrix[ athlete ]
       let $1 = 0
 
       for( let $2 = 1; $2 < 10; $2 ++ )
       {
         if( matrix[ $2 ] )
         {
-          $1 += o.zone.adjust( $1, beta, o.info.guide[ $2 ] )
+          $1 += o.zone.adjust( $1, athlete, o.info.guide[ $2 ] )
         }
       }
     }
   },
-  step_2:( amount, object )=>
+  step_2:( object )=> // which zones appear + AIM update
   {
-    for( let $ = 0; $ < amount; $ ++ )
+    for( let $ = 0; $ < 16; $ ++ )
     {
       const x = o.state.zone[ $ ].x
       const y = o.state.zone[ $ ].y
       const coord = o.tool.convert( [ x, y ] )
+
+      if( x === null ){ break }
 
       if( o.zone.ok( object, coord ) )
       {
@@ -151,29 +150,41 @@ o.zone =
 
     o.update.aim()
   },
-  step_3:( condition )=>
+  step_3:( condition, object )=> // how the zones appear + BLOCKED update
   {
+    const classes = "zon sqr abs box rn2 tr2"
+
+    let non = classes
+    let tgt = classes
+    let blk = classes
+
     if( condition === "bold" )
     {
-      Array.from( o.page.zone ).map( ( zone )=>
-      {
-        zone.classList = "zon sqr abs box rn2 tr2 bld pnt"
-      } )
+      non += " bld pnt"
+      tgt += " btg pnt"
+      blk += " bbl"
     }
     else if( condition === "thin" )
     {
-      Array.from( o.page.zone ).map( ( zone, index )=>
-      {
-        if( o.state.aim.zone.indexOf( index ) === -1 )
-        {
-          zone.classList = "zon sqr abs box rn2 tr2 thi"
-        }
-        else
-        {
-          zone.classList = "zon sqr abs box rn2 tr2 fix"
-        }
-      } )
+      non += " thi"
+      tgt += " ttg"
+      blk += " tbl"
     }
+
+    o.update.blocked( object )
+
+    Array.from( o.page.zone ).map( ( zone, index )=>
+    {
+      if( o.state.aim.zone.indexOf( index ) !== -1 )
+      {
+        if( o.state.blocked.indexOf( index ) !== -1 ){ zone.classList = blk }
+        else{ zone.classList = tgt }
+      }
+      else
+      {
+        zone.classList = non
+      }
+    } )
   },
   adjust:( $, number, list )=>
   {

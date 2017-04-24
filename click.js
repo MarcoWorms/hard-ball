@@ -45,117 +45,113 @@ o.click = addEventListener( "mousedown", ( event )=>
     else if( event.target.id.substring( 0, 1 ) === "Z" ) // zone
     {
       const zone_num = Number( event.target.id.substring( 1, 3 ) )
-      const zone_coo = o.state.zone[ zone_num ]
-      const zone_str = o.tool.convert( [ zone_coo.x, zone_coo.y ] )
-      const selected = o.state.selected
-      const both_areas = o.info.area.green.concat( o.info.area.blue )
 
-      let now = o.update.now()
-
-      if( selected === "ball" )
+      if( o.state.blocked.indexOf( zone_num ) === -1 )
       {
-        // tbd
-      }
-      else if( selected !== null ) // athlete
-      {
-        o.update.roundabout()
+        const zone_coo = o.state.zone[ zone_num ]
+        const zone_str = o.tool.convert( [ zone_coo.x, zone_coo.y ] )
+        const selected = o.state.selected
 
-        const athlete = o.state.athlete[ selected ]
+        let now = o.update.now()
 
-        if( athlete.y === 586 ) // benched
+        if( selected === "ball" )
         {
-          if( o.state.turn < 8 )
-          {
-            if( o.state.turn === 0 )
-            {
-              if( zone_num < 4 )
-              {
-                o.state.first = o.state.athlete[ selected ].color = now = "gre"
-                o.state.spawn.green.splice( zone_num, 1 )
-                o.state.team.green.push( selected )
-              }
-              else
-              {
-                o.state.first = o.state.athlete[ selected ].color = now = "blu"
-                o.state.spawn.blue.splice( zone_num + 4, 1 )
-                o.state.team.blue.push( selected )
-              }
-            }
-            else
-            {
-              if( now === "gre" )
-              {
-                const index = o.state.spawn.green.indexOf( zone_str )
-                o.state.spawn.green.splice( index, 1 )
-                o.state.team.green.push( selected )
-                o.state.athlete[ selected ].color = "gre"
-              }
-              else if( now === "blu" )
-              {
-                const index = o.state.spawn.blue.indexOf( zone_str )
-                o.state.spawn.blue.splice( index, 1 )
-                o.state.team.blue.push( selected )
-                o.state.athlete[ selected ].color = "blu"
-              }
-            }
-
-            o.page.athlete[ selected ].classList.remove( "btn" )
-            o.page.athlete[ selected ].classList.add( now )
-
-            o.finish.regular( zone_coo )
-          }
-          else
-          {
-            // replace
-          }
+          // tbd
         }
-        else if( athlete.color === now
-        && o.state.blocked.indexOf( zone_num ) === -1 )
+        else if( selected !== null ) // athlete
         {
-          if( o.state.aim.zone.indexOf( zone_num ) === -1 )
+          o.update.roundabout()
+
+          const athlete = o.state.athlete[ selected ]
+
+          if( athlete.y === 586 ) // benched
           {
-            ////////////////////////////////////////////////////////////////////
-            // NOT targeting . NOT roundabouting
-            //
-            if( o.state.roundabout.indexOf( selected ) === -1 )
+            if( o.state.turn < 8 )
             {
-              if( both_areas.indexOf( zone_str ) !== -1 )
+              if( o.state.turn === 0 )
               {
-                if( o.state.team.green.indexOf( selected ) !== -1 )
+                if( zone_num < 4 )
                 {
-                  o.state.keeper.green = selected
+                  now = "gre"
+                  o.state.first = "gre"
+                  o.state.athlete[ selected ].color = "gre"
+                  o.state.spawn.green.splice( zone_num, 1 )
+                  o.state.team.green.push( selected )
                 }
                 else
                 {
-                  o.state.keeper.blue = selected
+                  now = "blu"
+                  o.state.first = "blu"
+                  o.state.athlete[ selected ].color = "blu"
+                  o.state.spawn.blue.splice( zone_num + 4, 1 )
+                  o.state.team.blue.push( selected )
+                }
+              }
+              else
+              {
+                if( now === "gre" )
+                {
+                  const index = o.state.spawn.green.indexOf( zone_str )
+                  o.state.spawn.green.splice( index, 1 )
+                  o.state.team.green.push( selected )
+                  o.state.athlete[ selected ].color = "gre"
+                }
+                else if( now === "blu" )
+                {
+                  const index = o.state.spawn.blue.indexOf( zone_str )
+                  o.state.spawn.blue.splice( index, 1 )
+                  o.state.team.blue.push( selected )
+                  o.state.athlete[ selected ].color = "blu"
                 }
               }
 
+              o.page.athlete[ selected ].classList.remove( "btn" )
+              o.page.athlete[ selected ].classList.add( now )
+
               o.finish.regular( zone_coo )
             }
-            ////////////////////////////////////////////////////////////////////
-            // NOT targeting . ROUNDABOUTING
-            //
             else
             {
-              // tbd
+              // replace
             }
           }
-          else
+          else if( athlete.color === now
+          && o.state.blocked.indexOf( zone_num ) === -1 )
           {
-            ////////////////////////////////////////////////////////////////////
-            // TARGETING . ROUNDABOUTING
-            //
-            if( o.state.roundabout.indexOf( selected ) === -1 )
+            if( o.state.aim.zone.indexOf( zone_num ) === -1 )
             {
-              // tbd
+              //////////////////////////////////////////////////////////////////
+              // NOT targeting . NOT roundabouting
+              //
+              if( o.state.roundabout.indexOf( selected ) === -1 )
+              {
+                o.update.keeper( zone_str )
+                o.finish.regular( zone_coo )
+              }
+              //////////////////////////////////////////////////////////////////
+              // NOT targeting . ROUNDABOUTING
+              //
+              else
+              {
+                // tbd
+              }
             }
-            ////////////////////////////////////////////////////////////////////
-            // TARGETING . NOT roundabouting
-            //
             else
             {
-              // tbd
+              //////////////////////////////////////////////////////////////////
+              // TARGETING . ROUNDABOUTING
+              //
+              if( o.state.roundabout.indexOf( selected ) === -1 )
+              {
+                // tbd
+              }
+              //////////////////////////////////////////////////////////////////
+              // TARGETING . NOT roundabouting
+              //
+              else
+              {
+                // tbd
+              }
             }
           }
         }

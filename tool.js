@@ -34,6 +34,8 @@ o.tool =
       x = object[ 0 ]
       y = object[ 1 ]
 
+      if( x === null ){ return( undefined ) }
+
       for( let $ = 0; $ < 12; $ ++ )
       {
         if( y / 48 === $ ){ name = o.info.aToL[ $ ] }

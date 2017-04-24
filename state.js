@@ -7,14 +7,21 @@ o.state =
   first:null, // "gre" or "blu"
   pass:{ main:false },
 
+  // ATHLETE Nº
+  //
   selected:null, // athlete nº or ball
-  team:{ green:[], blue:[] }, // athlete nº
-  keeper:{ green:null, blue:null }, // athlete nº
+  roundabout:[],
+  team:{ green:[], blue:[] },
+  replaced:{ green:[], blue:[] },
+  keeper:{ green:null, blue:null },
 
-  blocked:[], // zone nº
-  roundabout:[], // athlete nº
+  // ZONE Nº
+  //
+  blocked:[],
   aim:{ zone:[], target:[] },
 
+  // POSITIONING
+  //
   screen:{ x:0, y:0 },
   ball:{ x:0, y:0 },
   athlete:( ()=>
@@ -26,7 +33,7 @@ o.state =
   zone:( ()=>
   {
     let array = []
-    for( let $ = 0; $ < 16; $ ++ ){ array.push( { x:0, y:0 } ) }
+    for( let $ = 0; $ < 16; $ ++ ){ array.push( { x:null, y:null } ) }
     return( array )
   } )(),
   spawn:

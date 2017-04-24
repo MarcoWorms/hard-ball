@@ -3,11 +3,11 @@
 
 o.finish =
 {
-  regular:( zone_coo )=>
+  regular:( zone )=>
   {
     o.state.pass.main = false
-    o.state.athlete[ o.state.selected ].x = zone_coo.x
-    o.state.athlete[ o.state.selected ].y = zone_coo.y
+    o.state.athlete[ o.state.selected ].x = zone.x
+    o.state.athlete[ o.state.selected ].y = zone.y
     o.update.athlete()
 
     const index = o.state.selected

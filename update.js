@@ -190,7 +190,6 @@ o.update =
             // STEP 2
             //
             const target = o.state.athlete[ target_num ]
-            const target_str = o.tool.convert( [ target.x, target.y ] )
 
             let tgt_opp_area
             let tgt_own_area
@@ -211,12 +210,25 @@ o.update =
 
             // STEP 3
             //
-            if( future_str === target_str
-            || tgt_opp_area.indexOf( future_str ) !== -1
+            if( tgt_opp_area.indexOf( future_str ) !== -1
             || tgt_own_area.indexOf( future_str ) !== -1
             && keeper !== null )
             {
               o.state.blocked.push( zone_num )
+            }
+
+            // STEP 4
+            //
+            for( let $ = 0; $ < 20; $ ++ )
+            {
+              const possible = o.state.athlete[ $ ]
+              const possible_str = o.tool.convert( [ possible.x, possible.y ] )
+
+              if( possible_str === future_str )
+              {
+                o.state.blocked.push( zone_num )
+                break
+              }
             }
           }
         } )

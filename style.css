@@ -165,7 +165,11 @@ html, body
 }
 .tbl{ border:2px dotted rgb(0,0,0) }
 .bbl{ border:5px dotted rgb(0,0,0) }
-.bbl:hover{ border:5px solid rgb(0,0,0) }
+.bbl:hover
+{
+  box-shadow:0 0 2px 0 rgb(0,0,0);
+  border:5px solid rgb(0,0,0);
+}
 
 .zon{ display:none; animation:z 4s infinite; animation-timing-function:linear }
 

@@ -216,18 +216,18 @@ o.update =
             {
               o.state.blocked.push( zone_num )
             }
-
-            // STEP 4
-            //
-            for( let $ = 0; $ < 20; $ ++ )
+            else
             {
-              const possible = o.state.athlete[ $ ]
-              const possible_str = o.tool.convert( [ possible.x, possible.y ] )
-
-              if( possible_str === future_str )
+              for( let $ = 0; $ < 20; $ ++ )
               {
-                o.state.blocked.push( zone_num )
-                break
+                const maybe = o.state.athlete[ $ ]
+                const maybe_str = o.tool.convert( [ maybe.x, maybe.y ] )
+
+                if( maybe_str === future_str )
+                {
+                  o.state.blocked.push( zone_num )
+                  break
+                }
               }
             }
           }

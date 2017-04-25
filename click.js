@@ -26,7 +26,8 @@ o.click = addEventListener( 'mousedown', ( event )=>
     ////////////////////////////////////////////////////////////////////////////
     // SELECTION
     //
-    else if( o.state.locker === null
+    else if( o.state.rounder === null
+    && o.state.grabber === null
     && event.target.id === 'ball_mask'
     && o.state.ball.x !== 456 )
     {
@@ -37,7 +38,8 @@ o.click = addEventListener( 'mousedown', ( event )=>
     {
       o.zone_show.begin()
     }
-    else if( o.state.locker === null
+    else if( o.state.rounder === null
+    && o.state.grabber === null
     && event.target.id.substring( 0, 1 ) === 'A' ) // athlete
     {
       o.state.selected = Number( event.target.id.substring( 1, 3 ) )
@@ -59,7 +61,8 @@ o.click = addEventListener( 'mousedown', ( event )=>
     ////////////////////////////////////////////////////////////////////////////
     // DESELECTION
     //
-    else if( o.state.locker === null )
+    else if( o.state.rounder === null
+    && o.state.grabber === null )
     {
       o.zone_show.begin()
     }

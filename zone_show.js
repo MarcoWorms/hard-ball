@@ -5,15 +5,66 @@ o.zone_show =
 {
   begin:()=> // define who is being displayed
   {
-    o.zone_show.step_1()
-
     if( o.state.hovered !== null )      { o.state.displayed = o.state.hovered }
     else if( o.state.selected !== null ){ o.state.displayed = o.state.selected }
     else                                { o.state.displayed = null }
 
+    o.zone_show.refresh()
+    o.zone_show.step_1()
     o.zone_show.step_2()
   },
-  step_1:()=> // refresh zones
+  step_1:()=>
+  {
+    if( o.state.displayed === 'ball' )
+    {
+      if( o.state.ball.x === 456 )
+      {
+        o.zone_show.coordinate( 'center', null, null )
+      }
+      else if( o.state.holder !== null )
+      {
+        o.zone_show.coordinate( 'matrix', o.state.holder, 18 )
+      }
+    }
+    else if( typeof( o.state.displayed ) === 'number' )
+    {
+      const ath_num = o.state.displayed
+      const ath_coo = o.state.athlete[ ath_num ]
+
+      if( ath_coo.y === 586 )
+      {
+        if( o.state.turn < 8 ) // enter
+        {
+          if( o.state.turn === 0 )
+          {
+            // tbd
+          }
+
+          // tbd
+        }
+        else // replace
+        {
+          // tbd
+        }
+      }
+      else // playing
+      {
+        if( o.state.rounder !== null ) // rounding
+        {
+          o.zone_show.coordinate( 'matrix', ath_num, 18 )
+        }
+        else // not rounding
+        {
+          o.zone_show.coordinate( 'matrix', ath_num, ath_num )
+        }
+      }
+    }
+  },
+  step_2:()=>
+  {
+    // tbd
+  },
+  refresh:()=>
   {
     Array.from( o.page.zone ).map( ( zone, index )=>
     {
@@ -21,26 +72,23 @@ o.zone_show =
       o.state.zone[ index ] = { x:null, y:null }
     } )
   },
-  step_2:()=> // select display condition
+  coordinate:( condition, alfa, beta )=>
   {
-    if( o.state.displayed === 'ball' )
+    if( condition === 'center' )
     {
-      // tbd
+      o.info.center.map( ( name, index )=>
+      {
+        const coord = o.tool.convert( name, null )
+        o.state.zone[ index ] = { x:coord.x, y:coord.y }
+      } )
     }
-    else if( typeof( o.state.displayed ) === 'number' )
+    else if( condition === 'matrix' )
     {
-      // tbd
+      const origin = alfa
+      const matrix = beta
     }
   },
-  step_3:()=>
-  {
-    // tbd
-  },
-  step_4:()=>
-  {
-    // tbd
-  },
-  step_5:()=>
+  template:()=>
   {
     // tbd
   },

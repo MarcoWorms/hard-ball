@@ -5,7 +5,7 @@ o.hover = addEventListener( 'mouseover', ( event )=>
 {
   if( o.state.pass.main )
   {
-    if( event.target.id === 'ball' )
+    if( event.target.id === 'ball_mask' )
     {
       o.state.hovered = 'ball'
       o.zone_show.begin()

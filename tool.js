@@ -12,7 +12,7 @@ o.tool =
     let x
     let y
 
-    if( beta === undefined )
+    if( beta === null )
     {
       const letter = alfa.substring( 0, 1 )
       const number = Number( alfa.substring( 1, 3 ) )

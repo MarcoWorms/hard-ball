@@ -27,7 +27,7 @@ o.click = addEventListener( 'mousedown', ( event )=>
     // SELECTION
     //
     else if( o.state.locker === null
-    && event.target.id === 'ball'
+    && event.target.id === 'ball_mask'
     && o.state.ball.x !== 456 )
     {
       o.state.selected = 'ball'

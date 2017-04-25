@@ -54,4 +54,8 @@ o.update =
     o.page.ball.style.zIndex = value.ball
     o.page.trigger.style.zIndex = value.trigger
   },
+  console:()=>
+  {
+    document.getElementById( 'console' ).innerHTML = ''
+  },
 }

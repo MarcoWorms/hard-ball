@@ -25,7 +25,7 @@ o.engine =
 
       Array.from( o.page.safari_fix ).map( ( athlete_mask )=>
       {
-        athlete_mask.style.margin = "-3px 0 0 -45px"
+        athlete_mask.style.margin = "-1px 0 0 -43px"
       } )
     }
 

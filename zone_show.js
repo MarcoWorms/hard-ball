@@ -9,7 +9,9 @@ o.zone_show =
 
     if( o.state.hovered !== null )      { o.state.displayed = o.state.hovered }
     else if( o.state.selected !== null ){ o.state.displayed = o.state.selected }
-    else                                { o.sate.displayed = null }
+    else                                { o.state.displayed = null }
+
+    o.zone_show.step_2()
   },
   step_1:()=> // refresh zones
   {
@@ -19,13 +21,16 @@ o.zone_show =
       o.state.zone[ index ] = { x:null, y:null }
     } )
   },
-  step_2:()=> // setup coordinates
+  step_2:()=> // select display condition
   {
     if( o.state.displayed === 'ball' )
     {
       // tbd
     }
     else if( typeof( o.state.displayed ) === 'number' )
+    {
+      // tbd
+    }
   },
   step_3:()=>
   {

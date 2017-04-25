@@ -33,32 +33,11 @@ o.engine =
     //
     o.handle.list.push(
     {
-      test:()=>
-      {
-        const ballToken = o.page.ball.getBoundingClientRect()
-
-        let dif = { x:0, y:0 }
-
-        if( navigator.userAgent.indexOf( "Safari" ) !== -1 )
-        {
-          dif = { x:-15, y:101.5 }
-        }
-
-        let a = ballToken.left + dif.x - o.state.screen.x
-        let b = o.state.ball.x
-        let c = ballToken.top + dif.y - o.state.screen.y
-        let d = o.state.ball.y
-
-        return( a === b && c === d )
-      },
+      test:o.test.ball,
       act:()=>
       {
         o.state.pass.main = true
-
-        Array.from( o.page.athlete ).map( ( athlete )=>
-        {
-          athlete.classList.add( "tr1" )
-        } )
+        Array.from( o.page.athlete ).map( ( a )=>{ a.classList.add( "tr1" ) } )
       }
     } )
 
@@ -68,17 +47,13 @@ o.engine =
   },
   loop:()=>
   {
-    o.update.screen()
     o.handle.run()
-
     window.requestAnimationFrame( o.engine.loop )
   },
   load:( file )=>
   {
     o.state = JSON.parse( file )
     o.update.cluster()
-
-    if( o.state.selected !== null ){ o.zone.origin( o.state.selected ) }
   },
   reset:( condition )=>
   {

@@ -1,25 +1,25 @@
 
-"use strict"
+'use strict'
 
 o.tool =
 {
   translate:( object, x, y )=>
   {
-    object.style.transform = "translate(" + x + "px," + y + "px)"
+    object.style.transform = 'translate(' + x + 'px,' + y + 'px)'
   },
-  convert:( object )=>
+  convert:( alfa, beta )=>
   {
     let x
     let y
 
-    if( typeof( object ) === "string" )
+    if( beta === undefined )
     {
-      let letter = object.substring( 0, 1 )
-      let digit = Number( object.substring( 1, 3 ) )
+      const letter = alfa.substring( 0, 1 )
+      const number = Number( alfa.substring( 1, 3 ) )
 
       for( let $ = 0; $ < 20; $ ++ )
       {
-        if( digit === $ ){ x = $ * 48 }
+        if( number === $ ){ x = $ * 48 }
       }
 
       for( let $ = 0; $ < 12; $ ++ )
@@ -29,10 +29,10 @@ o.tool =
 
       return( { x:x, y:y } )
     }
-    else if( typeof( object ) === "object" )
+    else
     {
-      x = object[ 0 ]
-      y = object[ 1 ]
+      x = alfa
+      y = beta
 
       if( x === null ){ return( undefined ) }
 
@@ -45,7 +45,7 @@ o.tool =
       {
         if( x / 48 === $ )
         {
-          if( $ < 10 ){ name += "0" }
+          if( $ < 10 ){ name += '0' }
           name += $
         }
       }
@@ -55,15 +55,15 @@ o.tool =
   },
   bend:( number, axis )=>
   {
-    if( axis === "hor" )
+    if( axis === 'x' )
     {
       if( number < 0 ){ number = 960 + number }
-      else if( number > 913 ){ number = number - 960 }
+      else if( number > 912 ){ number = number - 960 }
     }
-    else if( axis === "ver" )
+    else if( axis === 'y' )
     {
       if( number < 0 ){ number = 576 + number }
-      else if( number > 529 ){ number = number - 576 }
+      else if( number > 528 ){ number = number - 576 }
     }
 
     return( number )

@@ -1,25 +1,35 @@
 
-"use strict"
+'use strict'
 
 o.state =
 {
+  //////////////////////////////////////////////////////////////////////////////
+  // MASTERS
+  //
   turn:0,
-  first:null, // "gre" or "blu"
+  first:null, // 'gre' or 'blu'
   pass:{ main:false },
 
+  //////////////////////////////////////////////////////////////////////////////
   // ATHLETE Nº
   //
-  selected:null, // athlete nº or ball
-  roundabout:[],
+  locker:null,
+  hovered:null, // or ball
+  selected:null, // or ball
+  displayed:null, // or ball
+
   team:{ green:[], blue:[] },
   replaced:{ green:[], blue:[] },
   keeper:{ green:null, blue:null },
+  holder:{ now:null, future:null },
 
+  //////////////////////////////////////////////////////////////////////////////
   // ZONE Nº
   //
   blocked:[],
   aim:{ zone:[], target:[] },
 
+  //////////////////////////////////////////////////////////////////////////////
   // POSITIONING
   //
   screen:{ x:0, y:0 },
@@ -38,7 +48,7 @@ o.state =
   } )(),
   spawn:
   {
-    green:[ "C02", "D03", "I03", "J02" ],
-    blue:[ "J17", "I16", "D16", "C17" ],
+    green:[ 'C02', 'D03', 'I03', 'J02' ],
+    blue:[ 'J17', 'I16', 'D16', 'C17' ],
   },
 }

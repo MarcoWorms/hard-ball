@@ -7,8 +7,9 @@ o.state =
   // MASTERS
   //
   turn:0,
-  first:null, // 'gre' or 'blu'
   pass:{ main:false },
+  first:null, // 'gre' or 'blu'
+  now:null, // 'gre' or 'blu'
 
   //////////////////////////////////////////////////////////////////////////////
   // ATHLETE Nº

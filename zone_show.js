@@ -3,12 +3,28 @@
 
 o.zone_show =
 {
-  begin:()=> // define who is being displayed
+  begin:()=>
   {
+    // UPDATES
+    //
+    if( o.state.turn > 0 )
+    {
+      o.update.now()
+
+      if( o.state.turn > 7 )
+      {
+        // tbd
+      }
+    }
+
+    // SET DISPLAYED
+    //
     if( o.state.hovered !== null )      { o.state.displayed = o.state.hovered }
     else if( o.state.selected !== null ){ o.state.displayed = o.state.selected }
     else                                { o.state.displayed = null }
 
+    // CALL STEPS
+    //
     o.zone_show.refresh()
     o.zone_show.step_1()
     o.zone_show.step_2()
@@ -33,27 +49,29 @@ o.zone_show =
 
       if( ath_coo.y === 586 )
       {
-        if( o.state.turn < 8 ) // enter
+        if( o.state.turn < 8 )
         {
           if( o.state.turn === 0 )
           {
-            // tbd
+            o.zone_show.coordinate( 'start', null, null )
           }
-
-          // tbd
+          else
+          {
+            o.zone_show.coordinate( 'place', null, null )
+          }
         }
-        else // replace
+        else
         {
-          // tbd
+          o.zone_show.coordinate( 'replace', null, null )
         }
       }
       else // playing
       {
-        if( o.state.rounder !== null ) // rounding
+        if( o.state.rounder !== null )
         {
           o.zone_show.coordinate( 'matrix', ath_num, 18 )
         }
-        else // not rounding
+        else
         {
           o.zone_show.coordinate( 'matrix', ath_num, ath_num )
         }
@@ -72,21 +90,52 @@ o.zone_show =
       o.state.zone[ index ] = { x:null, y:null }
     } )
   },
-  coordinate:( condition, alfa, beta )=>
+  coordinate:( alfa, beta, gama )=>
   {
-    if( condition === 'center' )
+    // TURN PREPARATIONS
+    //
+    let spawn
+    let team
+
+    if( o.state.turn > 0 )
     {
-      o.info.center.map( ( name, index )=>
+      if( o.state.now === 'gre' )
       {
-        const coord = o.tool.convert( name, null )
-        o.state.zone[ index ] = { x:coord.x, y:coord.y }
-      } )
+        spawn = o.state.spawn.green
+        team = o.state.team.green
+      }
+      else
+      {
+        spawn = o.state.spawn.blue
+        team = o.state.team.blue
+      }
     }
-    else if( condition === 'matrix' )
+
+    // LIST DEFINITION
+    //
+    const both_spawns = o.state.spawn.green.concat( o.state.spawn.blue )
+
+    let list
+
+    if( alfa === 'center' ){ list = o.info.center }
+    else if( alfa === 'start' ){ list = both_spawns }
+    else if( alfa === 'place' ){ list = spawn }
+    else if( alfa === 'replace' ){ list = team }
+    else if( alfa === 'matrix' )
     {
-      const origin = alfa
-      const matrix = beta
+      const origin = beta
+      const matrix = gama
+
+      // tbd
     }
+
+    // WRITE COORDINATES
+    //
+    list.map( ( name, index )=>
+    {
+      const coord = o.tool.convert( name, null )
+      o.state.zone[ index ] = { x:coord.x, y:coord.y }
+    } )
   },
   template:()=>
   {

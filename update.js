@@ -54,6 +54,19 @@ o.update =
     o.page.ball.style.zIndex = value.ball
     o.page.trigger.style.zIndex = value.trigger
   },
+  now:()=>
+  {
+    if( o.state.turn % 2 === 0 )
+    {
+      if( o.state.first === 'gre' ){ o.state.now = 'gre' }
+      else if( o.state.first === 'blu' ){ o.state.now = 'blu' }
+    }
+    else
+    {
+      if( o.state.first === 'gre' ){ o.state.now = 'blu' }
+      else if( o.state.first === 'blu' ){ o.state.now = 'gre' }
+    }
+  },
   console:()=>
   {
     document.getElementById( 'console' ).innerHTML = ''

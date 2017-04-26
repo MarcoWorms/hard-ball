@@ -39,6 +39,7 @@ o.info =
         let y = $1 * 48
 
         if( $1 === 12 ){ y += 10 } // correction for the bench
+
         arrayCells.push( { x:x, y:y } )
       }
 

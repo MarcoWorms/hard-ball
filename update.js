@@ -18,12 +18,9 @@ o.update =
   {
     const firstCell = document.querySelector( '.cll' ).getBoundingClientRect()
 
-    let dif = { x:0, y:0 }
-
-    if( navigator.userAgent.indexOf( 'Safari' ) !== -1 )
-    {
-      dif = { x:-15, y:101.5 }
-    }
+    const dif = navigator.userAgent.indexOf( 'Safari' ) !== -1
+    ? { x:-15, y:101.5 }
+    : { x:0, y:0 }
 
     o.state.screen.x = firstCell.left + dif.x
     o.state.screen.y = firstCell.top + dif.y
@@ -48,12 +45,15 @@ o.update =
   {
     Array.from( o.page.athlete ).map( ( athlete, index )=>
     {
-      const cond_1 = o.state.team.green.indexOf( index ) !== -1
-      const cond_2 = o.state.team.blue.indexOf( index ) !== -1
-
-      if( cond_1 )     { athlete.classList = "ath sqr rn2 bd3 box abs cnt gre" }
-      else if( cond_2 ){ athlete.classList = "ath sqr rn2 bd3 box abs cnt blu" }
-      else             { athlete.classList = "ath sqr rn2 bd3 box abs cnt btn" }
+      o.state.team.green.indexOf( index ) !== -1
+      ? athlete.classList = "ath sqr rn2 bd3 box abs cnt gre"
+      : o.state.replaced.green.indexOf( index ) !== -1
+      ? athlete.classList = "ath sqr rn2 bd3 box abs cnt grp" // tbd . class grp
+      : o.state.team.blue.indexOf( index ) !== -1
+      ? athlete.classList = "ath sqr rn2 bd3 box abs cnt blu"
+      : o.state.replaced.blue.indexOf( index ) !== -1
+      ? athlete.classList = "ath sqr rn2 bd3 box abs cnt brp" // tbd . class brp
+      : athlete.classList = "ath sqr rn2 bd3 box abs cnt btn"
     } )
   },
   z_index:()=>

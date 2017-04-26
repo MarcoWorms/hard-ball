@@ -5,7 +5,7 @@ o.zone_show =
 {
   begin:()=>
   {
-    // REFRESH & UPDATES
+    // REFRESH
     //
     Array.from( o.page.zone ).map( ( zone, index )=>
     {
@@ -13,6 +13,8 @@ o.zone_show =
       o.state.zone[ index ] = { x:null, y:null }
     } )
 
+    // UPDATES
+    //
     if( o.state.turn > 0 )
     {
       o.update.now()
@@ -20,9 +22,11 @@ o.zone_show =
 
     // SET DISPLAYED
     //
-    if( o.state.hovered !== null )      { o.state.displayed = o.state.hovered }
-    else if( o.state.selected !== null ){ o.state.displayed = o.state.selected }
-    else                                { o.state.displayed = null }
+    o.state.hovered !== null
+    ? o.state.displayed = o.state.hovered
+    : o.state.selected !== null
+    ? o.state.displayed = o.state.selected
+    : o.state.displayed = null
 
     o.zone_show.process()
   },
@@ -54,14 +58,9 @@ o.zone_show =
       {
         if( o.state.turn < 8 )
         {
-          if( o.state.turn === 0 )
-          {
-            o.zone_show.coord( 'start', null, null )
-          }
-          else
-          {
-            o.zone_show.coord( 'place', null, null )
-          }
+          o.state.turn === 0
+          ? o.zone_show.coord( 'start', null, null )
+          : o.zone_show.coord( 'place', null, null )
 
           o.zone_show.appear()
           o.zone_show.style( 'bold' )
@@ -84,8 +83,9 @@ o.zone_show =
           o.zone_show.coord( 'matrix', ath_num, ath_num )
           o.zone_show.appear()
 
-          if( o.state.now === ath_coo.color ){ o.zone_show.style( 'bold' ) }
-          else{ o.zone_show.style( 'thin' ) }
+          o.state.now === ath_coo.color
+          ? o.zone_show.style( 'bold' )
+          : o.zone_show.style( 'thin' )
         }
       }
     }
@@ -207,8 +207,9 @@ o.zone_show =
     {
       if( o.state.aim.zone.indexOf( index ) !== -1 )
       {
-        if( o.state.blocked.indexOf( index ) !== -1 ){ zone.classList = blk }
-        else{ zone.classList = tgt }
+        o.state.blocked.indexOf( index ) !== -1
+        ? zone.classList = blk
+        : zone.classList = tgt
       }
       else
       {

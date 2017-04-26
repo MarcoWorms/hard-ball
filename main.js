@@ -9,12 +9,12 @@ o.engine =
     //
     o.state.ball = { x:456, y:264 }
 
-    for( let $ = 0; $ < 20; $ ++ )
+    o.state.athlete.map( ( athlete, index )=>
     {
-      o.state.athlete[ $ ].x = o.info.cell[ 12 ][ $ ].x
-      o.state.athlete[ $ ].y = o.info.cell[ 12 ][ 0 ].y
-      o.page.athlete[ $ ].classList = "ath sqr rn2 bd3 box abs cnt btn"
-    }
+      athlete.x = o.info.cell[ 12 ][ index ].x
+      athlete.y = o.info.cell[ 12 ][ 0 ].y
+      o.page.athlete[ index ].classList = "ath sqr rn2 bd3 box abs cnt btn"
+    } )
 
     // SAFARI FIXES
     //
@@ -31,15 +31,11 @@ o.engine =
 
     // AVOID INITIAL DRAG & CLICK BUG
     //
-    o.handle.list.push(
+    o.handle.list.push( { test:o.test.ball, act:()=>
     {
-      test:o.test.ball,
-      act:()=>
-      {
-        o.state.pass.main = true
-        Array.from( o.page.athlete ).map( ( a )=>{ a.classList.add( "tr1" ) } )
-      }
-    } )
+      o.state.pass.main = true
+      Array.from( o.page.athlete ).map( ( a )=>{ a.classList.add( "tr1" ) } )
+    } } )
 
     // INITIAL UPDATES
     //

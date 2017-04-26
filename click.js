@@ -64,8 +64,11 @@ o.click = addEventListener( 'mousedown', ( event )=>
     else if( o.state.rounder === null
     && o.state.grabber === null )
     {
+      o.state.selected = null
       o.zone_show.begin()
     }
+
+    o.update.selection()
   }
 },
 false )

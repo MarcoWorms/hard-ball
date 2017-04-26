@@ -5,16 +5,17 @@ o.zone_show =
 {
   begin:()=>
   {
-    // UPDATES
+    // REFRESH & UPDATES
     //
+    Array.from( o.page.zone ).map( ( zone, index )=>
+    {
+      zone.style.display = 'none'
+      o.state.zone[ index ] = { x:null, y:null }
+    } )
+
     if( o.state.turn > 0 )
     {
       o.update.now()
-
-      if( o.state.turn > 7 )
-      {
-        // tbd
-      }
     }
 
     // SET DISPLAYED
@@ -23,23 +24,25 @@ o.zone_show =
     else if( o.state.selected !== null ){ o.state.displayed = o.state.selected }
     else                                { o.state.displayed = null }
 
-    // CALL STEPS
-    //
-    o.zone_show.refresh()
-    o.zone_show.step_1()
-    o.zone_show.step_2()
+    o.zone_show.process()
   },
-  step_1:()=>
+  process:()=>
   {
+    // PROCESS
+    //
     if( o.state.displayed === 'ball' )
     {
       if( o.state.ball.x === 456 )
       {
-        o.zone_show.coordinate( 'center', null, null )
+        o.zone_show.coord( 'center', null, null )
+        o.zone_show.appear()
+        o.zone_show.style( 'thin' )
       }
       else if( o.state.holder !== null )
       {
-        o.zone_show.coordinate( 'matrix', o.state.holder, 18 )
+        o.zone_show.coord( 'matrix', 18, o.state.holder )
+        o.zone_show.appear()
+        o.zone_show.style( 'bold' )
       }
     }
     else if( typeof( o.state.displayed ) === 'number' )
@@ -53,44 +56,41 @@ o.zone_show =
         {
           if( o.state.turn === 0 )
           {
-            o.zone_show.coordinate( 'start', null, null )
+            o.zone_show.coord( 'start', null, null )
           }
           else
           {
-            o.zone_show.coordinate( 'place', null, null )
+            o.zone_show.coord( 'place', null, null )
           }
+
+          o.zone_show.appear()
+          o.zone_show.style( 'bold' )
         }
         else
         {
-          o.zone_show.coordinate( 'replace', null, null )
+          o.zone_show.coord( 'replace', null, null )
         }
       }
       else // playing
       {
         if( o.state.rounder !== null )
         {
-          o.zone_show.coordinate( 'matrix', ath_num, 18 )
+          o.zone_show.coord( 'matrix', 18, ath_num )
+          o.zone_show.appear()
+          o.zone_show.style( 'bold' )
         }
         else
         {
-          o.zone_show.coordinate( 'matrix', ath_num, ath_num )
+          o.zone_show.coord( 'matrix', ath_num, ath_num )
+          o.zone_show.appear()
+
+          if( o.state.now === ath_coo.color ){ o.zone_show.style( 'bold' ) }
+          else{ o.zone_show.style( 'thin' ) }
         }
       }
     }
   },
-  step_2:()=>
-  {
-    // tbd
-  },
-  refresh:()=>
-  {
-    Array.from( o.page.zone ).map( ( zone, index )=>
-    {
-      zone.style.display = 'none'
-      o.state.zone[ index ] = { x:null, y:null }
-    } )
-  },
-  coordinate:( alfa, beta, gama )=>
+  coord:( alfa, beta, gama )=>
   {
     // TURN PREPARATIONS
     //
@@ -113,32 +113,145 @@ o.zone_show =
 
     // LIST DEFINITION
     //
-    const both_spawns = o.state.spawn.green.concat( o.state.spawn.blue )
-
     let list
 
-    if( alfa === 'center' ){ list = o.info.center }
-    else if( alfa === 'start' ){ list = both_spawns }
-    else if( alfa === 'place' ){ list = spawn }
-    else if( alfa === 'replace' ){ list = team }
+    if( alfa === 'center' )
+    {
+      list = o.info.center
+    }
+    else if( alfa === 'start' )
+    {
+      list = o.state.spawn.green.concat( o.state.spawn.blue )
+    }
+    else if( alfa === 'place' )
+    {
+      list = spawn
+    }
+    else if( alfa === 'replace' )
+    {
+      list = team
+    }
     else if( alfa === 'matrix' )
     {
-      const origin = beta
-      const matrix = gama
+      let counter = 0
 
-      // tbd
+      o.info.matrix[ beta ].map( ( binary, index )=>
+      {
+        if( binary )
+        {
+          o.info.guide[ index ].map( ( mod )=>
+          {
+            o.state.zone[ counter ] =
+            {
+              x:o.tool.bend( o.state.athete[ gama ].x + mod[ 0 ] * 48, 'x' ),
+              y:o.tool.bend( o.state.athete[ gama ].y + mod[ 1 ] * 48, 'y' ),
+            }
+
+            counter ++
+          } )
+        }
+      } )
     }
 
     // WRITE COORDINATES
     //
-    list.map( ( name, index )=>
+    if( alfa !== 'matrix' )
     {
-      const coord = o.tool.convert( name, null )
-      o.state.zone[ index ] = { x:coord.x, y:coord.y }
+      list.map( ( name, index )=>
+      {
+        const coord = o.tool.convert( name, null )
+        o.state.zone[ index ] = { x:coord.x, y:coord.y }
+      } )
+    }
+  },
+  appear:()=> // + AIM and BLOCKED updates
+  {
+    o.state.zone.map( ( zone, index )=>
+    {
+      if( zone.x !== null )
+      {
+        if( o.zone_show.ok( o.tool.convert( zone.x, zone.y ) ) )
+        {
+          o.page.zone[ index ].style.marginLeft = zone.x + "px"
+          o.page.zone[ index ].style.marginTop = zone.y + "px"
+          o.page.zone[ index ].style.display = "flex"
+        }
+      }
+    } )
+
+    o.update.aim()
+    o.update.blocked()
+  },
+  style:( condition )=>
+  {
+    const classes = "zon sqr abs box rn2 tr2"
+
+    let non = classes
+    let tgt = classes
+    let blk = classes
+
+    if( condition === "bold" )
+    {
+      non += " bld pnt"
+      tgt += " btg pnt"
+      blk += " bbl"
+    }
+    else if( condition === "thin" )
+    {
+      non += " thi"
+      tgt += " ttg"
+      blk += " tbl"
+    }
+
+    Array.from( o.page.zone ).map( ( zone, index )=>
+    {
+      if( o.state.aim.zone.indexOf( index ) !== -1 )
+      {
+        if( o.state.blocked.indexOf( index ) !== -1 ){ zone.classList = blk }
+        else{ zone.classList = tgt }
+      }
+      else
+      {
+        zone.classList = non
+      }
     } )
   },
-  template:()=>
+  ok:( coord )=>
   {
-    // tbd
+    if( o.state.displayed === "ball" )
+    {
+      return( true )
+    }
+    else // athlete
+    {
+      let own_area
+      let opp_area
+      let keeper
+
+      if( o.state.athlete[ o.state.displayed ].color === "gre" )
+      {
+        own_area = o.info.area.green
+        opp_area = o.info.area.blue
+        keeper = o.state.keeper.green
+      }
+      else
+      {
+        own_area = o.info.area.blue
+        opp_area = o.info.area.green
+        keeper = o.state.keeper.blue
+      }
+
+      if( opp_area.indexOf( coord ) !== -1
+      || own_area.indexOf( coord ) !== -1
+      && keeper !== null
+      && keeper !== object )
+      {
+        return( false )
+      }
+      else
+      {
+        return( true )
+      }
+    }
   },
 }

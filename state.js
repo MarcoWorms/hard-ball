@@ -20,6 +20,7 @@ o.state =
   selected:null, // or ball
   displayed:null, // or ball
 
+  roundabout:[],
   team:{ green:[], blue:[] },
   replaced:{ green:[], blue:[] },
   keeper:{ green:null, blue:null },

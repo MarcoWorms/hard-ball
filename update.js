@@ -15,8 +15,6 @@ o.update =
   },
   screen:()=>
   {
-    // PART 1
-    //
     const firstCell = document.querySelector( '.cll' ).getBoundingClientRect()
 
     // CHROME & SAFARI

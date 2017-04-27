@@ -47,16 +47,8 @@ o.finish =
       }
       else
       {
-        // CHROME and SAFARI FIX
-        //
-        if( navigator.userAgent.indexOf( 'Chrome' ) !== -1 )
-        {
-          // tbd . use mouse position update to call zones like in Firefox
-        }
-
-        // NORMAL process
-        //
         o.state.turn ++
+        o.state.hovered = selected
         o.state.selected = null
         o.update.selection()
       }

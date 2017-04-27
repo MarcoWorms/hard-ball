@@ -226,6 +226,29 @@ o.update =
       } )
     }
   },
+  rounder_keeper:()=>
+  {
+    o.state.keeper = { green:null, blue:null }
+
+    o.state.athlete.map( ( athlete, index )=>
+    {
+      const coord = o.tool.convert( athlete.x, athlete.y )
+      const ltr = coord.substring( 0, 1 )
+      const both_areas = o.info.area.green.concat( o.info.area.blue )
+
+      if( both_areas.indexOf( coord ) !== -1 )
+      {
+        o.state.team.indexOf( index )
+        ? o.state.keeper.green = index
+        : o.state.keeper.blue = index
+      }
+
+      else if( ltr === 'A' || ltr === 'B' || ltr === 'K' || ltr === 'L' )
+      {
+        o.state.roundabout.push( index )
+      }
+    } )
+  },
   console:()=>
   {
     document.getElementById( 'console' ).innerHTML = ''

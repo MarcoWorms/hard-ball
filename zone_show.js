@@ -18,6 +18,7 @@ o.zone_show =
     if( o.state.turn > 0 )
     {
       o.update.now()
+      o.update.rounder_keeper()
     }
 
     // SET DISPLAYED
@@ -42,9 +43,9 @@ o.zone_show =
         o.zone_show.appear()
         o.zone_show.style( 'thin' )
       }
-      else if( o.state.holder !== null )
+      else if( o.state.holder.now !== null )
       {
-        o.zone_show.coord( 'matrix', 18, o.state.holder )
+        o.zone_show.coord( 'matrix', 18, o.state.holder.now )
         o.zone_show.appear()
         o.zone_show.style( 'bold' )
       }

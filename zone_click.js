@@ -5,7 +5,12 @@ o.zone_click =
 {
   begin:( event )=>
   {
-    if( o.state.selected === 'ball' )
+    const zon_num = Number( event.target.id.substring( 1, 3 ) )
+    const zone = o.state.zone[ zon_num ]
+    const zone_str = o.tool.convert( zone.x, zone.y )
+    const selected = o.state.selected
+
+    if( selected === 'ball' )
     {
       if( o.state.holder.now !== null )
       {
@@ -16,24 +21,20 @@ o.zone_click =
         // tbd
       }
     }
-    else if( typeof( o.state.selected ) === 'number' )
+    else if( typeof( selected ) === 'number' )
     {
-      const athlete = o.state.athlete[ o.state.selected ]
+      const athlete = o.state.athlete[ selected ]
 
-      if( o.state.turn === 0 )
+      if( o.state.turn < 8
+      && athlete.y === 586 )
       {
-        // tbd
+        o.state.pass.main = false
+        o.finish.choose( zone_str, selected )
+        o.finish.simple( zone, selected )
       }
       else if( o.state.now === athlete.color )
       {
-        if( o.state.turn < 8 )
-        {
-          // tbd
-        }
-        else
-        {
-          // tbd
-        }
+        // tbd
       }
     }
   },

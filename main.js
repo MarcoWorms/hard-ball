@@ -43,6 +43,7 @@ o.engine =
   },
   loop:()=>
   {
+    o.update.screen()
     o.handle.run()
     window.requestAnimationFrame( o.engine.loop )
   },

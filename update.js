@@ -5,7 +5,6 @@ o.update =
 {
   cluster:()=> // on engine CREATE and LOAD
   {
-    o.update.screen()
     o.update.ball()
     o.update.trigger()
     o.update.athlete()

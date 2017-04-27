@@ -53,9 +53,9 @@ o.zone_show =
     else if( typeof( o.state.displayed ) === 'number' )
     {
       const ath_num = o.state.displayed
-      const ath_coo = o.state.athlete[ ath_num ]
+      const athlete = o.state.athlete[ ath_num ]
 
-      if( ath_coo.y === 586 )
+      if( athlete.y === 586 )
       {
         if( o.state.turn < 8 )
         {
@@ -69,11 +69,14 @@ o.zone_show =
         else
         {
           o.zone_show.coord( 'replace', null, null )
+          o.zone_show.appear()
+          o.zone_show.style( 'bold' )
         }
       }
       else // playing
       {
-        if( o.state.rounder !== null )
+        if( o.state.rounder !== null
+        && o.state.rounder === o.state.displayed )
         {
           o.zone_show.coord( 'matrix', 18, ath_num )
           o.zone_show.appear()
@@ -84,9 +87,15 @@ o.zone_show =
           o.zone_show.coord( 'matrix', ath_num, ath_num )
           o.zone_show.appear()
 
-          o.state.now === ath_coo.color
-          ? o.zone_show.style( 'bold' )
-          : o.zone_show.style( 'thin' )
+          if( o.state.turn < 8
+          || o.state.now === athlete.color )
+          {
+            o.zone_show.style( 'thin' )
+          }
+          else
+          {
+            o.zone_show.style( 'bold' )
+          }
         }
       }
     }
@@ -105,7 +114,7 @@ o.zone_show =
         spawn = o.state.spawn.green
         team = o.state.team.green
       }
-      else
+      else if( o.state.now === 'blu' )
       {
         spawn = o.state.spawn.blue
         team = o.state.team.blue
@@ -144,8 +153,8 @@ o.zone_show =
           {
             o.state.zone[ counter ] =
             {
-              x:o.tool.bend( o.state.athete[ gama ].x + mod[ 0 ] * 48, 'x' ),
-              y:o.tool.bend( o.state.athete[ gama ].y + mod[ 1 ] * 48, 'y' ),
+              x:o.tool.bend( o.state.athlete[ gama ].x + mod[ 0 ] * 48, 'x' ),
+              y:o.tool.bend( o.state.athlete[ gama ].y + mod[ 1 ] * 48, 'y' ),
             }
 
             counter ++

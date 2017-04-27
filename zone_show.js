@@ -178,14 +178,12 @@ o.zone_show =
   {
     o.state.zone.map( ( zone, index )=>
     {
-      if( zone.x !== null )
+      if( zone.x !== null
+      && o.zone_show.ok( o.tool.convert( zone.x, zone.y ) ) )
       {
-        if( o.zone_show.ok( o.tool.convert( zone.x, zone.y ) ) )
-        {
-          o.page.zone[ index ].style.marginLeft = zone.x + "px"
-          o.page.zone[ index ].style.marginTop = zone.y + "px"
-          o.page.zone[ index ].style.display = "flex"
-        }
+        o.page.zone[ index ].style.marginLeft = zone.x + "px"
+        o.page.zone[ index ].style.marginTop = zone.y + "px"
+        o.page.zone[ index ].style.display = "flex"
       }
     } )
 
@@ -235,29 +233,39 @@ o.zone_show =
     }
     else // athlete
     {
-      let own_area
-      let opp_area
-      let keeper
+      const athlete = o.state.athlete[ o.state.displayed ]
 
-      if( o.state.athlete[ o.state.displayed ].color === "gre" )
+      if( athlete.color === "gre"
+      || athlete.color === "blu" )
       {
-        own_area = o.info.area.green
-        opp_area = o.info.area.blue
-        keeper = o.state.keeper.green
-      }
-      else
-      {
-        own_area = o.info.area.blue
-        opp_area = o.info.area.green
-        keeper = o.state.keeper.blue
-      }
+        let own_area
+        let opp_area
+        let keeper
 
-      if( opp_area.indexOf( coord ) !== -1
-      || own_area.indexOf( coord ) !== -1
-      && keeper !== null
-      && keeper !== object )
-      {
-        return( false )
+        if( athlete.color === "gre" )
+        {
+          own_area = o.info.area.green
+          opp_area = o.info.area.blue
+          keeper = o.state.keeper.green
+        }
+        else if( athlete.color === "blu" )
+        {
+          own_area = o.info.area.blue
+          opp_area = o.info.area.green
+          keeper = o.state.keeper.blue
+        }
+
+        if( opp_area.indexOf( coord ) !== -1
+        || own_area.indexOf( coord ) !== -1
+        && keeper !== null
+        && keeper !== o.state.selected )
+        {
+          return( false )
+        }
+        else
+        {
+          return( true )
+        }
       }
       else
       {

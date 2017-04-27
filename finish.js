@@ -12,6 +12,7 @@ o.finish =
       const index = o.state.spawn.green.indexOf( zone_str )
       o.state.spawn.green.splice( index, 1 )
       o.state.team.green.push( selected )
+      o.state.athlete[ selected ].color = 'gre'
     }
     else
     {
@@ -20,6 +21,7 @@ o.finish =
       const index = o.state.spawn.blue.indexOf( zone_str )
       o.state.spawn.blue.splice( index, 1 )
       o.state.team.blue.push( selected )
+      o.state.athlete[ selected ].color = 'blu'
     }
 
     o.page.athlete[ selected ].classList.remove( 'btn' )

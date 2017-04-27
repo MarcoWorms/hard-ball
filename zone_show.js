@@ -213,16 +213,11 @@ o.zone_show =
 
     Array.from( o.page.zone ).map( ( zone, index )=>
     {
-      if( o.state.aim.zone.indexOf( index ) !== -1 )
-      {
-        o.state.blocked.indexOf( index ) !== -1
-        ? zone.classList = blk
-        : zone.classList = tgt
-      }
-      else
-      {
-        zone.classList = non
-      }
+      o.state.aim.zone.indexOf( index ) === -1
+      ? zone.classList = non
+      : o.state.blocked.indexOf( index ) !== -1
+      ? zone.classList = blk
+      : zone.classList = tgt
     } )
   },
   ok:( coord )=>

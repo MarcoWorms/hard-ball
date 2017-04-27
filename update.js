@@ -15,8 +15,12 @@ o.update =
   },
   screen:()=>
   {
+    // PART 1
+    //
     const firstCell = document.querySelector( '.cll' ).getBoundingClientRect()
 
+    // CHROME & SAFARI
+    //
     const dif = navigator.userAgent.indexOf( 'Safari' ) !== -1
     ? { x:-15, y:101.5 }
     : { x:0, y:0 }
@@ -251,6 +255,6 @@ o.update =
   },
   console:()=>
   {
-    document.getElementById( 'console' ).innerHTML = ''
+    document.querySelector( '#console' ).innerHTML = ''
   },
 }

@@ -7,6 +7,8 @@ o.test =
   {
     const ballToken = o.page.ball.getBoundingClientRect()
 
+    // CHROME and SAFARI
+    //
     const dif = navigator.userAgent.indexOf( 'Safari' ) !== -1
     ? { x:-15, y:101.5 }
     : { x:0, y:0 }
@@ -23,6 +25,8 @@ o.test =
     const selected = o.state.selected
     const athleteToken = o.page.athlete[ selected ].getBoundingClientRect()
 
+    // CHROME and SAFARI
+    //
     const dif = navigator.userAgent.indexOf( 'Safari' ) !== -1
     ? { x:-15, y:101.5 }
     : { x:0, y:0 }

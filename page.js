@@ -3,13 +3,13 @@
 
 o.page =
 {
-  reset:document.getElementById( 'reset' ),
-  yes:document.getElementById( 'yes' ),
-  no:document.getElementById( 'no' ),
-  ball:document.getElementById( 'ball' ),
-  trigger:document.getElementById( 'trigger' ),
-  center:document.getElementById( 'center' ),
-  selection:document.getElementById( 'selection' ),
+  reset:document.querySelector( '#reset' ),
+  yes:document.querySelector( '#yes' ),
+  no:document.querySelector( '#no' ),
+  ball:document.querySelector( '#ball' ),
+  trigger:document.querySelector( '#trigger' ),
+  center:document.querySelector( '#center' ),
+  selection:document.querySelector( '#selection' ),
 
   zone:document.querySelectorAll( '.zon' ),
   athlete:document.querySelectorAll( '.ath' ),

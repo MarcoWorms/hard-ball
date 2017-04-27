@@ -99,7 +99,7 @@ o.update =
         let replaced
         let team
 
-        if( athlete.color === "gre" )
+        if( o.state.now === "gre" )
         {
           replaced = o.state.replaced.green
           team = o.state.team.green
@@ -129,10 +129,10 @@ o.update =
             }
             const future =
             {
-              x:o.tool.bend( zone.x + dif.x, "hor" ),
-              y:o.tool.bend( zone.y + dif.y, "ver" ),
+              x:o.tool.bend( zone.x + dif.x, "x" ),
+              y:o.tool.bend( zone.y + dif.y, "y" ),
             }
-            const future_str = o.tool.convert( [ future.x, future.y ] )
+            const future_str = o.tool.convert( future.x, future.y )
 
             // STEP 2
             //
@@ -167,7 +167,7 @@ o.update =
             {
               o.state.athlete.map( ( athlete )=>
               {
-                const str = o.tool.convert( [ athlete.x, athlete.y ] )
+                const str = o.tool.convert( athlete.x, athlete.y )
                 if( str === future_str ){ o.state.blocked.push( zone_num ) }
               } )
             }

@@ -88,7 +88,7 @@ o.zone_show =
           o.zone_show.appear()
 
           if( o.state.turn < 8
-          || o.state.now === athlete.color )
+          || o.state.now !== athlete.color )
           {
             o.zone_show.style( 'thin' )
           }

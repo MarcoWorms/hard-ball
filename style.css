@@ -8,10 +8,6 @@ html, body
   -moz-user-select:none;
   -ms-user-select:none;
   cursor:default;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-direction:column;
 }
 
 /*//////////////////////////////////////////////////////////////////////////////

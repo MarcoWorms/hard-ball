@@ -228,6 +228,7 @@ o.update =
   rounder_keeper:()=>
   {
     o.state.keeper = { green:null, blue:null }
+    o.state.roundabout = []
 
     o.state.athlete.map( ( athlete, index )=>
     {
@@ -237,14 +238,14 @@ o.update =
 
       if( both_areas.indexOf( coord ) !== -1 )
       {
-        o.state.team.indexOf( index )
+        o.state.team.green.indexOf( index ) !== -1
         ? o.state.keeper.green = index
         : o.state.keeper.blue = index
       }
 
       else if( ltr === 'A' || ltr === 'B' || ltr === 'K' || ltr === 'L' )
       {
-        o.state.roundabout.push( index )
+        if( index !== o.state.rounder ){ o.state.roundabout.push( index ) }
       }
     } )
   },

@@ -5,8 +5,8 @@ o.zone_click =
 {
   begin:( event )=>
   {
-    const zon_num = Number( event.target.id.substring( 1, 3 ) )
-    const zone = o.state.zone[ zon_num ]
+    const zone_num = Number( event.target.id.substring( 1, 3 ) )
+    const zone = o.state.zone[ zone_num ]
     const zone_str = o.tool.convert( zone.x, zone.y )
     const selected = o.state.selected
 
@@ -25,16 +25,49 @@ o.zone_click =
     {
       const athlete = o.state.athlete[ selected ]
 
-      if( o.state.turn < 8
-      && athlete.y === 586 )
+      if( athlete.y === 586 )
       {
-        o.state.pass.main = false
-        o.finish.choose( zone_str, selected )
-        o.finish.simple( zone, selected )
+        if( o.state.turn < 8 )
+        {
+          o.state.pass.main = false
+          o.finish.choose( zone_str, selected )
+          o.finish.simple( zone, selected, false )
+        }
+        else
+        {
+          // replace
+        }
       }
-      else if( o.state.now === athlete.color )
+      else if( athlete.color === o.state.now )// playing
       {
-        // tbd
+        ////////////////////////////////////////////////////////////////////////
+        // ROUNDABOUTING
+        //
+        if( o.state.roundabout.indexOf( selected ) !== -1 )
+        {
+          if( o.state.aim.zone.indexOf( zone_num ) !== -1 ) // has target
+          {
+            // tbd
+          }
+          else
+          {
+            o.finish.simple( zone, selected, true )
+          }
+        }
+        ////////////////////////////////////////////////////////////////////////
+        // NOT roundabouting
+        //
+        else
+        {
+          if( o.state.aim.zone.indexOf( zone_num ) !== -1 ) // has target
+          {
+            // tbd
+          }
+          else
+          {
+            o.finish.simple( zone, selected, false )
+          }
+        }
       }
     }
   },

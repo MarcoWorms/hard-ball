@@ -88,7 +88,9 @@ o.zone_show =
           o.zone_show.appear()
 
           if( o.state.turn < 8
-          || o.state.now !== athlete.color )
+          || o.state.now !== athlete.color 
+          || o.state.rounder !== null
+          && o.state.rounder !== o.state.displayed )
           {
             o.zone_show.style( 'thin' )
           }
@@ -112,12 +114,20 @@ o.zone_show =
       if( o.state.now === 'gre' )
       {
         spawn = o.state.spawn.green
-        team = o.state.team.green
+        team = o.state.team.green.map( ( number, index )=>
+        {
+          const athlete = o.state.athlete[ number ]
+          return( o.tool.convert( athlete.x, athlete.y ) )
+        } )
       }
       else if( o.state.now === 'blu' )
       {
         spawn = o.state.spawn.blue
-        team = o.state.team.blue
+        team = o.state.team.blue.map( ( number, index )=>
+        {
+          const athlete = o.state.athlete[ number ]
+          return( o.tool.convert( athlete.x, athlete.y ) )
+        } )
       }
     }
 
@@ -253,7 +263,7 @@ o.zone_show =
         if( opp_area.indexOf( coord ) !== -1
         || own_area.indexOf( coord ) !== -1
         && keeper !== null
-        && keeper !== o.state.selected )
+        && keeper !== o.state.displayed )
         {
           return( false )
         }

@@ -14,8 +14,9 @@ o.state =
   //////////////////////////////////////////////////////////////////////////////
   // ATHLETE Nº
   //
-  rounder:null,
-  grabber:null,
+  rounder:null, // lock
+  grabber:null, // lock
+
   hovered:null, // or ball
   selected:null, // or ball
   displayed:null, // or ball

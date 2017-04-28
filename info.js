@@ -99,4 +99,34 @@ o.info =
     [[2,3],[2,-3],[3,2],[3,-2],[-2,3],[-2,-3],[-3,2],[-3,-2]],
     [[-3,-3],[3,3],[3,-3],[-3,3]],
   ],
+  message: // ATTENTION to spaces!
+  [
+    // SAVE & LOAD
+    //
+    'RESET', // 0
+    'REALLY', // 1
+    'ARE YOU SURE ?!\n(unsaved progress will be lost)', // 2
+    'USE NUMBERS TO SAVE OR LOAD', // 3
+    'SAVE STATE ', // 4
+    'LOAD STATE ', // 5
+    'OVERWRITE STATE ', // 6
+    'ERASE STATE ', // 7
+    ' ?', // 8
+
+    // CONSOLE
+    //
+    'CLICK any athlete', // 9
+    'NOPE... This is the BALL', // 10
+    'YES! This is nº', // 11
+    'CLICK any yellow ZONE to place it', // 12
+    '', // 13
+    '', // 14
+    '', // 15
+    '', // 16
+    '', // 17
+    '', // 18
+    '', // 19
+    '', // 20
+    '', // 21
+  ],
 }

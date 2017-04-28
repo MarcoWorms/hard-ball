@@ -17,26 +17,26 @@ o.press = addEventListener( 'keydown', ( event )=>
 
       if( file === undefined )
       {
-        if( confirm( 'SAVE STATE ' + number + ' ?' ) )
+        if( confirm( o.info.message[ 4 ] + number + o.info.message[ 8 ] ) )
         {
           localStorage.setItem( name, JSON.stringify( o.state ) )
         }
       }
       else
       {
-        if( confirm( 'LOAD STATE ' + number + ' ?' ) )
+        if( confirm( o.info.message[ 5 ] + number + o.info.message[ 8 ] ) )
         {
           o.engine.load( file )
         }
         else
         {
-          if( confirm( 'OVERWRITE STATE ' + number + ' ?' ) )
+          if( confirm( o.info.message[ 6 ] + number + o.info.message[ 8 ] ) )
           {
             localStorage.setItem( name, JSON.stringify( o.state ) )
           }
           else
           {
-            if( confirm( 'ERASE STATE ' + number + ' ?' ) )
+            if( confirm( o.info.message[ 7 ] + number + o.info.message[ 7 ] ) )
             {
               localStorage.removeItem( name )
             }

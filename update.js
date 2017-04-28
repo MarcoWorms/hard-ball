@@ -11,6 +11,7 @@ o.update =
     o.update.team()
     o.update.z_index()
     o.update.lights()
+    o.update.console()
   },
   screen:()=>
   {
@@ -252,7 +253,32 @@ o.update =
   },
   console:()=>
   {
-    document.querySelector( '#console' ).innerHTML = ''
+    let message = ''
+
+    if( o.state.turn === 0 )
+    {
+      if( o.state.displayed === null )
+      {
+        message = o.info.message[ 9 ]
+      }
+      else if( o.state.displayed === 'ball' )
+      {
+        message = o.info.message[ 10 ]
+      }
+      else
+      {
+        if( o.state.selected === null )
+        {
+          message = o.info.message[ 11 ] + o.state.displayed
+        }
+        else
+        {
+          message = o.info.message[ 12 ]
+        }
+      }
+    }
+
+    o.page.console.innerHTML = message
   },
   lights:()=>
   {

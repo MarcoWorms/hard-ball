@@ -20,6 +20,8 @@ o.hover = addEventListener( 'mouseover', ( event )=>
       o.state.hovered = null
       o.zone_show.begin()
     }
+
+    o.update.console()
   }
 },
 false )

@@ -69,6 +69,7 @@ o.click = addEventListener( 'mousedown', ( event )=>
     }
 
     o.update.selection()
+    o.update.console()
   }
 },
 false )

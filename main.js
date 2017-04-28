@@ -37,9 +37,10 @@ o.engine =
       Array.from( o.page.athlete ).map( ( a )=>{ a.classList.add( 'tr1' ) } )
     } } )
 
-    // INITIAL UPDATES
+    // INITIAL PROCESS
     //
     o.update.cluster()
+    o.page.reset.innerHTML = o.info.message[ 0 ]
   },
   loop:()=>
   {
@@ -61,7 +62,7 @@ o.engine =
     {
       o.page.reset.classList.remove( 'btn' )
       o.page.reset.classList.add( 'dsp' )
-      o.page.reset.innerHTML = 'REALLY'
+      o.page.reset.innerHTML = o.info.message[ 1 ]
 
       o.page.yes.classList.remove( 'dsp' )
       o.page.yes.classList.add( 'red' )
@@ -75,7 +76,7 @@ o.engine =
     {
       if( condition )
       {
-        const message = 'ARE YOU SURE ?!\n(unsaved progress will be lost)'
+        const message = o.info.message[ 2 ]
 
         if( confirm( message ) )
         {
@@ -84,12 +85,12 @@ o.engine =
         }
         else
         {
-          confirm( 'USE NUMBERS TO SAVE OR LOAD' )
+          confirm( o.info.message[ 3 ] )
         }
       }
       else
       {
-        confirm( 'USE NUMBERS TO SAVE OR LOAD' )
+        confirm( o.info.message[ 3 ] )
       }
 
       o.page.reset.classList.remove( 'dsp' )

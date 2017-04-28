@@ -47,7 +47,17 @@ o.zone_click =
         {
           if( o.state.aim.zone.indexOf( zone_num ) !== -1 ) // has target
           {
-            // tbd
+            const target = o.state.aim.target.indexOf( zone_num )
+            console.log( target )
+
+            if( target === 'ball' )
+            {
+              // tbd
+            }
+            else
+            {
+              // tbd
+            }
           }
           else
           {
@@ -61,7 +71,17 @@ o.zone_click =
         {
           if( o.state.aim.zone.indexOf( zone_num ) !== -1 ) // has target
           {
-            // tbd
+            const target = o.state.aim.target.indexOf( zone_num )
+            console.log( target )
+
+            if( target === 'ball' )
+            {
+              // tbd
+            }
+            else
+            {
+              // tbd
+            }
           }
           else
           {

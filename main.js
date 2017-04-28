@@ -51,6 +51,7 @@ o.engine =
   {
     o.state = JSON.parse( file )
     o.update.cluster()
+    o.zone_show.begin()
   },
   reset:( condition )=>
   {

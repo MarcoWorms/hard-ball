@@ -10,6 +10,7 @@ o.update =
     o.update.athlete()
     o.update.team()
     o.update.z_index()
+    o.update.lights()
 
     if( o.state.selected !== null ){ o.update.selection() }
   },
@@ -254,5 +255,56 @@ o.update =
   console:()=>
   {
     document.querySelector( '#console' ).innerHTML = ''
+  },
+  lights:()=>
+  {
+    // REFRESH
+    //
+    Array.from( o.page.svg ).map( ( s )=>{ s.classList.remove( 'glw' ) } )
+
+    o.info.area.green.concat( o.info.area.blue ).map( ( name, name_index )=>
+    {
+      Array.from( o.page.cell ).map( ( cell, cell_index )=>
+      {
+        let cell_name = cell.innerHTML.substring( 0, 1 )
+        cell_name += cell.innerHTML.substring( 2, 4 )
+
+        if( name === cell_name ){ cell.classList.remove( 'glw' ) }
+      } )
+    } )
+
+    // INITIAL SETUP
+    //
+    const side =
+    {
+      team:o.state.now === 'gre'
+      ? o.state.team.green
+      : o.state.now === 'blu'
+      ? o.state.team.blue
+      : 0,
+      area:o.state.now === 'gre'
+      ? o.info.area.green
+      : o.state.now === 'blu'
+      ? o.info.area.blue
+      : 0,
+    }
+
+    // END
+    //
+    if( side.team !== 0 )
+    {
+      side.team.map( ( n )=>{ o.page.svg[ n ].classList.add( 'glw' ) } )
+
+      side.area.map( ( name, name_index )=>
+      {
+        Array.from( o.page.cell ).map( ( cell, cell_index )=>
+        {
+          let cell_name = cell.innerHTML.substring( 0, 1 )
+          cell_name += cell.innerHTML.substring( 2, 4 )
+
+          if( name === cell_name ){ cell.classList.add( 'glw' ) }
+        } )
+      } )
+    }
   },
 }

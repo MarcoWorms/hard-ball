@@ -14,4 +14,6 @@ o.page =
   zone:document.querySelectorAll( '.zon' ),
   athlete:document.querySelectorAll( '.ath' ),
   safari_fix:document.querySelectorAll( '.sfx' ),
+  cell:document.querySelectorAll( '.cll' ),
+  svg:document.querySelectorAll( '.svg' ),
 }

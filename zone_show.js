@@ -18,6 +18,7 @@ o.zone_show =
     if( o.state.turn > 0 )
     {
       o.update.now()
+      o.update.lights()
       o.update.rounder_keeper()
     }
 

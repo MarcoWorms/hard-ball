@@ -192,9 +192,9 @@ o.zone_show =
       if( zone.x !== null
       && o.zone_show.ok( o.tool.convert( zone.x, zone.y ) ) )
       {
-        o.page.zone[ index ].style.marginLeft = zone.x + "px"
-        o.page.zone[ index ].style.marginTop = zone.y + "px"
-        o.page.zone[ index ].style.display = "flex"
+        o.page.zone[ index ].style.marginLeft = zone.x + 'px'
+        o.page.zone[ index ].style.marginTop = zone.y + 'px'
+        o.page.zone[ index ].style.display = 'flex'
       }
     } )
 
@@ -203,23 +203,23 @@ o.zone_show =
   },
   style:( condition )=>
   {
-    const classes = "zon sqr abs box rn2 tr2"
+    const classes = 'zon sqr abs box rn2 tr2'
 
     let non = classes
     let tgt = classes
     let blk = classes
 
-    if( condition === "bold" )
+    if( condition === 'bold' )
     {
-      non += " bld pnt"
-      tgt += " btg pnt"
-      blk += " bbl"
+      non += ' bld pnt'
+      tgt += ' btg pnt'
+      blk += ' bbl'
     }
-    else if( condition === "thin" )
+    else if( condition === 'thin' )
     {
-      non += " thi"
-      tgt += " ttg"
-      blk += " tbl"
+      non += ' thi'
+      tgt += ' ttg'
+      blk += ' tbl'
     }
 
     Array.from( o.page.zone ).map( ( zone, index )=>
@@ -233,7 +233,7 @@ o.zone_show =
   },
   ok:( coord )=>
   {
-    if( o.state.displayed === "ball" )
+    if( o.state.displayed === 'ball' )
     {
       return( true )
     }
@@ -241,20 +241,20 @@ o.zone_show =
     {
       const athlete = o.state.athlete[ o.state.displayed ]
 
-      if( athlete.color === "gre"
-      || athlete.color === "blu" )
+      if( athlete.color === 'gre'
+      || athlete.color === 'blu' )
       {
         let own_area
         let opp_area
         let keeper
 
-        if( athlete.color === "gre" )
+        if( athlete.color === 'gre' )
         {
           own_area = o.info.area.green
           opp_area = o.info.area.blue
           keeper = o.state.keeper.green
         }
-        else if( athlete.color === "blu" )
+        else if( athlete.color === 'blu' )
         {
           own_area = o.info.area.blue
           opp_area = o.info.area.green

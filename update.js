@@ -11,8 +11,6 @@ o.update =
     o.update.team()
     o.update.z_index()
     o.update.lights()
-
-    if( o.state.selected !== null ){ o.update.selection() }
   },
   screen:()=>
   {
@@ -48,14 +46,14 @@ o.update =
     Array.from( o.page.athlete ).map( ( athlete, index )=>
     {
       o.state.team.green.indexOf( index ) !== -1
-      ? athlete.classList = "ath sqr rn2 bd3 box abs cnt gre"
+      ? athlete.classList = 'ath sqr rn2 bd3 box abs cnt gre'
       : o.state.replaced.green.indexOf( index ) !== -1
-      ? athlete.classList = "ath sqr rn2 bd3 box abs cnt grp" // tbd . class grp
+      ? athlete.classList = 'ath sqr rn2 bd3 box abs cnt grp' // tbd . class grp
       : o.state.team.blue.indexOf( index ) !== -1
-      ? athlete.classList = "ath sqr rn2 bd3 box abs cnt blu"
+      ? athlete.classList = 'ath sqr rn2 bd3 box abs cnt blu'
       : o.state.replaced.blue.indexOf( index ) !== -1
-      ? athlete.classList = "ath sqr rn2 bd3 box abs cnt brp" // tbd . class brp
-      : athlete.classList = "ath sqr rn2 bd3 box abs cnt btn"
+      ? athlete.classList = 'ath sqr rn2 bd3 box abs cnt brp' // tbd . class brp
+      : athlete.classList = 'ath sqr rn2 bd3 box abs cnt btn'
     } )
   },
   z_index:()=>
@@ -88,11 +86,11 @@ o.update =
   {
     o.state.blocked = []
 
-    if( o.state.displayed === "ball" )
+    if( o.state.displayed === 'ball' )
     {
       // tbd
     }
-    else if( typeof( o.state.displayed ) === "number" // athlete
+    else if( typeof( o.state.displayed ) === 'number' // athlete
     && o.state.turn > 7 )
     {
       const athlete = o.state.athlete[ o.state.displayed ]
@@ -102,7 +100,7 @@ o.update =
         let replaced
         let team
 
-        if( o.state.now === "gre" )
+        if( o.state.now === 'gre' )
         {
           replaced = o.state.replaced.green
           team = o.state.team.green
@@ -119,7 +117,7 @@ o.update =
       {
         Array.from( o.state.aim.target ).map( ( target_num, index )=>
         {
-          if( target_num !== "ball" )
+          if( target_num !== 'ball' )
           {
             // STEP 1
             //
@@ -132,8 +130,8 @@ o.update =
             }
             const future =
             {
-              x:o.tool.bend( zone.x + dif.x, "x" ),
-              y:o.tool.bend( zone.y + dif.y, "y" ),
+              x:o.tool.bend( zone.x + dif.x, 'x' ),
+              y:o.tool.bend( zone.y + dif.y, 'y' ),
             }
             const future_str = o.tool.convert( future.x, future.y )
 
@@ -145,7 +143,7 @@ o.update =
             let tgt_own_area
             let keeper
 
-            if( target.color === "gre" )
+            if( target.color === 'gre' )
             {
               tgt_opp_area = o.info.area.blue
               tgt_own_area = o.info.area.green
@@ -189,7 +187,7 @@ o.update =
       && zone.y === o.state.ball.y )
       {
         o.state.aim.zone.push( zone_index )
-        o.state.aim.target.push( "ball" )
+        o.state.aim.target.push( 'ball' )
       }
 
       o.state.athlete.map( ( athlete, athlete_index )=>
@@ -205,23 +203,23 @@ o.update =
   },
   selection:()=>
   {
-    o.page.selection.style.display = "none"
+    o.page.selection.style.display = 'none'
 
-    if( o.state.selected === "ball" )
+    if( o.state.selected === 'ball' )
     {
       setTimeout( ()=>
       {
-        o.page.selection.style.display = "flex"
+        o.page.selection.style.display = 'flex'
         const x = o.state.ball.x
         const y = o.state.ball.y
         o.tool.translate( o.page.selection, x, y )
       } )
     }
-    else if( typeof( o.state.selected ) === "number" )
+    else if( typeof( o.state.selected ) === 'number' )
     {
       setTimeout( ()=>
       {
-        o.page.selection.style.display = "flex"
+        o.page.selection.style.display = 'flex'
         const x = o.state.athlete[ o.state.selected ].x
         const y = o.state.athlete[ o.state.selected ].y
         o.tool.translate( o.page.selection, x, y )

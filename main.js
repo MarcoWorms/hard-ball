@@ -52,6 +52,7 @@ o.engine =
     o.engine.create()
     o.state = JSON.parse( file )
     o.update.cluster()
+    o.update.selection()
     o.zone_show.begin()
   },
   reset:( condition )=>
@@ -103,6 +104,10 @@ o.engine =
       o.page.no.classList.add( 'dsp' )
       o.page.no.innerHTML = ''
     }
+  },
+  auto_save:()=>
+  {
+    localStorage.setItem( 'HB_auto', JSON.stringify( o.state ) )
   },
 }
 

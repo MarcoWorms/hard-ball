@@ -56,7 +56,7 @@ o.finish =
       o.zone_show.begin()
       o.state.pass.main = true
 
-      // localStorage.setItem( "HB_auto", JSON.stringify( o.state ) )
+      o.engine.auto_save()
     } } )
   },
   roundabout:( zone, selected )=>

@@ -31,6 +31,7 @@ o.zone_show =
     : o.state.displayed = null
 
     o.zone_show.process()
+    o.engine.auto_save()
   },
   process:()=>
   {
